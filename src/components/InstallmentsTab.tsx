@@ -75,18 +75,21 @@ const safePdfFileName = (value: any): string =>
     .replace(/\s+/g, "_")
     .trim() || "متدرب";
 
-// شبكة إحصائيات علوية
+// شبكة إحصائيات علوية - نسخة محدثة بتصميم عصري
 const StatsGrid = ({ stats, columns = 3 }: { stats: any[]; columns?: number }) => {
   const colClass = columns === 4 ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-1 sm:grid-cols-3";
   return (
-    <div className={`grid ${colClass} gap-2 mb-4`}>
+    <div className={`grid ${colClass} gap-3 mb-5`}>
       {stats.map((stat, idx) => (
         <div
           key={idx}
-          className={`${stat.bgClass} p-2 sm:p-3 rounded-lg text-center border ${stat.borderClass} shadow-sm`}
+          className={`${stat.bgClass} p-3 sm:p-4 rounded-xl border ${stat.borderClass} shadow-md hover:shadow-lg transition-all duration-200 backdrop-blur-sm`}
         >
-          <div className="text-xs sm:text-sm font-medium text-slate-600">{stat.label}</div>
-          <div className="text-sm sm:text-lg font-mono font-bold mt-1 text-slate-900 truncate">
+          <div className="flex items-center justify-between">
+            <div className="text-xs sm:text-sm font-medium text-slate-600">{stat.label}</div>
+            {stat.icon && <div className="text-slate-400">{stat.icon}</div>}
+          </div>
+          <div className="text-base sm:text-xl font-mono font-bold mt-1.5 text-slate-900 truncate">
             {stat.value}
           </div>
         </div>
@@ -95,7 +98,7 @@ const StatsGrid = ({ stats, columns = 3 }: { stats: any[]; columns?: number }) =
   );
 };
 
-// مكوّن النافذة المنبثقة العامة
+// مكوّن النافذة المنبثقة العامة - نسخة محدثة بتصميم عصري
 const Modal = ({
   title,
   isOpen,
@@ -109,18 +112,21 @@ const Modal = ({
 }) => {
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-end sm:items-center justify-center z-50 p-2 sm:p-4">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-2 sm:p-4">
       <div
-        className="bg-white rounded-t-2xl sm:rounded-2xl w-full max-w-md shadow-2xl max-h-[90vh] overflow-y-auto"
+        className="bg-white rounded-2xl sm:rounded-2xl w-full max-w-md shadow-2xl max-h-[90vh] overflow-y-auto animate-in slide-in-from-bottom-4 duration-300"
         dir="rtl"
       >
-        <div className="flex justify-between items-center p-4 border-b bg-gradient-to-l from-blue-50 to-slate-50 sticky top-0 z-10">
+        <div className="flex justify-between items-center p-4 border-b bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 sticky top-0 z-10 rounded-t-2xl">
           <h3 className="font-bold text-base sm:text-lg text-slate-900">{title}</h3>
-          <button onClick={onClose} className="p-1 hover:bg-slate-200 rounded-lg">
+          <button 
+            onClick={onClose} 
+            className="p-1.5 hover:bg-white/80 rounded-xl transition-all hover:scale-110"
+          >
             <X className="w-5 h-5 text-slate-600" />
           </button>
         </div>
-        <div className="p-4 space-y-3">{children}</div>
+        <div className="p-5 space-y-4">{children}</div>
       </div>
     </div>
   );
@@ -135,11 +141,11 @@ const SortIcon = ({
   columnKey: string;
 }) => {
   if (sortConfig?.key !== columnKey)
-    return <ArrowUpDown className="w-3 h-3 text-slate-700 opacity-60" />;
+    return <ArrowUpDown className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-600 transition-colors" />;
   return sortConfig.direction === "asc" ? (
-    <ArrowUp className="w-3 h-3 text-emerald-700" />
+    <ArrowUp className="w-3.5 h-3.5 text-indigo-600" />
   ) : (
-    <ArrowDown className="w-3 h-3 text-emerald-700" />
+    <ArrowDown className="w-3.5 h-3.5 text-indigo-600" />
   );
 };
 
@@ -206,7 +212,7 @@ export default function InstallmentsTab() {
   } | null>(null);
 
   const [condFormatModal, setCondFormatModal] = useState(false);
-  const [condFormatParams, setCondFormatParams] = useState({ text: "", color: "bg-yellow-100" });
+  const [condFormatParams, setCondFormatParams] = useState({ text: "", color: "bg-yellow-100/60" });
   const condFormatRules = (installmentConditionalRules2026 || []) as Array<{
     text: string;
     color: string;
@@ -286,7 +292,7 @@ export default function InstallmentsTab() {
       return term && searchableValues.some((value) => value.includes(term));
     });
 
-    return matchedRule?.color || "hover:bg-slate-50/80";
+    return matchedRule?.color || "hover:bg-indigo-50/30";
   };
 
   const addConditionalRule = () => {
@@ -295,7 +301,7 @@ export default function InstallmentsTab() {
       ...condFormatRules,
       { ...condFormatParams, text: condFormatParams.text.trim() },
     ]);
-    setCondFormatParams({ text: "", color: "bg-yellow-100" });
+    setCondFormatParams({ text: "", color: "bg-yellow-100/60" });
     toast.success("تمت إضافة قاعدة التنسيق");
   };
 
@@ -1137,8 +1143,8 @@ const exportToPDF = (year: number) => {
 
   const getStatusText = (rem: number) =>
     rem <= 0
-      ? { text: "له", color: "text-emerald-800", bg: "bg-emerald-50" }
-      : { text: "عليه", color: "text-rose-800", bg: "bg-rose-50" };
+      ? { text: "له", color: "text-emerald-700", bg: "bg-emerald-100/80" }
+      : { text: "عليه", color: "text-rose-700", bg: "bg-rose-100/80" };
 
     // تم تعديل هذه الدالة لتتوافق بشكل أفضل مع صيغة حفظ PDF واللغة العربية
   const generateAccountStatement = (row: any, year: number) => {
@@ -1309,20 +1315,23 @@ const exportToPDF = (year: number) => {
     {
       label: "إجمالي الرسوم التقديرية",
       value: fmt(totals2025.fees),
-      bgClass: "bg-slate-50",
+      bgClass: "bg-gradient-to-br from-slate-50 to-slate-100/50",
       borderClass: "border-slate-200",
+      icon: "💰",
     },
     {
       label: "إجمالي الأقساط المسددة",
       value: fmt(totals2025.paid),
-      bgClass: "bg-emerald-50",
+      bgClass: "bg-gradient-to-br from-emerald-50 to-emerald-100/50",
       borderClass: "border-emerald-200",
+      icon: "✅",
     },
     {
       label: "إجمالي المتبقي والأرشيف",
       value: fmt(totals2025.remaining),
-      bgClass: "bg-rose-50",
+      bgClass: "bg-gradient-to-br from-rose-50 to-rose-100/50",
       borderClass: "border-rose-200",
+      icon: "📋",
     },
   ];
 
@@ -1330,48 +1339,53 @@ const exportToPDF = (year: number) => {
     {
       label: "المدور (متبقي 2025)",
       value: fmt(totals2026.prevDue),
-      bgClass: "bg-amber-50",
+      bgClass: "bg-gradient-to-br from-amber-50 to-amber-100/50",
       borderClass: "border-amber-200",
+      icon: "🔄",
     },
     {
       label: "إجمالي مسدد 2026",
       value: fmt(totals2026.paid),
-      bgClass: "bg-emerald-50",
+      bgClass: "bg-gradient-to-br from-emerald-50 to-emerald-100/50",
       borderClass: "border-emerald-200",
+      icon: "💳",
     },
     {
       label: "صافي رصيد المتبقي",
       value: fmt(totals2026.remaining),
-      bgClass: "bg-rose-50",
+      bgClass: "bg-gradient-to-br from-rose-50 to-rose-100/50",
       borderClass: "border-rose-200",
+      icon: "📊",
     },
   ];
 
   return (
-    <div className="w-full space-y-4 sm:space-y-6 p-0" dir="rtl">
+    <div className="w-full space-y-6 p-0" dir="rtl">
       {/* ========== واجهة جدول 2025 ========== */}
-      <div className="w-full bg-gradient-to-b from-teal-50 to-white shadow border border-teal-200 rounded-xl overflow-hidden">
-        <div className="bg-gradient-to-l from-teal-600 to-teal-700 px-3 sm:px-6 py-3 sm:py-4 flex justify-between items-center flex-wrap gap-2">
+      <div className="w-full bg-white/80 backdrop-blur-sm shadow-xl border border-indigo-100 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
+        <div className="bg-gradient-to-l from-indigo-600 via-indigo-700 to-indigo-800 px-4 sm:px-6 py-4 sm:py-5 flex justify-between items-center flex-wrap gap-3">
           <div>
-            <h2 className="text-sm sm:text-lg font-bold text-white">
-              📊 أقساط ومستندات العام 2025
+            <h2 className="text-sm sm:text-lg font-bold text-white flex items-center gap-2">
+              <span className="bg-white/20 p-1.5 rounded-lg">📊</span>
+              أقساط ومستندات العام 2025
             </h2>
-            <p className="text-xs text-teal-100">يشمل جميع الدفعات لعامي 2024 و 2025</p>
+            <p className="text-xs text-indigo-200/80 mt-0.5">يشمل جميع الدفعات لعامي 2024 و 2025</p>
           </div>
           <div className="flex gap-2 flex-wrap items-center">
             <div className="relative">
-              <Search className="w-4 h-4 absolute right-2.5 top-2 text-teal-500" />
+              <Search className="w-4 h-4 absolute right-3 top-2.5 text-indigo-400" />
               <input
                 type="text"
-                placeholder="بحث (الاسم، الدفعة، المساق)..."
+                placeholder="بحث..."
                 value={search2025}
                 onChange={(e) => setSearch2025(e.target.value)}
-                className="pl-3 pr-8 py-1.5 rounded-lg text-xs border border-teal-300 outline-none focus:ring-2 focus:ring-teal-300 w-48 text-slate-800 shadow-sm"
+                className="pl-3 pr-9 py-2 rounded-xl text-xs border-0 bg-white/90 backdrop-blur-sm outline-none focus:ring-2 focus:ring-indigo-300 w-44 text-slate-800 shadow-md focus:shadow-lg transition-all"
               />
             </div>
 
-            <label className="px-3 py-1.5 bg-white text-teal-700 rounded-lg text-xs font-bold cursor-pointer hover:bg-teal-50 shadow">
-              📥 استيراد الملف{" "}
+            <label className="px-3 py-2 bg-white/90 text-indigo-700 rounded-xl text-xs font-bold cursor-pointer hover:bg-white shadow-md transition-all flex items-center gap-1.5">
+              <FileSpreadsheet className="w-3.5 h-3.5" />
+              استيراد
               <input
                 type="file"
                 accept=".xlsx,.xls"
@@ -1380,16 +1394,16 @@ const exportToPDF = (year: number) => {
               />
             </label>
 
-            <div className="flex gap-1">
+            <div className="flex gap-1.5">
               <button
                 onClick={() => exportToExcel(2025)}
-                className="px-3 py-1.5 bg-green-100 text-green-700 rounded-lg text-xs font-bold shadow hover:bg-green-200 transition-colors flex items-center gap-1"
+                className="px-3 py-2 bg-emerald-100/90 text-emerald-700 rounded-xl text-xs font-bold shadow-md hover:bg-emerald-200 transition-all flex items-center gap-1.5 hover:scale-105"
               >
                 <FileSpreadsheet className="w-3.5 h-3.5" /> Excel
               </button>
               <button
                 onClick={() => exportToPDF(2025)}
-                className="px-3 py-1.5 bg-red-100 text-red-700 rounded-lg text-xs font-bold shadow hover:bg-red-200 transition-colors flex items-center gap-1"
+                className="px-3 py-2 bg-rose-100/90 text-rose-700 rounded-xl text-xs font-bold shadow-md hover:bg-rose-200 transition-all flex items-center gap-1.5 hover:scale-105"
               >
                 <FileText className="w-3.5 h-3.5" /> الأقساط/تفصيلي
               </button>
@@ -1415,83 +1429,86 @@ const exportToPDF = (year: number) => {
         </div>
 
         {importError && (
-          <div className="bg-red-50 border-b border-red-200 p-3 flex gap-2">
-            <AlertCircle className="w-5 h-5 text-red-600" />
-            <p className="text-sm text-red-700">{importError}</p>
+          <div className="bg-rose-50/80 border-b border-rose-200 p-3 flex gap-2 backdrop-blur-sm">
+            <AlertCircle className="w-5 h-5 text-rose-600" />
+            <p className="text-sm text-rose-700">{importError}</p>
           </div>
         )}
 
-        <div className="p-3 sm:p-4">
+        <div className="p-4 sm:p-5">
           <StatsGrid stats={stats2025} columns={3} />
-          <div className="overflow-auto max-h-[65vh] rounded-lg border border-slate-200 shadow-sm relative">
+          <div className="overflow-auto max-h-[65vh] rounded-xl border border-slate-200/80 shadow-lg relative">
             <table className="w-full text-xs sm:text-sm">
-              <thead className="bg-gradient-to-b from-yellow-300 via-amber-400 to-yellow-600 font-bold border-b-2 border-amber-700 text-black sticky top-0 z-20 shadow-md">
+              <thead className="bg-gradient-to-b from-indigo-100 via-indigo-200 to-indigo-300 font-bold border-b-2 border-indigo-400 text-indigo-900 sticky top-0 z-20 shadow-md">
                 <tr>
-                  <th className="p-2 text-center whitespace-nowrap">#</th>
+                  <th className="p-2.5 text-center whitespace-nowrap">#</th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2.5 text-center whitespace-nowrap cursor-pointer hover:bg-indigo-400/30 transition-colors group"
                     onClick={() => handleSort2025("name")}
                   >
-                    <div className="flex items-center justify-center gap-1">
+                    <div className="flex items-center justify-center gap-1.5">
                       اسم المتدرب <SortIcon sortConfig={sortConfig2025} columnKey="name" />
                     </div>
                   </th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2.5 text-center whitespace-nowrap cursor-pointer hover:bg-indigo-400/30 transition-colors group"
                     onClick={() => handleSort2025("batch")}
                   >
-                    <div className="flex items-center justify-center gap-1">
+                    <div className="flex items-center justify-center gap-1.5">
                       الدفعة <SortIcon sortConfig={sortConfig2025} columnKey="batch" />
                     </div>
                   </th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2.5 text-center whitespace-nowrap cursor-pointer hover:bg-indigo-400/30 transition-colors group"
                     onClick={() => handleSort2025("specialty")}
                   >
-                    <div className="flex items-center justify-center gap-1">
+                    <div className="flex items-center justify-center gap-1.5">
                       المساق <SortIcon sortConfig={sortConfig2025} columnKey="specialty" />
                     </div>
                   </th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2.5 text-center whitespace-nowrap cursor-pointer hover:bg-indigo-400/30 transition-colors group"
                     onClick={() => handleSort2025("fees")}
                   >
-                    <div className="flex items-center justify-center gap-1">
+                    <div className="flex items-center justify-center gap-1.5">
                       الرسوم <SortIcon sortConfig={sortConfig2025} columnKey="fees" />
                     </div>
                   </th>
                   {MONTHS_2025.map((m) => (
                     <th
                       key={m}
-                      className="p-1 text-center text-[11px] border-l border-amber-700/40 whitespace-nowrap"
+                      className="p-1.5 text-center text-[10px] sm:text-[11px] border-l border-indigo-400/30 whitespace-nowrap"
                     >
                       {m}
                     </th>
                   ))}
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2.5 text-center whitespace-nowrap cursor-pointer hover:bg-indigo-400/30 transition-colors group"
                     onClick={() => handleSort2025("totalPaid")}
                   >
-                    <div className="flex items-center justify-center gap-1">
+                    <div className="flex items-center justify-center gap-1.5">
                       المسدد <SortIcon sortConfig={sortConfig2025} columnKey="totalPaid" />
                     </div>
                   </th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2.5 text-center whitespace-nowrap cursor-pointer hover:bg-indigo-400/30 transition-colors group"
                     onClick={() => handleSort2025("remaining")}
                   >
-                    <div className="flex items-center justify-center gap-1">
+                    <div className="flex items-center justify-center gap-1.5">
                       المتبقي <SortIcon sortConfig={sortConfig2025} columnKey="remaining" />
                     </div>
                   </th>
-                  <th className="p-2 text-center whitespace-nowrap">إجراءات</th>
+                  <th className="p-2.5 text-center whitespace-nowrap">إجراءات</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredRows2025.length === 0 ? (
                   <tr>
-                    <td colSpan={8 + MONTHS_2025.length} className="p-6 text-center text-slate-400">
-                      لا توجد بيانات (يرجى التأكد من استيراد الملف أو تعديل البحث)
+                    <td colSpan={8 + MONTHS_2025.length} className="p-8 text-center text-slate-400">
+                      <div className="flex flex-col items-center gap-2">
+                        <Search className="w-8 h-8 text-slate-300" />
+                        <span>لا توجد بيانات</span>
+                      </div>
                     </td>
                   </tr>
                 ) : (
@@ -1503,21 +1520,21 @@ const exportToPDF = (year: number) => {
                       return (
                         <tr
                           key={i}
-                          className="border-t border-slate-200 hover:bg-slate-50/80 transition-colors"
+                          className="border-t border-slate-100 hover:bg-indigo-50/50 transition-all duration-150 even:bg-slate-50/50"
                         >
-                          <td className="p-2 text-center text-black whitespace-nowrap">
+                          <td className="p-2.5 text-center text-slate-500 whitespace-nowrap">
                             {i + 1}
                           </td>
-                          <td className="p-2 text-center font-semibold text-black whitespace-nowrap text-[11px] sm:text-xs bg-teal-50/70">
+                          <td className="p-2.5 text-center font-semibold text-indigo-900 whitespace-nowrap text-[11px] sm:text-xs bg-indigo-50/60">
                             {r.name}
                           </td>
-                          <td className="p-2 text-center text-black whitespace-nowrap text-[11px] sm:text-xs bg-cyan-50/70">
+                          <td className="p-2.5 text-center text-slate-700 whitespace-nowrap text-[11px] sm:text-xs bg-cyan-50/60">
                             {r.batch || "—"}
                           </td>
-                          <td className="p-2 text-center text-black whitespace-nowrap text-[11px] sm:text-xs bg-sky-50/70">
+                          <td className="p-2.5 text-center text-slate-700 whitespace-nowrap text-[11px] sm:text-xs bg-sky-50/60">
                             {r.specialty || "—"}
                           </td>
-                          <td className="p-2 text-center font-mono font-semibold text-black whitespace-nowrap text-[11px] sm:text-xs bg-blue-50/70">
+                          <td className="p-2.5 text-center font-mono font-semibold text-indigo-700 whitespace-nowrap text-[11px] sm:text-xs bg-blue-50/60">
                             {fmt(r.fees)}
                           </td>
                           {MONTHS_2025.map((m) => {
@@ -1525,10 +1542,10 @@ const exportToPDF = (year: number) => {
                             return (
                               <td
                                 key={m}
-                                className="p-1 text-center bg-slate-50/50 border-l border-slate-200 whitespace-nowrap"
+                                className="p-1.5 text-center bg-white/40 border-l border-slate-100 whitespace-nowrap"
                               >
                                 {paid > 0 ? (
-                                  <span className="text-black font-bold font-mono">
+                                  <span className="text-emerald-700 font-bold font-mono">
                                     {fmt(paid)}
                                   </span>
                                 ) : (
@@ -1537,63 +1554,65 @@ const exportToPDF = (year: number) => {
                               </td>
                             );
                           })}
-                          <td className="p-2 text-center font-mono text-black font-bold bg-emerald-50/30 whitespace-nowrap">
+                          <td className="p-2.5 text-center font-mono text-emerald-700 font-bold bg-emerald-50/40 whitespace-nowrap">
                             {fmt(r.totalPaid)}
                           </td>
-                          <td className="p-2 text-center font-mono text-black font-bold bg-rose-50/30 whitespace-nowrap">
+                          <td className="p-2.5 text-center font-mono text-rose-700 font-bold bg-rose-50/40 whitespace-nowrap">
                             {fmt(r.remaining)}
                           </td>
-                          <td className="p-2 text-center whitespace-nowrap flex justify-center gap-1">
-                            <button
-                              onClick={() => {
-                                setEditRowData(r);
-                                setEditRowModal({ year: 2025, row: r, index: originalIndex });
-                              }}
-                              className="p-1 bg-amber-50 text-amber-600 rounded border border-amber-200 hover:bg-amber-500 hover:text-white transition-colors"
-                              title="تعديل الصف"
-                            >
-                              <Edit className="w-3.5 h-3.5" />
-                            </button>
-                            <button
-                              onClick={() => printStatement(r, 2025)}
-                              className="p-1 bg-blue-50 text-blue-600 rounded border border-blue-200 hover:bg-blue-500 hover:text-white transition-colors"
-                              title="طباعة الكشف"
-                            >
-                              <Printer className="w-3.5 h-3.5" />
-                            </button>
-                                <button
-                                  onClick={() => handleExportPdf(r, 2025)}
-                                  className="p-1 bg-emerald-50 text-emerald-600 rounded border border-emerald-200 hover:bg-emerald-500 hover:text-white transition-colors"
-                                  title="تنزيل PDF (متوافق مع شاومي)"
-                                >
-                                  <FileText className="w-3.5 h-3.5" />
-                                </button>
+                          <td className="p-2.5 text-center whitespace-nowrap">
+                            <div className="flex justify-center gap-1.5">
+                              <button
+                                onClick={() => {
+                                  setEditRowData(r);
+                                  setEditRowModal({ year: 2025, row: r, index: originalIndex });
+                                }}
+                                className="p-1.5 bg-amber-50/80 text-amber-600 rounded-lg border border-amber-200/50 hover:bg-amber-500 hover:text-white transition-all hover:scale-110"
+                                title="تعديل الصف"
+                              >
+                                <Edit className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                onClick={() => printStatement(r, 2025)}
+                                className="p-1.5 bg-blue-50/80 text-blue-600 rounded-lg border border-blue-200/50 hover:bg-blue-500 hover:text-white transition-all hover:scale-110"
+                                title="طباعة الكشف"
+                              >
+                                <Printer className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                onClick={() => handleExportPdf(r, 2025)}
+                                className="p-1.5 bg-emerald-50/80 text-emerald-600 rounded-lg border border-emerald-200/50 hover:bg-emerald-500 hover:text-white transition-all hover:scale-110"
+                                title="تنزيل PDF"
+                              >
+                                <FileText className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       );
                     })}
-                    <tr className="border-t-2 border-black bg-amber-100 font-extrabold">
-                      <td className="p-2 text-center text-black whitespace-nowrap" colSpan={4}>
+                    <tr className="border-t-2 border-indigo-600 bg-gradient-to-r from-amber-200 via-amber-300 to-amber-400 font-extrabold">
+                      <td className="p-2.5 text-center text-indigo-900 whitespace-nowrap" colSpan={4}>
                         الإجماليات
                       </td>
-                      <td className="p-2 text-center font-mono text-black whitespace-nowrap">
+                      <td className="p-2.5 text-center font-mono text-indigo-900 whitespace-nowrap">
                         {fmt(totals2025.fees)}
                       </td>
                       {MONTHS_2025.map((m) => (
                         <td
                           key={m}
-                          className="p-1 text-center font-mono text-black border-l border-slate-200 whitespace-nowrap"
+                          className="p-1.5 text-center font-mono text-indigo-900 border-l border-indigo-400/30 whitespace-nowrap"
                         >
                           {totals2025.months[m] > 0 ? fmt(totals2025.months[m]) : "—"}
                         </td>
                       ))}
-                      <td className="p-2 text-center font-mono text-black whitespace-nowrap">
+                      <td className="p-2.5 text-center font-mono text-indigo-900 whitespace-nowrap">
                         {fmt(totals2025.paid)}
                       </td>
-                      <td className="p-2 text-center font-mono text-black whitespace-nowrap">
+                      <td className="p-2.5 text-center font-mono text-indigo-900 whitespace-nowrap">
                         {fmt(totals2025.remaining)}
                       </td>
-                      <td className="p-2 text-center whitespace-nowrap"></td>
+                      <td className="p-2.5 text-center whitespace-nowrap"></td>
                     </tr>
                   </>
                 )}
@@ -1604,20 +1623,21 @@ const exportToPDF = (year: number) => {
       </div>
 
       {/* ========== واجهة جدول 2026 ========== */}
-      <div className="w-full bg-gradient-to-b from-purple-50 to-white shadow border border-purple-200 rounded-xl overflow-hidden">
-        <div className="bg-gradient-to-l from-purple-600 to-purple-700 px-3 sm:px-6 py-3 sm:py-4 flex justify-between items-center flex-wrap gap-2">
+      <div className="w-full bg-white/80 backdrop-blur-sm shadow-xl border border-purple-100 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
+        <div className="bg-gradient-to-l from-purple-600 via-purple-700 to-purple-800 px-4 sm:px-6 py-4 sm:py-5 flex justify-between items-center flex-wrap gap-3">
           <div>
-            <h2 className="text-sm sm:text-lg font-bold text-white">
-              📊 سجل أقساط العام الحالي 2026
+            <h2 className="text-sm sm:text-lg font-bold text-white flex items-center gap-2">
+              <span className="bg-white/20 p-1.5 rounded-lg">📈</span>
+              سجل أقساط العام الحالي 2026
             </h2>
-            <p className="text-xs text-purple-100">بيانات المسدد والرصيد المدور لعام 2026</p>
+            <p className="text-xs text-purple-200/80 mt-0.5">بيانات المسدد والرصيد المدور لعام 2026</p>
           </div>
           <div className="flex gap-2 flex-wrap items-center">
             <button
               onClick={() => setCondFormatModal(true)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold shadow transition-colors flex items-center gap-1 ${
+              className={`px-3 py-2 rounded-xl text-xs font-bold shadow-md transition-all flex items-center gap-1.5 ${
                 condFormatRules.length
-                  ? "bg-yellow-400 text-yellow-900 animate-pulse"
+                  ? "bg-gradient-to-r from-yellow-400 to-amber-400 text-amber-900 animate-pulse"
                   : "bg-white/20 text-white hover:bg-white/30"
               }`}
               title="تلوين الصفوف حسب نص معين"
@@ -1627,38 +1647,39 @@ const exportToPDF = (year: number) => {
             </button>
 
             <div className="relative">
-              <Search className="w-4 h-4 absolute right-2.5 top-2 text-purple-500" />
+              <Search className="w-4 h-4 absolute right-3 top-2.5 text-purple-400" />
               <input
                 type="text"
-                placeholder="بحث (الاسم، الدفعة، المساق)..."
+                placeholder="بحث..."
                 value={search2026}
                 onChange={(e) => setSearch2026(e.target.value)}
-                className="pl-3 pr-8 py-1.5 rounded-lg text-xs border border-purple-300 outline-none focus:ring-2 focus:ring-purple-300 w-48 text-slate-800 shadow-sm"
+                className="pl-3 pr-9 py-2 rounded-xl text-xs border-0 bg-white/90 backdrop-blur-sm outline-none focus:ring-2 focus:ring-purple-300 w-44 text-slate-800 shadow-md focus:shadow-lg transition-all"
               />
             </div>
 
             <button
               onClick={() => setNewRowModal2026(true)}
-              className="px-3 py-1.5 bg-blue-100 text-blue-800 rounded-lg text-xs font-bold shadow hover:bg-blue-200 transition-colors flex items-center gap-1"
+              className="px-3 py-2 bg-blue-100/90 text-blue-700 rounded-xl text-xs font-bold shadow-md hover:bg-blue-200 transition-all flex items-center gap-1.5 hover:scale-105"
             >
-              <Plus className="w-3 h-3" /> طالب جديد
+              <Plus className="w-3.5 h-3.5" /> طالب جديد
             </button>
 
             <button
               onClick={() => setNewColModal(true)}
-              className="px-3 py-1.5 bg-amber-100 text-amber-800 rounded-lg text-xs font-bold shadow hover:bg-amber-200 transition-colors flex items-center gap-1"
+              className="px-3 py-2 bg-amber-100/90 text-amber-700 rounded-xl text-xs font-bold shadow-md hover:bg-amber-200 transition-all flex items-center gap-1.5 hover:scale-105"
             >
-              <Plus className="w-3 h-3" /> عمود جديد
+              <Plus className="w-3.5 h-3.5" /> عمود جديد
             </button>
 
             <button
               onClick={() => setNewPaymentModal(true)}
-              className="px-3 py-1.5 bg-purple-100 text-purple-800 rounded-lg text-xs font-bold shadow hover:bg-purple-200 transition-colors"
+              className="px-3 py-2 bg-purple-100/90 text-purple-700 rounded-xl text-xs font-bold shadow-md hover:bg-purple-200 transition-all hover:scale-105"
             >
               ➕ إضافة قسط
             </button>
-            <label className="px-3 py-1.5 bg-white text-purple-700 rounded-lg text-xs font-bold cursor-pointer shadow hover:bg-purple-50 transition-colors">
-              📥 استيراد{" "}
+            <label className="px-3 py-2 bg-white/90 text-purple-700 rounded-xl text-xs font-bold cursor-pointer shadow-md hover:bg-white transition-all flex items-center gap-1.5">
+              <FileSpreadsheet className="w-3.5 h-3.5" />
+              استيراد
               <input
                 type="file"
                 accept=".xlsx,.xls"
@@ -1667,16 +1688,16 @@ const exportToPDF = (year: number) => {
               />
             </label>
 
-            <div className="flex gap-1">
+            <div className="flex gap-1.5">
               <button
                 onClick={() => exportToExcel(2026)}
-                className="px-3 py-1.5 bg-green-100 text-green-700 rounded-lg text-xs font-bold shadow hover:bg-green-200 transition-colors flex items-center gap-1"
+                className="px-3 py-2 bg-emerald-100/90 text-emerald-700 rounded-xl text-xs font-bold shadow-md hover:bg-emerald-200 transition-all flex items-center gap-1.5 hover:scale-105"
               >
                 <FileSpreadsheet className="w-3.5 h-3.5" /> Excel
               </button>
               <button
                 onClick={() => exportToPDF(2026)}
-                className="px-3 py-1.5 bg-red-100 text-red-700 rounded-lg text-xs font-bold shadow hover:bg-red-200 transition-colors flex items-center gap-1"
+                className="px-3 py-2 bg-rose-100/90 text-rose-700 rounded-xl text-xs font-bold shadow-md hover:bg-rose-200 transition-all flex items-center gap-1.5 hover:scale-105"
               >
                 <FileText className="w-3.5 h-3.5" /> الأقساط/تفصيلي
               </button>
@@ -1710,57 +1731,57 @@ const exportToPDF = (year: number) => {
           </div>
         </div>
 
-        <div className="p-3 sm:p-4">
+        <div className="p-4 sm:p-5">
           <StatsGrid stats={stats2026} columns={3} />
-          <div className="overflow-auto max-h-[65vh] rounded-lg border border-slate-200 shadow-sm relative">
+          <div className="overflow-auto max-h-[65vh] rounded-xl border border-slate-200/80 shadow-lg relative">
             <table className="w-full text-xs sm:text-sm">
-              <thead className="bg-gradient-to-b from-yellow-300 via-amber-400 to-yellow-600 font-bold border-b-2 border-amber-700 text-black sticky top-0 z-20 shadow-md">
+              <thead className="bg-gradient-to-b from-purple-100 via-purple-200 to-purple-300 font-bold border-b-2 border-purple-400 text-purple-900 sticky top-0 z-20 shadow-md">
                 <tr>
-                  <th className="p-2 text-center whitespace-nowrap">#</th>
+                  <th className="p-2.5 text-center whitespace-nowrap">#</th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2.5 text-center whitespace-nowrap cursor-pointer hover:bg-purple-400/30 transition-colors group"
                     onClick={() => handleSort2026("name")}
                   >
-                    <div className="flex items-center justify-center gap-1">
+                    <div className="flex items-center justify-center gap-1.5">
                       اسم المتدرب <SortIcon sortConfig={sortConfig2026} columnKey="name" />
                     </div>
                   </th>
                   <th
-                    className="p-2 text-center cursor-pointer hover:brightness-95"
+                    className="p-2.5 text-center cursor-pointer hover:bg-purple-400/30 transition-colors group"
                     onClick={() => handleSort2026("batch")}
                   >
-                    <div className="flex items-center justify-center gap-1">
+                    <div className="flex items-center justify-center gap-1.5">
                       دفعة <SortIcon sortConfig={sortConfig2026} columnKey="batch" />
                     </div>
                   </th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2.5 text-center whitespace-nowrap cursor-pointer hover:bg-purple-400/30 transition-colors group"
                     onClick={() => handleSort2026("specialty")}
                   >
-                    <div className="flex items-center justify-center gap-1">
+                    <div className="flex items-center justify-center gap-1.5">
                       المساق <SortIcon sortConfig={sortConfig2026} columnKey="specialty" />
                     </div>
                   </th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95 border-x border-amber-700/40"
+                    className="p-2.5 text-center whitespace-nowrap cursor-pointer hover:bg-purple-400/30 transition-colors group border-x border-purple-400/30"
                     onClick={() => handleSort2026("prevDue")}
                   >
-                    <div className="flex items-center justify-center gap-1">
+                    <div className="flex items-center justify-center gap-1.5">
                       المتبقي من 2025 <SortIcon sortConfig={sortConfig2026} columnKey="prevDue" />
                     </div>
                   </th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2.5 text-center whitespace-nowrap cursor-pointer hover:bg-purple-400/30 transition-colors group"
                     onClick={() => handleSort2026("fees")}
                   >
-                    <div className="flex items-center justify-center gap-1">
+                    <div className="flex items-center justify-center gap-1.5">
                       الرسوم <SortIcon sortConfig={sortConfig2026} columnKey="fees" />
                     </div>
                   </th>
                   {MONTHS_2026.map((m) => (
                     <th
                       key={m}
-                      className="p-1 text-center text-xs border-l border-amber-700/40 whitespace-nowrap"
+                      className="p-1.5 text-center text-[10px] sm:text-[11px] border-l border-purple-400/30 whitespace-nowrap"
                     >
                       {m.trim()}
                     </th>
@@ -1768,7 +1789,7 @@ const exportToPDF = (year: number) => {
                   {extraCols2026.map((col) => (
                     <th
                       key={col.name}
-                      className="p-2 text-center text-xs border-l border-amber-700/40 whitespace-nowrap text-black"
+                      className="p-2.5 text-center text-[10px] sm:text-[11px] border-l border-purple-400/30 whitespace-nowrap text-purple-900"
                     >
                       <div className="flex items-center justify-center gap-1">
                         {col.name}
@@ -1782,7 +1803,7 @@ const exportToPDF = (year: number) => {
                               formula: col.formula || "",
                             })
                           }
-                          className="p-0.5 bg-black/10 hover:bg-black/20 rounded transition-all"
+                          className="p-0.5 bg-purple-200/50 hover:bg-purple-300/70 rounded-lg transition-all"
                           title="تعديل أو حذف العمود"
                         >
                           <Settings className="w-3 h-3" />
@@ -1791,23 +1812,23 @@ const exportToPDF = (year: number) => {
                     </th>
                   ))}
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2.5 text-center whitespace-nowrap cursor-pointer hover:bg-purple-400/30 transition-colors group"
                     onClick={() => handleSort2026("totalPaid")}
                   >
-                    <div className="flex items-center justify-center gap-1">
+                    <div className="flex items-center justify-center gap-1.5">
                       مسدد 2026 <SortIcon sortConfig={sortConfig2026} columnKey="totalPaid" />
                     </div>
                   </th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2.5 text-center whitespace-nowrap cursor-pointer hover:bg-purple-400/30 transition-colors group"
                     onClick={() => handleSort2026("remaining")}
                   >
-                    <div className="flex items-center justify-center gap-1">
+                    <div className="flex items-center justify-center gap-1.5">
                       الرصيد المتبقي <SortIcon sortConfig={sortConfig2026} columnKey="remaining" />
                     </div>
                   </th>
-                  <th className="p-2 text-center whitespace-nowrap">حالة</th>
-                  <th className="p-2 text-center whitespace-nowrap">إجراءات</th>
+                  <th className="p-2.5 text-center whitespace-nowrap">حالة</th>
+                  <th className="p-2.5 text-center whitespace-nowrap">إجراءات</th>
                 </tr>
               </thead>
               <tbody>
@@ -1815,9 +1836,12 @@ const exportToPDF = (year: number) => {
                   <tr>
                     <td
                       colSpan={10 + MONTHS_2026.length + extraCols2026.length}
-                      className="p-6 text-center text-slate-400"
+                      className="p-8 text-center text-slate-400"
                     >
-                      لا توجد بيانات (يرجى التأكد من استيراد الملف أو تعديل البحث)
+                      <div className="flex flex-col items-center gap-2">
+                        <Search className="w-8 h-8 text-slate-300" />
+                        <span>لا توجد بيانات</span>
+                      </div>
                     </td>
                   </tr>
                 ) : (
@@ -1832,58 +1856,58 @@ const exportToPDF = (year: number) => {
                       return (
                         <tr
                           key={i}
-                          className={`border-t border-slate-200 transition-colors ${rowBgClass}`}
+                          className={`border-t border-slate-100 transition-all duration-150 even:bg-slate-50/50 ${rowBgClass}`}
                         >
-                          <td className="p-2 text-center text-black whitespace-nowrap">
+                          <td className="p-2.5 text-center text-slate-500 whitespace-nowrap">
                             {i + 1}
                           </td>
-                          <td className="p-1 text-center font-bold text-black whitespace-nowrap bg-fuchsia-50/70">
+                          <td className="p-1.5 text-center font-bold text-purple-900 whitespace-nowrap bg-fuchsia-50/60">
                             <input
                               value={r.name || ""}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "name", e.target.value)
                               }
-                              className="w-full min-w-32 bg-transparent text-center text-black text-[11px] sm:text-xs outline-none focus:bg-white focus:ring-1 ring-purple-300 rounded px-1 py-1"
+                              className="w-full min-w-32 bg-transparent text-center text-purple-900 text-[11px] sm:text-xs outline-none focus:bg-white/80 focus:ring-2 ring-purple-300 rounded-lg px-2 py-1.5 transition-all"
                             />
                           </td>
-                          <td className="p-1 text-center text-black whitespace-nowrap bg-violet-50/70">
+                          <td className="p-1.5 text-center text-slate-700 whitespace-nowrap bg-violet-50/60">
                             <input
                               value={r.batch || ""}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "batch", e.target.value)
                               }
-                              className="w-full min-w-20 bg-transparent text-center text-black text-[11px] sm:text-xs outline-none focus:bg-white focus:ring-1 ring-purple-300 rounded px-1 py-1"
+                              className="w-full min-w-20 bg-transparent text-center text-slate-700 text-[11px] sm:text-xs outline-none focus:bg-white/80 focus:ring-2 ring-purple-300 rounded-lg px-2 py-1.5 transition-all"
                               placeholder="—"
                             />
                           </td>
-                          <td className="p-1 text-center text-black whitespace-nowrap bg-purple-50/70">
+                          <td className="p-1.5 text-center text-slate-700 whitespace-nowrap bg-purple-50/60">
                             <input
                               value={r.specialty || ""}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "specialty", e.target.value)
                               }
-                              className="w-full min-w-24 bg-transparent text-center text-black text-[11px] sm:text-xs outline-none focus:bg-white focus:ring-1 ring-purple-300 rounded px-1 py-1"
+                              className="w-full min-w-24 bg-transparent text-center text-slate-700 text-[11px] sm:text-xs outline-none focus:bg-white/80 focus:ring-2 ring-purple-300 rounded-lg px-2 py-1.5 transition-all"
                               placeholder="—"
                             />
                           </td>
-                          <td className="p-1 text-center font-mono text-black font-bold bg-amber-50/20 whitespace-nowrap">
+                          <td className="p-1.5 text-center font-mono text-amber-700 font-bold bg-amber-50/40 whitespace-nowrap">
                             <input
                               type="number"
                               value={r.prevDue || 0}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "prevDue", e.target.value)
                               }
-                              className="w-full min-w-20 bg-transparent text-center text-black text-[11px] sm:text-xs outline-none focus:bg-white focus:ring-1 ring-purple-300 rounded px-1 py-1"
+                              className="w-full min-w-20 bg-transparent text-center text-amber-700 text-[11px] sm:text-xs outline-none focus:bg-white/80 focus:ring-2 ring-purple-300 rounded-lg px-2 py-1.5 transition-all"
                             />
                           </td>
-                          <td className="p-1 text-center font-mono text-black font-bold whitespace-nowrap bg-indigo-50/70">
+                          <td className="p-1.5 text-center font-mono text-indigo-700 font-bold whitespace-nowrap bg-indigo-50/60">
                             <input
                               type="number"
                               value={r.fees || 0}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "fees", e.target.value)
                               }
-                              className="w-full min-w-20 bg-transparent text-center text-black text-[11px] sm:text-xs outline-none focus:bg-white focus:ring-1 ring-purple-300 rounded px-1 py-1"
+                              className="w-full min-w-20 bg-transparent text-center text-indigo-700 text-[11px] sm:text-xs outline-none focus:bg-white/80 focus:ring-2 ring-purple-300 rounded-lg px-2 py-1.5 transition-all"
                             />
                           </td>
                           {MONTHS_2026.map((m) => {
@@ -1892,7 +1916,7 @@ const exportToPDF = (year: number) => {
                             return (
                               <td
                                 key={m}
-                                className="p-1 text-center relative bg-white/40 border-l border-slate-200 hover:bg-slate-100 cursor-pointer group transition-colors whitespace-nowrap"
+                                className="p-1.5 text-center relative bg-white/40 border-l border-slate-100 hover:bg-purple-50/60 cursor-pointer group transition-all whitespace-nowrap"
                                 onMouseEnter={() => setHoveredCell(cellId)}
                                 onMouseLeave={() => setHoveredCell(null)}
                               >
@@ -1902,7 +1926,7 @@ const exportToPDF = (year: number) => {
                                   onChange={(e) =>
                                     update2026PaymentValue(originalIndex, m, e.target.value)
                                   }
-                                  className="w-20 bg-transparent text-center font-mono text-black font-bold outline-none focus:bg-white focus:ring-1 ring-emerald-300 rounded px-1 py-1"
+                                  className="w-20 bg-transparent text-center font-mono text-purple-700 font-bold outline-none focus:bg-white/80 focus:ring-2 ring-emerald-300 rounded-lg px-2 py-1.5 transition-all"
                                   placeholder="—"
                                   min="0"
                                   step="0.01"
@@ -1912,10 +1936,10 @@ const exportToPDF = (year: number) => {
                           })}
 
                           {extraCols2026.map((col) => (
-                            <td key={col.name} className="p-1 border-l border-slate-200">
+                            <td key={col.name} className="p-1.5 border-l border-slate-100">
                               {col.type === "select" ? (
                                 <select
-                                  className="w-full text-center text-black bg-transparent outline-none focus:bg-white focus:ring-1 ring-blue-300 rounded px-1 py-1 text-xs"
+                                  className="w-full text-center text-slate-700 bg-transparent outline-none focus:bg-white/80 focus:ring-2 ring-blue-300 rounded-lg px-2 py-1.5 text-xs transition-all"
                                   value={r.customData?.[col.name] || ""}
                                   onChange={(e) =>
                                     updateCustomColValue(originalIndex, col.name, e.target.value)
@@ -1929,13 +1953,13 @@ const exportToPDF = (year: number) => {
                                   ))}
                                 </select>
                               ) : col.type === "formula" ? (
-                                <div className="text-center font-mono text-xs font-bold text-black bg-white/50 py-1.5 rounded">
+                                <div className="text-center font-mono text-xs font-bold text-purple-700 bg-white/50 py-2 rounded-lg">
                                   {evaluateFormula(col.formula || "", r)}
                                 </div>
                               ) : (
                                 <input
                                   type="text"
-                                  className="w-full text-center text-black bg-transparent outline-none focus:bg-white focus:ring-1 ring-blue-300 rounded px-1 py-1 text-xs"
+                                  className="w-full text-center text-slate-700 bg-transparent outline-none focus:bg-white/80 focus:ring-2 ring-blue-300 rounded-lg px-2 py-1.5 text-xs transition-all"
                                   value={r.customData?.[col.name] || ""}
                                   onChange={(e) =>
                                     updateCustomColValue(originalIndex, col.name, e.target.value)
@@ -1946,70 +1970,72 @@ const exportToPDF = (year: number) => {
                             </td>
                           ))}
 
-                          <td className="p-2 text-center font-mono text-black font-bold bg-emerald-50/30 whitespace-nowrap">
+                          <td className="p-2.5 text-center font-mono text-emerald-700 font-bold bg-emerald-50/40 whitespace-nowrap">
                             {fmt(r.totalPaid)}
                           </td>
-                          <td className="p-2 text-center font-mono text-black font-bold bg-rose-50/30 whitespace-nowrap">
+                          <td className="p-2.5 text-center font-mono text-rose-700 font-bold bg-rose-50/40 whitespace-nowrap">
                             {fmt(r.remaining)}
                           </td>
-                          <td className="p-2 text-center whitespace-nowrap">
+                          <td className="p-2.5 text-center whitespace-nowrap">
                             <span
-                              className={`px-1.5 py-0.5 rounded-full text-xs font-bold ${status.bg} ${status.color}`}
+                              className={`px-2.5 py-1 rounded-full text-xs font-bold ${status.bg} ${status.color} backdrop-blur-sm border border-white/20 shadow-sm`}
                             >
                               {status.text}
                             </span>
                           </td>
-                          <td className="p-2 text-center whitespace-nowrap flex justify-center gap-1">
-                            <button
-                              onClick={() => {
-                                setEditRowData(r);
-                                setEditRowModal({ year: 2026, row: r, index: originalIndex });
-                              }}
-                              className="p-1 bg-amber-50 text-amber-600 rounded border border-amber-200 hover:bg-amber-500 hover:text-white transition-colors"
-                              title="تعديل الصف"
-                            >
-                              <Edit className="w-3.5 h-3.5" />
-                            </button>
-                            <button
-                              onClick={() => printStatement(r, 2026)}
-                              className="p-1 bg-blue-50 text-blue-600 rounded border border-blue-200 hover:bg-blue-500 hover:text-white transition-colors"
-                              title="طباعة الكشف"
-                            >
-                              <Printer className="w-3.5 h-3.5" />
-                            </button>
-                            <button
-                              onClick={() => handleExportPdf(r, 2026)}
-                              className="p-1 bg-emerald-50 text-emerald-600 rounded border border-emerald-200 hover:bg-emerald-500 hover:text-white transition-colors"
-                              title="تنزيل PDF (متوافق مع شاومي)"
-                            >
-                              <FileText className="w-3.5 h-3.5" />
-                            </button>
-                            <button
-                              onClick={() => deleteRow2026(originalIndex, r.name)}
-                              className="p-1 bg-red-50 text-red-600 rounded border border-red-200 hover:bg-red-500 hover:text-white transition-colors"
-                              title="حذف الصف"
-                            >
-                              <Trash className="w-3.5 h-3.5" />
-                            </button>
+                          <td className="p-2.5 text-center whitespace-nowrap">
+                            <div className="flex justify-center gap-1.5">
+                              <button
+                                onClick={() => {
+                                  setEditRowData(r);
+                                  setEditRowModal({ year: 2026, row: r, index: originalIndex });
+                                }}
+                                className="p-1.5 bg-amber-50/80 text-amber-600 rounded-lg border border-amber-200/50 hover:bg-amber-500 hover:text-white transition-all hover:scale-110"
+                                title="تعديل الصف"
+                              >
+                                <Edit className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                onClick={() => printStatement(r, 2026)}
+                                className="p-1.5 bg-blue-50/80 text-blue-600 rounded-lg border border-blue-200/50 hover:bg-blue-500 hover:text-white transition-all hover:scale-110"
+                                title="طباعة الكشف"
+                              >
+                                <Printer className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                onClick={() => handleExportPdf(r, 2026)}
+                                className="p-1.5 bg-emerald-50/80 text-emerald-600 rounded-lg border border-emerald-200/50 hover:bg-emerald-500 hover:text-white transition-all hover:scale-110"
+                                title="تنزيل PDF"
+                              >
+                                <FileText className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                onClick={() => deleteRow2026(originalIndex, r.name)}
+                                className="p-1.5 bg-rose-50/80 text-rose-600 rounded-lg border border-rose-200/50 hover:bg-rose-500 hover:text-white transition-all hover:scale-110"
+                                title="حذف الصف"
+                              >
+                                <Trash className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       );
                     })}
-                    <tr className="border-t-2 border-black bg-amber-100 font-extrabold">
-                      <td className="p-2 text-center text-black whitespace-nowrap" colSpan={4}>
+                    <tr className="border-t-2 border-purple-600 bg-gradient-to-r from-amber-200 via-amber-300 to-amber-400 font-extrabold">
+                      <td className="p-2.5 text-center text-purple-900 whitespace-nowrap" colSpan={4}>
                         الإجماليات
                       </td>
-                      <td className="p-2 text-center font-mono text-black whitespace-nowrap">
+                      <td className="p-2.5 text-center font-mono text-purple-900 whitespace-nowrap">
                         {fmt(totals2026.prevDue)}
                       </td>
-                      <td className="p-2 text-center font-mono text-black whitespace-nowrap">
+                      <td className="p-2.5 text-center font-mono text-purple-900 whitespace-nowrap">
                         {fmt(totals2026.fees)}
                       </td>
 
                       {MONTHS_2026.map((m) => (
                         <td
                           key={m}
-                          className="p-1 text-center font-mono text-black border-l border-slate-200 whitespace-nowrap"
+                          className="p-1.5 text-center font-mono text-purple-900 border-l border-purple-400/30 whitespace-nowrap"
                         >
                           {totals2026.months[m] > 0 ? fmt(totals2026.months[m]) : "—"}
                         </td>
@@ -2017,19 +2043,19 @@ const exportToPDF = (year: number) => {
                       {extraCols2026.map((col) => (
                         <td
                           key={col.name}
-                          className="p-1 text-center text-black border-l border-slate-200 whitespace-nowrap"
+                          className="p-1.5 text-center text-purple-900 border-l border-purple-400/30 whitespace-nowrap"
                         >
                           —
                         </td>
                       ))}
-                      <td className="p-2 text-center font-mono text-black whitespace-nowrap">
+                      <td className="p-2.5 text-center font-mono text-purple-900 whitespace-nowrap">
                         {fmt(totals2026.paid)}
                       </td>
-                      <td className="p-2 text-center font-mono text-black whitespace-nowrap">
+                      <td className="p-2.5 text-center font-mono text-purple-900 whitespace-nowrap">
                         {fmt(totals2026.remaining)}
                       </td>
-                      <td className="p-2 text-center whitespace-nowrap"></td>
-                      <td className="p-2 text-center whitespace-nowrap"></td>
+                      <td className="p-2.5 text-center whitespace-nowrap"></td>
+                      <td className="p-2.5 text-center whitespace-nowrap"></td>
                     </tr>
                   </>
                 )}
@@ -2047,19 +2073,19 @@ const exportToPDF = (year: number) => {
         onClose={() => setCondFormatModal(false)}
       >
         <div className="space-y-4">
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-500 leading-relaxed">
             سيتم تلوين الصف بالكامل إذا كان يحتوي على النص الذي تدخله أدناه في أي عمود.
           </p>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
               النص المطلوب البحث عنه (الشرط)
             </label>
             <input
               type="text"
               value={condFormatParams.text}
               onChange={(e) => setCondFormatParams({ ...condFormatParams, text: e.target.value })}
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-purple-300 outline-none"
+              className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
               placeholder="مثال: معتمد, منسحب, مجاني..."
             />
           </div>
@@ -2068,21 +2094,21 @@ const exportToPDF = (year: number) => {
             <label className="block text-xs font-semibold text-slate-700 mb-2">
               اختر لون تمييز الصف
             </label>
-            <div className="flex gap-2">
+            <div className="flex gap-2.5">
               {[
-                { name: "أصفر", class: "bg-yellow-100 hover:bg-yellow-100" },
-                { name: "أخضر", class: "bg-green-100 hover:bg-green-100" },
-                { name: "أحمر", class: "bg-red-100 hover:bg-red-100" },
-                { name: "أزرق", class: "bg-blue-100 hover:bg-blue-100" },
-                { name: "بنفسجي", class: "bg-purple-100 hover:bg-purple-100" },
+                { name: "أصفر", class: "bg-yellow-100/80 hover:bg-yellow-100" },
+                { name: "أخضر", class: "bg-green-100/80 hover:bg-green-100" },
+                { name: "أحمر", class: "bg-red-100/80 hover:bg-red-100" },
+                { name: "أزرق", class: "bg-blue-100/80 hover:bg-blue-100" },
+                { name: "بنفسجي", class: "bg-purple-100/80 hover:bg-purple-100" },
               ].map((color) => (
                 <button
                   key={color.class}
                   onClick={() => setCondFormatParams({ ...condFormatParams, color: color.class })}
-                  className={`w-8 h-8 rounded-full border-2 ${
+                  className={`w-10 h-10 rounded-xl border-2 transition-all ${
                     condFormatParams.color === color.class
-                      ? "border-slate-800 scale-110"
-                      : "border-transparent"
+                      ? "border-indigo-600 scale-110 shadow-md"
+                      : "border-transparent hover:scale-105"
                   } ${color.class}`}
                   title={color.name}
                 />
@@ -2091,17 +2117,17 @@ const exportToPDF = (year: number) => {
           </div>
 
           {condFormatRules.length > 0 && (
-            <div className="space-y-2 border-t pt-3">
+            <div className="space-y-2 border-t border-slate-200 pt-3">
               <div className="text-xs font-bold text-slate-700">القواعد الحالية</div>
               {condFormatRules.map((rule, idx) => (
                 <div
                   key={`${rule.text}-${idx}`}
-                  className="flex items-center justify-between gap-2 bg-slate-50 border rounded-lg p-2"
+                  className="flex items-center justify-between gap-2 bg-slate-50/80 border border-slate-200 rounded-xl p-2.5 backdrop-blur-sm"
                 >
-                  <span className={`px-2 py-1 rounded text-xs ${rule.color}`}>{rule.text}</span>
+                  <span className={`px-3 py-1 rounded-lg text-xs ${rule.color}`}>{rule.text}</span>
                   <button
                     onClick={() => deleteConditionalRule(idx)}
-                    className="text-red-600 hover:text-red-800 text-xs font-bold"
+                    className="text-rose-600 hover:text-rose-800 text-xs font-bold transition-colors"
                   >
                     حذف
                   </button>
@@ -2110,27 +2136,27 @@ const exportToPDF = (year: number) => {
             </div>
           )}
 
-          <div className="flex justify-between items-center pt-3 border-t mt-4">
+          <div className="flex justify-between items-center pt-3 border-t border-slate-200 mt-4">
             <button
               onClick={() => {
-                setCondFormatParams({ text: "", color: "bg-yellow-100" });
+                setCondFormatParams({ text: "", color: "bg-yellow-100/60" });
                 setInstallmentConditionalRules2026([]);
                 setCondFormatModal(false);
               }}
-              className="px-4 py-2 bg-red-50 text-red-600 rounded-lg text-xs font-bold hover:bg-red-100"
+              className="px-4 py-2.5 bg-rose-50/80 text-rose-600 rounded-xl text-xs font-bold hover:bg-rose-100 transition-all"
             >
               إلغاء التنسيق تماماً
             </button>
             <div className="flex gap-2">
               <button
                 onClick={addConditionalRule}
-                className="px-4 py-2 bg-amber-500 text-white rounded-lg font-bold"
+                className="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-xl font-bold hover:scale-105 transition-all shadow-md"
               >
                 إضافة قاعدة
               </button>
               <button
                 onClick={() => setCondFormatModal(false)}
-                className="px-4 py-2 bg-purple-600 text-white rounded-lg font-bold"
+                className="px-4 py-2.5 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl font-bold hover:scale-105 transition-all shadow-md"
               >
                 إغلاق
               </button>
@@ -2145,24 +2171,24 @@ const exportToPDF = (year: number) => {
         onClose={() => setEditColModal(null)}
       >
         {editColModal && (
-          <form onSubmit={saveCustomColumnEdit} className="space-y-3">
+          <form onSubmit={saveCustomColumnEdit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">اسم العمود</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">اسم العمود</label>
               <input
                 type="text"
                 required
                 value={editColModal.name}
                 onChange={(e) => setEditColModal({ ...editColModal, name: e.target.value })}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">نوع العمود</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">نوع العمود</label>
               <select
                 value={editColModal.type}
                 onChange={(e: any) => setEditColModal({ ...editColModal, type: e.target.value })}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
               >
                 <option value="text">نص أو رقم حر (إدخال يدوي)</option>
                 <option value="select">قائمة منسدلة (خيارات محددة)</option>
@@ -2172,7 +2198,7 @@ const exportToPDF = (year: number) => {
 
             {editColModal.type === "select" && (
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                   الخيارات (افصل بينها بفاصلة)
                 </label>
                 <input
@@ -2180,7 +2206,7 @@ const exportToPDF = (year: number) => {
                   required
                   value={editColModal.options}
                   onChange={(e) => setEditColModal({ ...editColModal, options: e.target.value })}
-                  className="w-full p-2 border rounded-lg"
+                  className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
                   placeholder="مثال: معتمد, غير معتمد"
                 />
               </div>
@@ -2188,7 +2214,7 @@ const exportToPDF = (year: number) => {
 
             {editColModal.type === "formula" && (
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                   المعادلة (استخدم المتغيرات الإنجليزية)
                 </label>
                 <input
@@ -2196,17 +2222,17 @@ const exportToPDF = (year: number) => {
                   required
                   value={editColModal.formula}
                   onChange={(e) => setEditColModal({ ...editColModal, formula: e.target.value })}
-                  className="w-full p-2 border rounded-lg text-left"
+                  className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all text-left"
                   dir="ltr"
                 />
               </div>
             )}
 
-            <div className="flex justify-between items-center pt-3 border-t mt-4">
+            <div className="flex justify-between items-center pt-3 border-t border-slate-200 mt-4">
               <button
                 type="button"
                 onClick={() => deleteCustomColumn(editColModal.oldName)}
-                className="px-4 py-2 bg-red-100 text-red-700 rounded-lg flex items-center gap-1 font-bold"
+                className="px-4 py-2.5 bg-rose-50/80 text-rose-600 rounded-xl flex items-center gap-1.5 font-bold hover:bg-rose-100 transition-all"
               >
                 <Trash className="w-4 h-4" /> حذف العمود
               </button>
@@ -2214,13 +2240,13 @@ const exportToPDF = (year: number) => {
                 <button
                   type="button"
                   onClick={() => setEditColModal(null)}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg"
+                  className="px-4 py-2.5 bg-slate-100/80 text-slate-700 rounded-xl hover:bg-slate-200 transition-all"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg font-bold"
+                  className="px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold hover:scale-105 transition-all shadow-md"
                 >
                   حفظ التعديل
                 </button>
@@ -2235,74 +2261,74 @@ const exportToPDF = (year: number) => {
         isOpen={!!editRowModal}
         onClose={() => setEditRowModal(null)}
       >
-        <form onSubmit={saveRowEdit} className="space-y-3">
+        <form onSubmit={saveRowEdit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">اسم المتدرب</label>
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">اسم المتدرب</label>
             <input
               type="text"
               required
               value={editRowData?.name || ""}
               onChange={(e) => setEditRowData({ ...editRowData, name: e.target.value })}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
             />
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">الدفعة</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">الدفعة</label>
               <input
                 type="text"
                 value={editRowData?.batch || ""}
                 onChange={(e) => setEditRowData({ ...editRowData, batch: e.target.value })}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">المساق</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">المساق</label>
               <input
                 type="text"
                 value={editRowData?.specialty || ""}
                 onChange={(e) => setEditRowData({ ...editRowData, specialty: e.target.value })}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
               />
             </div>
           </div>
           {editRowModal?.year === 2025 && (
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                 الرسوم الكلية
               </label>
               <input
                 type="number"
                 value={editRowData?.fees || 0}
                 onChange={(e) => setEditRowData({ ...editRowData, fees: e.target.value })}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
               />
             </div>
           )}
           {editRowModal?.year === 2026 && (
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                 المتبقي من 2025 (المدور)
               </label>
               <input
                 type="number"
                 value={editRowData?.prevDue || 0}
                 onChange={(e) => setEditRowData({ ...editRowData, prevDue: e.target.value })}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
               />
             </div>
           )}
-          <div className="flex justify-end gap-2 pt-3 border-t mt-4">
+          <div className="flex justify-end gap-3 pt-3 border-t border-slate-200 mt-4">
             <button
               type="button"
               onClick={() => setEditRowModal(null)}
-              className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg"
+              className="px-4 py-2.5 bg-slate-100/80 text-slate-700 rounded-xl hover:bg-slate-200 transition-all"
             >
               إلغاء
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-amber-600 text-white rounded-lg font-bold"
+              className="px-4 py-2.5 bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-xl font-bold hover:scale-105 transition-all shadow-md"
             >
               حفظ التعديلات
             </button>
@@ -2315,26 +2341,26 @@ const exportToPDF = (year: number) => {
         isOpen={newColModal}
         onClose={() => setNewColModal(false)}
       >
-        <form onSubmit={addCustomColumn} className="space-y-3">
+        <form onSubmit={addCustomColumn} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">اسم العمود</label>
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">اسم العمود</label>
             <input
               type="text"
               required
               value={newColName}
               onChange={(e) => setNewColName(e.target.value)}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
               autoFocus
               placeholder="مثل: حالة الاعتماد، الخصم..."
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">نوع العمود</label>
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">نوع العمود</label>
             <select
               value={newColType}
               onChange={(e: any) => setNewColType(e.target.value)}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
             >
               <option value="text">نص أو رقم حر (إدخال يدوي)</option>
               <option value="select">قائمة منسدلة (خيارات محددة)</option>
@@ -2344,7 +2370,7 @@ const exportToPDF = (year: number) => {
 
           {newColType === "select" && (
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                 الخيارات (افصل بينها بفاصلة)
               </label>
               <input
@@ -2352,7 +2378,7 @@ const exportToPDF = (year: number) => {
                 required
                 value={newColOptions}
                 onChange={(e) => setNewColOptions(e.target.value)}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
                 placeholder="مثال: معتمد, غير معتمد, قيد المراجعة"
               />
             </div>
@@ -2360,7 +2386,7 @@ const exportToPDF = (year: number) => {
 
           {newColType === "formula" && (
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                 المعادلة (استخدم المتغيرات الإنجليزية)
               </label>
               <input
@@ -2368,24 +2394,24 @@ const exportToPDF = (year: number) => {
                 required
                 value={newColFormula}
                 onChange={(e) => setNewColFormula(e.target.value)}
-                className="w-full p-2 border rounded-lg text-left"
+                className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all text-left"
                 dir="ltr"
                 placeholder="مثال: fees - totalPaid"
               />
             </div>
           )}
 
-          <div className="flex justify-end gap-2 pt-3 border-t mt-4">
+          <div className="flex justify-end gap-3 pt-3 border-t border-slate-200 mt-4">
             <button
               type="button"
               onClick={() => setNewColModal(false)}
-              className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg"
+              className="px-4 py-2.5 bg-slate-100/80 text-slate-700 rounded-xl hover:bg-slate-200 transition-all"
             >
               إلغاء
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-amber-600 text-white rounded-lg font-bold"
+              className="px-4 py-2.5 bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-xl font-bold hover:scale-105 transition-all shadow-md"
             >
               إضافة العمود
             </button>
@@ -2398,42 +2424,42 @@ const exportToPDF = (year: number) => {
         isOpen={newRowModal2026}
         onClose={() => setNewRowModal2026(false)}
       >
-        <form onSubmit={addNewRow2026} className="space-y-3">
+        <form onSubmit={addNewRow2026} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">اسم المتدرب *</label>
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">اسم المتدرب *</label>
             <input
               type="text"
               required
               value={newRowData2026.name}
               onChange={(e) => setNewRowData2026({ ...newRowData2026, name: e.target.value })}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
             />
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">الدفعة</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">الدفعة</label>
               <input
                 type="text"
                 value={newRowData2026.batch}
                 onChange={(e) => setNewRowData2026({ ...newRowData2026, batch: e.target.value })}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">المساق</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">المساق</label>
               <input
                 type="text"
                 value={newRowData2026.specialty}
                 onChange={(e) =>
                   setNewRowData2026({ ...newRowData2026, specialty: e.target.value })
                 }
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                 الرسوم الكلية
               </label>
               <input
@@ -2442,11 +2468,11 @@ const exportToPDF = (year: number) => {
                 onChange={(e) =>
                   setNewRowData2026({ ...newRowData2026, fees: Number(e.target.value) })
                 }
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                 المتبقي من 2025
               </label>
               <input
@@ -2455,19 +2481,22 @@ const exportToPDF = (year: number) => {
                 onChange={(e) =>
                   setNewRowData2026({ ...newRowData2026, prevDue: Number(e.target.value) })
                 }
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
               />
             </div>
           </div>
-          <div className="flex justify-end gap-2 pt-3 border-t mt-4">
+          <div className="flex justify-end gap-3 pt-3 border-t border-slate-200 mt-4">
             <button
               type="button"
               onClick={() => setNewRowModal2026(false)}
-              className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg"
+              className="px-4 py-2.5 bg-slate-100/80 text-slate-700 rounded-xl hover:bg-slate-200 transition-all"
             >
               إلغاء
             </button>
-            <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg font-bold">
+            <button
+              type="submit"
+              className="px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold hover:scale-105 transition-all shadow-md"
+            >
               إضافة المتدرب
             </button>
           </div>
@@ -2479,9 +2508,9 @@ const exportToPDF = (year: number) => {
         isOpen={newPaymentModal}
         onClose={() => setNewPaymentModal(false)}
       >
-        <form onSubmit={addNewPayment} className="space-y-3">
+        <form onSubmit={addNewPayment} className="space-y-4">
           <div className="relative">
-            <label className="block text-xs font-semibold text-slate-700 mb-1">اسم المتدرب *</label>
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">اسم المتدرب *</label>
             <input
               type="text"
               required
@@ -2489,10 +2518,10 @@ const exportToPDF = (year: number) => {
               value={newStudentName}
               onChange={(e) => handleNameChange(e.target.value)}
               onFocus={() => newStudentName.length > 0 && setShowSuggestions(true)}
-              className="w-full p-2 border rounded-lg outline-none"
+              className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
             />
             {showSuggestions && nameSuggestions.length > 0 && (
-              <div className="absolute top-full right-0 left-0 bg-white border rounded-b-lg shadow-xl z-50 max-h-32 overflow-y-auto">
+              <div className="absolute top-full right-0 left-0 bg-white/95 backdrop-blur-sm border border-slate-200 rounded-xl shadow-xl z-50 max-h-40 overflow-y-auto mt-1">
                 {nameSuggestions.map((n, idx) => (
                   <div
                     key={idx}
@@ -2500,7 +2529,7 @@ const exportToPDF = (year: number) => {
                       setNewStudentName(n);
                       setShowSuggestions(false);
                     }}
-                    className="p-2 text-sm hover:bg-purple-50 cursor-pointer text-slate-800"
+                    className="p-2.5 text-sm hover:bg-purple-100/60 cursor-pointer text-slate-800 transition-colors"
                   >
                     {n}
                   </div>
@@ -2509,7 +2538,7 @@ const exportToPDF = (year: number) => {
             )}
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
               المبلغ المالي *
             </label>
             <input
@@ -2517,20 +2546,20 @@ const exportToPDF = (year: number) => {
               required
               value={newStudentAmount}
               onChange={(e) => setNewStudentAmount(e.target.value)}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
               min="0"
               step="0.01"
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
               الشهر المستهدف *
             </label>
             <select
               required
               value={newStudentMonth}
               onChange={(e) => setNewStudentMonth(e.target.value)}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-purple-300 outline-none transition-all"
             >
               <option value="">-- اختر الشهر --</option>
               {MONTHS_2026.map((m) => (
@@ -2540,17 +2569,17 @@ const exportToPDF = (year: number) => {
               ))}
             </select>
           </div>
-          <div className="flex justify-end gap-2 pt-3 border-t mt-4">
+          <div className="flex justify-end gap-3 pt-3 border-t border-slate-200 mt-4">
             <button
               type="button"
               onClick={() => setNewPaymentModal(false)}
-              className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg"
+              className="px-4 py-2.5 bg-slate-100/80 text-slate-700 rounded-xl hover:bg-slate-200 transition-all"
             >
               إلغاء
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg font-bold"
+              className="px-4 py-2.5 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl font-bold hover:scale-105 transition-all shadow-md"
             >
               حفظ
             </button>
@@ -2565,17 +2594,19 @@ const exportToPDF = (year: number) => {
       >
         {paymentModal && (
           <>
-            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-slate-800">
-              <p>
-                <b>المتدرب:</b> {paymentModal.row.name}
+            <div className="bg-gradient-to-br from-emerald-50 to-emerald-100/50 border border-emerald-200 rounded-xl p-4 text-slate-800">
+              <p className="flex items-center gap-2">
+                <span className="font-bold">المتدرب:</span>
+                <span className="text-emerald-800">{paymentModal.row.name}</span>
               </p>
-              <p>
-                <b>شهر:</b> {paymentModal.month}
+              <p className="flex items-center gap-2 mt-1">
+                <span className="font-bold">شهر:</span>
+                <span className="text-amber-700">{paymentModal.month}</span>
               </p>
             </div>
-            <form onSubmit={addPayment} className="space-y-3 mt-3">
+            <form onSubmit={addPayment} className="space-y-4 mt-2">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                   المبلغ المدفوع *
                 </label>
                 <input
@@ -2583,23 +2614,23 @@ const exportToPDF = (year: number) => {
                   required
                   value={payAmount}
                   onChange={(e) => setPayAmount(e.target.value)}
-                  className="w-full p-2 border rounded-lg"
+                  className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-300 outline-none transition-all"
                   autoFocus
                   min="0"
                   step="0.01"
                 />
               </div>
-              <div className="flex justify-end gap-2 pt-3 border-t mt-4">
+              <div className="flex justify-end gap-3 pt-3 border-t border-slate-200 mt-4">
                 <button
                   type="button"
                   onClick={() => setPaymentModal(null)}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg"
+                  className="px-4 py-2.5 bg-slate-100/80 text-slate-700 rounded-xl hover:bg-slate-200 transition-all"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-emerald-600 text-white rounded-lg font-bold"
+                  className="px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl font-bold hover:scale-105 transition-all shadow-md"
                 >
                   تأكيد التوريد
                 </button>
@@ -2616,13 +2647,13 @@ const exportToPDF = (year: number) => {
       >
         {editPaymentModal && (
           <>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-slate-800">
-              <p className="font-bold">{editPaymentModal.row.name}</p>
-              <p>بيان شهر: {editPaymentModal.month}</p>
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200 rounded-xl p-4 text-slate-800">
+              <p className="font-bold text-blue-800">{editPaymentModal.row.name}</p>
+              <p className="text-sm text-slate-600 mt-1">بيان شهر: {editPaymentModal.month}</p>
             </div>
-            <form onSubmit={editPayment} className="space-y-3 mt-3">
+            <form onSubmit={editPayment} className="space-y-4 mt-2">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                   المبلغ المعدل *
                 </label>
                 <input
@@ -2630,29 +2661,29 @@ const exportToPDF = (year: number) => {
                   required
                   value={editAmount}
                   onChange={(e) => setEditAmount(e.target.value)}
-                  className="w-full p-2 border rounded-lg"
+                  className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-300 outline-none transition-all"
                   min="0"
                   step="0.01"
                 />
               </div>
-              <div className="flex justify-end gap-2 pt-3 border-t mt-4">
+              <div className="flex justify-end gap-3 pt-3 border-t border-slate-200 mt-4">
                 <button
                   type="button"
                   onClick={() => setEditPaymentModal(null)}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg"
+                  className="px-4 py-2.5 bg-slate-100/80 text-slate-700 rounded-xl hover:bg-slate-200 transition-all"
                 >
                   إلغاء
                 </button>
                 <button
                   type="button"
                   onClick={() => deletePayment(editPaymentModal.row, editPaymentModal.month)}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg"
+                  className="px-4 py-2.5 bg-rose-50/80 text-rose-600 rounded-xl hover:bg-rose-100 transition-all flex items-center gap-1.5"
                 >
-                  🗑️ حذف القسط
+                  <Trash className="w-4 h-4" /> حذف القسط
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg font-bold"
+                  className="px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold hover:scale-105 transition-all shadow-md"
                 >
                   حفظ التعديل
                 </button>
