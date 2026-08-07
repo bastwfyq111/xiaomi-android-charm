@@ -1,20 +1,46 @@
 {
-  "name": "قيود اليومية - المجلس اليمني",
-  "short_name": "قيود اليومية",
+  "name": "النظام المالي - المجلس اليمني للاختصاصات الطبية",
+  "short_name": "النظام المالي",
   "description": "إدارة قيود اليومية وحوافظ التوريد - المجلس اليمني للاختصاصات الطبية",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#f5fbfa",
-  "theme_color": "#0f766e",
+  "background_color": "#f5f2ea",
+  "theme_color": "#0e2b40",
   "lang": "ar",
   "dir": "rtl",
-  "display_override": ["standalone", "minimal-ui"],
-  "categories": ["finance", "productivity"],
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "categories": [
+    "finance",
+    "productivity"
+  ],
   "icons": [
-    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
-    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
