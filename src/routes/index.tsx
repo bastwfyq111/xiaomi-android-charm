@@ -138,11 +138,11 @@ function Index() {
   return (
     // الحاوية الرئيسية مع مساحة سفلية لشريط التنقل
     <div
-      className="w-full min-h-screen bg-[#f5f2ea] font-tajawal selection:bg-[#1a3a52]/20 text-sm sm:text-base pb-[72px]"
+      className="w-full min-h-[100dvh] overflow-x-hidden bg-[#f5f2ea] font-tajawal selection:bg-[#1a3a52]/20 text-sm sm:text-base pb-[calc(76px+env(safe-area-inset-bottom))]"
       dir="rtl"
     >
       {/* قسم الهيدر العلوي — هوية كحلية مؤسسية بلمسة ختم برونزي */}
-      <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 bg-gradient-to-l from-[#0e2b40] via-[#153a54] to-[#0e2b40] p-3 sm:p-5 border-b-2 border-[#c99a4e]/60 shadow-md text-white overflow-hidden">
+      <div className="safe-pad-top safe-pad-x relative grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 bg-gradient-to-l from-[#0e2b40] via-[#153a54] to-[#0e2b40] p-3 sm:p-5 lg:flex lg:justify-between border-b-2 border-[#c99a4e]/60 shadow-md text-white overflow-hidden">
         {/* خيط دفتري زخرفي أعلى الهيدر */}
         <div className="absolute inset-x-0 top-0 h-[3px] bg-[repeating-linear-gradient(90deg,#c99a4e_0_10px,transparent_10px_20px)] opacity-70" />
 
