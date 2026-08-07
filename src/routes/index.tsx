@@ -147,21 +147,22 @@ function Index() {
         <div className="absolute inset-x-0 top-0 h-[3px] bg-[repeating-linear-gradient(90deg,#c99a4e_0_10px,transparent_10px_20px)] opacity-70" />
 
         {/* الجزء الأيمن: شعار الختم، العنوان، والوصف */}
-        <div className="flex items-center gap-3">
-          <div className="relative p-2.5 bg-white/[0.06] border border-[#c99a4e]/40 rounded-full text-[#e3c281] hidden sm:flex items-center justify-center">
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="relative shrink-0 p-2.5 bg-white/[0.06] border border-[#c99a4e]/40 rounded-full text-[#e3c281] hidden sm:flex items-center justify-center">
             <FileSpreadsheet className="w-5 h-5" />
           </div>
-          <div className="ledger-seam self-stretch hidden sm:block rounded-full" />
-          <div className="flex flex-col gap-1">
-            <h1 className="text-base sm:text-lg md:text-2xl font-bold tracking-wide font-cairo text-white">
+          <div className="ledger-seam self-stretch hidden sm:block rounded-full shrink-0" />
+          <div className="flex min-w-0 flex-col gap-1">
+            <h1 className="truncate text-[15px] sm:text-lg md:text-2xl font-bold tracking-wide font-cairo text-white">
               المجلس اليمني للاختصاصات الطبية
             </h1>
-            <p className="text-[10px] sm:text-xs md:text-sm text-[#cfe0ec] font-medium flex items-center gap-1.5">
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#e3c281]"></span>
-              نظام الإدارة المالية وحوافظ التوريد — صعدة، 2026م
+            <p className="truncate text-[10px] sm:text-xs md:text-sm text-[#cfe0ec] font-medium flex items-center gap-1.5">
+              <span className="inline-block w-1.5 h-1.5 shrink-0 rounded-full bg-[#e3c281]"></span>
+              <span className="truncate">نظام الإدارة المالية وحوافظ التوريد — صعدة، 2026م</span>
             </p>
           </div>
         </div>
+
 
         {/* الجزء الأيسر: زر التثبيت PWA */}
         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 px-1 sm:px-0">
