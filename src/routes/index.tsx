@@ -204,7 +204,7 @@ function Index() {
                   key={tab.value}
                   onClick={() => setActiveTab(tab.value)}
                   className={`
-                    flex flex-col items-center justify-center gap-1 px-3 py-2 flex-1 min-w-[64px] transition-all duration-200
+                    flex flex-col items-center justify-center gap-1 px-3 py-2 flex-1 min-w-[64px] min-h-[52px] transition-all duration-200 active:bg-white/10
                     ${isActive
                       ? "text-[#e3c281] bg-white/[0.07] border-t-2 border-[#c99a4e]"
                       : "text-white/55 hover:text-white hover:bg-white/5 border-t-2 border-transparent"
