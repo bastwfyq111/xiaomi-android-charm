@@ -1,37 +1,60 @@
 // تسجيل service worker للعمل بدون إنترنت + التقاط حدث التثبيت
+// وحدة التسجيل الوحيدة في المشروع: لا تُسجّل أبداً في وضع التطوير أو داخل معاينة Lovable.
 let deferredPrompt: any = null;
 const listeners = new Set<(canInstall: boolean) => void>();
+
+const SW_URL = "/sw.js";
+
+function isBlockedContext() {
+  if (!import.meta.env.PROD) return true;
+
+  try {
+    if (window.self !== window.top) return true;
+  } catch {
+    return true;
+  }
+
+  const host = window.location.hostname;
+  const blockedHost =
+    host.startsWith("id-preview--") ||
+    host.startsWith("preview--") ||
+    host === "lovableproject.com" ||
+    host.endsWith(".lovableproject.com") ||
+    host === "lovableproject-dev.com" ||
+    host.endsWith(".lovableproject-dev.com") ||
+    host === "beta.lovable.dev" ||
+    host.endsWith(".beta.lovable.dev");
+
+  const swOff = new URLSearchParams(window.location.search).get("sw") === "off";
+
+  return blockedHost || swOff;
+}
+
+async function unregisterAppServiceWorkers() {
+  if (!("serviceWorker" in navigator)) return;
+  try {
+    const registrations = await navigator.serviceWorker.getRegistrations();
+    await Promise.allSettled(
+      registrations
+        .filter((registration) => {
+          const scriptUrl =
+            registration.active?.scriptURL ||
+            registration.waiting?.scriptURL ||
+            registration.installing?.scriptURL ||
+            "";
+          return scriptUrl.endsWith(SW_URL);
+        })
+        .map((registration) => registration.unregister()),
+    );
+  } catch {
+    // تجاهل: لا يؤثر على عمل التطبيق
+  }
+}
 
 export function initPwa() {
   if (typeof window === "undefined") return;
 
-  const inIframe = (() => {
-    try {
-      return window.self !== window.top;
-    } catch {
-      return true;
-    }
-  })();
-  const host = window.location.hostname;
-  const isPreview =
-    host.includes("id-preview--") ||
-    host.includes("lovableproject.com") ||
-    (host.includes("lovable.app") && host.includes("preview"));
-
-  if (inIframe || isPreview) {
-    // إلغاء أي SW سابق في وضع المعاينة
-    navigator.serviceWorker?.getRegistrations().then((rs) => rs.forEach((r) => r.unregister()));
-    return;
-  }
-
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker
-        .register("/sw.js")
-        .catch((e) => console.warn("SW register failed", e));
-    });
-  }
-
+  // متابعة إمكانية التثبيت تعمل في كل السياقات
   window.addEventListener("beforeinstallprompt", (e: any) => {
     e.preventDefault();
     deferredPrompt = e;
@@ -42,6 +65,19 @@ export function initPwa() {
     deferredPrompt = null;
     listeners.forEach((l) => l(false));
   });
+
+  if (isBlockedContext()) {
+    void unregisterAppServiceWorkers();
+    return;
+  }
+
+  void import("virtual:pwa-register")
+    .then(({ registerSW }) => {
+      registerSW({ immediate: true });
+    })
+    .catch(() => {
+      // العمل بدون إنترنت غير متاح — التطبيق يعمل بشكل طبيعي
+    });
 }
 
 export function canInstall() {
