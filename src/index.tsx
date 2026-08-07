@@ -38,13 +38,12 @@ export const Route = createFileRoute("/")({
         content:
           "تطبيق إدارة قيود اليومية وحوافظ التوريد للمجلس اليمني للاختصاصات الطبية - يعمل بدون إنترنت",
       },
-      { name: "theme-color", content: "#0e2b40" },
+      { name: "theme-color", content: "#10528e" },
     ],
     links: [
       { rel: "manifest", href: "/manifest.json" },
-      { rel: "icon", href: "/icon-192.png", type: "image/png" },
+      { rel: "icon", href: "/icon.svg" },
       { rel: "apple-touch-icon", href: "/icon-192.png" },
-
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       {
         rel: "stylesheet",
@@ -139,31 +138,30 @@ function Index() {
   return (
     // الحاوية الرئيسية مع مساحة سفلية لشريط التنقل
     <div
-      className="w-full min-h-[100dvh] overflow-x-hidden bg-[#f5f2ea] font-tajawal selection:bg-[#1a3a52]/20 text-sm sm:text-base pb-[calc(76px+env(safe-area-inset-bottom))]"
+      className="w-full min-h-screen bg-[#f5f2ea] font-tajawal selection:bg-[#1a3a52]/20 text-sm sm:text-base pb-[72px]"
       dir="rtl"
     >
       {/* قسم الهيدر العلوي — هوية كحلية مؤسسية بلمسة ختم برونزي */}
-      <div className="safe-pad-top safe-pad-x relative grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 bg-gradient-to-l from-[#0e2b40] via-[#153a54] to-[#0e2b40] p-3 sm:p-5 lg:flex lg:justify-between border-b-2 border-[#c99a4e]/60 shadow-md text-white overflow-hidden">
+      <div className="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 bg-gradient-to-l from-[#0e2b40] via-[#153a54] to-[#0e2b40] p-3 sm:p-5 border-b-2 border-[#c99a4e]/60 shadow-md text-white overflow-hidden">
         {/* خيط دفتري زخرفي أعلى الهيدر */}
         <div className="absolute inset-x-0 top-0 h-[3px] bg-[repeating-linear-gradient(90deg,#c99a4e_0_10px,transparent_10px_20px)] opacity-70" />
 
         {/* الجزء الأيمن: شعار الختم، العنوان، والوصف */}
-        <div className="flex min-w-0 items-center gap-3">
-          <div className="relative shrink-0 p-2.5 bg-white/[0.06] border border-[#c99a4e]/40 rounded-full text-[#e3c281] hidden sm:flex items-center justify-center">
+        <div className="flex items-center gap-3">
+          <div className="relative p-2.5 bg-white/[0.06] border border-[#c99a4e]/40 rounded-full text-[#e3c281] hidden sm:flex items-center justify-center">
             <FileSpreadsheet className="w-5 h-5" />
           </div>
-          <div className="ledger-seam self-stretch hidden sm:block rounded-full shrink-0" />
-          <div className="flex min-w-0 flex-col gap-1">
-            <h1 className="truncate text-[15px] sm:text-lg md:text-2xl font-bold tracking-wide font-cairo text-white">
+          <div className="ledger-seam self-stretch hidden sm:block rounded-full" />
+          <div className="flex flex-col gap-1">
+            <h1 className="text-base sm:text-lg md:text-2xl font-bold tracking-wide font-cairo text-white">
               المجلس اليمني للاختصاصات الطبية
             </h1>
-            <p className="truncate text-[10px] sm:text-xs md:text-sm text-[#cfe0ec] font-medium flex items-center gap-1.5">
-              <span className="inline-block w-1.5 h-1.5 shrink-0 rounded-full bg-[#e3c281]"></span>
-              <span className="truncate">نظام الإدارة المالية وحوافظ التوريد — صعدة، 2026م</span>
+            <p className="text-[10px] sm:text-xs md:text-sm text-[#cfe0ec] font-medium flex items-center gap-1.5">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#e3c281]"></span>
+              نظام الإدارة المالية وحوافظ التوريد — صعدة، 2026م
             </p>
           </div>
         </div>
-
 
         {/* الجزء الأيسر: زر التثبيت PWA */}
         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 px-1 sm:px-0">
@@ -206,7 +204,7 @@ function Index() {
                   key={tab.value}
                   onClick={() => setActiveTab(tab.value)}
                   className={`
-                    flex flex-col items-center justify-center gap-1 px-3 py-2 flex-1 min-w-[64px] min-h-[52px] transition-all duration-200 active:bg-white/10
+                    flex flex-col items-center justify-center gap-1 px-3 py-2 flex-1 min-w-[64px] transition-all duration-200
                     ${isActive
                       ? "text-[#e3c281] bg-white/[0.07] border-t-2 border-[#c99a4e]"
                       : "text-white/55 hover:text-white hover:bg-white/5 border-t-2 border-transparent"
