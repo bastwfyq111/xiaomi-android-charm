@@ -38,12 +38,13 @@ export const Route = createFileRoute("/")({
         content:
           "تطبيق إدارة قيود اليومية وحوافظ التوريد للمجلس اليمني للاختصاصات الطبية - يعمل بدون إنترنت",
       },
-      { name: "theme-color", content: "#10528e" },
+      { name: "theme-color", content: "#0e2b40" },
     ],
     links: [
       { rel: "manifest", href: "/manifest.json" },
-      { rel: "icon", href: "/icon.svg" },
+      { rel: "icon", href: "/icon-192.png", type: "image/png" },
       { rel: "apple-touch-icon", href: "/icon-192.png" },
+
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       {
         rel: "stylesheet",
