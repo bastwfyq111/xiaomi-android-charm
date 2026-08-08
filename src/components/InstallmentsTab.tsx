@@ -524,6 +524,24 @@ export default function InstallmentsTab() {
     }
   };
 
+  // خيارات الأعمدة المتاحة في نافذة إعدادات الطباعة
+  const printColumnOptions = (year: number) => {
+    const monthsList = year === 2025 ? MONTHS_2025 : MONTHS_2026;
+    const opts: { key: string; label: string }[] = [
+      { key: "batch", label: "الدفعة" },
+      { key: "specialty", label: "المساق" },
+    ];
+    if (year === 2026) opts.push({ key: "prevDue", label: "مدور 2025" });
+    opts.push({ key: "fees", label: "الرسوم" });
+    monthsList.forEach((m) => opts.push({ key: `month:${m}`, label: m.trim() }));
+    if (year === 2026)
+      extraCols2026.forEach((c) => opts.push({ key: `col:${c.name}`, label: c.name }));
+    opts.push({ key: "totalPaid", label: "إجمالي المسدد" });
+    opts.push({ key: "remaining", label: "الرصيد المتبقي" });
+    if (year === 2026) opts.push({ key: "status", label: "الحالة" });
+    return opts;
+  };
+
 
 const exportToPDF = (
   year: number,
