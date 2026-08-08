@@ -2719,6 +2719,14 @@ const exportToPDF = (
           </>
         )}
       </Modal>
+
+      <PrintSettingsModal
+        open={printSettingsYear !== null}
+        year={printSettingsYear ?? 2026}
+        columnOptions={printColumnOptions(printSettingsYear ?? 2026)}
+        onClose={() => setPrintSettingsYear(null)}
+        onPrint={(s) => exportToPDF(printSettingsYear ?? 2026, s)}
+      />
     </div>
   );
 }
