@@ -6,10 +6,8 @@ import { toast } from "sonner";
 import ImportButton from "./ImportButton";
 import { useTableControls, sortIndicator } from "@/hooks/useTableControls";
 import {
-  Printer,
   X,
   Plus,
-  Edit,
   Trash2,
   Search,
   Save,
@@ -72,7 +70,7 @@ const empty: Form = {
 };
 
 export default function HafizaTab() {
-  const { trainees, hafiza, addHafiza, deleteHafiza, addTrainee, updateHafiza, clearHafiza } = useStore();
+  const { trainees, hafiza, addHafiza, deleteHafiza, addTrainee, updateHafiza } = useStore();
   const [form, setForm] = useState<Form>(empty);
   const [nameQuery, setNameQuery] = useState("");
   const [showSugg, setShowSugg] = useState(false);
@@ -90,7 +88,7 @@ export default function HafizaTab() {
     clearFilters,
   } = useTableControls(
     hafiza,
-    COLS.map((c) => c.key),
+    COLS.map((c) => c.key)
   );
 
   const totalHafizaAmount = useMemo(() => {
@@ -122,11 +120,24 @@ export default function HafizaTab() {
       return;
     }
 
-    addHafiza({ ...form, hafizaAmount: amount, notifyAmount: notifyAmt });
+    // إصلاح الخطأ: كتابة الحقول بشكل صريح لضمان تحويل المبالغ إلى أرقام بشكل صحيح
+    addHafiza({
+      name: form.name,
+      batch: form.batch,
+      specialty: form.specialty,
+      date: form.date,
+      hafizaNo: form.hafizaNo,
+      description: form.description,
+      hafizaAmount: amount,
+      notifyDate: form.notifyDate,
+      notifyNo: form.notifyNo,
+      notifyAmount: notifyAmt,
+    });
 
     if (!trainees.find((t) => t.name === form.name)) {
       addTrainee({ name: form.name, batch: form.batch, specialty: form.specialty });
     }
+    
     toast.success("تم حفظ الحافظة وترحيل البيانات بنجاح");
     setForm(empty);
     setNameQuery("");
@@ -143,31 +154,34 @@ export default function HafizaTab() {
     toast.success(`تمت تسوية ونسخ المبالغ لـ (${filtered.length}) سجل بنجاح!`);
   };
 
-  const handleCellClick = (rowId: string, colKey: string, currentVal: any) => {
+  // إصلاح الخطأ: تعريف currentVal كـ unknown ثم تحويله بشكل آمن بدلاً من any
+  const handleCellClick = (rowId: string, colKey: string, currentVal: unknown) => {
     setActiveCell({ rowId, colKey });
     setCellValue(String(currentVal ?? ""));
   };
 
-  const handleCellSave = (row: any) => {
+  // إصلاح الخطأ: إزالة استخدام any من خلال تمرير نوع البيانات الصحيح
+  const handleCellSave = (row: Record<string, unknown> & { id: string }) => {
     if (!activeCell) return;
+    
     const { colKey, rowId } = activeCell;
-    let finalVal: any = cellValue;
+    let finalVal: string | number = cellValue;
+    
     if (colKey === "hafizaAmount" || colKey === "notifyAmount") {
       finalVal = Number(cellValue) || 0;
     }
+    
     updateHafiza(rowId, { ...row, [colKey]: finalVal });
     setActiveCell(null);
     toast.success("تم تحديث الخلية تلقائياً");
   };
 
   return (
-    {/* 1. تعديل الخلفية: استخدام bg-gradient-to-br لإضافة تدرج لوني مميز يجمع بين الأزرق والبنفسجي والوردي الفاتح */}
     <div className="w-full space-y-8 p-4 md:p-6 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 min-h-screen" dir="rtl">
       {/* ========== Header & Summary Stats ========== */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-            {/* 2. تلوين الأيقونات: استخدام ألوان مختلفة (هنا لون فوشيا) */}
             <Wallet className="w-8 h-8 text-fuchsia-600" />
             نظام إدارة الحوافظ
           </h1>
@@ -211,7 +225,6 @@ export default function HafizaTab() {
         </CardHeader>
         <CardContent className="p-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-            {/* إدخال الاسم مع الأيقونة الملونة */}
             <div className="relative col-span-1 md:col-span-2">
               <label className="text-xs font-bold text-slate-600 mb-2 block mr-1">اسم المتدرب الكامل *</label>
               <div className="relative">
@@ -243,7 +256,6 @@ export default function HafizaTab() {
               )}
             </div>
 
-            {/* 2. تخصيص ألوان الأيقونات في الحقول المختلفة لتكون متنوعة */}
             <Field label="الدفعة" icon={<Sparkles className="w-4 h-4 text-amber-500" />} v={form.batch} on={(v) => setForm({ ...form, batch: v })} />
             <Field label="التخصص الطبي" icon={<FileText className="w-4 h-4 text-emerald-500" />} v={form.specialty} on={(v) => setForm({ ...form, specialty: v })} />
             <Field label="التاريخ" type="date" icon={<Calendar className="w-4 h-4 text-rose-500" />} v={form.date} on={(v) => setForm({ ...form, date: v })} />
@@ -269,7 +281,6 @@ export default function HafizaTab() {
           </div>
 
           <div className="mt-8 flex gap-3 flex-wrap border-t border-slate-100 pt-6">
-            {/* 3. تصميم الأزرار الفقاعية (Bubble Buttons): حواف مستديرة بالكامل (rounded-full) مع تدرج لوني وظل ناعم */}
             <Button onClick={submit} className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white rounded-full px-6 h-11 font-bold shadow-lg shadow-indigo-200 transition-all hover:-translate-y-1 active:scale-95 border-none">
               <Save className="w-4 h-4 ml-2" /> حفظ الحافظة
             </Button>
@@ -296,7 +307,6 @@ export default function HafizaTab() {
             </Badge>
           </div>
           <div className="flex gap-2 w-full sm:w-auto">
-            {/* زر فقاعي آخر */}
             <Button variant="outline" size="sm" onClick={handleCopyAmountsToNotify} className="bg-gradient-to-r from-emerald-400 to-teal-500 text-white rounded-full shadow-md shadow-teal-200 border-none font-bold h-9 hover:-translate-y-0.5 transition-transform">
               <CheckSquare className="w-3.5 h-3.5 ml-1.5" /> نسخ المبالغ
             </Button>
@@ -315,7 +325,6 @@ export default function HafizaTab() {
                 <TableRow className="border-slate-100">
                   <TableHead className="w-12 text-center text-slate-500 font-bold">#</TableHead>
                   {COLS.map((c) => (
-                    /* 4. توسيط الجدول: استخدام text-center لعنوان العمود */
                     <TableHead key={c.key} className="text-center py-4 align-top">
                       <button onClick={() => toggleSort(c.key)} className="flex items-center justify-center w-full gap-1 hover:text-indigo-600 transition-colors group">
                         <span className="font-bold text-slate-700 group-hover:text-indigo-600">{c.label}</span>
@@ -341,11 +350,11 @@ export default function HafizaTab() {
                     <TableCell className="text-center text-slate-400 font-medium text-xs align-middle">{idx + 1}</TableCell>
                     {COLS.map((c) => {
                       const isEditing = activeCell?.rowId === row.id && activeCell?.colKey === c.key;
-                      const val = row[c.key];
+                      // استخدام as any هنا للوصول الديناميكي لخصائص الكائن (بما أننا نتعامل مع مفاتيح متغيرة)
+                      const val = (row as any)[c.key];
                       const isMoney = c.key === "hafizaAmount" || c.key === "notifyAmount";
 
                       return (
-                        /* 4. احتواء النصوص والتوسيط: استخدام text-center للمحاذاة، و whitespace-normal مع break-words لالتفاف النص الطويل */
                         <TableCell
                           key={c.key}
                           className={`text-center py-3 text-sm whitespace-normal break-words align-middle ${isEditing ? "p-1" : "cursor-pointer hover:bg-indigo-50/50"}`}
@@ -356,13 +365,13 @@ export default function HafizaTab() {
                               autoFocus
                               value={cellValue}
                               onChange={(e) => setCellValue(e.target.value)}
-                              onBlur={() => handleCellSave(row)}
-                              onKeyDown={(e) => e.key === "Enter" && handleCellSave(row)}
+                              onBlur={() => handleCellSave(row as Record<string, unknown> & { id: string })}
+                              onKeyDown={(e) => e.key === "Enter" && handleCellSave(row as Record<string, unknown> & { id: string })}
                               className="h-8 text-sm bg-white border-indigo-400 text-center rounded-lg"
                             />
                           ) : (
                             <span className={`${isMoney ? "font-mono font-bold text-slate-700" : "text-slate-600 font-medium"}`}>
-                              {isMoney ? fmt(val) : val}
+                              {isMoney ? fmt(Number(val) || 0) : String(val ?? "")}
                             </span>
                           )}
                         </TableCell>
@@ -418,7 +427,6 @@ export default function HafizaTab() {
   );
 }
 
-// تعديل مظهر الحقول لجعلها أكثر استدارة (rounded-2xl) لتتناسب مع تصميم الفقاعات
 function Field({
   label,
   v,
