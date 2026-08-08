@@ -147,11 +147,11 @@ const SortIcon = ({
   columnKey: string;
 }) => {
   if (sortConfig?.key !== columnKey)
-    return <ArrowUpDown className="w-3 h-3 text-slate-700 opacity-60" />;
+    return <ArrowUpDown className="w-3 h-3 text-white/70" />;
   return sortConfig.direction === "asc" ? (
-    <ArrowUp className="w-3 h-3 text-emerald-700" />
+    <ArrowUp className="w-3 h-3 text-emerald-300" />
   ) : (
-    <ArrowDown className="w-3 h-3 text-emerald-700" />
+    <ArrowDown className="w-3 h-3 text-emerald-300" />
   );
 };
 
@@ -1518,7 +1518,7 @@ const exportToPDF = (
                 <tr>
                   <th className="p-2 text-center whitespace-nowrap">#</th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors"
                     onClick={() => handleSort2025("name")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1526,7 +1526,7 @@ const exportToPDF = (
                     </div>
                   </th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors"
                     onClick={() => handleSort2025("batch")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1534,7 +1534,7 @@ const exportToPDF = (
                     </div>
                   </th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors"
                     onClick={() => handleSort2025("specialty")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1542,7 +1542,7 @@ const exportToPDF = (
                     </div>
                   </th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors"
                     onClick={() => handleSort2025("fees")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1558,7 +1558,7 @@ const exportToPDF = (
                     </th>
                   ))}
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors"
                     onClick={() => handleSort2025("totalPaid")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1566,7 +1566,7 @@ const exportToPDF = (
                     </div>
                   </th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors"
                     onClick={() => handleSort2025("remaining")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1661,7 +1661,7 @@ const exportToPDF = (
                         </tr>
                       );
                     })}
-                    <tr className="border-t-2 border-black bg-amber-100 font-extrabold">
+                    <tr className="border-t-2 border-teal-800 bg-teal-100/80 font-extrabold">
                       <td className="p-2 text-center text-black whitespace-nowrap" colSpan={4}>
                         الإجماليات
                       </td>
@@ -1807,7 +1807,7 @@ const exportToPDF = (
                 <tr>
                   <th className="p-2 text-center whitespace-nowrap">#</th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors"
                     onClick={() => handleSort2026("name")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1815,7 +1815,7 @@ const exportToPDF = (
                     </div>
                   </th>
                   <th
-                    className="p-2 text-center cursor-pointer hover:brightness-95"
+                    className="p-2 text-center cursor-pointer hover:bg-white/10 transition-colors"
                     onClick={() => handleSort2026("batch")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1823,7 +1823,7 @@ const exportToPDF = (
                     </div>
                   </th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors"
                     onClick={() => handleSort2026("specialty")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1831,7 +1831,7 @@ const exportToPDF = (
                     </div>
                   </th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95 border-x border-white/25"
+                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors border-x border-white/25"
                     onClick={() => handleSort2026("prevDue")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1839,7 +1839,7 @@ const exportToPDF = (
                     </div>
                   </th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors"
                     onClick={() => handleSort2026("fees")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1880,7 +1880,7 @@ const exportToPDF = (
                     </th>
                   ))}
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors"
                     onClick={() => handleSort2026("totalPaid")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1888,7 +1888,7 @@ const exportToPDF = (
                     </div>
                   </th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95"
+                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors"
                     onClick={() => handleSort2026("remaining")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -2084,7 +2084,7 @@ const exportToPDF = (
                         </tr>
                       );
                     })}
-                    <tr className="border-t-2 border-black bg-amber-100 font-extrabold">
+                    <tr className="border-t-2 border-teal-800 bg-teal-100/80 font-extrabold">
                       <td className="p-2 text-center text-black whitespace-nowrap" colSpan={4}>
                         الإجماليات
                       </td>
