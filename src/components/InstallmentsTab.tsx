@@ -1446,10 +1446,10 @@ const exportToPDF = (
                 <FileSpreadsheet className="w-3.5 h-3.5" /> Excel
               </button>
               <button
-                onClick={() => exportToPDF(2025)}
-                className="px-3 py-1.5 bg-red-100 text-red-700 rounded-lg text-xs font-bold shadow hover:bg-red-200 transition-colors flex items-center gap-1"
+                onClick={() => setPrintSettingsYear(2025)}
+                className="px-3 py-1.5 bg-white/95 text-teal-800 rounded-lg text-xs font-bold shadow hover:bg-white transition-colors flex items-center gap-1"
               >
-                <FileText className="w-3.5 h-3.5" /> الأقساط/تفصيلي
+                <Printer className="w-3.5 h-3.5" /> طباعة تفصيلية
               </button>
             </div>
 
