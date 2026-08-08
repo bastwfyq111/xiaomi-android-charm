@@ -175,6 +175,7 @@ export default function InstallmentsTab() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [, setHoveredCell] = useState<string | null>(null);
   const [importError, setImportError] = useState<string | null>(null);
+  const [printSettingsYear, setPrintSettingsYear] = useState<number | null>(null);
 
   const [search2025, setSearch2025] = useState("");
   const [search2026, setSearch2026] = useState("");
