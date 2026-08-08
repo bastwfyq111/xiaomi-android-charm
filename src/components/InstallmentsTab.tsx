@@ -1439,8 +1439,8 @@ const exportToPDF = (
   return (
     <div className="w-full space-y-4 sm:space-y-6 p-0" dir="rtl">
       {/* ========== واجهة جدول 2025 ========== */}
-      <div className="w-full bg-gradient-to-b from-teal-50 to-white shadow border border-teal-200 rounded-xl overflow-hidden">
-        <div className="bg-gradient-to-l from-teal-600 to-teal-700 px-3 sm:px-6 py-3 sm:py-4 flex justify-between items-center flex-wrap gap-2">
+      <div className="w-full bg-gradient-to-b from-teal-50/60 to-white shadow-lg border border-teal-100 rounded-2xl overflow-hidden">
+        <div className="bg-gradient-to-l from-teal-800 via-teal-600 to-emerald-600 px-3 sm:px-6 py-3 sm:py-4 flex justify-between items-center flex-wrap gap-2">
           <div>
             <h2 className="text-sm sm:text-lg font-bold text-white">
               📊 أقساط ومستندات العام 2025
@@ -1514,7 +1514,7 @@ const exportToPDF = (
           <StatsGrid stats={stats2025} columns={3} />
           <div className="overflow-auto max-h-[65vh] rounded-lg border border-slate-200 shadow-sm relative">
             <table className="w-full text-xs sm:text-sm">
-              <thead className="bg-gradient-to-b from-yellow-300 via-amber-400 to-yellow-600 font-bold border-b-2 border-amber-700 text-black sticky top-0 z-20 shadow-md">
+              <thead className="bg-gradient-to-b from-teal-700 to-teal-800 font-bold border-b-2 border-emerald-900 text-white sticky top-0 z-20 shadow-md">
                 <tr>
                   <th className="p-2 text-center whitespace-nowrap">#</th>
                   <th
@@ -1552,7 +1552,7 @@ const exportToPDF = (
                   {MONTHS_2025.map((m) => (
                     <th
                       key={m}
-                      className="p-1 text-center text-[11px] border-l border-amber-700/40 whitespace-nowrap"
+                      className="p-1 text-center text-[11px] border-l border-white/25 whitespace-nowrap"
                     >
                       {m}
                     </th>
@@ -1693,13 +1693,13 @@ const exportToPDF = (
       </div>
 
       {/* ========== واجهة جدول 2026 ========== */}
-      <div className="w-full bg-gradient-to-b from-purple-50 to-white shadow border border-purple-200 rounded-xl overflow-hidden">
-        <div className="bg-gradient-to-l from-purple-600 to-purple-700 px-3 sm:px-6 py-3 sm:py-4 flex justify-between items-center flex-wrap gap-2">
+      <div className="w-full bg-gradient-to-b from-teal-50/60 to-white shadow-lg border border-teal-100 rounded-2xl overflow-hidden">
+        <div className="bg-gradient-to-l from-teal-800 via-teal-600 to-emerald-600 px-3 sm:px-6 py-3 sm:py-4 flex justify-between items-center flex-wrap gap-2">
           <div>
             <h2 className="text-sm sm:text-lg font-bold text-white">
               📊 سجل أقساط العام الحالي 2026
             </h2>
-            <p className="text-xs text-purple-100">بيانات المسدد والرصيد المدور لعام 2026</p>
+            <p className="text-xs text-teal-100">بيانات المسدد والرصيد المدور لعام 2026</p>
           </div>
           <div className="flex gap-2 flex-wrap items-center">
             <button
@@ -1803,7 +1803,7 @@ const exportToPDF = (
           <StatsGrid stats={stats2026} columns={3} />
           <div className="overflow-auto max-h-[65vh] rounded-lg border border-slate-200 shadow-sm relative">
             <table className="w-full text-xs sm:text-sm">
-              <thead className="bg-gradient-to-b from-yellow-300 via-amber-400 to-yellow-600 font-bold border-b-2 border-amber-700 text-black sticky top-0 z-20 shadow-md">
+              <thead className="bg-gradient-to-b from-teal-700 to-teal-800 font-bold border-b-2 border-emerald-900 text-white sticky top-0 z-20 shadow-md">
                 <tr>
                   <th className="p-2 text-center whitespace-nowrap">#</th>
                   <th
@@ -1831,7 +1831,7 @@ const exportToPDF = (
                     </div>
                   </th>
                   <th
-                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95 border-x border-amber-700/40"
+                    className="p-2 text-center whitespace-nowrap cursor-pointer hover:brightness-95 border-x border-white/25"
                     onClick={() => handleSort2026("prevDue")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1849,7 +1849,7 @@ const exportToPDF = (
                   {MONTHS_2026.map((m) => (
                     <th
                       key={m}
-                      className="p-1 text-center text-xs border-l border-amber-700/40 whitespace-nowrap"
+                      className="p-1 text-center text-xs border-l border-white/25 whitespace-nowrap"
                     >
                       {m.trim()}
                     </th>
@@ -1857,7 +1857,7 @@ const exportToPDF = (
                   {extraCols2026.map((col) => (
                     <th
                       key={col.name}
-                      className="p-2 text-center text-xs border-l border-amber-700/40 whitespace-nowrap text-black"
+                      className="p-2 text-center text-xs border-l border-white/25 whitespace-nowrap text-black"
                     >
                       <div className="flex items-center justify-center gap-1">
                         {col.name}
