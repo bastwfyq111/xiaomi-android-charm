@@ -1392,20 +1392,23 @@ const exportToPDF = (
     {
       label: "إجمالي الرسوم التقديرية",
       value: fmt(totals2025.fees),
-      bgClass: "bg-slate-50",
-      borderClass: "border-slate-200",
+      bgClass: "bg-white",
+      borderClass: "border-teal-100",
+      accentClass: "bg-teal-500",
     },
     {
       label: "إجمالي الأقساط المسددة",
       value: fmt(totals2025.paid),
-      bgClass: "bg-emerald-50",
-      borderClass: "border-emerald-200",
+      bgClass: "bg-emerald-50/70",
+      borderClass: "border-emerald-100",
+      accentClass: "bg-emerald-500",
     },
     {
       label: "إجمالي المتبقي والأرشيف",
       value: fmt(totals2025.remaining),
-      bgClass: "bg-rose-50",
-      borderClass: "border-rose-200",
+      bgClass: "bg-orange-50/70",
+      borderClass: "border-orange-100",
+      accentClass: "bg-orange-500",
     },
   ];
 
@@ -1413,20 +1416,23 @@ const exportToPDF = (
     {
       label: "المدور (متبقي 2025)",
       value: fmt(totals2026.prevDue),
-      bgClass: "bg-amber-50",
-      borderClass: "border-amber-200",
+      bgClass: "bg-white",
+      borderClass: "border-teal-100",
+      accentClass: "bg-teal-600",
     },
     {
       label: "إجمالي مسدد 2026",
       value: fmt(totals2026.paid),
-      bgClass: "bg-emerald-50",
-      borderClass: "border-emerald-200",
+      bgClass: "bg-emerald-50/70",
+      borderClass: "border-emerald-100",
+      accentClass: "bg-emerald-500",
     },
     {
       label: "صافي رصيد المتبقي",
       value: fmt(totals2026.remaining),
-      bgClass: "bg-rose-50",
-      borderClass: "border-rose-200",
+      bgClass: "bg-orange-50/70",
+      borderClass: "border-orange-100",
+      accentClass: "bg-orange-500",
     },
   ];
 
