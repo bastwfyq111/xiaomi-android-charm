@@ -519,252 +519,304 @@ export default function InstallmentsTab() {
   };
 
 
-const exportToPDF = (year: number) => {
+const exportToPDF = (
+  year: number,
+  settings: InstallmentsPrintSettings = DEFAULT_PRINT_SETTINGS,
+) => {
   try {
     const monthsList = year === 2025 ? MONTHS_2025 : MONTHS_2026;
     const rows = year === 2025 ? filteredRows2025 : filteredRows2026;
     const extraCols = year === 2026 ? extraCols2026 : [];
-    const date = new Date().toLocaleDateString("ar-SA");
+    const date = new Date().toLocaleDateString("ar-EG-u-nu-latn");
+    const hidden = new Set(settings.hiddenColumns || []);
 
-    // تجهيز عناوين الأعمدة (نستخدمها لاحقاً للتأكد من توافق صف الإجمالي)
-    const headers =
-      year === 2025
-        ? ["م", "الاسم", "الدفعة", "المساق", "الرسوم", ...monthsList, "المسدد", "المتبقي"]
-        : [
-            "م",
-            "الاسم",
-            "الدفعة",
-            "المساق",
-            "مدور 2025",
-            "الرسوم",
-            ...monthsList,
-            ...extraCols.map((c) => c.name),
-            "المسدد",
-            "المتبقي",
-            "حالة",
-          ];
-
-    // 1. حساب عدد الأعمدة الإجمالي لتحديد حجم الخط المناسب بدقة
-    const fixedColsCount = year === 2025 ? 4 : 5; // عدد الأعمدة الثابتة قبل عمود الرسوم
-    const totalDataCols = headers.length; // استخدمنا الهيدر الفعلي ليعكس أي أعمدة إضافية
-
-    // عرض الصفحة الأفقي الفعّال بعد الهوامش (A4 = 297mm × 210mm)، نترك هامش صغير للأمان
-    const usablePageWidthMm = 287;
-    const minColWidthMm = totalDataCols > 30 ? 6.5 : totalDataCols > 22 ? 7.5 : 9;
-    const nameColWidthMm = Math.max(minColWidthMm * 2.2, 18);
-    const avgColWidthMm = (usablePageWidthMm - nameColWidthMm) / Math.max(1, totalDataCols - 1);
-    const effectiveColWidthMm = Math.min(avgColWidthMm, minColWidthMm * 1.6);
-
-    const fontSizePx = Math.max(5.5, Math.min(10, effectiveColWidthMm * 1.15));
-    const headerFontSizePx = fontSizePx + 0.5;
-
-    const computeCellFontSizeStyle = (text: any, baseFont = fontSizePx) => {
-      const s = String(text ?? "");
-      const len = s.length;
-      const reduceSteps = Math.max(0, Math.ceil(Math.max(0, len - 18) / 12));
-      const reducePx = Math.min(4, reduceSteps * 0.8);
-      const final = Math.max(6, baseFont - reducePx);
-      return `font-size:${final.toFixed(2)}px;line-height:1.05;`;
+    type PrintCol = {
+      key: string;
+      label: string;
+      cell: (row: any, i: number) => string;
+      total?: () => string;
+      wide?: boolean;
+      tone?: "paid" | "due" | "fees" | "plain";
     };
 
-    // دالة توليد صفوف البيانات (مع تطبيق لف خفيف أو تصغير الخط للخلايا الطويلة)
-    const generateTableRows = () => {
-      return rows
-        .map((row: any, i: number) => {
-          if (year === 2025) {
-            const nameStyle = computeCellFontSizeStyle(row.name);
-            return `
-              <tr>
-                <td>${i + 1}</td>
-                <td class="name-cell wrap" style="${nameStyle}">${escapeHtml(row.name || "")}</td>
-                <td class="wrap" style="${computeCellFontSizeStyle(row.batch)}">${escapeHtml(row.batch || "")}</td>
-                <td class="wrap" style="${computeCellFontSizeStyle(row.specialty)}">${escapeHtml(row.specialty || "")}</td>
-                <td style="${computeCellFontSizeStyle(row.fees, fontSizePx - 1)}">${fmt(row.fees)}</td>
-                ${monthsList
-                  .map(
-                    (m) =>
-                      `<td style="${computeCellFontSizeStyle(row.payments?.[m] ?? "", fontSizePx - 1)}">${row.payments?.[m] ? fmt(row.payments[m]) : "—"}</td>`
-                  )
-                  .join("")}
-                <td style="${computeCellFontSizeStyle(row.totalPaid, fontSizePx - 1)}">${fmt(row.totalPaid)}</td>
-                <td style="${computeCellFontSizeStyle(row.remaining, fontSizePx - 1)}">${fmt(row.remaining)}</td>
-              </tr>
-            `;
-          } else {
-            const status = row.remaining <= 0 ? "له" : "عليه";
-            const nameStyle = computeCellFontSizeStyle(row.name);
-            return `
-              <tr>
-                <td>${i + 1}</td>
-                <td class="name-cell wrap" style="${nameStyle}">${escapeHtml(row.name || "")}</td>
-                <td class="wrap" style="${computeCellFontSizeStyle(row.batch)}">${escapeHtml(row.batch || "")}</td>
-                <td class="wrap" style="${computeCellFontSizeStyle(row.specialty)}">${escapeHtml(row.specialty || "")}</td>
-                <td style="${computeCellFontSizeStyle(row.prevDue, fontSizePx - 1)}">${fmt(row.prevDue)}</td>
-                <td style="${computeCellFontSizeStyle(row.fees, fontSizePx - 1)}">${fmt(row.fees)}</td>
-                ${monthsList
-                  .map(
-                    (m) =>
-                      `<td style="${computeCellFontSizeStyle(row.payments?.[m] ?? "", fontSizePx - 1)}">${row.payments?.[m] ? fmt(row.payments[m]) : "—"}</td>`
-                  )
-                  .join("")}
-                ${extraCols
-                  .map((col) => {
-                    if (col.type === "formula")
-                      return `<td style="${computeCellFontSizeStyle(evaluateFormula(col.formula || "", row), fontSizePx - 1)}">${evaluateFormula(col.formula || "", row)}</td>`;
-                    return `<td style="${computeCellFontSizeStyle(row.customData?.[col.name] || "", fontSizePx - 1)}">${escapeHtml(row.customData?.[col.name] || "—")}</td>`;
-                  })
-                  .join("")}
-                <td style="${computeCellFontSizeStyle(row.totalPaid, fontSizePx - 1)}">${fmt(row.totalPaid)}</td>
-                <td style="${computeCellFontSizeStyle(row.remaining, fontSizePx - 1)}">${fmt(row.remaining)}</td>
-                <td style="background-color: ${status === "عليه" ? "#fecaca" : "#a7f3d0"};">${status}</td>
-              </tr>
-            `;
-          }
-        })
-        .join("");
+    const sum = (fn: (r: any) => any) =>
+      (rows || []).reduce((s: number, r: any) => s + cleanNumber(fn(r)), 0);
+
+    const allCols: PrintCol[] = [];
+    allCols.push({
+      key: "idx",
+      label: "م",
+      cell: (_r, i) => String(i + 1),
+    });
+    allCols.push({
+      key: "name",
+      label: "اسم المتدرب",
+      cell: (r) => escapeHtml(r.name || ""),
+      wide: true,
+    });
+    allCols.push({ key: "batch", label: "الدفعة", cell: (r) => escapeHtml(r.batch || "—") });
+    allCols.push({
+      key: "specialty",
+      label: "المساق",
+      cell: (r) => escapeHtml(r.specialty || "—"),
+      wide: true,
+    });
+    if (year === 2026) {
+      allCols.push({
+        key: "prevDue",
+        label: "مدور 2025",
+        cell: (r) => fmt(cleanNumber(r.prevDue)),
+        total: () => fmt(sum((r) => r.prevDue)),
+        tone: "due",
+      });
+    }
+    allCols.push({
+      key: "fees",
+      label: "الرسوم",
+      cell: (r) => fmt(cleanNumber(r.fees)),
+      total: () => fmt(sum((r) => r.fees)),
+      tone: "fees",
+    });
+    monthsList.forEach((m) => {
+      allCols.push({
+        key: `month:${m}`,
+        label: m.trim(),
+        cell: (r) => (cleanNumber(r.payments?.[m]) ? fmt(cleanNumber(r.payments[m])) : "—"),
+        total: () => {
+          const t = sum((r) => r.payments?.[m]);
+          return t > 0 ? fmt(t) : "—";
+        },
+      });
+    });
+    extraCols.forEach((col) => {
+      allCols.push({
+        key: `col:${col.name}`,
+        label: col.name,
+        cell: (r) =>
+          col.type === "formula"
+            ? escapeHtml(evaluateFormula(col.formula || "", r))
+            : escapeHtml(r.customData?.[col.name] || "—"),
+        total:
+          col.type === "formula"
+            ? () => {
+                const t = (rows || []).reduce(
+                  (s: number, r: any) => s + cleanNumber(evaluateFormula(col.formula || "", r)),
+                  0,
+                );
+                return t !== 0 ? fmt(t) : "—";
+              }
+            : undefined,
+      });
+    });
+    allCols.push({
+      key: "totalPaid",
+      label: "إجمالي المسدد",
+      cell: (r) => fmt(cleanNumber(r.totalPaid)),
+      total: () => fmt(sum((r) => r.totalPaid)),
+      tone: "paid",
+    });
+    allCols.push({
+      key: "remaining",
+      label: "الرصيد المتبقي",
+      cell: (r) => fmt(cleanNumber(r.remaining)),
+      total: () => fmt(sum((r) => r.remaining)),
+      tone: "due",
+    });
+    if (year === 2026) {
+      allCols.push({
+        key: "status",
+        label: "الحالة",
+        cell: (r) => (cleanNumber(r.remaining) <= 0 ? "له" : "عليه"),
+      });
+    }
+
+    const cols = allCols.filter((c) => !hidden.has(c.key));
+
+    // ملاءمة تلقائية لعرض الصفحة حسب الحجم والاتجاه
+    const pageWidthMm =
+      settings.pageSize === "A3"
+        ? settings.orientation === "landscape"
+          ? 420
+          : 297
+        : settings.orientation === "landscape"
+          ? 297
+          : 210;
+    const marginMm = settings.margin === "narrow" ? 8 : settings.margin === "wide" ? 26 : 14;
+    const usableWidthMm = pageWidthMm - marginMm;
+    const widthUnits = cols.reduce((s, c) => s + (c.wide ? 2.4 : 1), 0);
+    const unitMm = usableWidthMm / Math.max(1, widthUnits);
+    const autoFont = Math.max(5, Math.min(11, unitMm * 1.25));
+    const fontSizePx = settings.fontMode === "manual" ? settings.fontSize : autoFont;
+    const headerFontSizePx = fontSizePx + 0.4;
+
+    const fitStyle = (text: any, base = fontSizePx) => {
+      const len = String(text ?? "").replace(/<[^>]*>/g, "").length;
+      const steps = Math.max(0, Math.ceil(Math.max(0, len - 16) / 10));
+      const final = Math.max(5, base - Math.min(3.5, steps * 0.7));
+      return `font-size:${final.toFixed(2)}px`;
     };
 
-    // دالة توليد صف الإجمالي المتوافق تماماً مع headers (يشمل الأشهر والأعمدة المضافة)
-    const generateTotalRow = () => {
-      // تُحسب الإجماليات من نفس الصفوف المطبوعة لضمان التطابق
-      const sum = (fn: (r: any) => any) =>
-        (rows || []).reduce((s: number, r: any) => s + cleanNumber(fn(r)), 0);
-      const monthTotal = (m: string) => sum((r) => r.payments?.[m]);
+    const colGroup = `<colgroup>${cols
+      .map(
+        (c) =>
+          `<col style="width:${(((c.wide ? 2.4 : 1) / widthUnits) * 100).toFixed(3)}%" />`,
+      )
+      .join("")}</colgroup>`;
 
-      const leftColSpan = year === 2025 ? 4 : 5; // للـ 2026 لدينا عمود إضافي (مدور/المتبقي من 2025)
-      const cellsArr: string[] = [];
-      const push = (v: any, extra = "") =>
-        cellsArr.push(`<td${extra ? ` style="${extra}"` : ""}>${v}</td>`);
+    const thead = `<tr>${cols
+      .map((c) => `<th class="c-${c.key.replace(/[^a-zA-Z]/g, "")}">${escapeHtml(c.label)}</th>`)
+      .join("")}</tr>`;
 
-      if (year === 2025) {
-        push(fmt(sum((r) => r.fees)));
-        monthsList.forEach((m) => {
-          const t = monthTotal(m);
-          push(t > 0 ? fmt(t) : "—");
-        });
-        push(fmt(sum((r) => r.totalPaid)));
-        push(fmt(sum((r) => r.remaining)));
-      } else {
-        push(fmt(sum((r) => r.prevDue)));
-        push(fmt(sum((r) => r.fees)));
-        monthsList.forEach((m) => {
-          const t = monthTotal(m);
-          push(t > 0 ? fmt(t) : "—");
-        });
-        extraCols.forEach((col) => {
-          if (col.type === "formula") {
-            const t = (rows || []).reduce(
-              (s: number, r: any) => s + cleanNumber(evaluateFormula(col.formula || "", r)),
-              0,
-            );
-            push(t !== 0 ? fmt(t) : "—");
-          } else {
-            push("—");
-          }
-        });
-        push(fmt(sum((r) => r.totalPaid)));
-        push(fmt(sum((r) => r.remaining)));
-        push(""); // عمود الحالة
-      }
+    const tbody = (rows || [])
+      .map((r: any, i: number) => {
+        const tds = cols
+          .map((c) => {
+            const v = c.cell(r, i);
+            const toneClass = c.tone ? ` t-${c.tone}` : "";
+            const statusClass =
+              c.key === "status" ? (cleanNumber(r.remaining) <= 0 ? " s-ok" : " s-bad") : "";
+            return `<td class="${c.wide ? "wrap" : ""}${toneClass}${statusClass}" style="${fitStyle(v)}">${v}</td>`;
+          })
+          .join("");
+        return `<tr>${tds}</tr>`;
+      })
+      .join("");
 
-      // ضبط عدد الخلايا بدقة ليطابق عدد الرؤوس (يمنع أي انزياح)
-      const needed = headers.length - leftColSpan;
-      while (cellsArr.length < needed) cellsArr.push("<td></td>");
-      if (cellsArr.length > needed) cellsArr.length = needed;
+    const totalRow = settings.showTotals
+      ? `<tr class="total-row">${cols
+          .map((c, idx) => {
+            if (c.key === "idx") return `<td>—</td>`;
+            if (idx === 1) return `<td class="wrap">الإجمالي</td>`;
+            return `<td style="${fitStyle("")}">${c.total ? c.total() : ""}</td>`;
+          })
+          .join("")}</tr>`
+      : "";
 
-      return `<tr class="total-row"><td colspan="${leftColSpan}">الإجمالي</td>${cellsArr.join("")}</tr>`;
-    };
-
-
+    const colorTokens = settings.colored
+      ? {
+          head: "#0f766e",
+          headText: "#ffffff",
+          zebra: "#f0fdfa",
+          totals: "#ccfbf1",
+          fees: "#eff6ff",
+          paid: "#ecfdf5",
+          due: "#fff7ed",
+          accent: "#0d9488",
+        }
+      : {
+          head: "#ffffff",
+          headText: "#000000",
+          zebra: "#ffffff",
+          totals: "#f2f2f2",
+          fees: "#ffffff",
+          paid: "#ffffff",
+          due: "#ffffff",
+          accent: "#000000",
+        };
 
     const reportCss = `
-      @page { size: A4 landscape; margin: 8mm 6mm; }
-      html, body {
-        width: 100%;
-        margin: 0 !important;
-        padding: 0 !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
+      html, body { margin: 0 !important; padding: 0 !important; }
       * { box-sizing: border-box; }
       .doc-header {
-        text-align: center;
-        margin-bottom: 4px;
-        border-bottom: 1.5pt solid #b8860b;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        border-bottom: 2pt solid ${colorTokens.accent};
         padding-bottom: 4px;
+        margin-bottom: 5px;
       }
-      .doc-header h1 { font-size: 15px; font-weight: 800; margin: 0; }
-      .doc-header p { margin: 2px 0 0; font-size: 9.5px; font-weight: 600; }
+      .doc-header .title { text-align: right; }
+      .doc-header h1 { font-size: 14px; font-weight: 800; letter-spacing: -0.2px; }
+      .doc-header h2 { font-size: 10.5px; font-weight: 700; margin-top: 1px; color: ${colorTokens.accent}; }
+      .doc-header .meta { font-size: 8.5px; font-weight: 700; text-align: left; line-height: 1.6; }
+      .doc-header .meta span { display: block; }
 
       table {
         font-size: ${fontSizePx.toFixed(2)}px;
         table-layout: fixed !important;
         width: 100% !important;
         border-collapse: collapse;
-        border: 1pt solid #000;
+        border: 0.75pt solid #111;
       }
       th, td {
-        padding: 0 !important;
-        border: 0.5pt solid #000;
-        white-space: normal;
+        border: 0.4pt solid #333;
+        padding: 1px 1px;
+        text-align: center;
+        vertical-align: middle;
+        white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        text-align: center;
-        line-height: 1;
+        line-height: 1.15;
+        font-weight: 700;
       }
-      .wrap {
-        white-space:normal !important;
-        padding: 0px 0px !important;
-      }
-      td { font-weight: 1000; }
+      td.wrap { white-space: normal; }
       th {
-        background: #f5deb3 !important;
+        background: ${colorTokens.head} !important;
+        color: ${colorTokens.headText} !important;
         font-size: ${headerFontSizePx.toFixed(2)}px;
         font-weight: 800;
+        padding: 2px 1px;
       }
-      .name-cell { text-align: center; }
+      tbody tr:nth-child(even) td { background: ${colorTokens.zebra} !important; }
+      td.t-fees { background: ${colorTokens.fees} !important; }
+      td.t-paid { background: ${colorTokens.paid} !important; font-weight: 800; }
+      td.t-due { background: ${colorTokens.due} !important; font-weight: 800; }
+      td.s-ok { background: ${settings.colored ? "#d1fae5" : "#ffffff"} !important; }
+      td.s-bad { background: ${settings.colored ? "#fee2e2" : "#ffffff"} !important; }
       thead { display: table-header-group; }
-      tfoot { display: table-footer-group; }
       .total-row td {
-        background: #fde68a !important;
-        font-weight: 1000;
-        white-space: normal !important;
-        border-top: 1.2pt solid #000;
+        background: ${colorTokens.totals} !important;
+        font-weight: 900;
+        border-top: 1pt solid #111;
       }
-
+      .doc-foot {
+        margin-top: 5px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 8.5px;
+        font-weight: 700;
+        border-top: 0.75pt solid ${colorTokens.accent};
+        padding-top: 3px;
+      }
       @media print {
-        th, td { white-space:normal; padding: 0 !important; }
         tr { page-break-inside: avoid; }
-        .wrap { white-space: normal!important; }
       }
     `;
 
     const body = `
-      <div class="doc-header">
-        <h1>المجلس اليمني للاختصاصات الطبية</h1>
-        <p>تقرير الأقساط والمدفوعات - العام ${year}م</p>
-        <p>تاريخ التقرير: ${date}</p>
-      </div>
+      ${
+        settings.showHeader
+          ? `<div class="doc-header">
+        <div class="title">
+          <h1>المجلس اليمني للاختصاصات الطبية — صعدة</h1>
+          <h2>تقرير الأقساط والمدفوعات للعام ${year}م</h2>
+        </div>
+        <div class="meta">
+          <span>التاريخ: ${escapeHtml(date)}</span>
+          <span>عدد السجلات: ${(rows || []).length}</span>
+        </div>
+      </div>`
+          : ""
+      }
       <table>
-        <thead>
-          <tr>
-            ${headers.map((h) => `<th>${escapeHtml(h)}</th>`).join("")}
-          </tr>
-        </thead>
-        <tbody>
-          ${generateTableRows()}
-          ${generateTotalRow()}
-        </tbody>
+        ${colGroup}
+        <thead>${thead}</thead>
+        <tbody>${tbody}${totalRow}</tbody>
       </table>
+      <div class="doc-foot">
+        <span>إعداد: قسم الشؤون المالية</span>
+        <span>التوقيع: ________________</span>
+      </div>
     `;
 
     const ok = openPrintDocument({
       title: `تقرير_الأقساط_والمدفوعات_${year}`,
       body,
       css: reportCss,
-      pageSize: "A4",
-      orientation: "landscape",
-      margin: "2mm 2mm",
+      pageSize: settings.pageSize,
+      orientation: settings.orientation,
+      margin: marginToCss(settings.margin),
     });
 
     if (ok) {
