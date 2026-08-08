@@ -23,13 +23,16 @@ import {
   ArrowDownLeft,
   Wallet,
   Zap,
+  Stethoscope,
+  Landmark,
+  Ticket,
 } from "lucide-react";
 import TabActions from "./TabActions";
 import schema from "@/data/revenueTemplate.json";
 
 /* ============================================================
-   الحساب الجاري — هوية داكنة عصرية: خلفية كحلية-سوداء عميقة،
-   لون فيروزي نيون كعنصر مميز، وجدول بحدود سوداء صريحة بين الخلايا.
+   الحساب الجاري — خلفية بيج/فضية فاتحة، نص أسود غامق وكبير،
+   كل أيقونة بلون مختلف، وتحسين طباعة لاحتواء الخلايا تلقائياً.
    ============================================================ */
 
 const COLS = [
@@ -89,7 +92,38 @@ const parseAmount = (val: any): number => {
   return isNaN(parsed) ? 0 : parsed;
 };
 
-/* ---------- عناصر واجهة أساسية بالهوية الداكنة ---------- */
+/* أنماط الطباعة: احتواء تلقائي لنص الخلايا بدل القطع، مع حدود سوداء واضحة */
+const PRINT_STYLES = `
+@media print {
+  .accounts-print-scope { background: #fff !important; }
+  .accounts-print-area, .accounts-print-area * { visibility: visible !important; }
+  .accounts-print-hide { display: none !important; }
+  .accounts-print-area table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    table-layout: auto !important;
+  }
+  .accounts-print-area th,
+  .accounts-print-area td {
+    border: 1px solid #000 !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+    word-break: break-word !important;
+    height: auto !important;
+    max-width: none !important;
+    color: #000 !important;
+    background: #fff !important;
+  }
+  .accounts-print-area .overflow-x-auto,
+  .accounts-print-area .overflow-y-auto {
+    overflow: visible !important;
+    max-height: none !important;
+  }
+}
+`;
+
+/* ---------- عناصر واجهة أساسية بالهوية الفاتحة ---------- */
 
 const Modal = ({
   title,
@@ -105,17 +139,17 @@ const Modal = ({
   if (!isOpen) return null;
   return (
     <div
-      className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-2 sm:p-4"
+      className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-2 sm:p-4"
       dir="rtl"
     >
-      <div className="bg-[#1A2129] rounded-t-2xl sm:rounded-2xl w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto border border-[#00D9B5]/20">
-        <div className="flex justify-between items-center px-5 py-4 border-b border-white/10 bg-[#141B22] sticky top-0 z-10">
-          <h3 className="font-bold text-base sm:text-lg text-[#E8EDF2] flex items-center gap-2 tracking-wide">
+      <div className="bg-[#FAF9F6] rounded-t-2xl sm:rounded-2xl w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto border border-black/10">
+        <div className="flex justify-between items-center px-5 py-4 border-b border-black/10 bg-white sticky top-0 z-10">
+          <h3 className="font-black text-base sm:text-lg text-[#171412] flex items-center gap-2 tracking-tight">
             {title}
           </h3>
           <button
             onClick={onClose}
-            className="p-1.5 hover:bg-white/10 rounded-xl transition-colors text-[#8B98A5] hover:text-white"
+            className="p-1.5 hover:bg-black/5 rounded-xl transition-colors text-[#6B655D] hover:text-[#171412]"
           >
             <X className="w-5 h-5" />
           </button>
@@ -145,7 +179,7 @@ function Field({
 }) {
   return (
     <div className="w-full">
-      <label className="block text-[11px] font-bold text-[#8B98A5] mb-1.5 mr-0.5 tracking-wide">
+      <label className="block text-[12px] font-black text-[#171412]/70 mb-1.5 mr-0.5 tracking-wide">
         {label}
       </label>
       <div className="relative flex items-center">
@@ -155,7 +189,7 @@ function Field({
           value={v}
           onChange={(e) => on(e.target.value)}
           placeholder={placeholder}
-          className={`w-full ${icon ? "pr-9" : "px-3"} pl-3 py-2 text-sm border border-white/10 rounded-xl outline-none focus:border-[#00D9B5] bg-[#141B22] text-[#E8EDF2] font-medium transition-colors ${className}`}
+          className={`w-full ${icon ? "pr-9" : "px-3"} pl-3 py-2 text-[15px] border border-black/15 rounded-xl outline-none focus:border-[#171412] focus:ring-2 focus:ring-[#171412]/10 bg-white text-[#171412] font-bold shadow-sm transition-colors ${className}`}
         />
       </div>
     </div>
@@ -174,17 +208,17 @@ function LedgerStat({
   icon: React.ReactNode;
 }) {
   const toneMap = {
-    income: { text: "text-[#34D399]", glow: "shadow-[0_0_0_1px_rgba(52,211,153,0.25)]", chip: "bg-[#34D399]/10" },
-    expense: { text: "text-[#F87171]", glow: "shadow-[0_0_0_1px_rgba(248,113,113,0.25)]", chip: "bg-[#F87171]/10" },
-    balance: { text: "text-[#00D9B5]", glow: "shadow-[0_0_0_1px_rgba(0,217,181,0.3)]", chip: "bg-[#00D9B5]/10" },
+    income: { text: "text-[#1E8E5A]", chip: "bg-[#1E8E5A]/10" },
+    expense: { text: "text-[#D14343]", chip: "bg-[#D14343]/10" },
+    balance: { text: "text-[#2563AC]", chip: "bg-[#2563AC]/10" },
   } as const;
   const t = toneMap[tone];
   return (
-    <div className={`relative bg-[#1A2129] rounded-2xl px-5 py-4 ${t.glow}`}>
+    <div className="relative bg-white rounded-2xl px-5 py-4 border border-black/10 shadow-sm">
       <div className="flex items-center justify-between">
         <div>
-          <span className="text-[11px] font-bold text-[#8B98A5] tracking-wide">{label}</span>
-          <div className={`text-2xl font-black font-mono tabular-nums mt-1.5 ${t.text}`}>
+          <span className="text-[12px] font-black text-[#6B655D] tracking-wide">{label}</span>
+          <div className={`text-2xl sm:text-[28px] font-black font-mono tabular-nums mt-1.5 ${t.text}`}>
             {fmt(value)}
           </div>
         </div>
@@ -497,52 +531,57 @@ export default function AccountsTab() {
   };
 
   return (
-    <div className="w-full space-y-6 bg-[#0F1419] p-4 sm:p-6 rounded-2xl" dir="rtl">
+    <div
+      className="accounts-print-scope w-full space-y-6 bg-[#F2EFEA] p-4 sm:p-6 rounded-2xl"
+      dir="rtl"
+    >
+      <style>{PRINT_STYLES}</style>
+
       {/* ===== شريط العنوان ===== */}
-      <div className="flex items-center justify-between">
+      <div className="accounts-print-hide flex items-center justify-between">
         <div>
-          <h1 className="text-xl sm:text-2xl font-black text-[#E8EDF2] tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-black text-[#171412] tracking-tight">
             الحساب الجاري
           </h1>
-          <p className="text-[11px] text-[#8B98A5] font-bold tracking-wide mt-0.5">
+          <p className="text-[12px] text-[#6B655D] font-bold tracking-wide mt-0.5">
             سجل الحركات المالية المُرحّلة
           </p>
         </div>
-        <div className="hidden sm:flex items-center gap-2 px-3.5 py-2 bg-[#1A2129] rounded-xl">
-          <span className="w-2 h-2 rounded-full bg-[#00D9B5] animate-pulse" />
-          <span className="text-[11px] text-[#8B98A5] font-bold">عدد القيود</span>
-          <span className="text-[#E8EDF2] font-mono text-sm tabular-nums font-bold">{accounts.length}</span>
+        <div className="hidden sm:flex items-center gap-2 px-3.5 py-2 bg-white rounded-xl border border-black/10 shadow-sm">
+          <Landmark className="w-4 h-4 text-[#8B5CF6]" />
+          <span className="text-[12px] text-[#6B655D] font-bold">عدد القيود</span>
+          <span className="text-[#171412] font-mono text-base tabular-nums font-black">{accounts.length}</span>
         </div>
       </div>
 
       {/* ===== بطاقات الإجماليات ===== */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="accounts-print-hide grid grid-cols-1 md:grid-cols-3 gap-4">
         <LedgerStat label="إجمالي الإيرادات" value={totalIncome} tone="income" icon={<ArrowUpRight className="w-6 h-6" />} />
         <LedgerStat label="إجمالي المصروفات" value={totalExpense} tone="expense" icon={<ArrowDownLeft className="w-6 h-6" />} />
         <LedgerStat label="الرصيد الحالي المتوفر" value={currentBalance} tone="balance" icon={<Wallet className="w-6 h-6" />} />
       </div>
 
       {/* ===== لوحة القيد اليدوي والمطابقة ===== */}
-      <div className="w-full bg-[#1A2129] rounded-2xl overflow-hidden">
-        <div className="bg-[#141B22] px-5 py-4 flex flex-wrap justify-between items-center gap-4 border-b border-white/5">
+      <div className="accounts-print-hide w-full bg-white rounded-2xl overflow-hidden border border-black/10 shadow-sm">
+        <div className="bg-[#FAF9F6] px-5 py-4 flex flex-wrap justify-between items-center gap-4 border-b border-black/10">
           <div className="flex items-center gap-2.5">
-            <div className="p-1.5 bg-[#00D9B5]/10 rounded-lg text-[#00D9B5]">
+            <div className="p-1.5 bg-[#2563AC]/10 rounded-lg text-[#2563AC]">
               <Plus className="w-4 h-4" />
             </div>
-            <h2 className="text-sm sm:text-base font-bold text-[#E8EDF2] tracking-wide">
+            <h2 className="text-sm sm:text-base font-black text-[#171412] tracking-wide">
               قيد جديد أو ترحيل مطابق من الحوافظ
             </h2>
           </div>
           <div className="flex items-center gap-2.5 flex-wrap">
             <button
               onClick={handleSyncFromHafiza}
-              className="flex items-center gap-2 px-4 py-2 bg-[#00D9B5] text-[#0F1419] rounded-full text-xs font-black hover:bg-[#1EE8C6] transition-colors active:scale-95 shadow-[0_0_20px_rgba(0,217,181,0.35)]"
+              className="flex items-center gap-2 px-4 py-2 bg-[#D97706] text-white rounded-full text-xs font-black hover:bg-[#B8620A] transition-colors active:scale-95 shadow-sm"
             >
               <Zap className="w-3.5 h-3.5" />
               <span>مطابقة شاملة ٢٠٢٦</span>
             </button>
-            <label className="flex items-center gap-1.5 px-3.5 py-2 border border-white/15 text-[#E8EDF2] rounded-full text-xs font-bold cursor-pointer hover:bg-white/5 transition-colors">
-              <FileSpreadsheet className="w-3.5 h-3.5 text-[#34D399]" /> <span>استيراد إكسل</span>
+            <label className="flex items-center gap-1.5 px-3.5 py-2 border border-black/15 text-[#171412] rounded-full text-xs font-bold cursor-pointer hover:bg-black/5 transition-colors">
+              <FileSpreadsheet className="w-3.5 h-3.5 text-[#1E8E5A]" /> <span>استيراد إكسل</span>
               <input
                 type="file"
                 accept=".xlsx, .xls, .csv"
@@ -558,57 +597,57 @@ export default function AccountsTab() {
             <Field
               label="التاريخ"
               type="date"
-              icon={<Calendar className="w-4 h-4 text-[#8B98A5]" />}
+              icon={<Calendar className="w-4 h-4 text-[#2563AC]" />}
               v={form.date}
               on={(v) => setForm({ ...form, date: v })}
             />
             <Field
               label="رقم الحافظة"
-              icon={<Hash className="w-4 h-4 text-[#8B98A5]" />}
+              icon={<Hash className="w-4 h-4 text-[#8B5CF6]" />}
               v={form.hafizaNo}
               on={(v) => setForm({ ...form, hafizaNo: v })}
             />
             <Field
               label="رقم الإشعار"
-              icon={<Hash className="w-4 h-4 text-[#8B98A5]" />}
+              icon={<Hash className="w-4 h-4 text-[#D97706]" />}
               v={form.notifyNo}
               on={(v) => setForm({ ...form, notifyNo: v })}
             />
             <Field
               label="تاريخ التوريد"
               type="date"
-              icon={<Calendar className="w-4 h-4 text-[#8B98A5]" />}
+              icon={<Calendar className="w-4 h-4 text-[#0EA5A5]" />}
               v={form.notifyDate}
               on={(v) => setForm({ ...form, notifyDate: v })}
             />
             <Field
               label="رقم الشيك"
-              icon={<Hash className="w-4 h-4 text-[#8B98A5]" />}
+              icon={<Ticket className="w-4 h-4 text-[#DB2777]" />}
               v={form.checkNo}
               on={(v) => setForm({ ...form, checkNo: v })}
             />
             <Field
               label="تاريخ الشيك"
               type="date"
-              icon={<Calendar className="w-4 h-4 text-[#8B98A5]" />}
+              icon={<Calendar className="w-4 h-4 text-[#65A30D]" />}
               v={form.checkDate}
               on={(v) => setForm({ ...form, checkDate: v })}
             />
 
             <div className="relative">
-              <label className="block text-[11px] font-bold text-[#8B98A5] mb-1.5 mr-0.5 tracking-wide">
+              <label className="block text-[12px] font-black text-[#171412]/70 mb-1.5 mr-0.5 tracking-wide">
                 البيان والشرح
               </label>
               <div className="relative flex items-center">
                 <span className="absolute right-3 z-10">
-                  <FileText className="w-4 h-4 text-[#8B98A5]" />
+                  <FileText className="w-4 h-4 text-[#DC2626]" />
                 </span>
                 <input
                   list="account-descriptions"
                   value={form.description}
                   onChange={(e) => setForm({ ...form, description: e.target.value })}
                   placeholder="اكتب أو اختر البيان..."
-                  className="w-full pr-9 pl-3 py-2 text-sm border border-white/10 rounded-xl outline-none focus:border-[#00D9B5] bg-[#141B22] text-[#E8EDF2] font-medium"
+                  className="w-full pr-9 pl-3 py-2 text-[15px] border border-black/15 rounded-xl outline-none focus:border-[#171412] focus:ring-2 focus:ring-[#171412]/10 bg-white text-[#171412] font-bold"
                 />
               </div>
               <datalist id="account-descriptions">
@@ -622,13 +661,13 @@ export default function AccountsTab() {
 
             <Field
               label="التخصص الطبي"
-              icon={<FileText className="w-4 h-4 text-[#8B98A5]" />}
+              icon={<Stethoscope className="w-4 h-4 text-[#0891B2]" />}
               v={form.specialty}
               on={(v) => setForm({ ...form, specialty: v })}
             />
             <Field
               label="الاسم الكامل"
-              icon={<User className="w-4 h-4 text-[#8B98A5]" />}
+              icon={<User className="w-4 h-4 text-[#7C3AED]" />}
               v={form.name}
               on={(v) => setForm({ ...form, name: v })}
               placeholder="اسم المتدرب..."
@@ -636,7 +675,7 @@ export default function AccountsTab() {
             <Field
               label="مبلغ الحافظة"
               type="number"
-              icon={<span className="text-xs text-[#8B98A5] font-bold">ر.ي</span>}
+              icon={<span className="text-xs text-[#475569] font-black">ر.ي</span>}
               v={form.hafizaAmount}
               on={(v) => setForm({ ...form, hafizaAmount: v })}
               className="font-mono tabular-nums"
@@ -644,34 +683,34 @@ export default function AccountsTab() {
             <Field
               label="الإيرادات"
               type="number"
-              icon={<span className="text-xs text-[#34D399] font-bold">ر.ي</span>}
+              icon={<span className="text-xs text-[#1E8E5A] font-black">ر.ي</span>}
               v={form.income}
               on={(v) => setForm({ ...form, income: v })}
               placeholder="0.00"
-              className="text-[#34D399] font-bold font-mono tabular-nums focus:border-[#34D399]"
+              className="text-[#1E8E5A] font-black font-mono tabular-nums focus:border-[#1E8E5A]"
             />
             <Field
               label="المصروفات"
               type="number"
-              icon={<span className="text-xs text-[#F87171] font-bold">ر.ي</span>}
+              icon={<span className="text-xs text-[#D14343] font-black">ر.ي</span>}
               v={form.expense}
               on={(v) => setForm({ ...form, expense: v })}
               placeholder="0.00"
-              className="text-[#F87171] font-bold font-mono tabular-nums focus:border-[#F87171]"
+              className="text-[#D14343] font-black font-mono tabular-nums focus:border-[#D14343]"
             />
 
             <div className="sm:col-span-2">
-              <label className="flex items-center gap-1.5 text-[11px] font-bold text-[#00D9B5] mb-1.5 mr-0.5 tracking-wide">
+              <label className="flex items-center gap-1.5 text-[12px] font-black text-[#2563AC] mb-1.5 mr-0.5 tracking-wide">
                 <Link className="w-3.5 h-3.5" /> ربط بدليل هيكل الإيرادات
               </label>
               <select
                 value={form.revenueKey}
                 onChange={(e) => setForm({ ...form, revenueKey: e.target.value })}
-                className="w-full px-3 py-2 text-sm border border-[#00D9B5]/25 rounded-xl outline-none bg-[#00D9B5]/5 text-[#E8EDF2] font-medium focus:border-[#00D9B5]"
+                className="w-full px-3 py-2 text-[15px] border border-[#2563AC]/25 rounded-xl outline-none bg-[#2563AC]/5 text-[#171412] font-bold focus:border-[#2563AC]"
               >
-                <option value="" className="bg-[#141B22]">-- بدون ربط --</option>
+                <option value="">-- بدون ربط --</option>
                 {revenueTypes.map((t) => (
-                  <option key={t.key} value={t.key} className="bg-[#141B22]">
+                  <option key={t.key} value={t.key}>
                     {t.key} | {t.label}
                   </option>
                 ))}
@@ -681,27 +720,27 @@ export default function AccountsTab() {
             <div className="sm:col-span-2 flex gap-2 pt-2">
               <button
                 onClick={submit}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-[#00D9B5] text-[#0F1419] rounded-xl font-black hover:bg-[#1EE8C6] text-xs shadow-[0_0_16px_rgba(0,217,181,0.3)] active:scale-95 transition-transform"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-[#171412] text-white rounded-xl font-black hover:bg-[#2A2521] text-xs shadow-sm active:scale-95 transition-transform"
               >
-                <Save className="w-4 h-4" /> ترحيل القيد
+                <Save className="w-4 h-4 text-[#4ADE80]" /> ترحيل القيد
               </button>
               <button
                 onClick={() => setForm(emptyForm)}
-                className="flex items-center justify-center gap-2 px-3 py-2.5 border border-white/15 text-[#8B98A5] bg-transparent rounded-xl font-bold text-xs active:scale-95 transition-transform hover:bg-white/5"
+                className="flex items-center justify-center gap-2 px-3 py-2.5 border border-black/15 text-[#171412] bg-white rounded-xl font-bold text-xs active:scale-95 transition-transform hover:bg-black/5"
               >
-                <Eraser className="w-4 h-4" /> مسح
+                <Eraser className="w-4 h-4 text-[#D14343]" /> مسح
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ===== جدول القيود — حدود سوداء صريحة بين الخلايا ===== */}
-      <div className="w-full bg-[#1A2129] rounded-2xl overflow-hidden">
-        <div className="bg-[#141B22] px-5 py-3.5 flex flex-wrap justify-between items-center gap-3 border-b border-white/5">
+      {/* ===== جدول القيود ===== */}
+      <div className="accounts-print-area w-full bg-white rounded-2xl overflow-hidden border border-black/10 shadow-sm">
+        <div className="accounts-print-hide bg-[#FAF9F6] px-5 py-3.5 flex flex-wrap justify-between items-center gap-3 border-b border-black/10">
           <div className="flex items-center gap-2.5">
-            <div className="w-2 h-2 rounded-full bg-[#00D9B5] animate-pulse"></div>
-            <h2 className="text-xs sm:text-sm font-bold text-[#E8EDF2] tracking-wide">
+            <div className="w-2 h-2 rounded-full bg-[#1E8E5A] animate-pulse"></div>
+            <h2 className="text-xs sm:text-sm font-black text-[#171412] tracking-wide">
               سجل حركات الحساب الجاري ({accounts.length})
             </h2>
           </div>
@@ -709,7 +748,7 @@ export default function AccountsTab() {
             {Object.values(filters).some(Boolean) && (
               <button
                 onClick={clearFilters}
-                className="px-3 py-1.5 bg-white/5 hover:bg-white/10 text-[#E8EDF2] rounded-full text-xs font-bold transition-colors"
+                className="px-3 py-1.5 bg-black/5 hover:bg-black/10 text-[#171412] rounded-full text-xs font-bold transition-colors"
               >
                 مسح مرشحات التصفية
               </button>
@@ -727,66 +766,66 @@ export default function AccountsTab() {
 
         <div className="p-3">
           <div className="overflow-x-auto overflow-y-auto max-h-[550px] relative rounded-xl">
-            <table className="w-full text-xs sm:text-sm text-right border-collapse border-2 border-black table-auto">
-              <thead className="sticky top-0 z-20 text-[#0F1419] font-bold text-xs bg-[#00D9B5]">
+            <table className="w-full text-[15px] text-right border-collapse border-2 border-black table-auto">
+              <thead className="sticky top-0 z-20 text-[#171412] font-black text-[13px] bg-[#E7E2D8]">
                 <tr>
-                  <th className="p-2 border border-black text-center w-10 bg-[#00D9B5] sticky top-0 z-20">
+                  <th className="p-2 border border-black text-center w-10 bg-[#E7E2D8] sticky top-0 z-20">
                     م
                   </th>
                   {COLS.map((c) => (
                     <th
                       key={c.key}
-                      className="p-2 border border-black min-w-[80px] cursor-pointer hover:bg-[#1EE8C6] transition-colors select-none sticky top-0 z-20 bg-[#00D9B5]"
+                      className="p-2 border border-black min-w-[80px] cursor-pointer hover:bg-[#DCD5C6] transition-colors select-none sticky top-0 z-20 bg-[#E7E2D8]"
                       onClick={() => toggleSort(c.key)}
                     >
                       <div className="flex items-center justify-center gap-1.5">
                         <span>{c.label}</span>
-                        <span className="text-[10px] text-[#0F1419]/70 font-mono">
+                        <span className="text-[10px] text-[#2563AC] font-mono">
                           {sortIndicator(sortKey === c.key, sortDir)}
                         </span>
                       </div>
                     </th>
                   ))}
-                  <th className="p-2 border border-black text-center bg-[#00D9B5] sticky top-0 z-20 min-w-[60px]">
+                  <th className="p-2 border border-black text-center bg-[#E7E2D8] sticky top-0 z-20 min-w-[60px]">
                     إجراءات
                   </th>
                 </tr>
-                <tr className="bg-[#141B22]">
-                  <th className="p-1 border border-black bg-[#141B22]"></th>
+                <tr className="accounts-print-hide bg-[#F2EFEA]">
+                  <th className="p-1 border border-black bg-[#F2EFEA]"></th>
                   {COLS.map((c) => (
-                    <th key={c.key} className="p-1 border border-black bg-[#141B22]">
+                    <th key={c.key} className="p-1 border border-black bg-[#F2EFEA]">
                       <input
                         value={filters[c.key] || ""}
                         onChange={(e) => setFilter(c.key, e.target.value)}
                         placeholder="تصفية..."
-                        className="w-full px-1.5 py-1 text-[11px] border border-white/15 rounded bg-[#0F1419] text-[#E8EDF2] outline-none focus:border-[#00D9B5] font-medium transition-colors placeholder:text-[#8B98A5]/60"
+                        className="w-full px-1.5 py-1 text-[12px] border border-black/15 rounded bg-white text-[#171412] outline-none focus:border-[#171412] font-bold transition-colors"
                       />
                     </th>
                   ))}
-                  <th className="p-1 border border-black bg-[#141B22]"></th>
+                  <th className="p-1 border border-black bg-[#F2EFEA]"></th>
                 </tr>
               </thead>
 
-              <tbody className="text-[#C9D3DC] font-medium">
+              <tbody className="text-[#171412] font-bold">
                 {filteredWithBalance.length === 0 ? (
                   <tr>
                     <td
                       colSpan={COLS.length + 2}
-                      className="p-12 text-center text-[#8B98A5] font-bold border border-black bg-[#1A2129]"
+                      className="p-12 text-center text-[#6B655D] font-black border border-black bg-white"
                     >
                       لا توجد بيانات تطابق مرشحات البحث.
                     </td>
                   </tr>
                 ) : (
                   filteredWithBalance.map((acc, index) => (
-                    <tr key={acc.id} className="odd:bg-[#1A2129] even:bg-[#171E26] hover:bg-[#202A34] transition-colors group">
-                      <td className="p-2 border border-black text-center font-mono tabular-nums text-[#8B98A5]">
+                    <tr key={acc.id} className="odd:bg-white even:bg-[#FAF9F6] hover:bg-[#F0EBDE] transition-colors group">
+                      <td className="p-2 border border-black text-center font-mono tabular-nums text-[#6B655D]">
                         {index + 1}
                       </td>
                       <td className="p-2 border border-black font-mono tabular-nums min-w-[85px] text-center">
                         {acc.date}
                       </td>
-                      <td className="p-2 border border-black font-mono tabular-nums font-bold text-center">
+                      <td className="p-2 border border-black font-mono tabular-nums font-black text-center">
                         {acc.hafizaNo || "—"}
                       </td>
                       <td className="p-2 border border-black font-mono tabular-nums text-center">
@@ -801,26 +840,26 @@ export default function AccountsTab() {
                       <td className="p-2 border border-black font-mono tabular-nums min-w-[85px] text-center">
                         {acc.checkDate || "—"}
                       </td>
-                      <td className="p-2 border border-black min-w-[140px] text-[#E8EDF2]">
+                      <td className="p-2 border border-black min-w-[140px] text-[#171412]">
                         {acc.description || "—"}
                       </td>
                       <td className="p-2 border border-black min-w-[100px]">
                         {acc.specialty || "—"}
                       </td>
-                      <td className="p-2 border border-black font-bold min-w-[120px] text-[#E8EDF2]">
+                      <td className="p-2 border border-black font-black min-w-[120px] text-[#171412]">
                         {acc.name || "—"}
                       </td>
                       <td className="p-2 border border-black font-mono tabular-nums text-center">
                         {Number(acc.hafizaAmount) > 0 ? fmt(Number(acc.hafizaAmount)) : "—"}
                       </td>
-                      <td className="p-2 border border-black font-mono tabular-nums font-bold text-[#34D399] text-center bg-[#34D399]/[0.06]">
+                      <td className="p-2 border border-black font-mono tabular-nums font-black text-[#1E8E5A] text-center bg-[#1E8E5A]/[0.06]">
                         {Number(acc.income) > 0 ? fmt(Number(acc.income)) : "—"}
                       </td>
-                      <td className="p-2 border border-black font-mono tabular-nums font-bold text-[#F87171] text-center bg-[#F87171]/[0.06]">
+                      <td className="p-2 border border-black font-mono tabular-nums font-black text-[#D14343] text-center bg-[#D14343]/[0.06]">
                         {Number(acc.expense) > 0 ? fmt(Number(acc.expense)) : "—"}
                       </td>
 
-                      <td className="p-1 border border-black text-center min-w-[110px]">
+                      <td className="accounts-print-hide p-1 border border-black text-center min-w-[110px]">
                         <select
                           value={acc.revenueKey || ""}
                           onChange={(e) => {
@@ -828,25 +867,25 @@ export default function AccountsTab() {
                             updateAccount(acc.id, { ...acc, revenueKey: newKey || undefined });
                             toast.success("تم ربط رمز الإيراد بنجاح");
                           }}
-                          className="w-full p-1 text-[11px] font-bold text-[#00D9B5] bg-[#00D9B5]/10 border border-[#00D9B5]/30 rounded outline-none focus:border-[#00D9B5] cursor-pointer"
+                          className="w-full p-1 text-[11px] font-black text-[#7C3AED] bg-[#7C3AED]/5 border border-[#7C3AED]/25 rounded outline-none focus:border-[#7C3AED] cursor-pointer"
                         >
-                          <option value="" className="bg-[#141B22] text-[#E8EDF2]">— ربط الرمز —</option>
+                          <option value="">— ربط الرمز —</option>
                           {revenueTypes.map((t) => (
-                            <option key={t.key} value={t.key} className="bg-[#141B22] text-[#E8EDF2]">
+                            <option key={t.key} value={t.key}>
                               {t.key}
                             </option>
                           ))}
                         </select>
                       </td>
 
-                      <td className="p-2 border border-black font-mono tabular-nums font-black text-[#00D9B5] text-center bg-[#00D9B5]/[0.08]">
+                      <td className="p-2 border border-black font-mono tabular-nums font-black text-[#2563AC] text-center bg-[#2563AC]/[0.06]">
                         {fmt(acc.balance)}
                       </td>
-                      <td className="p-2 border border-black text-center">
+                      <td className="accounts-print-hide p-2 border border-black text-center">
                         <div className="flex justify-center gap-1.5">
                           <button
                             onClick={() => setEditingRow(acc)}
-                            className="p-1 text-[#34D399] hover:bg-[#34D399]/10 rounded transition-colors"
+                            className="p-1 text-[#1E8E5A] hover:bg-[#1E8E5A]/10 rounded transition-colors"
                           >
                             <Edit className="w-4 h-4" />
                           </button>
@@ -854,7 +893,7 @@ export default function AccountsTab() {
                             onClick={() => {
                               if (confirm("هل أنت متأكد من الحذف؟")) deleteAccount(acc.id);
                             }}
-                            className="p-1 text-[#F87171] hover:bg-[#F87171]/10 rounded transition-colors"
+                            className="p-1 text-[#D14343] hover:bg-[#D14343]/10 rounded transition-colors"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -866,21 +905,21 @@ export default function AccountsTab() {
               </tbody>
               {filteredWithBalance.length > 0 && (
                 <tfoot>
-                  <tr className="bg-[#141B22]">
-                    <td colSpan={10} className="p-2.5 border border-black text-left font-bold text-[#E8EDF2] text-xs">
+                  <tr className="bg-[#E7E2D8]">
+                    <td colSpan={10} className="p-2.5 border border-black text-left font-black text-[#171412] text-sm">
                       رصيد الإقفال
                     </td>
-                    <td className="p-2.5 border border-black font-mono tabular-nums font-bold text-[#34D399] text-center">
+                    <td className="p-2.5 border border-black font-mono tabular-nums font-black text-[#1E8E5A] text-center">
                       {fmt(totalIncome)}
                     </td>
-                    <td className="p-2.5 border border-black font-mono tabular-nums font-bold text-[#F87171] text-center">
+                    <td className="p-2.5 border border-black font-mono tabular-nums font-black text-[#D14343] text-center">
                       {fmt(totalExpense)}
                     </td>
                     <td className="border border-black"></td>
-                    <td className="p-2.5 border border-black font-mono tabular-nums font-black text-[#00D9B5] text-center bg-[#00D9B5]/10">
+                    <td className="p-2.5 border border-black font-mono tabular-nums font-black text-[#2563AC] text-center bg-[#2563AC]/10">
                       {fmt(currentBalance)}
                     </td>
-                    <td className="border border-black"></td>
+                    <td className="accounts-print-hide border border-black"></td>
                   </tr>
                 </tfoot>
               )}
@@ -899,95 +938,95 @@ export default function AccountsTab() {
           <form onSubmit={handleEditSave} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-[11px] font-bold text-[#8B98A5] mb-1 tracking-wide">التاريخ</label>
+                <label className="block text-[12px] font-black text-[#171412]/70 mb-1 tracking-wide">التاريخ</label>
                 <input
                   type="date"
                   value={editingRow.date}
                   onChange={(e) => setEditingRow({ ...editingRow, date: e.target.value })}
-                  className="w-full p-2 text-sm border border-white/10 rounded-xl outline-none bg-[#141B22] text-[#E8EDF2] focus:border-[#00D9B5]"
+                  className="w-full p-2 text-[15px] border border-black/15 rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
                   required
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-bold text-[#8B98A5] mb-1 tracking-wide">رقم الحافظة</label>
+                <label className="block text-[12px] font-black text-[#171412]/70 mb-1 tracking-wide">رقم الحافظة</label>
                 <input
                   value={editingRow.hafizaNo}
                   onChange={(e) => setEditingRow({ ...editingRow, hafizaNo: e.target.value })}
-                  className="w-full p-2 text-sm border border-white/10 rounded-xl outline-none bg-[#141B22] text-[#E8EDF2] focus:border-[#00D9B5]"
+                  className="w-full p-2 text-[15px] border border-black/15 rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-bold text-[#8B98A5] mb-1 tracking-wide">رقم الإشعار</label>
+                <label className="block text-[12px] font-black text-[#171412]/70 mb-1 tracking-wide">رقم الإشعار</label>
                 <input
                   value={editingRow.notifyNo}
                   onChange={(e) => setEditingRow({ ...editingRow, notifyNo: e.target.value })}
-                  className="w-full p-2 text-sm border border-white/10 rounded-xl outline-none bg-[#141B22] text-[#E8EDF2] focus:border-[#00D9B5]"
+                  className="w-full p-2 text-[15px] border border-black/15 rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-bold text-[#8B98A5] mb-1 tracking-wide">تاريخ التوريد</label>
+                <label className="block text-[12px] font-black text-[#171412]/70 mb-1 tracking-wide">تاريخ التوريد</label>
                 <input
                   type="date"
                   value={editingRow.notifyDate}
                   onChange={(e) => setEditingRow({ ...editingRow, notifyDate: e.target.value })}
-                  className="w-full p-2 text-sm border border-white/10 rounded-xl outline-none bg-[#141B22] text-[#E8EDF2] focus:border-[#00D9B5]"
+                  className="w-full p-2 text-[15px] border border-black/15 rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
                 />
               </div>
               <div className="sm:col-span-2">
-                <label className="block text-[11px] font-bold text-[#8B98A5] mb-1 tracking-wide">البيان والشرح</label>
+                <label className="block text-[12px] font-black text-[#171412]/70 mb-1 tracking-wide">البيان والشرح</label>
                 <input
                   value={editingRow.description}
                   onChange={(e) => setEditingRow({ ...editingRow, description: e.target.value })}
-                  className="w-full p-2 text-sm border border-white/10 rounded-xl outline-none bg-[#141B22] text-[#E8EDF2] focus:border-[#00D9B5]"
+                  className="w-full p-2 text-[15px] border border-black/15 rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-bold text-[#8B98A5] mb-1 tracking-wide">الاسم</label>
+                <label className="block text-[12px] font-black text-[#171412]/70 mb-1 tracking-wide">الاسم</label>
                 <input
                   value={editingRow.name}
                   onChange={(e) => setEditingRow({ ...editingRow, name: e.target.value })}
-                  className="w-full p-2 text-sm border border-white/10 rounded-xl outline-none bg-[#141B22] text-[#E8EDF2] focus:border-[#00D9B5]"
+                  className="w-full p-2 text-[15px] border border-black/15 rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-bold text-[#8B98A5] mb-1 tracking-wide">مبلغ الحافظة</label>
+                <label className="block text-[12px] font-black text-[#171412]/70 mb-1 tracking-wide">مبلغ الحافظة</label>
                 <input
                   type="number"
                   value={editingRow.hafizaAmount}
                   onChange={(e) => setEditingRow({ ...editingRow, hafizaAmount: e.target.value })}
-                  className="w-full p-2 text-sm border border-white/10 rounded-xl outline-none bg-[#141B22] text-[#E8EDF2] focus:border-[#00D9B5] font-mono tabular-nums"
+                  className="w-full p-2 text-[15px] border border-black/15 rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412] font-mono tabular-nums"
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-bold text-[#34D399] mb-1 tracking-wide">الإيرادات</label>
+                <label className="block text-[12px] font-black text-[#1E8E5A] mb-1 tracking-wide">الإيرادات</label>
                 <input
                   type="number"
                   value={editingRow.income}
                   onChange={(e) => setEditingRow({ ...editingRow, income: e.target.value })}
-                  className="w-full p-2 text-sm border border-[#34D399]/30 rounded-xl bg-[#34D399]/5 text-[#34D399] font-bold outline-none focus:border-[#34D399] font-mono tabular-nums"
+                  className="w-full p-2 text-[15px] border border-[#1E8E5A]/30 rounded-xl bg-[#1E8E5A]/5 text-[#1E8E5A] font-black outline-none focus:border-[#1E8E5A] font-mono tabular-nums"
                 />
               </div>
               <div>
-                <label className="block text-[11px] font-bold text-[#F87171] mb-1 tracking-wide">المصروفات</label>
+                <label className="block text-[12px] font-black text-[#D14343] mb-1 tracking-wide">المصروفات</label>
                 <input
                   type="number"
                   value={editingRow.expense}
                   onChange={(e) => setEditingRow({ ...editingRow, expense: e.target.value })}
-                  className="w-full p-2 text-sm border border-[#F87171]/30 rounded-xl bg-[#F87171]/5 text-[#F87171] font-bold outline-none focus:border-[#F87171] font-mono tabular-nums"
+                  className="w-full p-2 text-[15px] border border-[#D14343]/30 rounded-xl bg-[#D14343]/5 text-[#D14343] font-black outline-none focus:border-[#D14343] font-mono tabular-nums"
                 />
               </div>
             </div>
-            <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
+            <div className="flex justify-end gap-3 pt-4 border-t border-black/10">
               <button
                 type="button"
                 onClick={() => setEditingRow(null)}
-                className="px-4 py-2 bg-white/5 text-[#C9D3DC] rounded-xl font-bold text-xs sm:text-sm hover:bg-white/10"
+                className="px-4 py-2 bg-black/5 text-[#171412] rounded-xl font-bold text-xs sm:text-sm hover:bg-black/10"
               >
                 إلغاء
               </button>
               <button
                 type="submit"
-                className="px-5 py-2 bg-[#00D9B5] text-[#0F1419] rounded-xl font-black text-xs sm:text-sm hover:bg-[#1EE8C6] shadow-[0_0_16px_rgba(0,217,181,0.3)]"
+                className="px-5 py-2 bg-[#171412] text-white rounded-xl font-black text-xs sm:text-sm hover:bg-[#2A2521]"
               >
                 حفظ التعديلات
               </button>
