@@ -1716,13 +1716,13 @@ const exportToPDF = (
             </button>
 
             <div className="relative">
-              <Search className="w-4 h-4 absolute right-2.5 top-2 text-purple-500" />
+              <Search className="w-4 h-4 absolute right-2.5 top-2 text-teal-500" />
               <input
                 type="text"
                 placeholder="بحث (الاسم، الدفعة، المساق)..."
                 value={search2026}
                 onChange={(e) => setSearch2026(e.target.value)}
-                className="pl-3 pr-8 py-1.5 rounded-lg text-xs border border-purple-300 outline-none focus:ring-2 focus:ring-purple-300 w-48 text-slate-800 shadow-sm"
+                className="pl-3 pr-8 py-1.5 rounded-lg text-xs border border-teal-300 outline-none focus:ring-2 focus:ring-teal-300 w-48 text-slate-800 shadow-sm"
               />
             </div>
 
@@ -1742,11 +1742,11 @@ const exportToPDF = (
 
             <button
               onClick={() => setNewPaymentModal(true)}
-              className="px-3 py-1.5 bg-purple-100 text-purple-800 rounded-lg text-xs font-bold shadow hover:bg-purple-200 transition-colors"
+              className="px-3 py-1.5 bg-white/20 text-white rounded-lg text-xs font-bold shadow hover:bg-white/30 transition-colors"
             >
               ➕ إضافة قسط
             </button>
-            <label className="px-3 py-1.5 bg-white text-purple-700 rounded-lg text-xs font-bold cursor-pointer shadow hover:bg-purple-50 transition-colors">
+            <label className="px-3 py-1.5 bg-white text-teal-700 rounded-lg text-xs font-bold cursor-pointer shadow hover:bg-teal-50 transition-colors">
               📥 استيراد{" "}
               <input
                 type="file"
@@ -1932,7 +1932,7 @@ const exportToPDF = (
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "name", e.target.value)
                               }
-                              className="w-full min-w-32 bg-transparent text-center text-black text-[11px] sm:text-xs outline-none focus:bg-white focus:ring-1 ring-purple-300 rounded px-1 py-1"
+                              className="w-full min-w-32 bg-transparent text-center text-black text-[11px] sm:text-xs outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
                             />
                           </td>
                           <td className="p-1 text-center text-black whitespace-nowrap bg-violet-50/70">
@@ -1941,17 +1941,17 @@ const exportToPDF = (
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "batch", e.target.value)
                               }
-                              className="w-full min-w-20 bg-transparent text-center text-black text-[11px] sm:text-xs outline-none focus:bg-white focus:ring-1 ring-purple-300 rounded px-1 py-1"
+                              className="w-full min-w-20 bg-transparent text-center text-black text-[11px] sm:text-xs outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
                               placeholder="—"
                             />
                           </td>
-                          <td className="p-1 text-center text-black whitespace-nowrap bg-purple-50/70">
+                          <td className="p-1 text-center text-black whitespace-nowrap bg-teal-50/60">
                             <input
                               value={r.specialty || ""}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "specialty", e.target.value)
                               }
-                              className="w-full min-w-24 bg-transparent text-center text-black text-[11px] sm:text-xs outline-none focus:bg-white focus:ring-1 ring-purple-300 rounded px-1 py-1"
+                              className="w-full min-w-24 bg-transparent text-center text-black text-[11px] sm:text-xs outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
                               placeholder="—"
                             />
                           </td>
@@ -1962,7 +1962,7 @@ const exportToPDF = (
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "prevDue", e.target.value)
                               }
-                              className="w-full min-w-20 bg-transparent text-center text-black text-[11px] sm:text-xs outline-none focus:bg-white focus:ring-1 ring-purple-300 rounded px-1 py-1"
+                              className="w-full min-w-20 bg-transparent text-center text-black text-[11px] sm:text-xs outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
                             />
                           </td>
                           <td className="p-1 text-center font-mono text-black font-bold whitespace-nowrap bg-indigo-50/70">
@@ -1972,7 +1972,7 @@ const exportToPDF = (
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "fees", e.target.value)
                               }
-                              className="w-full min-w-20 bg-transparent text-center text-black text-[11px] sm:text-xs outline-none focus:bg-white focus:ring-1 ring-purple-300 rounded px-1 py-1"
+                              className="w-full min-w-20 bg-transparent text-center text-black text-[11px] sm:text-xs outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
                             />
                           </td>
                           {MONTHS_2026.map((m) => {
@@ -2148,7 +2148,7 @@ const exportToPDF = (
               type="text"
               value={condFormatParams.text}
               onChange={(e) => setCondFormatParams({ ...condFormatParams, text: e.target.value })}
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-purple-300 outline-none"
+              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-teal-300 outline-none"
               placeholder="مثال: معتمد, منسحب, مجاني..."
             />
           </div>
@@ -2219,7 +2219,7 @@ const exportToPDF = (
               </button>
               <button
                 onClick={() => setCondFormatModal(false)}
-                className="px-4 py-2 bg-purple-600 text-white rounded-lg font-bold"
+                className="px-4 py-2 bg-teal-700 text-white rounded-lg font-bold"
               >
                 إغلاق
               </button>
@@ -2589,7 +2589,7 @@ const exportToPDF = (
                       setNewStudentName(n);
                       setShowSuggestions(false);
                     }}
-                    className="p-2 text-sm hover:bg-purple-50 cursor-pointer text-slate-800"
+                    className="p-2 text-sm hover:bg-teal-50 cursor-pointer text-slate-800"
                   >
                     {n}
                   </div>
@@ -2639,7 +2639,7 @@ const exportToPDF = (
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg font-bold"
+              className="px-4 py-2 bg-teal-700 text-white rounded-lg font-bold"
             >
               حفظ
             </button>
