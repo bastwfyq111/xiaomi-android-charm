@@ -80,7 +80,7 @@ const safePdfFileName = (value: any): string =>
     .replace(/\s+/g, "_")
     .trim() || "متدرب";
 
-// شبكة إحصائيات علوية
+// شبكة إحصائيات علوية بتصميم عصري
 const StatsGrid = ({ stats, columns = 3 }: { stats: any[]; columns?: number }) => {
   const colClass = columns === 4 ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-1 sm:grid-cols-3";
   return (
@@ -88,11 +88,18 @@ const StatsGrid = ({ stats, columns = 3 }: { stats: any[]; columns?: number }) =
       {stats.map((stat, idx) => (
         <div
           key={idx}
-          className={`${stat.bgClass} p-2 sm:p-3 rounded-lg text-center border ${stat.borderClass} shadow-sm`}
+          className={`${stat.bgClass} relative overflow-hidden min-h-[64px] px-3 py-2.5 rounded-2xl border ${stat.borderClass} shadow-sm hover:shadow-md active:scale-[0.99] transition-all`}
         >
-          <div className="text-xs sm:text-sm font-medium text-slate-600">{stat.label}</div>
-          <div className="text-sm sm:text-lg font-mono font-bold mt-1 text-slate-900 truncate">
-            {stat.value}
+          <span
+            className={`absolute inset-y-0 right-0 w-1.5 ${stat.accentClass || "bg-teal-500"}`}
+          />
+          <div className="pr-2 min-w-0">
+            <div className="text-[11px] sm:text-xs font-bold text-slate-500 truncate">
+              {stat.label}
+            </div>
+            <div className="text-base sm:text-xl font-mono font-extrabold mt-0.5 text-slate-900 tabular-nums truncate">
+              {stat.value}
+            </div>
           </div>
         </div>
       ))}
