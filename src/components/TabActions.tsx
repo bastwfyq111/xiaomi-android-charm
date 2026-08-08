@@ -84,7 +84,7 @@ export default function TabActions({
         table {
           width: 100%;
           border-collapse: collapse;
-          table-layout: fixed;
+          table-layout: auto;
           font-size: 10px;
         }
         th, td {
@@ -109,7 +109,7 @@ export default function TabActions({
           text-align: center;
           direction: ltr;
           color: #000 !important;
-          font-weight: 700;
+          font-weight: 1000;
         }
         .idx { width: 28px; text-align: center; color: #000 !important; font-weight: 700; }
         .total-row td {
