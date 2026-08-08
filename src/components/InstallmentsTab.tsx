@@ -22,6 +22,11 @@ import {
   Image as ImageIcon,
 } from "lucide-react";
 import TabActions from "./TabActions";
+import PrintSettingsModal, {
+  DEFAULT_PRINT_SETTINGS,
+  marginToCss,
+  type InstallmentsPrintSettings,
+} from "./PrintSettingsModal";
 import { openPrintDocument } from "@/lib/printDocument";
 
 const MONTHS_2025 = [
