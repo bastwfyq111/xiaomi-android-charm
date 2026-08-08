@@ -765,7 +765,7 @@ const exportToPDF = (
 
       table {
         font-size: ${fontSizePx.toFixed(2)}px;
-        table-layout: fixed !important;
+        table-layout: auto !important;
         width: 100% !important;
         border-collapse: collapse;
         border: 0.75pt solid #111;
@@ -1300,7 +1300,7 @@ const exportToPDF = (
       .info-box { border: 0.5pt solid #94a3b8; background: #f8fafc; padding: 8px; border-radius: 6px; text-align: center; }
       .info-lbl { font-size: 14px; font-weight: 600; color: #475569; text-align:center}
       .info-val { font-size: 14px; font-weight: 700; margin-top: 2px; }
-      table { table-layout: fixed; margin-top: 4px; }
+      table { table-layout: auto; margin-top: 4px; }
       th {
         background: #0f766e;
         color: #fff;
