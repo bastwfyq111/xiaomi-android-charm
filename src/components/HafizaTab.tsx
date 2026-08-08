@@ -184,30 +184,30 @@ export default function HafizaTab() {
   };
 
   return (
-    <div className="w-full min-h-screen p-4 md:p-8 bg-gradient-to-br from-amber-50 to-white text-slate-900" dir="rtl">
+    <div className="w-full min-h-screen p-3 bg-gradient-to-br from-amber-50 to-white text-slate-900" dir="rtl">
       {/* HERO */}
-      <div className="mb-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="mb-3 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl md:text-3xl font-extrabold flex items-center gap-3">
-            <span className="p-2 rounded-xl bg-gradient-to-br from-rose-100 to-amber-100 shadow-sm text-amber-700">
-              <Wallet className="w-6 h-6" />
+          <h1 className="text-xl md:text-2xl font-extrabold flex items-center gap-2">
+            <span className="p-2 rounded-lg bg-gradient-to-br from-rose-100 to-amber-100 shadow-sm text-amber-700">
+              <Wallet className="w-5 h-5" />
             </span>
-            لوحة الحوافظ — مظهر فاتح وناعم
+            لوحة الحوافظ — واجهة موبايل مدمجة
           </h1>
-          <p className="text-sm text-slate-600 mt-1">تصميم مُحسّن للهواتف: الحقول متجاورة على الشاشات الأكبر وتبقى مرتبة بشكل عملي.</p>
+          <p className="text-xs text-slate-600 mt-1">تصميم ملائم للهواتف: صفان من الحقول، عناصر متراصة وأقسام مرقمة بألوان مميزة.</p>
         </div>
 
         <div className="flex items-center gap-2">
           <div className="hidden sm:flex gap-2">
-            <Button onClick={() => setShowForm((s) => !s)} className="bg-gradient-to-r from-rose-400 to-orange-300 text-white rounded-2xl px-3 py-2 shadow">
-              <Plus className="w-4 h-4" /> {showForm ? "إخفاء النموذج" : "إضافة حافظة"}
+            <Button onClick={() => setShowForm((s) => !s)} className="bg-gradient-to-r from-rose-400 to-orange-300 text-white rounded-full px-3 py-1 text-sm shadow-sm">
+              <Plus className="w-4 h-4" /> {showForm ? "إخفاء" : "إضافة"}
             </Button>
             <ImportButton kind="hafiza" />
           </div>
 
           <div className="flex gap-2">
-            <Card className="px-3 py-2 bg-white border border-gray-200 rounded-2xl shadow-sm flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-rose-50 text-rose-600">
+            <Card className="px-3 py-2 bg-white border border-emerald-100 rounded-2xl shadow-sm flex items-center gap-3 border-l-4 border-emerald-200">
+              <div className="p-2 rounded-lg bg-emerald-50 text-emerald-600">
                 <Layers className="w-4 h-4" />
               </div>
               <div className="text-right">
@@ -216,7 +216,7 @@ export default function HafizaTab() {
               </div>
             </Card>
 
-            <Card className="px-3 py-2 bg-white border border-gray-200 rounded-2xl shadow-sm flex items-center gap-3">
+            <Card className="px-3 py-2 bg-white border border-amber-100 rounded-2xl shadow-sm flex items-center gap-3 border-l-4 border-amber-200">
               <div className="p-2 rounded-lg bg-amber-50 text-amber-700">
                 <ArrowUpRight className="w-4 h-4" />
               </div>
@@ -230,50 +230,50 @@ export default function HafizaTab() {
       </div>
 
       {/* MAIN LAYOUT: SIDEBAR + CONTENT */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
         {/* SIDEBAR */}
         <aside className="lg:col-span-3 flex flex-col gap-3">
-          <div className="sticky top-4 space-y-3">
-            <Card className="p-3 bg-white border border-gray-200 rounded-2xl shadow">
+          <div className="sticky top-4 space-y-2">
+            <Card className="p-3 bg-white border border-emerald-50 rounded-2xl shadow-sm border-l-4 border-emerald-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-xs text-slate-500 font-semibold">حالة التوازن</div>
-                  <div className="mt-2 text-sm font-bold text-slate-800">{fmt(totalHafizaAmount - totalNotifyAmount)}</div>
+                  <div className="text-xs text-slate-600 font-semibold">حالة التوازن</div>
+                  <div className="mt-1 text-sm font-bold text-slate-800">{fmt(totalHafizaAmount - totalNotifyAmount)}</div>
                 </div>
                 <div className="p-2 rounded-full bg-amber-50">
                   <Wallet className="w-5 h-5 text-amber-600" />
                 </div>
               </div>
 
-              <div className="mt-3">
-                <div className="text-[11px] text-slate-500 font-semibold">نسخة سريعة</div>
-                <div className="flex gap-2 mt-3">
-                  <Button size="sm" onClick={handleCopyAmountsToNotify} className="bg-emerald-500 text-white rounded-xl shadow-sm px-3 py-2">
-                    <CheckSquare className="w-4 h-4" /> نسخ مبالغ
+              <div className="mt-2">
+                <div className="text-[11px] text-slate-600 font-semibold">نسخة سريعة</div>
+                <div className="flex gap-2 mt-2">
+                  <Button size="sm" onClick={handleCopyAmountsToNotify} className="bg-emerald-500 text-white rounded-full shadow-sm px-3 py-1 text-sm">
+                    <CheckSquare className="w-4 h-4" />
                   </Button>
-                  <Button size="sm" variant="ghost" onClick={() => { setForm(empty); setNameQuery(""); }} className="rounded-xl text-slate-700/90 px-3 py-2 border border-gray-200">
-                    <Eraser className="w-4 h-4 text-orange-400" /> مسح
+                  <Button size="sm" variant="ghost" onClick={() => { setForm(empty); setNameQuery(""); }} className="rounded-full text-slate-700/90 px-3 py-1 border border-emerald-50 text-sm">
+                    <Eraser className="w-4 h-4 text-orange-400" />
                   </Button>
                 </div>
               </div>
             </Card>
 
-            <Card className="p-3 bg-white border border-gray-200 rounded-2xl shadow">
-              <div className="text-xs text-slate-500 font-semibold">إحصاءات سريعة</div>
-              <div className="mt-3 space-y-2">
+            <Card className="p-3 bg-white border border-indigo-50 rounded-2xl shadow-sm border-l-4 border-indigo-200">
+              <div className="text-xs text-slate-600 font-semibold">إحصاءات سريعة</div>
+              <div className="mt-2 space-y-1">
                 <Stat label="حوافظ مسجلة" value={`${hafiza.length}`} icon={<Layers className="w-4 h-4 text-indigo-400" />} />
                 <Stat label="المبلغ الكلي" value={fmt(totalHafizaAmount)} icon={<Banknote className="w-4 h-4 text-emerald-400" />} />
                 <Stat label="ترحيلات التوريد" value={fmt(totalNotifyAmount)} icon={<CreditCard className="w-4 h-4 text-teal-400" />} />
               </div>
             </Card>
 
-            <Card className="p-3 bg-white border border-gray-200 rounded-2xl shadow">
+            <Card className="p-3 bg-white border border-pink-50 rounded-2xl shadow-sm border-l-4 border-pink-200">
               <div className="flex items-center justify-between">
                 <div className="text-sm font-bold">تلميحات</div>
                 <PartyPopper className="w-5 h-5 text-pink-400" />
               </div>
-              <div className="mt-2 text-xs text-slate-500">
-                اضغط على أي خلية لبدء التعديل، أو استخدم زر "نسخ مبالغ" لنسخ مبالغ الحافظة إلى عمود التوريد تلقائياً.
+              <div className="mt-1 text-xs text-slate-600">
+                اضغط على أي خلية لبدء التعديل أو استخدم زر "نسخ مبالغ" لنسخ مبالغ الحافظة إلى عمود التوريد تلقائياً.
               </div>
             </Card>
           </div>
@@ -283,16 +283,16 @@ export default function HafizaTab() {
         <main className="lg:col-span-9 space-y-3">
           {/* FORM (قابلة للطي) */}
           <div className={`transition-all duration-300 ${showForm ? "max-h-[1400px] opacity-100" : "max-h-0 opacity-0 overflow-hidden"}`}>
-            <Card className="p-4 bg-white rounded-3xl border border-gray-200 shadow-lg">
-              <div className="flex items-start justify-between gap-3">
+            <Card className="p-3 bg-white rounded-2xl border border-rose-50 shadow-sm border-l-4 border-rose-200">
+              <div className="flex items-start justify-between gap-2">
                 <div className="flex-1">
-                  <h3 className="text-lg font-bold flex items-center gap-2">
-                    <span className="p-2 rounded-lg bg-rose-50 text-rose-700">
+                  <h3 className="text-md font-bold flex items-center gap-2">
+                    <span className="p-2 rounded-md bg-rose-50 text-rose-700">
                       <Plus className="w-4 h-4" />
                     </span>
-                    إضافة حافظة جديدة
+                    إضافة حافظة
                   </h3>
-                  <p className="text-sm text-slate-600 mt-1">املأ الحقول ثم اضغط حفظ — تخطيط أفقي على الشاشات العريضة.</p>
+                  <p className="text-xs text-slate-600 mt-1">صفان من الحقول في كل صف — تصميم مدمج للهواتف.</p>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -300,13 +300,13 @@ export default function HafizaTab() {
                 </div>
               </div>
 
-              <CardContent className="p-0 mt-4">
-                {/* responsive grid: mobile single column, small screens 2 cols, md 4 cols for more horizontal layout */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-                  <div className="sm:col-span-2 md:col-span-2">
-                    <label className="text-xs font-semibold text-slate-700 mb-1 block">اسم المتدرب الكامل *</label>
+              <CardContent className="p-0 mt-3">
+                {/* compact grid: always two columns so each row shows 2 fields */}
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-xs font-semibold text-slate-700 mb-1 block">الاسم الكامل *</label>
                     <div className="relative">
-                      <div className="absolute right-3 top-1/2 -translate-y-1/2 bg-white p-2 rounded-lg border border-gray-100">
+                      <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-white p-1 rounded-md border border-gray-100">
                         <User className="w-4 h-4 text-amber-500" />
                       </div>
                       <Input
@@ -318,17 +318,17 @@ export default function HafizaTab() {
                         }}
                         onFocus={() => setShowSugg(true)}
                         onBlur={() => setTimeout(() => setShowSugg(false), 200)}
-                        placeholder="ابحث أو اكتب اسم المتدرب..."
-                        className="pr-12 bg-white text-slate-900 border border-gray-300 rounded-xl h-11"
+                        placeholder="ابحث أو اكتب..."
+                        className="pr-10 bg-white text-slate-900 border border-gray-200 rounded-md h-8 text-sm"
                       />
                     </div>
 
                     {showSugg && nameSuggestions.length > 0 && (
-                      <ul className="absolute z-50 left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto text-slate-900">
+                      <ul className="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow max-h-40 overflow-y-auto text-slate-900 text-sm">
                         {nameSuggestions.map((t) => (
                           <li key={t.name + t.batch}>
-                            <button type="button" onMouseDown={() => pickName(t)} className="w-full text-right px-3 py-2 hover:bg-amber-50 transition-colors flex flex-col">
-                              <span className="font-bold text-slate-800 text-sm">{t.name}</span>
+                            <button type="button" onMouseDown={() => pickName(t)} className="w-full text-right px-2 py-2 hover:bg-amber-50 transition-colors flex flex-col">
+                              <span className="font-medium text-slate-800 text-sm">{t.name}</span>
                               <span className="text-xs text-slate-500">{t.specialty} — {t.batch}</span>
                             </button>
                           </li>
@@ -338,18 +338,18 @@ export default function HafizaTab() {
                   </div>
 
                   <FieldDark label="الدفعة" icon={<Sparkles className="w-4 h-4 text-amber-500" />} v={form.batch} on={(v) => setForm({ ...form, batch: v })} />
-                  <FieldDark label="التخصص الطبي" icon={<FileText className="w-4 h-4 text-emerald-500" />} v={form.specialty} on={(v) => setForm({ ...form, specialty: v })} />
+                  <FieldDark label="التخصص" icon={<FileText className="w-4 h-4 text-emerald-500" />} v={form.specialty} on={(v) => setForm({ ...form, specialty: v })} />
                   <FieldDark label="التاريخ" type="date" icon={<Calendar className="w-4 h-4 text-rose-400" />} v={form.date} on={(v) => setForm({ ...form, date: v })} />
-                  <FieldDark label="رقم الحافظة *" icon={<Hash className="w-4 h-4 text-violet-400" />} v={form.hafizaNo} on={(v) => setForm({ ...form, hafizaNo: v })} />
-                  <FieldDark label="مبلغ الحافظة *" type="number" icon={<Banknote className="w-4 h-4 text-teal-400" />} v={form.hafizaAmount} on={(v) => setForm({ ...form, hafizaAmount: v })} />
+                  <FieldDark label="رقم الحافظة" icon={<Hash className="w-4 h-4 text-violet-400" />} v={form.hafizaNo} on={(v) => setForm({ ...form, hafizaNo: v })} />
+                  <FieldDark label="مبلغ الحافظة" type="number" icon={<Banknote className="w-4 h-4 text-teal-400" />} v={form.hafizaAmount} on={(v) => setForm({ ...form, hafizaAmount: v })} />
 
                   <div>
-                    <label className="text-xs font-semibold text-slate-700 mb-1 block">البيان والشرح</label>
+                    <label className="text-xs font-semibold text-slate-700 mb-1 block">البيان</label>
                     <div className="relative">
-                      <div className="absolute right-3 top-1/2 -translate-y-1/2 bg-white p-2 rounded-lg border border-gray-100">
+                      <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-white p-1 rounded-md border border-gray-100">
                         <ScrollText className="w-4 h-4 text-cyan-500" />
                       </div>
-                      <Input list="hafiza-descriptions" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="اكتب أو اختر..." className="pr-12 bg-white text-slate-900 border border-gray-300 rounded-xl h-11" />
+                      <Input list="hafiza-descriptions" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="اكتب أو اختر..." className="pr-10 bg-white text-slate-900 border border-gray-200 rounded-md h-8 text-sm" />
                     </div>
                     <datalist id="hafiza-descriptions">
                       {Array.from(new Set([...DESCRIPTIONS, ...hafiza.map((h) => h.description).filter(Boolean)])).map((d) => (
@@ -361,14 +361,15 @@ export default function HafizaTab() {
                   <FieldDark label="تاريخ التوريد" type="date" icon={<Calendar className="w-4 h-4 text-orange-400" />} v={form.notifyDate} on={(v) => setForm({ ...form, notifyDate: v })} />
                   <FieldDark label="رقم الاشعار" icon={<Hash className="w-4 h-4 text-pink-400" />} v={form.notifyNo} on={(v) => setForm({ ...form, notifyNo: v })} />
                   <FieldDark label="مبلغ التوريد" type="number" icon={<CreditCard className="w-4 h-4 text-indigo-400" />} v={form.notifyAmount} on={(v) => setForm({ ...form, notifyAmount: v })} />
+
                 </div>
 
-                <div className="mt-3 flex items-center gap-2 justify-end">
-                  <Button onClick={submit} className="bg-gradient-to-r from-rose-400 to-orange-300 text-white rounded-xl py-2 px-4 shadow">
+                <div className="mt-2 flex items-center gap-2 justify-end">
+                  <Button onClick={submit} className="bg-gradient-to-r from-rose-400 to-orange-300 text-white rounded-md py-1 px-3 text-sm shadow-sm">
                     <Save className="w-4 h-4" /> حفظ
                   </Button>
-                  <Button variant="outline" onClick={() => { setForm(empty); setNameQuery(""); }} className="rounded-xl py-2 px-4 text-slate-700 border border-gray-300">
-                    <Eraser className="w-4 h-4 text-orange-400" /> مسح الحقول
+                  <Button variant="outline" onClick={() => { setForm(empty); setNameQuery(""); }} className="rounded-md py-1 px-3 text-sm text-slate-700 border border-gray-200">
+                    <Eraser className="w-4 h-4 text-orange-400" /> مسح
                   </Button>
                 </div>
               </CardContent>
@@ -376,15 +377,15 @@ export default function HafizaTab() {
           </div>
 
           {/* TABLE CARD */}
-          <Card className="p-0 bg-white rounded-3xl border border-gray-200 shadow-lg">
-            <CardHeader className="flex items-center justify-between p-3 border-b border-gray-200">
+          <Card className="p-0 bg-white rounded-2xl border border-amber-50 shadow-sm border-l-4 border-amber-200">
+            <CardHeader className="flex items-center justify-between p-3 border-b border-gray-100">
               <div className="flex items-center gap-3">
                 <div className="p-2 rounded-lg bg-amber-50 text-amber-600">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
-                  <CardTitle className="text-lg font-bold text-slate-800">كشف القيود</CardTitle>
-                  <CardDescription className="text-sm text-slate-500">عرض وتدقيق كافة حوافظ التوريد</CardDescription>
+                  <CardTitle className="text-md font-bold text-slate-800">كشف القيود</CardTitle>
+                  <CardDescription className="text-sm text-slate-600">عرض وتدقيق كافة حوافظ التوريد</CardDescription>
                 </div>
                 <Badge className="mr-4 bg-amber-300 text-slate-900">{filtered.length} سجل</Badge>
               </div>
@@ -395,18 +396,18 @@ export default function HafizaTab() {
                     value={filters.name || ""}
                     onChange={(e) => setFilter("name", e.target.value)}
                     placeholder="بحث بالاسم..."
-                    className="px-3 py-2 rounded-full border border-gray-300 text-sm bg-white text-slate-800"
+                    className="px-2 py-1 rounded-full border border-gray-200 text-sm bg-white text-slate-800"
                   />
-                  <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
+                  <Search className="w-4 h-4 absolute left-2 top-2 text-slate-400" />
                 </div>
 
-                <Button size="sm" onClick={handleCopyAmountsToNotify} className="bg-emerald-500 text-white rounded-full px-3 py-2">
-                  <CheckSquare className="w-4 h-4" /> نسخ المبالغ
+                <Button size="sm" onClick={handleCopyAmountsToNotify} className="bg-emerald-500 text-white rounded-full px-2 py-1 text-sm">
+                  <CheckSquare className="w-4 h-4" />
                 </Button>
 
                 {Object.values(filters).some(Boolean) && (
                   <Button variant="ghost" size="sm" onClick={clearFilters} className="text-red-500">
-                    <X className="w-4 h-4" /> مسح الفلاتر
+                    <X className="w-4 h-4" />
                   </Button>
                 )}
 
@@ -423,11 +424,11 @@ export default function HafizaTab() {
                       {COLS.map((c) => (
                         <TableHead key={c.key} className="text-center py-2">
                           <div className="flex flex-col items-center">
-                            <button onClick={() => toggleSort(c.key)} className="flex items-center gap-2 text-slate-800">
-                              <span className="font-bold text-sm">{c.label}</span>
+                            <button onClick={() => toggleSort(c.key)} className="flex items-center gap-2 text-slate-800 text-sm">
+                              <span className="font-semibold">{c.label}</span>
                               {sortIndicator(sortKey, sortDir, c.key)}
                             </button>
-                            <div className="mt-2 relative">
+                            <div className="mt-1 relative">
                               <Filter className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
                               <input
                                 value={filters[c.key] || ""}
@@ -445,8 +446,8 @@ export default function HafizaTab() {
 
                   <TableBody>
                     {filtered.map((row, idx) => (
-                      <TableRow key={row.id} className="hover:bg-gray-50 transition-colors">
-                        <TableCell className="text-center text-slate-500">{idx + 1}</TableCell>
+                      <TableRow key={row.id} className="hover:bg-amber-50 transition-colors">
+                        <TableCell className="text-center text-slate-600 text-sm">{idx + 1}</TableCell>
                         {COLS.map((c) => {
                           const isEditing = activeCell?.rowId === row.id && activeCell?.colKey === c.key;
                           const val = (row as any)[c.key];
@@ -455,7 +456,7 @@ export default function HafizaTab() {
                           return (
                             <TableCell
                               key={c.key}
-                              className={`text-center py-2 align-middle ${isEditing ? "bg-amber-50" : "cursor-pointer"}`}
+                              className={`text-center py-1 align-middle ${isEditing ? "bg-amber-50" : "cursor-pointer"}`}
                               onClick={() => !isEditing && handleCellClick(row.id, c.key, val)}
                             >
                               {isEditing ? (
@@ -465,10 +466,10 @@ export default function HafizaTab() {
                                   onChange={(e) => setCellValue(e.target.value)}
                                   onBlur={() => handleCellSave(row as Record<string, unknown> & { id: string })}
                                   onKeyDown={(e) => e.key === "Enter" && handleCellSave(row as Record<string, unknown> & { id: string })}
-                                  className="h-9 text-sm bg-white text-slate-900 border-2 border-amber-400 text-center rounded-xl"
+                                  className="h-8 text-sm bg-white text-slate-900 border-2 border-amber-400 text-center rounded-md"
                                 />
                               ) : (
-                                <span className={`${isMoney ? "font-mono font-bold text-amber-600 px-2 py-1 rounded-md bg-amber-50 inline-block" : "text-slate-800 font-medium"}`}>
+                                <span className={`${isMoney ? "font-mono font-bold text-amber-700 px-2 py-1 rounded-md bg-amber-50 inline-block text-sm" : "text-slate-800 font-medium text-sm"}`}>
                                   {isMoney ? fmt(Number(val) || 0) : String(val ?? "")}
                                 </span>
                               )}
@@ -495,13 +496,13 @@ export default function HafizaTab() {
 
                     {filtered.length === 0 && (
                       <TableRow>
-                        <TableCell colSpan={COLS.length + 2} className="h-44 text-center">
-                          <div className="flex flex-col items-center justify-center gap-3 text-slate-500">
-                            <div className="p-3 rounded-full bg-amber-50">
-                              <Search className="w-8 h-8 opacity-60 text-amber-500" />
+                        <TableCell colSpan={COLS.length + 2} className="h-36 text-center">
+                          <div className="flex flex-col items-center justify-center gap-2 text-slate-600">
+                            <div className="p-2 rounded-full bg-amber-50">
+                              <Search className="w-6 h-6 opacity-60 text-amber-500" />
                             </div>
-                            <div className="font-bold text-slate-700">لا توجد سجلات مطابقة للبحث</div>
-                            <div className="text-xs text-slate-500">جرب تعديل عوامل التصفية أو إضافة سجل جديد</div>
+                            <div className="font-bold text-slate-700">لا توجد سجلات مطابقة</div>
+                            <div className="text-xs text-slate-600">جرب تعديل عوامل التصفية أو إضافة سجل جديد</div>
                           </div>
                         </TableCell>
                       </TableRow>
@@ -514,11 +515,11 @@ export default function HafizaTab() {
                         <TableCell className="text-center font-bold text-slate-600">∑</TableCell>
                         <TableCell className="text-center font-bold text-slate-800">إجمالي الصفحة</TableCell>
                         <TableCell colSpan={5}></TableCell>
-                        <TableCell className="text-center font-mono font-bold text-amber-600">
+                        <TableCell className="text-center font-mono font-bold text-amber-700 text-sm">
                           {fmt(totalHafizaAmount)}
                         </TableCell>
                         <TableCell colSpan={2}></TableCell>
-                        <TableCell className="text-center font-mono font-bold text-emerald-600">
+                        <TableCell className="text-center font-mono font-bold text-emerald-700 text-sm">
                           {fmt(totalNotifyAmount)}
                         </TableCell>
                         <TableCell></TableCell>
@@ -535,7 +536,7 @@ export default function HafizaTab() {
       {/* Floating Action Button for small screens */}
       <button
         onClick={() => setShowForm((s) => !s)}
-        className="fixed bottom-4 left-4 md:left-auto md:right-6 z-50 bg-gradient-to-br from-rose-400 to-orange-300 text-white p-3 rounded-full shadow-2xl hover:scale-105 transition-transform"
+        className="fixed bottom-4 left-4 md:left-auto md:right-6 z-50 bg-gradient-to-br from-rose-400 to-orange-300 text-white p-2 rounded-full shadow-lg hover:scale-105 transition-transform"
         aria-label="Toggle form"
       >
         <Plus className="w-5 h-5" />
@@ -561,10 +562,10 @@ function FieldDark({
 }) {
   return (
     <div className="w-full">
-      <label className="text-xs font-semibold text-slate-700 mb-1 block">{label}</label>
+      <label className="text-xs font-medium text-slate-700 mb-1 block">{label}</label>
       <div className="relative">
         {icon && (
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-white p-2 rounded-lg border border-gray-100">
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white p-1 rounded-md border border-gray-100">
             {icon}
           </div>
         )}
@@ -572,7 +573,7 @@ function FieldDark({
           type={type}
           value={v}
           onChange={(e) => on(e.target.value)}
-          className={`${icon ? "pr-12" : "px-3"} bg-white text-slate-900 border border-gray-300 rounded-xl h-11 ${className}`}
+          className={`${icon ? "pr-10" : "px-2"} bg-white text-slate-900 border border-gray-200 rounded-md h-8 text-sm ${className}`}
         />
       </div>
     </div>
@@ -582,10 +583,10 @@ function FieldDark({
 function Stat({ label, value, icon }: { label: string; value: string; icon: React.ReactNode }) {
   return (
     <div className="flex items-center justify-between">
-      <div className="text-xs text-slate-500">{label}</div>
-      <div className="flex items-center gap-3">
+      <div className="text-xs text-slate-600">{label}</div>
+      <div className="flex items-center gap-2">
         <div className="text-sm font-semibold text-slate-800">{value}</div>
-        <div className="p-2 rounded-md bg-amber-50">{icon}</div>
+        <div className="p-1 rounded-md bg-amber-50">{icon}</div>
       </div>
     </div>
   );
