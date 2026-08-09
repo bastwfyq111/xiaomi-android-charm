@@ -209,8 +209,16 @@ export default function TabActions({
       });
       toast.success("تم تنزيل الملف بنجاح");
     } catch (err) {
+      // === نسخة تشخيصية مؤقتة ===
+      // نعرض رسالة الخطأ الفعلية بدل الرسالة العامة، لمعرفة السبب الحقيقي
       console.error("PDF export error:", err);
-      toast.error("حدث خطأ أثناء تنزيل الملف");
+      const message =
+        err instanceof Error
+          ? `${err.name}: ${err.message}`
+          : typeof err === "string"
+          ? err
+          : JSON.stringify(err);
+      toast.error(`فشل تنزيل PDF — التفاصيل: ${message}`, { duration: 15000 });
     }
   };
 
