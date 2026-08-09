@@ -411,7 +411,7 @@ export default function HafizaTab() {
                   </Button>
                 )}
 
-                <TabActions title="حوافظ التوريد" rows={hafiza} columns={COLS} />
+                <TabActions title="حوافظ التوريد" rows={hafiza} columns={COLS} fileName="حوافظ-التوريد" />
               </div>
             </CardHeader>
 
@@ -426,7 +426,7 @@ export default function HafizaTab() {
                           <div className="flex flex-col items-center">
                             <button onClick={() => toggleSort(c.key)} className="flex items-center gap-2 text-slate-800 text-sm">
                               <span className="font-semibold">{c.label}</span>
-                              {sortIndicator(sortKey, sortDir, c.key)}
+                              {sortIndicator(sortKey === c.key, sortDir)}
                             </button>
                             <div className="mt-1 relative">
                               <Filter className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
