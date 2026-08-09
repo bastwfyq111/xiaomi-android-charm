@@ -2,9 +2,7 @@ import * as XLSX from "xlsx";
 import { Printer, FileSpreadsheet, Trash2, Download } from "lucide-react";
 import { toast } from "sonner";
 import { fmt } from "@/lib/format";
-// html2pdf.js لا يوفر أنواع TypeScript رسمية، لذلك نستورده كـ any
-// @ts-ignore
-import html2pdf from "html2pdf.js";
+import { exportTablePdf } from "@/lib/pdfExporter";
 
 export type TabCol = { key: string; label: string };
 
@@ -196,65 +194,23 @@ export default function TabActions({
     w.document.close();
   };
 
-  const handleDownloadPdf = async () => {
+  const handleDownloadPdf = () => {
     if (!rows.length) {
       toast.error("لا توجد بيانات للتصدير");
       return;
     }
-
-    const loadingToast = toast.loading("جارٍ تجهيز ملف PDF...");
-
-    // حاوية مؤقتة خارج الشاشة، بنفس تنسيق الطباعة تماماً
-    const container = document.createElement("div");
-    container.style.position = "fixed";
-    container.style.top = "0";
-    container.style.left = "-99999px";
-    container.style.width = "1400px";
-    container.style.background = "#ffffff";
-    container.style.direction = "rtl";
-
-    const styleTag = document.createElement("style");
-    styleTag.innerHTML = printStyles;
-
-    container.innerHTML = buildTableHtml();
-    container.prepend(styleTag);
-    document.body.appendChild(container);
-
     try {
-      // نتأكد أن خط Cairo محمّل قبل التقاط الصورة حتى لا يظهر بخط بديل
-      if ((document as any).fonts?.ready) {
-        await (document as any).fonts.ready;
-      }
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
-      const today = new Date().toISOString().slice(0, 10);
-
-      await html2pdf()
-        .set({
-          margin: [6, 6, 6, 6],
-          filename: `${fileName}-${today}.pdf`,
-          image: { type: "jpeg", quality: 0.98 },
-          html2canvas: {
-            scale: 2,
-            useCORS: true,
-            backgroundColor: "#ffffff",
-          },
-          jsPDF: {
-            unit: "mm",
-            format: "a4",
-            orientation: "landscape",
-          },
-          pagebreak: { mode: ["css", "legacy"] },
-        })
-        .from(container)
-        .save();
-
-      toast.success("تم تنزيل الملف بنجاح", { id: loadingToast });
+      exportTablePdf({
+        title,
+        columns,
+        rows,
+        numericKeys,
+        fileName,
+      });
+      toast.success("تم تنزيل الملف بنجاح");
     } catch (err) {
       console.error("PDF export error:", err);
-      toast.error("حدث خطأ أثناء تنزيل الملف", { id: loadingToast });
-    } finally {
-      document.body.removeChild(container);
+      toast.error("حدث خطأ أثناء تنزيل الملف");
     }
   };
 
