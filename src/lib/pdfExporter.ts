@@ -1,6 +1,7 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { fmt } from './format';
+import { CAIRO_FONT_BASE64 } from './cairo-font';
 
 /**
  * تصدير كشف حساب المتدرب كملف PDF متوافق تماماً مع هواتف شاومي وأندرويد
@@ -282,4 +283,119 @@ export function printTable(title: string, columns: string[], rows: (string | num
   `;
   
   printHtmlContent(tableHtml);
+}
+
+// ============================================================
+// تصدير أي جدول (كشف/تبويب) إلى PDF مطابق لتنسيق الطباعة الحالي
+// باستخدام بناء برمجي مباشر (بدون التقاط صور) — أسرع وأكثر استقراراً
+// خط Cairo مضمّن داخل الملف نفسه (من cairo-font.ts) لضمان ظهور
+// العربي بشكل صحيح دائماً بغض النظر عن حالة الاتصال أو المتصفح
+// ============================================================
+
+let fontRegistered = false;
+
+function registerCairoFont(doc: any) {
+  if (fontRegistered) return;
+  doc.addFileToVFS("Cairo-Regular.ttf", CAIRO_FONT_BASE64);
+  doc.addFont("Cairo-Regular.ttf", "Cairo", "normal");
+  doc.addFont("Cairo-Regular.ttf", "Cairo", "bold"); // نفس الملف، jsPDF يحتاج تسجيل الاسم فقط
+  fontRegistered = true;
+}
+
+export function exportTablePdf(opts: {
+  title: string;
+  columns: { key: string; label: string }[];
+  rows: Record<string, any>[];
+  numericKeys?: string[];
+  fileName: string;
+}) {
+  const { title, columns, rows, numericKeys = [], fileName } = opts;
+
+  const doc = new jsPDF({
+    orientation: "l", // landscape — نفس اتجاه الطباعة الحالي
+    unit: "mm",
+    format: "a4",
+    putOnlyUsedFonts: true,
+    compress: true,
+  });
+
+  registerCairoFont(doc);
+  doc.setFont("Cairo", "normal");
+  doc.setR2L(true);
+
+  // العنوان
+  doc.setFontSize(15);
+  doc.text(title, doc.internal.pageSize.getWidth() / 2, 12, { align: "center" });
+
+  // السطر الفرعي (نفس نص .sub في الطباعة)
+  const today = new Date().toLocaleDateString("ar-EG-u-nu-latn");
+  doc.setFontSize(9.5);
+  doc.text(
+    `المجلس اليمني للاختصاصات الطبية - صعدة • ${today} • عدد السجلات: ${rows.length}`,
+    doc.internal.pageSize.getWidth() / 2,
+    18,
+    { align: "center" }
+  );
+
+  // حساب الإجماليات (نفس منطق صف total-row في الطباعة)
+  const totals: Record<string, number> = {};
+  columns.forEach((c) => {
+    if (numericKeys.includes(c.key)) {
+      totals[c.key] = rows.reduce((sum, r) => sum + (Number(r[c.key]) || 0), 0);
+    }
+  });
+
+  const head = [["م", ...columns.map((c) => c.label)]];
+  const body = rows.map((r, i) => [
+    String(i + 1),
+    ...columns.map((c) => {
+      const v = r[c.key];
+      const isNum = numericKeys.includes(c.key) || typeof v === "number";
+      return isNum ? fmt(Number(v) || 0) : String(v ?? "");
+    }),
+  ]);
+  const totalRowData = [
+    "",
+    ...columns.map((c) => (numericKeys.includes(c.key) ? fmt(totals[c.key] || 0) : "")),
+  ];
+  body.push(totalRowData);
+  const totalRowIndex = body.length - 1;
+
+  (doc as any).autoTable({
+    head,
+    body,
+    startY: 22,
+    styles: {
+      font: "Cairo",
+      fontStyle: "normal",
+      halign: "center",
+      valign: "middle",
+      fontSize: 8.5,
+      cellPadding: 1.5,
+      lineColor: [0, 0, 0],
+      lineWidth: 0.2,
+      textColor: [0, 0, 0],
+    },
+    headStyles: {
+      fillColor: [245, 222, 179], // نفس لون #f5deb3 في الطباعة
+      textColor: [0, 0, 0],
+      fontStyle: "normal",
+      fontSize: 9,
+    },
+    alternateRowStyles: {
+      fillColor: [248, 250, 252], // نفس #f8fafc
+    },
+    didParseCell: (data: any) => {
+      // تلوين صف الإجمالي بنفس لون الطباعة (#fef3c7)
+      if (data.row.index === totalRowIndex && data.section === "body") {
+        data.cell.styles.fillColor = [254, 243, 199];
+        data.cell.styles.fontStyle = "bold";
+      }
+    },
+    margin: { left: 6, right: 6 },
+    theme: "grid",
+  });
+
+  const safeDate = new Date().toISOString().slice(0, 10);
+  doc.save(`${fileName}-${safeDate}.pdf`);
 }
