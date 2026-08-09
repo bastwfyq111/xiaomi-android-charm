@@ -1,7 +1,10 @@
 import * as XLSX from "xlsx";
-import { Printer, FileSpreadsheet, Trash2 } from "lucide-react";
+import { Printer, FileSpreadsheet, Trash2, Download } from "lucide-react";
 import { toast } from "sonner";
 import { fmt } from "@/lib/format";
+// html2pdf.js لا يوفر أنواع TypeScript رسمية، لذلك نستورده كـ any
+// @ts-ignore
+import html2pdf from "html2pdf.js";
 
 export type TabCol = { key: string; label: string };
 
@@ -33,106 +36,13 @@ export default function TabActions({
   className = "",
   printLabel = "طباعة",
 }: Props) {
-  const handlePrint = () => {
-    if (!rows.length) {
-      toast.error("لا توجد بيانات للطباعة");
-      return;
-    }
-    const w = window.open("", "_blank", "width=1200,height=800");
-    if (!w) return;
-
-    const head = `
-      <meta charset="utf-8" />
-      <title>${escapeHtml(title)}</title>
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-      <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-      <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        @page { size: A4 landscape; margin: 6mm; }
-        html { margin: 0; padding: 0; }
-        body {
-          font-family: 'Cairo', 'Tajawal', Tahoma, Arial, sans-serif;
-          padding: 4mm 6mm;
-          color: #000 !important;
-          direction: rtl;
-          margin: 0;
-          width: 100%;
-          box-sizing: border-box;
-          font-weight: 600;
-          font-size: 10px;
-          line-height: 1.35;
-          -webkit-print-color-adjust: exact !important;
-          print-color-adjust: exact !important;
-        }
-        h1 {
-          text-align: center;
-          color: #000 !important;
-          margin: 0 0 3px;
-          font-size: 15px;
-          font-weight: 800;
-        }
-        .sub {
-          text-align: center;
-          color: #000 !important;
-          margin-bottom: 5px;
-          font-size: 9.5px;
-          font-weight: 700;
-          border-bottom: 1.5pt solid #b8860b;
-          padding-bottom: 4px;
-        }
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          table-layout: auto;
-          font-size: 10px;
-        }
-        th, td {
-          border: 0.75pt solid #000;
-          padding: 2.5px 3px;
-          text-align: center;
-          white-space: nowrap;
-          color: #000 !important;
-          font-weight: 700;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        thead th {
-          background: #f5deb3 !important;
-          color: #000 !important;
-          font-weight: 800;
-          font-size: 10px;
-        }
-        tbody tr:nth-child(even) td { background: #f8fafc !important; }
-        .num {
-          font-family: 'Courier New', monospace;
-          text-align: center;
-          direction: ltr;
-          color: #000 !important;
-          font-weight: 1000;
-        }
-        .idx { width: 28px; text-align: center; color: #000 !important; font-weight: 700; }
-        .total-row td {
-          background: #fef3c7 !important;
-          font-weight: 800;
-          border-top: 1.5pt solid #92400e;
-        }
-        thead { display: table-header-group; }
-        tfoot { display: table-footer-group; }
-        tr { page-break-inside: avoid; }
-        @media print {
-          * { margin: 0; padding: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-          body { margin: 0; padding: 4mm 6mm; color: #000 !important; font-weight: 600; }
-          th, td { color: #000 !important; font-weight: 700; }
-        }
-      </style>
-    `;
-
+  // يبني نفس محتوى الجدول (بدون head) المستخدم في كل من الطباعة وتنزيل الـ PDF
+  // حتى يبقى التنسيق مطابقاً 100% بين الخيارين
+  const buildTableHtml = () => {
     const head2 = `<tr><th class="idx">م</th>${columns
       .map((c) => `<th>${escapeHtml(c.label)}</th>`)
       .join("")}</tr>`;
 
-    // حساب الإجماليات للأعمدة الرقمية
     const totals: Record<string, number> = {};
     columns.forEach((c) => {
       if (numericKeys.includes(c.key)) {
@@ -166,10 +76,115 @@ export default function TabActions({
 
     const today = new Date().toLocaleDateString("ar-EG-u-nu-latn");
 
-    w.document.write(`<!doctype html><html lang="ar" dir="rtl"><head>${head}</head><body>
+    return `
       <h1>${escapeHtml(title)}</h1>
       <div class="sub">المجلس اليمني للاختصاصات الطبية - صعدة • ${today} • عدد السجلات: ${rows.length}</div>
       <table><thead>${head2}</thead><tbody>${body2}${totalRow}</tbody></table>
+    `;
+  };
+
+  // نفس أنماط الطباعة تماماً، معاد استخدامها في الحالتين
+  const printStyles = `
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { margin: 0; padding: 0; }
+    body {
+      font-family: 'Cairo', 'Tajawal', Tahoma, Arial, sans-serif;
+      padding: 4mm 6mm;
+      color: #000 !important;
+      direction: rtl;
+      margin: 0;
+      width: 100%;
+      box-sizing: border-box;
+      font-weight: 600;
+      font-size: 10px;
+      line-height: 1.35;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    h1 {
+      text-align: center;
+      color: #000 !important;
+      margin: 0 0 3px;
+      font-size: 15px;
+      font-weight: 800;
+    }
+    .sub {
+      text-align: center;
+      color: #000 !important;
+      margin-bottom: 5px;
+      font-size: 9.5px;
+      font-weight: 700;
+      border-bottom: 1.5pt solid #b8860b;
+      padding-bottom: 4px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: auto;
+      font-size: 10px;
+    }
+    th, td {
+      border: 0.75pt solid #000;
+      padding: 2.5px 3px;
+      text-align: center;
+      white-space: nowrap;
+      color: #000 !important;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    thead th {
+      background: #f5deb3 !important;
+      color: #000 !important;
+      font-weight: 800;
+      font-size: 10px;
+    }
+    tbody tr:nth-child(even) td { background: #f8fafc !important; }
+    .num {
+      font-family: 'Courier New', monospace;
+      text-align: center;
+      direction: ltr;
+      color: #000 !important;
+      font-weight: 1000;
+    }
+    .idx { width: 28px; text-align: center; color: #000 !important; font-weight: 700; }
+    .total-row td {
+      background: #fef3c7 !important;
+      font-weight: 800;
+      border-top: 1.5pt solid #92400e;
+    }
+    thead { display: table-header-group; }
+    tfoot { display: table-footer-group; }
+    tr { page-break-inside: avoid; }
+  `;
+
+  const handlePrint = () => {
+    if (!rows.length) {
+      toast.error("لا توجد بيانات للطباعة");
+      return;
+    }
+    const w = window.open("", "_blank", "width=1200,height=800");
+    if (!w) return;
+
+    const head = `
+      <meta charset="utf-8" />
+      <title>${escapeHtml(title)}</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+      <style>
+        ${printStyles}
+        @page { size: A4 landscape; margin: 6mm; }
+        @media print {
+          * { margin: 0; padding: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+          body { margin: 0; padding: 4mm 6mm; color: #000 !important; font-weight: 600; }
+          th, td { color: #000 !important; font-weight: 700; }
+        }
+      </style>
+    `;
+
+    w.document.write(`<!doctype html><html lang="ar" dir="rtl"><head>${head}</head><body>
+      ${buildTableHtml()}
       <script>
         window.onload = () => {
           setTimeout(() => {
@@ -179,6 +194,68 @@ export default function TabActions({
       </script>
     </body></html>`);
     w.document.close();
+  };
+
+  const handleDownloadPdf = async () => {
+    if (!rows.length) {
+      toast.error("لا توجد بيانات للتصدير");
+      return;
+    }
+
+    const loadingToast = toast.loading("جارٍ تجهيز ملف PDF...");
+
+    // حاوية مؤقتة خارج الشاشة، بنفس تنسيق الطباعة تماماً
+    const container = document.createElement("div");
+    container.style.position = "fixed";
+    container.style.top = "0";
+    container.style.left = "-99999px";
+    container.style.width = "1400px";
+    container.style.background = "#ffffff";
+    container.style.direction = "rtl";
+
+    const styleTag = document.createElement("style");
+    styleTag.innerHTML = printStyles;
+
+    container.innerHTML = buildTableHtml();
+    container.prepend(styleTag);
+    document.body.appendChild(container);
+
+    try {
+      // نتأكد أن خط Cairo محمّل قبل التقاط الصورة حتى لا يظهر بخط بديل
+      if ((document as any).fonts?.ready) {
+        await (document as any).fonts.ready;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      const today = new Date().toISOString().slice(0, 10);
+
+      await html2pdf()
+        .set({
+          margin: [6, 6, 6, 6],
+          filename: `${fileName}-${today}.pdf`,
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: "#ffffff",
+          },
+          jsPDF: {
+            unit: "mm",
+            format: "a4",
+            orientation: "landscape",
+          },
+          pagebreak: { mode: ["css", "legacy"] },
+        })
+        .from(container)
+        .save();
+
+      toast.success("تم تنزيل الملف بنجاح", { id: loadingToast });
+    } catch (err) {
+      console.error("PDF export error:", err);
+      toast.error("حدث خطأ أثناء تنزيل الملف", { id: loadingToast });
+    } finally {
+      document.body.removeChild(container);
+    }
   };
 
   const handleExcel = () => {
@@ -234,6 +311,13 @@ export default function TabActions({
         title="طباعة هذا التبويب"
       >
         <Printer className="w-4 h-4" /> {printLabel}
+      </button>
+      <button
+        onClick={handleDownloadPdf}
+        className="flex items-center gap-1.5 px-3 py-1.5 bg-[#10528e] text-white rounded-lg text-xs font-bold shadow-sm hover:bg-[#0d4272] active:scale-95 transition-all cursor-pointer"
+        title="تنزيل PDF بنفس تنسيق الطباعة"
+      >
+        <Download className="w-4 h-4" /> تنزيل PDF
       </button>
       <button
         onClick={handleExcel}
