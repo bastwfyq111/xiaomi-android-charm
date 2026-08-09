@@ -1,5 +1,5 @@
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 import { fmt } from './format';
 import { CAIRO_FONT_BASE64 } from './cairo-font';
 
@@ -122,7 +122,7 @@ export async function exportStudentStatementPdf(row: any, year: number): Promise
     }
   });
 
-  (doc as any).autoTable({
+  autoTable(doc, {
     startY: 62,
     head: [['البيان', 'المبلغ']],
     body: tableRows,
@@ -162,7 +162,7 @@ export async function exportStudentStatementPdf(row: any, year: number): Promise
   });
 
   // إضافة توقيع وتاريخ في الأسفل
-  const finalY = (doc as any).lastAutoTable?.finalY || 150;
+  const finalY = (doc as any).lastAutoTable?.finalY ?? 150;
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
   doc.text(`تاريخ الإصدار: ${new Date().toLocaleDateString('ar-EG-u-nu-latn')}`, 15, finalY + 15);
@@ -361,7 +361,7 @@ export function exportTablePdf(opts: {
   body.push(totalRowData);
   const totalRowIndex = body.length - 1;
 
-  (doc as any).autoTable({
+  autoTable(doc, {
     head,
     body,
     startY: 22,
