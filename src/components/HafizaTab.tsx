@@ -411,7 +411,7 @@ export default function HafizaTab() {
                   </Button>
                 )}
 
-                <TabActions title="حوافظ التوريد" rows={hafiza} columns={COLS} />
+                <TabActions title="حوافظ التوريد" rows={hafiza} columns={COLS} fileName="حوافظ-التوريد" />
               </div>
             </CardHeader>
 
