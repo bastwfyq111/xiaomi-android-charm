@@ -29,3 +29,7 @@
 - التعديل محصور في `src/components/JournalTab.tsx` (عرض فقط)، مع إمكانية إضافة tokens لونية في `src/styles.css` عند الحاجة.
 - دوال `handleSave`، `updateLine`، `addLine`، حساب التوازن، وتوزيع النسب تبقى كما هي حرفياً.
 - `TabActions` و`ImportButton` تُستخدمان كما هي؛ فقط تغليفهما بشريط أدوات جديد.
+
+## إصلاح أخطاء بناء قائمة (خارج نطاق التصميم)
+- `src/components/HafizaTab.tsx:414`: استدعاء `TabActions` ناقص خاصية `fileName` المطلوبة → إضافة `fileName="حوافظ-التوريد"`.
+- `src/components/HafizaTab.tsx:429`: `sortIndicator` يستقبل وسيطين فقط → تصحيحه إلى `sortIndicator(sortKey === c.key, sortDir)` كما في `AccountTab`.
