@@ -211,12 +211,18 @@ async function htmlTableToPdfPaginated(opts: {
     const dataRows = bodyRows.slice(0, -1);
     const rowHeights = dataRows.map((r) => r.offsetHeight);
 
-    const margin = 5; // مم
+    // هامش فعلي واحد صغير (يُستخدم بنفس القيمة في التوزيع والرسم لاحقاً)
+    const margin = 3; // مم
+    // دقة العرض الفعلية (96 نقطة/بوصة قياسي للمتصفح) — نفس الوحدة المستخدمة
+    // لقياس العناصر بالـ iframe (offsetHeight بالبكسل) ولرسم الصورة النهائية،
+    // فيتطابق حساب "كم صف يتسع بصفحة" مع "كم صف نرسمه فعلياً" بدقة
+    const DPI = 96;
+    const pxPerMm = DPI / 25.4;
     const pdf = new JsPDF({ unit: 'mm', format: 'a4', orientation, compress: true });
     const pw = pdf.internal.pageSize.getWidth();
     const ph = pdf.internal.pageSize.getHeight();
-    const pxPerMm = pageWidthPx / pw;
     const usableHeightPx = (ph - margin * 2) * pxPerMm;
+    const usableWidthMm = pw - margin * 2;
 
     // توزيع الصفوف على صفحات: الصفحة الأولى تتضمن العنوان، البقية لا
     const pages: number[][] = [];
@@ -297,7 +303,7 @@ async function htmlTableToPdfPaginated(opts: {
         });
 
         if (p > 0) pdf.addPage();
-        const imgW = pw - margin * 2;
+        const imgW = usableWidthMm;
         const imgH = (canvas.height * imgW) / canvas.width;
         pdf.addImage(
           canvas.toDataURL('image/jpeg', 0.95),
