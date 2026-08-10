@@ -24,8 +24,8 @@ export const tablePrintStyles = `
     margin: 0;
     width: 100%;
     box-sizing: border-box;
-    font-weight: 600;
-    font-size: 10px;
+    font-weight: 1000;
+    font-size: 14px;
     line-height: 1.35;
     background: #fff;
     -webkit-print-color-adjust: exact !important;
@@ -42,16 +42,16 @@ export const tablePrintStyles = `
     text-align: center;
     color: #000 !important;
     margin-bottom: 5px;
-    font-size: 9.5px;
-    font-weight: 700;
+    font-size: 13.5px;
+    font-weight: 1000;
     border-bottom: 1.5pt solid #b8860b;
     padding-bottom: 4px;
   }
   table {
-    width: 100%;
+    width: auto;
     border-collapse: collapse;
     table-layout: auto;
-    font-size: 10px;
+    font-size: 14px;
   }
   th, td {
     border: 0.75pt solid #000;
@@ -67,7 +67,7 @@ export const tablePrintStyles = `
     background: #f5deb3 !important;
     color: #000 !important;
     font-weight: 800;
-    font-size: 10px;
+    font-size: 14px;
   }
   tbody tr:nth-child(even) td { background: #f8fafc !important; }
   .num {
