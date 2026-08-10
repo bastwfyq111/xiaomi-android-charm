@@ -22,7 +22,7 @@ export const tablePrintStyles = `
     color: #000 !important;
     direction: rtl;
     margin: 0;
-    width: 100%;
+    width: auto;
     box-sizing: border-box;
     font-weight: 1000;
     font-size: 14px;
@@ -57,7 +57,7 @@ export const tablePrintStyles = `
     border: 0.75pt solid #000;
     padding: 2.5px 3px;
     text-align: center;
-    white-space: nowrap;
+    white-space: normal;
     color: #000 !important;
     font-weight: 700;
     overflow: hidden;
