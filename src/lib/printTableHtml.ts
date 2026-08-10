@@ -14,6 +14,11 @@ export const escapeHtml = (s: any) =>
  * حتى يبقى الشكل مطابقاً 100% بين الخيارين
  */
 export const tablePrintStyles = `
+  /* إضافة إعداد جعل الصفحة أفقية */
+  @page {
+    size: landscape;
+  }
+  
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { margin: 0; padding: 0; }
   body {
@@ -77,12 +82,17 @@ export const tablePrintStyles = `
     color: #000 !important;
     font-weight: 1000;
   }
-  .idx { width: 28px; text-align: center; color: #000 !important; font-weight: 700; }
+  
+  /* تم تعديل العرض قليلاً لتتسع لكلمة الإجمالي */
+  .idx { width: 50px; text-align: center; color: #000 !important; font-weight: 700; } 
+  
   .total-row td {
     background: #fef3c7 !important;
     font-weight: 800;
     border-top: 1.5pt solid #92400e;
   }
+  
+  /* هذه الإعدادات تضمن تكرار الترويسة في كل صفحة مطبوعة */
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
   tr { page-break-inside: avoid; }
@@ -109,7 +119,8 @@ export function buildTableHtml(opts: {
     }
   });
 
-  const totalRow = `<tr class="total-row"><td class="idx"></td>${columns
+  // إضافة كلمة "الإجمالي" هنا، وبقاؤها داخل tbody يضمن عدم تكرارها في كل صفحة
+  const totalRow = `<tr class="total-row"><td class="idx" style="font-size:12px;">الإجمالي</td>${columns
     .map((c) =>
       numericKeys.includes(c.key)
         ? `<td class="num">${escapeHtml(fmt(totals[c.key] || 0))}</td>`
