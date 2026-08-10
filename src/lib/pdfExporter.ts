@@ -129,6 +129,201 @@ async function htmlToPdf(opts: {
 
 }
 
+/**
+ * توليد PDF لجدول طويل مع تكرار رأس الأعمدة فعلياً في كل صفحة.
+ * بخلاف htmlToPdf (التي تصوّر المحتوى كصورة طويلة وتقصّه عشوائياً)،
+ * هذه الدالة تحسب عدد الصفوف التي تتسع في صفحة واحدة، ثم تبني
+ * "صفحة HTML" مستقلة لكل مجموعة صفوف — كل صفحة فيها <thead> خاص بها،
+ * فيُصوَّر كل جدول-صفحة على حدة ويُضاف كصفحة PDF منفصلة تحتوي رأساً كاملاً.
+ */
+async function htmlTableToPdfPaginated(opts: {
+  title: string;
+  columns: { key: string; label: string }[];
+  rows: Record<string, any>[];
+  numericKeys?: string[];
+  css: string;
+  fileName: string;
+  orientation?: 'portrait' | 'landscape';
+  pageWidthPx?: number;
+}): Promise<void> {
+  const {
+    title,
+    columns,
+    rows,
+    numericKeys = [],
+    css,
+    fileName,
+    orientation = 'landscape',
+  } = opts;
+  const pageWidthPx = opts.pageWidthPx ?? (orientation === 'landscape' ? 1123 : 794);
+  // ارتفاع صفحة A4 في نفس مقياس البكسل المستخدم للعرض
+  const pageHeightPx = Math.round(
+    pageWidthPx * (orientation === 'landscape' ? 210 / 297 : 297 / 210)
+  );
+
+  const [{ default: html2canvas }, { default: JsPDF }] = await Promise.all([
+    import('html2canvas'),
+    import('jspdf'),
+  ]);
+
+  // إطار قياس مخفي: نستخدمه لمعرفة ارتفاع رأس الجدول وارتفاع صف واحد فعلياً
+  // (يعتمد على طول النص الفعلي والالتفاف، فلا يمكن تخمينه رياضياً بدقة)
+  const measureFrame = document.createElement('iframe');
+  measureFrame.setAttribute('aria-hidden', 'true');
+  measureFrame.style.position = 'fixed';
+  measureFrame.style.top = '0';
+  measureFrame.style.left = '-10000px';
+  measureFrame.style.width = `${pageWidthPx}px`;
+  measureFrame.style.height = '4000px';
+  measureFrame.style.border = '0';
+  measureFrame.style.opacity = '0';
+  measureFrame.style.pointerEvents = 'none';
+  document.body.appendChild(measureFrame);
+
+  const fullHtml = buildTableHtml({ title, columns, rows, numericKeys });
+
+  try {
+    const mdoc = measureFrame.contentDocument!;
+    mdoc.open();
+    mdoc.write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8" />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+      <style>${css}</style>
+      <style>.pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 7px 8px 9px !important; line-height: 1.25 !important; vertical-align: middle !important; }</style>
+      </head><body><div class="pdf-page">${fullHtml}</div></body></html>`);
+    mdoc.close();
+
+    if ((mdoc as any).fonts?.ready) {
+      await Promise.race([(mdoc as any).fonts.ready, new Promise((res) => setTimeout(res, 3000))]);
+    }
+    await new Promise((res) => setTimeout(res, 120));
+
+    const headerEl = mdoc.querySelector('.pdf-page h1') as HTMLElement;
+    const subEl = mdoc.querySelector('.pdf-page .sub') as HTMLElement;
+    const theadEl = mdoc.querySelector('.pdf-page thead') as HTMLElement;
+    const bodyRows = Array.from(mdoc.querySelectorAll('.pdf-page tbody tr')) as HTMLElement[];
+
+    const topBlockH = (headerEl?.offsetHeight || 0) + (subEl?.offsetHeight || 0) + 16;
+    const theadH = theadEl?.offsetHeight || 0;
+    // آخر صف هو صف الإجمالي؛ يجب أن يبقى مرتبطاً بآخر صفحة دائماً
+    const totalRowH = bodyRows.length ? bodyRows[bodyRows.length - 1].offsetHeight : 0;
+    const dataRows = bodyRows.slice(0, -1);
+    const rowHeights = dataRows.map((r) => r.offsetHeight);
+
+    const margin = 5; // مم
+    const pdf = new JsPDF({ unit: 'mm', format: 'a4', orientation, compress: true });
+    const pw = pdf.internal.pageSize.getWidth();
+    const ph = pdf.internal.pageSize.getHeight();
+    const pxPerMm = pageWidthPx / pw;
+    const usableHeightPx = (ph - margin * 2) * pxPerMm;
+
+    // توزيع الصفوف على صفحات: الصفحة الأولى تتضمن العنوان، البقية لا
+    const pages: number[][] = [];
+    let current: number[] = [];
+    let currentH = topBlockH + theadH;
+    for (let i = 0; i < rowHeights.length; i++) {
+      const rh = rowHeights[i];
+      // نحجز مسبقاً مساحة صف الإجمالي في آخر صفحة محتملة فقط عند آخر صف فعلي
+      const isLast = i === rowHeights.length - 1;
+      const neededExtra = isLast ? totalRowH : 0;
+      if (current.length > 0 && currentH + rh + neededExtra > usableHeightPx) {
+        pages.push(current);
+        current = [];
+        currentH = theadH; // الصفحات التالية تبدأ برأس الجدول فقط (بدون العنوان)
+      }
+      current.push(i);
+      currentH += rh;
+    }
+    if (current.length > 0) pages.push(current);
+    if (pages.length === 0) pages.push([]);
+
+    for (let p = 0; p < pages.length; p++) {
+      const isFirstPage = p === 0;
+      const isLastPage = p === pages.length - 1;
+      const rowIdxs = pages[p];
+
+      const rowsHtml = rowIdxs
+        .map((i) => dataRows[i].outerHTML)
+        .join('');
+      const totalHtml = isLastPage ? bodyRows[bodyRows.length - 1].outerHTML : '';
+
+      const pageHtml = `
+        ${isFirstPage ? `<h1>${escapeHtml(title)}</h1><div class="sub">${subEl?.innerHTML || ''}</div>` : ''}
+        <table><thead>${theadEl?.innerHTML || ''}</thead><tbody>${rowsHtml}${totalHtml}</tbody></table>
+      `;
+
+      const frame = document.createElement('iframe');
+      frame.setAttribute('aria-hidden', 'true');
+      frame.style.position = 'fixed';
+      frame.style.top = '0';
+      frame.style.left = '-10000px';
+      frame.style.width = `${pageWidthPx}px`;
+      frame.style.height = `${pageHeightPx}px`;
+      frame.style.border = '0';
+      frame.style.opacity = '0';
+      frame.style.pointerEvents = 'none';
+      document.body.appendChild(frame);
+
+      try {
+        const fdoc = frame.contentDocument!;
+        fdoc.open();
+        fdoc.write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8" />
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+          <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+          <style>${css}</style>
+          <style>
+            .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 7px 8px 9px !important; line-height: 1.25 !important; vertical-align: middle !important; }
+            .pdf-page .num { font-family: 'Cairo', Tahoma, Arial, sans-serif !important; font-weight: 700 !important; letter-spacing: 0.3px; }
+            .pdf-page .sub { border-bottom-width: 2px !important; padding-bottom: 6px !important; margin-bottom: 8px !important; }
+            .pdf-page .total-row td { border-top: 2px solid #92400e !important; }
+          </style></head>
+          <body><div class="pdf-page">${pageHtml}</div></body></html>`);
+        fdoc.close();
+
+        if ((fdoc as any).fonts?.ready) {
+          await Promise.race([(fdoc as any).fonts.ready, new Promise((res) => setTimeout(res, 2000))]);
+        }
+        await new Promise((res) => setTimeout(res, 60));
+
+        const pageEl = fdoc.querySelector('.pdf-page') as HTMLElement;
+        const canvas = await html2canvas(pageEl, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          width: pageWidthPx,
+          windowWidth: pageWidthPx,
+        });
+
+        if (p > 0) pdf.addPage();
+        const imgW = pw - margin * 2;
+        const imgH = (canvas.height * imgW) / canvas.width;
+        pdf.addImage(
+          canvas.toDataURL('image/jpeg', 0.95),
+          'JPEG',
+          margin,
+          margin,
+          imgW,
+          Math.min(imgH, ph - margin * 2)
+        );
+      } finally {
+        frame.remove();
+      }
+    }
+
+    const dataUri = pdf.output('datauristring');
+    const link = document.createElement('a');
+    link.href = dataUri;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } finally {
+    measureFrame.remove();
+  }
+}
+
 
 const statementCss = `
   ${tablePrintStyles}
@@ -317,7 +512,9 @@ export function printTable(title: string, columns: string[], rows: (string | num
 
 // ============================================================
 // تصدير أي جدول (كشف/تبويب) إلى PDF مطابق تماماً لتنسيق الطباعة
-// عبر رسم نفس HTML الطباعة ثم تحويله إلى PDF (عربي صحيح + أرقام سليمة)
+// يستخدم التقسيم الفعلي بالصفوف (htmlTableToPdfPaginated) بدل
+// تصوير المحتوى دفعة واحدة وتقطيعه، حتى يظهر رأس الجدول في
+// أعلى كل صفحة فعلياً وليس فقط الصفحة الأولى.
 // ============================================================
 
 export async function exportTablePdf(opts: {
@@ -328,12 +525,13 @@ export async function exportTablePdf(opts: {
   fileName: string;
 }): Promise<void> {
   const { title, columns, rows, numericKeys = [], fileName } = opts;
-
-  const html = buildTableHtml({ title, columns, rows, numericKeys });
   const safeDate = new Date().toISOString().slice(0, 10);
 
-  await htmlToPdf({
-    html,
+  await htmlTableToPdfPaginated({
+    title,
+    columns,
+    rows,
+    numericKeys,
     css: tablePrintStyles,
     fileName: `${fileName}-${safeDate}.pdf`,
     orientation: 'landscape',
