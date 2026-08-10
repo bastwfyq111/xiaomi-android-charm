@@ -42,7 +42,7 @@ async function htmlToPdf(opts: {
       <body><div class="pdf-page">${html}</div></body></html>`);
     fdoc.close();
 
-    const fwin = frame.contentWindow!;
+    
     if ((fdoc as any).fonts?.ready) {
       await Promise.race([
         (fdoc as any).fonts.ready,
