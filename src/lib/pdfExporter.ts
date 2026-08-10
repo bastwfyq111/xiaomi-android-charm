@@ -1,81 +1,155 @@
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 import { fmt } from './format';
-import { CAIRO_FONT_BASE64 } from './cairo-font';
+import { buildTableHtml, escapeHtml, tablePrintStyles } from './printTableHtml';
 
 /**
- * تصدير كشف حساب المتدرب كملف PDF متوافق تماماً مع هواتف شاومي وأندرويد
- * يستخدم التوليد البرمجي المباشر لضمان السرعة وعدم تعليق الجهاز
+ * توليد PDF من HTML حقيقي (يعرضه المتصفح) بدل الرسم البرمجي
+ * السبب: jsPDF لا يدعم تشكيل الحروف العربية ولا اتجاه الأرقام،
+ * فكانت الملفات تخرج بدون نص عربي وبأرقام مقلوبة.
+ */
+async function htmlToPdf(opts: {
+  html: string;
+  css: string;
+  fileName: string;
+  orientation?: 'portrait' | 'landscape';
+  /** عرض ورقة العمل بالبكسل (A4 عرضي ≈ 1123، طولي ≈ 794) */
+  pageWidthPx?: number;
+}): Promise<void> {
+  const { html, css, fileName, orientation = 'landscape' } = opts;
+  const pageWidthPx = opts.pageWidthPx ?? (orientation === 'landscape' ? 1123 : 794);
+
+  // نعرض المحتوى داخل iframe معزول تماماً حتى لا يرث أنماط التطبيق
+  // (أنماط Tailwind تستخدم oklch وهي غير مدعومة في محرك التصوير)
+  const frame = document.createElement('iframe');
+  frame.setAttribute('aria-hidden', 'true');
+  frame.style.position = 'fixed';
+  frame.style.top = '0';
+  frame.style.left = '-10000px';
+  frame.style.width = `${pageWidthPx}px`;
+  frame.style.height = '600px';
+  frame.style.border = '0';
+  frame.style.opacity = '0';
+  frame.style.pointerEvents = 'none';
+  document.body.appendChild(frame);
+
+  try {
+    const fdoc = frame.contentDocument!;
+    fdoc.open();
+    fdoc.write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8" />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+      <style>${css}</style>
+      <style>
+        /* تحسينات خاصة بالتصوير: حدود واضحة ومسافات لا تقطع الأرقام */
+        .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 7px 8px 9px !important; line-height: 1.25 !important; vertical-align: middle !important; }
+        .pdf-page .num { font-family: 'Cairo', Tahoma, Arial, sans-serif !important; font-weight: 700 !important; letter-spacing: 0.3px; }
+        .pdf-page .sub { border-bottom-width: 2px !important; padding-bottom: 6px !important; margin-bottom: 8px !important; }
+        .pdf-page .total-row td { border-top: 2px solid #92400e !important; }
+      </style></head>
+
+      <body><div class="pdf-page">${html}</div></body></html>`);
+    fdoc.close();
+
+    
+    if ((fdoc as any).fonts?.ready) {
+      await Promise.race([
+        (fdoc as any).fonts.ready,
+        new Promise((res) => setTimeout(res, 3000)),
+      ]);
+    }
+    await new Promise((res) => setTimeout(res, 120));
+
+    const page = fdoc.querySelector('.pdf-page') as HTMLElement;
+    const contentH = Math.max(page.scrollHeight, 400);
+    frame.style.height = `${contentH + 40}px`;
+    await new Promise((res) => setTimeout(res, 80));
+
+    const [{ default: html2canvas }, { default: JsPDF }] = await Promise.all([
+      import('html2canvas'),
+      import('jspdf'),
+    ]);
+
+    const scale = 2;
+    const canvas = await html2canvas(page, {
+      scale,
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      width: pageWidthPx,
+      height: contentH,
+      windowWidth: pageWidthPx,
+      windowHeight: contentH + 40,
+      scrollX: 0,
+      scrollY: 0,
+    });
+
+    const pdf = new JsPDF({ unit: 'mm', format: 'a4', orientation, compress: true });
+    const pw = pdf.internal.pageSize.getWidth();
+    const ph = pdf.internal.pageSize.getHeight();
+    const margin = 5;
+    const imgW = pw - margin * 2;
+    const pxPerMm = canvas.width / imgW;
+    const pageContentPx = Math.floor((ph - margin * 2) * pxPerMm);
+
+    let offset = 0;
+    let first = true;
+    while (offset < canvas.height) {
+      const sliceH = Math.min(pageContentPx, canvas.height - offset);
+      const slice = document.createElement('canvas');
+      slice.width = canvas.width;
+      slice.height = sliceH;
+      const ctx = slice.getContext('2d')!;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, slice.width, slice.height);
+      ctx.drawImage(canvas, 0, offset, canvas.width, sliceH, 0, 0, canvas.width, sliceH);
+
+      if (!first) pdf.addPage();
+      first = false;
+      pdf.addImage(
+        slice.toDataURL('image/jpeg', 0.95),
+        'JPEG',
+        margin,
+        margin,
+        imgW,
+        sliceH / pxPerMm
+      );
+      offset += sliceH;
+    }
+
+    // Data URI بدلاً من Blob لتوافق أندرويد/شاومي
+    const dataUri = pdf.output('datauristring');
+    const link = document.createElement('a');
+    link.href = dataUri;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } finally {
+    frame.remove();
+  }
+
+}
+
+
+const statementCss = `
+  ${tablePrintStyles}
+  body, .pdf-page { font-size: 12px; }
+  .info { width: 100%; border-collapse: collapse; margin: 6px 0 10px; }
+  .info td { border: 0.75pt solid #000; padding: 6px 8px; text-align: right; font-weight: 700; }
+  .info td.lbl { background: #f1f5f9 !important; width: 22%; }
+  .sign { margin-top: 18px; font-weight: 700; font-size: 11px; }
+`;
+
+/**
+ * تصدير كشف حساب المتدرب كملف PDF (عربي صحيح، أرقام غير مقلوبة)
  */
 export async function exportStudentStatementPdf(row: any, year: number): Promise<void> {
   const safeName = (row.name || 'متدرب').replace(/[^\u0600-\u06FFa-zA-Z0-9._-]/g, '_');
   const fileName = `كشف_حساب_${safeName}_${year}.pdf`;
 
-  // إنشاء مستند PDF جديد
-  const doc = new jsPDF({
-    orientation: 'p',
-    unit: 'mm',
-    format: 'a4',
-    putOnlyUsedFonts: true,
-    compress: true
-  });
-
-  // إعدادات الخطوط العربية (استخدام الخط الافتراضي مع دعم RTL)
-  doc.setR2L(true);
-  
-  // العنوان الرئيسي
-  doc.setFontSize(18);
-  doc.setFont('helvetica', 'bold');
-  doc.text("المجلس اليمني للاختصاصات الطبية", 105, 15, { align: 'center' });
-  
-  doc.setFontSize(14);
-  doc.setFont('helvetica', 'bold');
-  doc.text(`كشف حساب رسمي - للعام ${year}م`, 105, 22, { align: 'center' });
-
-  // خط فاصل
-  doc.setDrawColor(31, 127, 184);
-  doc.setLineWidth(0.5);
-  doc.line(10, 26, 200, 26);
-
-  // معلومات المتدرب
-  doc.setFontSize(11);
-  doc.setFont('helvetica', 'normal');
-  
-  // إطار معلومات المتدرب
-  doc.setDrawColor(0, 0, 0);
-  doc.setLineWidth(1);
-  doc.rect(10, 30, 190, 28);
-  
-  // إضافة خطوط داخلية للإطار
-  doc.line(105, 30, 105, 58);
-  doc.line(10, 39, 200, 39);
-  doc.line(10, 48, 200, 48);
-  
-  const infoY = 34;
-  doc.setFont('helvetica', 'bold');
-  doc.text("اسم المتدرب:", 15, infoY);
-  doc.setFont('helvetica', 'normal');
-  doc.text(row.name || '—', 50, infoY);
-  
-  doc.setFont('helvetica', 'bold');
-  doc.text("الدفعة:", 110, infoY);
-  doc.setFont('helvetica', 'normal');
-  doc.text(row.batch || '—', 145, infoY);
-  
-  doc.setFont('helvetica', 'bold');
-  doc.text("المساق:", 15, infoY + 9);
-  doc.setFont('helvetica', 'normal');
-  doc.text(row.specialty || '—', 50, infoY + 9);
-  
-  doc.setFont('helvetica', 'bold');
-  doc.text("رقم الهاتف:", 110, infoY + 9);
-  doc.setFont('helvetica', 'normal');
-  doc.text(row.phone || '—', 145, infoY + 9);
-
-  // البيانات المالية
-  const monthsList = year === 2025 ? 
-    ["يونيو 2024", "يوليو 2024", "أغسطس 2024", "مارس 2025", "ابريل 2025", "مايو 2025", "يونيو 2025", "يوليو 2025", "أغسطس 2025", "سبتمبر 2025", "أكتوبر 2025", "نوفمبر2025", "ديسمبر2025"] : 
-    ["يناير", "فبراير", "مارس", "ابريل", "مايو", "يونيو", "يوليو", "اغسطس", "سبتمبر", "اكتوبر ", "نوفمبر", "ديسمبر"];
+  const monthsList =
+    year === 2025
+      ? ["يونيو 2024", "يوليو 2024", "أغسطس 2024", "مارس 2025", "ابريل 2025", "مايو 2025", "يونيو 2025", "يوليو 2025", "أغسطس 2025", "سبتمبر 2025", "أكتوبر 2025", "نوفمبر2025", "ديسمبر2025"]
+      : ["يناير", "فبراير", "مارس", "ابريل", "مايو", "يونيو", "يوليو", "اغسطس", "سبتمبر", "اكتوبر ", "نوفمبر", "ديسمبر"];
 
   const fees = Number(String(row.fees || 0).replace(/[^0-9.-]/g, "")) || 0;
   const prevDue = Number(String(row.prevDue || 0).replace(/[^0-9.-]/g, "")) || 0;
@@ -83,104 +157,60 @@ export async function exportStudentStatementPdf(row: any, year: number): Promise
   const dueTotal = year === 2026 ? prevDue || fees : fees;
   const remaining = dueTotal - totalPaid;
 
-  const tableRows = [];
-  tableRows.push(["إجمالي الرسوم المستحقة", fmt(fees)]);
+  const lines: { label: string; value: number; color?: string }[] = [];
+  lines.push({ label: 'إجمالي الرسوم المستحقة', value: fees, color: '#dbeafe' });
   if (year === 2026) {
-    tableRows.push(["متبقي من العام 2025 (مدور)", fmt(prevDue)]);
+    lines.push({ label: 'متبقي من العام 2025 (مدور)', value: prevDue, color: '#fde68a' });
   }
-  tableRows.push(["إجمالي المبلغ المطلوب", fmt(dueTotal)]);
-  
-  // تفاصيل السداد
-  monthsList.forEach(m => {
+  lines.push({ label: 'إجمالي المبلغ المطلوب', value: dueTotal, color: '#fca5a5' });
+  monthsList.forEach((m) => {
     const val = Number(row.payments?.[m]) || 0;
-    if (val > 0) {
-      tableRows.push([`سداد شهر ${m}`, fmt(val)]);
-    }
+    if (val > 0) lines.push({ label: `سداد شهر ${m}`, value: val });
+  });
+  lines.push({ label: 'إجمالي المسدد (له)', value: totalPaid, color: '#a7f3d0' });
+  lines.push({
+    label: remaining > 0 ? 'الرصيد المتبقي (عليه)' : 'الرصيد الإضافي (له)',
+    value: Math.abs(remaining),
+    color: '#fecaca',
   });
 
-  tableRows.push(["إجمالي المسدد (له)", fmt(totalPaid)]);
-  tableRows.push([remaining > 0 ? "الرصيد المتبقي (عليه)" : "الرصيد الإضافي (له)", fmt(Math.abs(remaining))]);
+  const today = new Date().toLocaleDateString('ar-EG-u-nu-latn');
 
-  // إنشاء الجدول برمجياً (سريع جداً)
-  // ألوان الخلفية المميزة لكل صف
-  const rowColors: [number, number, number][] = [];
-  const totalRows = tableRows.length;
-  tableRows.forEach((row, i) => {
-    const label = row[0] as string;
-    if (label === 'إجمالي الرسوم المستحقة') {
-      rowColors[i] = [219, 234, 254]; // أزرق فاتح #dbeafe
-    } else if (label.includes('مدور') || label.includes('2025')) {
-      rowColors[i] = [253, 230, 138]; // أصفر #fde68a
-    } else if (label === 'إجمالي المبلغ المطلوب') {
-      rowColors[i] = [252, 165, 165]; // أحمر فاتح #fca5a5
-    } else if (label.includes('المسدد')) {
-      rowColors[i] = [167, 243, 208]; // أخضر فاتح #a7f3d0
-    } else if (label.includes('المتبقي') || label.includes('الإضافي') || label.includes('تم السداد')) {
-      rowColors[i] = [254, 202, 202]; // أحمر أفتح #fecaca
-    } else {
-      rowColors[i] = [255, 255, 255]; // أبيض
-    }
-  });
+  const html = `
+    <h1>المجلس اليمني للاختصاصات الطبية</h1>
+    <div class="sub">كشف حساب رسمي - للعام ${year}م • ${today}</div>
+    <table class="info">
+      <tr>
+        <td class="lbl">اسم المتدرب</td><td>${escapeHtml(row.name || '—')}</td>
+        <td class="lbl">الدفعة</td><td>${escapeHtml(row.batch || '—')}</td>
+      </tr>
+      <tr>
+        <td class="lbl">المساق</td><td>${escapeHtml(row.specialty || '—')}</td>
+        <td class="lbl">رقم الهاتف</td><td>${escapeHtml(row.phone || '—')}</td>
+      </tr>
+    </table>
+    <table>
+      <thead><tr><th>البيان</th><th>المبلغ</th></tr></thead>
+      <tbody>
+        ${lines
+          .map(
+            (l) =>
+              `<tr><td style="text-align:right;${l.color ? `background:${l.color} !important;` : ''}">${escapeHtml(
+                l.label
+              )}</td><td class="num"${l.color ? ` style="background:${l.color} !important;"` : ''}>${escapeHtml(
+                fmt(l.value)
+              )}</td></tr>`
+          )
+          .join('')}
+      </tbody>
+    </table>
+    <div class="sign">تاريخ الإصدار: ${today}</div>
+    <div class="sign">التوقيع: _______________</div>
+  `;
 
-  autoTable(doc, {
-    startY: 62,
-    head: [['البيان', 'المبلغ']],
-    body: tableRows,
-    styles: { 
-      font: 'helvetica', 
-      halign: 'center', 
-      fontSize: 11,
-      cellPadding: 5,
-      lineColor: [0, 0, 0],
-      lineWidth: 1
-    },
-    headStyles: { 
-      fillColor: [31, 127, 184], 
-      textColor: [255, 255, 255], 
-      halign: 'center',
-      fontStyle: 'bold',
-      fontSize: 12
-    },
-    bodyStyles: {
-      lineColor: [0, 0, 0],
-      lineWidth: 1
-    },
-    alternateRowStyles: {
-      fillColor: [248, 250, 252]
-    },
-    columnStyles: {
-      0: { cellWidth: 130, halign: 'right' },
-      1: { cellWidth: 60, halign: 'center', fontStyle: 'bold' }
-    },
-    theme: 'grid',
-    margin: { top: 62, right: 10, bottom: 20, left: 10 },
-    didParseCell: function(data: any) {
-      if (data.section === 'body' && data.row.index !== undefined) {
-        data.cell.styles.fillColor = rowColors[data.row.index] || [255, 255, 255];
-      }
-    }
-  });
-
-  // إضافة توقيع وتاريخ في الأسفل
-  const finalY = (doc as any).lastAutoTable?.finalY ?? 150;
-  doc.setFontSize(10);
-  doc.setFont('helvetica', 'normal');
-  doc.text(`تاريخ الإصدار: ${new Date().toLocaleDateString('ar-EG-u-nu-latn')}`, 15, finalY + 15);
-  doc.setFont('helvetica', 'bold');
-  doc.text("التوقيع: _______________", 15, finalY + 25);
-
-  // الحل السحري لشاومي: استخدام Data URI بدلاً من Blob
-  // هذا يفتح الملف مباشرة أو يبدأ تنزيله دون تعليق
-  const pdfData = doc.output('datauristring');
-  
-  // إنشاء رابط مخفي والنقر عليه
-  const link = document.createElement('a');
-  link.href = pdfData;
-  link.download = fileName;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  await htmlToPdf({ html, css: statementCss, fileName, orientation: 'portrait' });
 }
+
 
 // دالة محسّنة للطباعة من HTML
 export function printHtmlContent(htmlContent: string): void {
@@ -286,130 +316,30 @@ export function printTable(title: string, columns: string[], rows: (string | num
 }
 
 // ============================================================
-// تصدير أي جدول (كشف/تبويب) إلى PDF مطابق لتنسيق الطباعة الحالي
-// باستخدام بناء برمجي مباشر (بدون التقاط صور) — أسرع وأكثر استقراراً
-// خط Cairo مضمّن داخل الملف نفسه (من cairo-font.ts) لضمان ظهور
-// العربي بشكل صحيح دائماً بغض النظر عن حالة الاتصال أو المتصفح
+// تصدير أي جدول (كشف/تبويب) إلى PDF مطابق تماماً لتنسيق الطباعة
+// عبر رسم نفس HTML الطباعة ثم تحويله إلى PDF (عربي صحيح + أرقام سليمة)
 // ============================================================
 
-let fontRegistered = false;
-
-function registerCairoFont(doc: any) {
-  if (fontRegistered) return;
-  doc.addFileToVFS("Cairo-Regular.ttf", CAIRO_FONT_BASE64);
-  doc.addFont("Cairo-Regular.ttf", "Cairo", "normal");
-  doc.addFont("Cairo-Regular.ttf", "Cairo", "bold"); // نفس الملف، jsPDF يحتاج تسجيل الاسم فقط
-  fontRegistered = true;
-}
-
-export function exportTablePdf(opts: {
+export async function exportTablePdf(opts: {
   title: string;
   columns: { key: string; label: string }[];
   rows: Record<string, any>[];
   numericKeys?: string[];
   fileName: string;
-}) {
+}): Promise<void> {
   const { title, columns, rows, numericKeys = [], fileName } = opts;
 
-  const doc = new jsPDF({
-    orientation: "l", // landscape — نفس اتجاه الطباعة الحالي
-    unit: "mm",
-    format: "a4",
-    putOnlyUsedFonts: true,
-    compress: true,
-  });
-
-  registerCairoFont(doc);
-  doc.setFont("Cairo", "normal");
-  doc.setR2L(true);
-
-  // العنوان
-  doc.setFontSize(15);
-  doc.text(title, doc.internal.pageSize.getWidth() / 2, 12, { align: "center" });
-
-  // السطر الفرعي (نفس نص .sub في الطباعة)
-  const today = new Date().toLocaleDateString("ar-EG-u-nu-latn");
-  doc.setFontSize(9.5);
-  doc.text(
-    `المجلس اليمني للاختصاصات الطبية - صعدة • ${today} • عدد السجلات: ${rows.length}`,
-    doc.internal.pageSize.getWidth() / 2,
-    18,
-    { align: "center" }
-  );
-
-  // حساب الإجماليات (نفس منطق صف total-row في الطباعة)
-  const totals: Record<string, number> = {};
-  columns.forEach((c) => {
-    if (numericKeys.includes(c.key)) {
-      totals[c.key] = rows.reduce((sum, r) => sum + (Number(r[c.key]) || 0), 0);
-    }
-  });
-
-  const head = [["م", ...columns.map((c) => c.label)]];
-  const body = rows.map((r, i) => [
-    String(i + 1),
-    ...columns.map((c) => {
-      const v = r[c.key];
-      const isNum = numericKeys.includes(c.key) || typeof v === "number";
-      return isNum ? fmt(Number(v) || 0) : String(v ?? "");
-    }),
-  ]);
-  const totalRowData = [
-    "",
-    ...columns.map((c) => (numericKeys.includes(c.key) ? fmt(totals[c.key] || 0) : "")),
-  ];
-  body.push(totalRowData);
-  const totalRowIndex = body.length - 1;
-
-  autoTable(doc, {
-    head,
-    body,
-    startY: 22,
-    styles: {
-      font: "Cairo",
-      fontStyle: "normal",
-      halign: "center",
-      valign: "middle",
-      fontSize: 8.5,
-      cellPadding: 1.5,
-      lineColor: [0, 0, 0],
-      lineWidth: 0.2,
-      textColor: [0, 0, 0],
-    },
-    headStyles: {
-      fillColor: [245, 222, 179], // نفس لون #f5deb3 في الطباعة
-      textColor: [0, 0, 0],
-      fontStyle: "normal",
-      fontSize: 9,
-    },
-    alternateRowStyles: {
-      fillColor: [248, 250, 252], // نفس #f8fafc
-    },
-    didParseCell: (data: any) => {
-      // تلوين صف الإجمالي بنفس لون الطباعة (#fef3c7)
-      if (data.row.index === totalRowIndex && data.section === "body") {
-        data.cell.styles.fillColor = [254, 243, 199];
-        data.cell.styles.fontStyle = "bold";
-      }
-    },
-    margin: { left: 6, right: 6 },
-    theme: "grid",
-  });
-
+  const html = buildTableHtml({ title, columns, rows, numericKeys });
   const safeDate = new Date().toISOString().slice(0, 10);
-  const finalFileName = `${fileName}-${safeDate}.pdf`;
 
-  // نفس الحل المستخدم في exportStudentStatementPdf: Data URI بدلاً من Blob
-  // (doc.save() الافتراضية تعتمد على Blob، وهذا يُعلّق أو يفشل بصمت
-  // على متصفحات أندرويد/شاومي — استخدام Data URI + رابط مخفي يحل المشكلة)
-  const pdfData = doc.output("datauristring");
-  const link = document.createElement("a");
-  link.href = pdfData;
-  link.download = finalFileName;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  await htmlToPdf({
+    html,
+    css: tablePrintStyles,
+    fileName: `${fileName}-${safeDate}.pdf`,
+    orientation: 'landscape',
+  });
 }
+
 
 import revSchema from "@/data/revenueTemplate.json";
 
