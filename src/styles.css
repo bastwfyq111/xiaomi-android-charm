@@ -150,6 +150,41 @@
   table input { font-size: 14px; padding: 3px 4px; }
 }
 
+/* ==== احتواء النصوص تلقائياً داخل خلايا جداول التبويبات ==== */
+/* تلتف الكلمات داخل الخلية بدل قطعها أو خروجها عن الحدود */
+table th,
+table td {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+  vertical-align: middle;
+}
+
+/* الأرقام تبقى متصلة بدون كسر في منتصف الرقم */
+table td.font-mono,
+table th.font-mono,
+table .tabular-nums {
+  word-break: keep-all;
+}
+
+/* الحقول والمحتوى داخل الخلايا لا تتجاوز عرض الخلية */
+table th > *,
+table td > * {
+  max-width: 100%;
+}
+
+@media print {
+  table th,
+  table td {
+    white-space: normal !important;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+}
+
 @media print {
   .no-print { display: none !important; }
   body { background: white; }
