@@ -351,7 +351,7 @@ export function monthlyStatementPdf(opts: {
     }
     .meta { 
       text-align: center; 
-      font-size: 12px; 
+      font-size: 16px; 
       color: #000 !important;
       font-weight: 900 !important;
     }
@@ -359,12 +359,12 @@ export function monthlyStatementPdf(opts: {
       font-weight: 900 !important; 
       color: #000 !important; 
       margin: 2px 0 2px;
-      font-size: 13px;
+      font-size: 15px;
     }
     table { 
-      width: 100%; 
+      width: auto; 
       border-collapse: collapse; 
-      font-size: 10px; 
+      font-size: 14px; 
       table-layout: auto;
       margin-top: 2px;
     }
@@ -557,7 +557,7 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
     }
     .meta { 
       text-align: center; 
-      font-size: 12px; 
+      font-size: 14px; 
       color: #000 !important;
       font-weight: 900 !important;
     }
@@ -565,12 +565,12 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       font-weight: 900 !important; 
       color: #000 !important; 
       margin: 1px 0 1px;
-      font-size: 13px;
+      font-size: 15px;
     }
     table { 
-      width: 100%; 
+      width: auto; 
       border-collapse: collapse; 
-      font-size: 10px; 
+      font-size: 14px; 
       table-layout: auto;
       margin-top: 8px;
     }
