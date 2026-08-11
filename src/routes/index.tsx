@@ -191,42 +191,49 @@ function Index() {
         {activeTab === "general-expenses-ledger" && <AppTabs />}
       </div>
 
-      {/* شريط التنقل السفلي الثابت */}
+      {/* شريط التنقل السفلي — تصميم عائم زجاجي عصري */}
       <nav
-        className="fixed bottom-0 left-0 right-0 z-50 bg-[#0e2b40] border-t border-[#c99a4e]/25 shadow-[0_-4px_20px_rgba(0,0,0,0.3)]"
+        className="fixed bottom-0 left-0 right-0 z-50 px-2 pb-[calc(8px+env(safe-area-inset-bottom))] pt-1 pointer-events-none"
         dir="rtl"
       >
-        {/* شريط التمرير الأفقي للتبويبات */}
-        <div className="overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <div className="flex w-max min-w-full">
-            {tabs.map((tab) => {
-              const isActive = activeTab === tab.value;
-              return (
-                <button
-                  key={tab.value}
-                  onClick={() => setActiveTab(tab.value)}
-                  className={`
-                    flex flex-col items-center justify-center gap-1 px-3 py-2 flex-1 min-w-[64px] min-h-[52px] transition-all duration-200 active:bg-white/10
-                    ${isActive
-                      ? "text-[#e3c281] bg-white/[0.07] border-t-2 border-[#c99a4e]"
-                      : "text-white/55 hover:text-white hover:bg-white/5 border-t-2 border-transparent"
-                    }
-                  `}
-                >
-                  <span className={`transition-transform duration-200 ${isActive ? "scale-110" : "scale-100"}`}>
-                    {tab.icon}
-                  </span>
-                  <span className="text-[10px] font-bold leading-tight whitespace-nowrap">
-                    {tab.shortLabel}
-                  </span>
-                </button>
-              );
-            })}
+        <div className="pointer-events-auto mx-auto max-w-3xl rounded-2xl border border-[#c99a4e]/30 bg-[#0e2b40]/85 backdrop-blur-xl shadow-[0_10px_30px_-8px_rgba(0,0,0,0.55)] overflow-hidden">
+          {/* خيط برونزي زخرفي */}
+          <div className="h-[2px] w-full bg-[linear-gradient(90deg,transparent,#c99a4e,transparent)] opacity-70" />
+
+          <div className="overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex w-max min-w-full gap-1 p-1.5">
+              {tabs.map((tab) => {
+                const isActive = activeTab === tab.value;
+                return (
+                  <button
+                    key={tab.value}
+                    onClick={() => setActiveTab(tab.value)}
+                    aria-current={isActive ? "page" : undefined}
+                    className={`
+                      group relative flex flex-1 min-w-[62px] min-h-[54px] flex-col items-center justify-center gap-1 rounded-xl px-2.5 py-1.5
+                      transition-all duration-300 ease-out active:scale-[0.94]
+                      ${isActive
+                        ? "text-[#0e2b40] bg-gradient-to-b from-[#e9cd92] to-[#c99a4e] shadow-[0_6px_16px_-6px_rgba(201,154,78,0.9)]"
+                        : "text-white/60 hover:text-white hover:bg-white/[0.08]"
+                      }
+                    `}
+                  >
+                    <span
+                      className={`transition-transform duration-300 ${isActive ? "-translate-y-[1px] scale-110" : "scale-100 group-hover:scale-105"}`}
+                    >
+                      {tab.icon}
+                    </span>
+                    <span
+                      className={`text-[10px] leading-tight whitespace-nowrap ${isActive ? "font-extrabold" : "font-bold"}`}
+                    >
+                      {tab.shortLabel}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
-
-        {/* مساحة آمنة للأجهزة ذات الشريط السفلي (iPhone X وما بعده) */}
-        <div className="bg-[#0e2b40]" style={{ height: "env(safe-area-inset-bottom)" }} />
       </nav>
 
       <Toaster position="top-center" richColors />
