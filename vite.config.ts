@@ -39,6 +39,31 @@ export default defineConfig({
               options: {
                 cacheName: "html-navigations",
                 networkTimeoutSeconds: 5,
+                plugins: [
+                  {
+                    // بدون إنترنت: أعِد آخر نسخة محفوظة من الصفحة الرئيسية
+                    handlerDidError: async () => {
+                      const cache = await caches.open("html-navigations");
+                      return (
+                        (await cache.match("/", { ignoreSearch: true })) ||
+                        (await cache.match("/index.html", { ignoreSearch: true })) ||
+                        Response.error()
+                      );
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              // خطوط جوجل: تعمل بدون إنترنت بعد أول تحميل
+              urlPattern: ({ url }) =>
+                url.origin === "https://fonts.googleapis.com" ||
+                url.origin === "https://fonts.gstatic.com",
+              handler: "StaleWhileRevalidate",
+              options: {
+                cacheName: "google-fonts",
+                expiration: { maxEntries: 40, maxAgeSeconds: 60 * 60 * 24 * 365 },
+                cacheableResponse: { statuses: [0, 200] },
               },
             },
             {
