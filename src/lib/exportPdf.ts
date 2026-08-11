@@ -45,7 +45,7 @@ export function exportToPdf(opts: {
       width: 100%; 
       border-collapse: collapse; 
       font-size: ${fontSize}px; 
-      table-layout: fixed;
+      table-layout: auto;
       margin-top: 8px;
     }
     th, td { 
@@ -365,7 +365,7 @@ export function monthlyStatementPdf(opts: {
       width: 100%; 
       border-collapse: collapse; 
       font-size: 10px; 
-      table-layout: fixed;
+      table-layout: auto;
       margin-top: 2px;
     }
     th, td { 
@@ -571,7 +571,7 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       width: 100%; 
       border-collapse: collapse; 
       font-size: 10px; 
-      table-layout: fixed;
+      table-layout: auto;
       margin-top: 8px;
     }
     th, td { 
