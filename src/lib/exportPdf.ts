@@ -28,28 +28,28 @@ export function exportToPdf(opts: {
       color: #000 !important; 
       margin: 0; 
       padding: 8px; 
-      width: 100%; 
+      width: auto; 
       background: white;
       line-height: 1.4;
       font-weight: 900 !important;
     }
     h1 { 
       text-align: center; 
-      font-size: 18px; 
+      font-size: 14px; 
       font-weight: 900;
       margin: 0 0 4px; 
       color: #000 !important;
       letter-spacing: -0.01em;
     }
     table { 
-      width: 100%; 
+      width: auto; 
       border-collapse: collapse; 
       font-size: ${fontSize}px; 
       table-layout: auto;
       margin-top: 8px;
     }
     th, td { 
-      border: 1.5px solid #000; 
+      border: 1px solid #000; 
       padding: 0px 0px; 
       text-align: center; 
       vertical-align: middle;
@@ -69,14 +69,14 @@ export function exportToPdf(opts: {
     tr:nth-child(even) td { background: #f8fafc; }
     tr:nth-child(odd) td { background: #ffffff; }
     .meta { 
-      font-size: 13px; 
+      font-size: 11px; 
       color: #000 !important; 
       margin: 4px 0 2px;
       text-align: center;
       font-weight: 900 !important;
     }
     .period {
-      font-size: 13px;
+      font-size: 11px;
       color: #000 !important;
       font-weight: 900 !important;
       margin: 2px 0 2px;
@@ -336,14 +336,14 @@ export function monthlyStatementPdf(opts: {
       color: #000 !important; 
       margin: 0; 
       padding: 8px; 
-      width: 100%; 
+      width: auto; 
       background: white;
       line-height: 1.3;
       font-weight: 900 !important;
     }
     h1 { 
       text-align: center; 
-      font-size: 18px; 
+      font-size: 14px; 
       font-weight: 900;
       margin: 0 0 4px; 
       color: #000 !important;
@@ -351,7 +351,7 @@ export function monthlyStatementPdf(opts: {
     }
     .meta { 
       text-align: center; 
-      font-size: 16px; 
+      font-size: 14px; 
       color: #000 !important;
       font-weight: 900 !important;
     }
@@ -359,17 +359,17 @@ export function monthlyStatementPdf(opts: {
       font-weight: 900 !important; 
       color: #000 !important; 
       margin: 2px 0 2px;
-      font-size: 15px;
+      font-size: 12px;
     }
     table { 
       width: auto; 
       border-collapse: collapse; 
-      font-size: 14px; 
+      font-size: 12px; 
       table-layout: auto;
       margin-top: 2px;
     }
     th, td { 
-      border: 1.5px solid #000; 
+      border: 1px solid #000; 
       padding: 1px 1px; 
       text-align: center;
       vertical-align: middle;
@@ -542,18 +542,18 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       color: #000 !important; 
       margin: 0; 
       padding: 8px; 
-      width: 100%; 
+      width: auto; 
       background: white;
       line-height: 1.3;
       font-weight: 900 !important;
     }
     h1 { 
       text-align: center; 
-      font-size: 18px; 
+      font-size: 14px; 
       font-weight: 900;
       margin: 0 0 4px; 
       color: #000 !important;
-      letter-spacing: -0.01em;
+    
     }
     .meta { 
       text-align: center; 
@@ -565,7 +565,7 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       font-weight: 900 !important; 
       color: #000 !important; 
       margin: 1px 0 1px;
-      font-size: 15px;
+      font-size: 12px;
     }
     table { 
       width: auto; 
@@ -575,7 +575,7 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       margin-top: 8px;
     }
     th, td { 
-      border: 1.5px solid #000; 
+      border: 1px solid #000; 
       padding: 1px 1px; 
       text-align: center;
       vertical-align: middle;
