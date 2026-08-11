@@ -327,23 +327,23 @@ export function monthlyStatementPdf(opts: {
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    @page { size: A4 landscape; margin: 10mm; padding: 0; }
-    @page :first { margin-top: 10mm; }
+    @page { size: A4 landscape; margin: 8mm; padding: 0; }
+    @page :first { margin-top: 8mm; }
     html { margin: 0; padding: 0; }
     body { 
       font-family: 'Cairo','Tajawal','Segoe UI',Tahoma,Arial,sans-serif; 
       direction: rtl; 
       color: #000 !important; 
       margin: 0; 
-      padding: 8px; 
-      width: auto; 
+      padding: 6px; 
+      width: 100%; 
       background: white;
-      line-height: 1.3;
+      line-height: 1.35;
       font-weight: 900 !important;
     }
     h1 { 
       text-align: center; 
-      font-size: 14px; 
+      font-size: 16px; 
       font-weight: 900;
       margin: 0 0 4px; 
       color: #000 !important;
@@ -351,26 +351,33 @@ export function monthlyStatementPdf(opts: {
     }
     .meta { 
       text-align: center; 
-      font-size: 14px; 
+      font-size: 13px; 
       color: #000 !important;
       font-weight: 900 !important;
     }
     .period { 
       font-weight: 900 !important; 
       color: #000 !important; 
-      margin: 2px 0 2px;
-      font-size: 12px;
+      margin: 2px 0 4px;
+      font-size: 12.5px;
     }
+    /* table-layout: fixed + width: 100% يجبران الجدول على ملء عرض
+       الصفحة الأفقية بالكامل بأعمدة متساوية العرض النسبي، بدل ترك
+       العرض يتحدد حسب محتوى كل خلية (سبب عدم الملاءمة سابقاً) */
     table { 
-      width: auto; 
+      width: 100%; 
       border-collapse: collapse; 
-      font-size: 12px; 
-      table-layout: auto;
-      margin-top: 2px;
+      font-size: 13.5px; 
+      table-layout: fixed;
+      margin-top: 6px;
     }
+    /* عمود البيان (الأول) أعرض من أعمدة الأرقام الثمانية المتبقية،
+       فيُعطى نسبة أكبر ليتسع لأسماء الحسابات الطويلة */
+    th:first-child, td:first-child { width: 24%; }
+    th:not(:first-child), td:not(:first-child) { width: calc(76% / 8); }
     th, td { 
       border: 1px solid #000; 
-      padding: 1px 1px; 
+      padding: 5px 4px; 
       text-align: center;
       vertical-align: middle;
       white-space: normal;
@@ -379,15 +386,18 @@ export function monthlyStatementPdf(opts: {
       word-break: break-word;
       font-weight: 900 !important;
       color: #000 !important;
+      line-height: 1.3;
     }
     th { 
       background: #1f7fb8;
       color: #000 !important;
       font-weight: 900 !important;
-      padding: 1px 1px;
+      padding: 6px 4px;
+      font-size: 13px;
     }
     td.acc { 
-      text-align: center; 
+      text-align: right; 
+      padding-right: 8px;
       font-weight: 900 !important; 
       color: #000 !important;
     }
@@ -409,8 +419,8 @@ export function monthlyStatementPdf(opts: {
     }
     @media print { 
       * { margin: 0; padding: 0; } 
-      body { margin: 0; padding: 8px; background: white; }
-      @page { margin: 10mm; }
+      body { margin: 0; padding: 6px; background: white; }
+      @page { margin: 8mm; }
     }
   </style>`;
   w.document.write(
@@ -533,50 +543,62 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    @page { size: A4 landscape; margin: 10mm; padding: 0; }
-    @page :first { margin-top: 10mm; }
+    @page { size: A4 landscape; margin: 8mm; padding: 0; }
+    @page :first { margin-top: 8mm; }
     html { margin: 0; padding: 0; }
         body { 
       font-family: 'Cairo','Tajawal','Segoe UI',Tahoma,Arial,sans-serif; 
       direction: rtl; 
       color: #000 !important; 
       margin: 0; 
-      padding: 8px; 
-      width: auto; 
+      padding: 6px; 
+      width: 100%; 
       background: white;
       line-height: 1.3;
       font-weight: 900 !important;
     }
     h1 { 
       text-align: center; 
-      font-size: 14px; 
+      font-size: 18px; 
       font-weight: 900;
       margin: 0 0 4px; 
       color: #000 !important;
-    
+      letter-spacing: -0.01em;
     }
     .meta { 
       text-align: center; 
-      font-size: 14px; 
+      font-size: 12px; 
       color: #000 !important;
       font-weight: 900 !important;
     }
     .period { 
       font-weight: 900 !important; 
       color: #000 !important; 
-      margin: 1px 0 1px;
-      font-size: 12px;
+      margin: 1px 0 4px;
+      font-size: 13px;
     }
+    /* table-layout: fixed + width: 100% لملء عرض الصفحة الأفقية كاملة،
+       مع عرض نسبي مخصص لكل عمود (بدل التوزيع المتساوي الافتراضي) */
     table { 
-      width: auto; 
+      width: 100%; 
       border-collapse: collapse; 
-      font-size: 14px; 
-      table-layout: auto;
-      margin-top: 8px;
+      font-size: 12.5px; 
+      table-layout: fixed;
+      margin-top: 6px;
     }
+    /* عمود "بيان مفردات الموارد" (الأول) أعرض بكثير من البقية لأنه
+       يحتوي نصوصاً طويلة مع مسافات بادئة هرمية (باب/فصل/بند/نوع) */
+    th:nth-child(1), td:nth-child(1) { width: 38%; }
+    th:nth-child(2), td:nth-child(2),
+    th:nth-child(3), td:nth-child(3),
+    th:nth-child(4), td:nth-child(4),
+    th:nth-child(5), td:nth-child(5) { width: 5.5%; }
+    th:nth-child(6), td:nth-child(6),
+    th:nth-child(7), td:nth-child(7),
+    th:nth-child(8), td:nth-child(8) { width: 13%; }
     th, td { 
       border: 1px solid #000; 
-      padding: 1px 1px; 
+      padding: 5px 4px; 
       text-align: center;
       vertical-align: middle;
       white-space: normal;
@@ -585,15 +607,18 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       word-break: break-word;
       font-weight: 900 !important;
       color: #000 !important;
+      line-height: 1.3;
     }
     th { 
       background: #1f7fb8;
       color: #000 !important;
       font-weight: 900 !important;
-      padding: 1px 1px;
+      padding: 6px 4px;
+      font-size: 12px;
     }
     td.acc { 
-      text-align: center; 
+      text-align: right; 
+      padding-right: 8px;
       font-weight: 900 !important; 
       color: #000 !important;
     }
@@ -615,8 +640,8 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
     }
     @media print { 
       * { margin: 0; padding: 0; } 
-      body { margin: 0; padding: 8px; background: white; }
-      @page { margin: 10mm; }
+      body { margin: 0; padding: 6px; background: white; }
+      @page { margin: 8mm; }
     }
   </style>`;
   w.document.write(
@@ -624,5 +649,3 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
   );
   w.document.close();
 }
-
-
