@@ -1285,7 +1285,22 @@ const exportToPDF = (
           : "الحالة: تم السداد بالكامل";
 
     const statementCss = `
-      body { padding: 4mm; font-size: 13px; }
+      @page { size: A4 portrait; margin: 8mm; }
+      html, body { width: 100%; min-height: 0; }
+      body {
+        box-sizing: border-box;
+        padding: 4mm;
+        font-size: 13px;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .container {
+        width: 100%;
+        max-width: 190mm;
+        margin: 0 auto;
+        box-sizing: border-box;
+      }
+      * { box-sizing: border-box; }
       .header {
         background: #0f766e;
         color: #fff;
@@ -1300,7 +1315,14 @@ const exportToPDF = (
       .info-box { border: 0.5pt solid #94a3b8; background: #f8fafc; padding: 8px; border-radius: 6px; text-align: center; }
       .info-lbl { font-size: 14px; font-weight: 600; color: #475569; text-align:center}
       .info-val { font-size: 14px; font-weight: 700; margin-top: 2px; }
-      table { table-layout: auto; margin-top: 4px; }
+      table {
+        width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+        margin-top: 4px;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
       th {
         background: #0f766e;
         color: #fff;
@@ -1317,7 +1339,24 @@ const exportToPDF = (
       .row-paid td { color: #1d4ed8; }
       .row-total-paid td { background: #d1fae5; font-weight: 700; }
       .row-final td { background: #fee2e2; font-size: 16px; font-weight: 800; color: #b91c1c; border-top: 1pt solid #b91c1c; }
-      .foot { margin-top: 14px; display: flex; justify-content: space-between; font-size: 11.5px; font-weight: 600; }
+      .foot {
+        margin-top: 14px;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 11.5px;
+        font-weight: 600;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+      .header, .info-grid { page-break-inside: avoid; break-inside: avoid; }
+      @media print {
+        body { margin: 0; }
+        .header, .info-box, th, td {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+      }
     `;
 
     const body = `
