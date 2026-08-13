@@ -2,7 +2,8 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import {  
   FileSpreadsheet, Plus, Trash2, Upload, Download, FileText, Printer, Eraser,  
 } from "lucide-react";  
-import * as XLSX from "xlsx";  
+import * as XLSX from "xlsx";
+import { useReportDate } from "@/lib/reportDate";
   
 const mainHeaders = ["رقم الاستمارة", "كشف التسوية", "التاريخ", "البيان"];  
 const STORAGE_KEY = "app-tabs-usages-v1";  
@@ -145,6 +146,7 @@ const THEAD_HTML = `
 </tr>`;  
   
 const AppTabs: React.FC = () => {  
+  const { reportDate, reportDateLabel } = useReportDate();
   const [dataRows, setDataRows] = useState<any[]>(() => {  
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }  
     catch { return []; }  
@@ -349,7 +351,7 @@ const AppTabs: React.FC = () => {
     const url = URL.createObjectURL(blob);  
     const a = document.createElement("a");  
     a.href = url;  
-    a.download = `الاستخدامات-${new Date().toISOString().slice(0, 10)}.xlsx`;  
+    a.download = `الاستخدامات-${reportDate}.xlsx`;
     a.click();  
     URL.revokeObjectURL(url);  
   };  
@@ -382,13 +384,14 @@ const AppTabs: React.FC = () => {
     });  
   
     return `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8">  
-    <title>سجل مفردات الاستخدامات والنفقات العامة</title>  
+    <title>سجل مفردات الاستخدامات والنفقات العامة - ${reportDateLabel}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">  
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap">  
     <style>  
       @page { size: A4 landscape; margin: 6mm; }  
       body { font-family:'Cairo','Tajawal','Segoe UI',Tahoma,Arial,sans-serif; direction:rtl; color:#000 !important; margin:0; padding:6px; font-weight:700 !important; }  
-      h2 { text-align:center; color:#000 !important; margin:4px 0 8px; font-weight:800; }  
+      h2 { text-align:center; color:#000 !important; margin:4px 0 4px; font-weight:800; }
+      .report-date { text-align:center; color:#000 !important; margin:0 0 8px; font-size:10px; font-weight:700; }
       table { width:100%; border-collapse:collapse; font-size:8px; }  
       th, td { border:1px solid #94a3b8; padding:2px 3px; text-align:center; white-space:nowrap; color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       thead th { background:#fff; font-weight:700; color:#000 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
@@ -403,7 +406,8 @@ const AppTabs: React.FC = () => {
       tr.t-cum td  { background:#0b3d6d; color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       tr.t-cur td:first-child, tr.t-prev td:first-child, tr.t-cum td:first-child { text-align:right; padding-right:8px; }  
     </style></head><body>  
-    <h2>سجل مفردات الاستخدامات والنفقات العامة</h2>  
+    <h2>سجل مفردات الاستخدامات والنفقات العامة</h2>
+    <div class="report-date">تاريخ التقرير: ${reportDateLabel}</div>
     <table><thead>${THEAD_HTML}</thead><tbody>${body}</tbody></table>  
     </body></html>`;  
   };  

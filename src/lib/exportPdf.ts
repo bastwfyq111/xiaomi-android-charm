@@ -1,6 +1,7 @@
 import type { Account, Hafiza, Journal } from "./store";
 import { fmt } from "./format";
 import { buildMonthlyStatementRows } from "./exportImport";
+import { formatReportDate } from "@/lib/reportDate";
 
 const norm = (s: string) => (s || "").replace(/\s+/g, " ").trim();
 
@@ -10,12 +11,15 @@ export function exportToPdf(opts: {
   columns: string[];
   rows: (string | number)[][];
   orientation?: "portrait" | "landscape";
+  reportDate?: string;
 }) {
+  const reportDateLabel =
+    formatReportDate(opts.reportDate) || new Date().toLocaleDateString("ar-EG-u-nu-latn");
   const w = window.open("", "_blank", "width=900,height=700");
   if (!w) return;
   const orient = opts.orientation || (opts.columns.length > 6 ? "landscape" : "portrait");
   const fontSize = opts.columns.length > 12 ? 9 : opts.columns.length > 8 ? 10 : 11;
-  const head = `<meta charset="utf-8"><title>${opts.title}</title>
+  const head = `<meta charset="utf-8"><title>${opts.title} - ${reportDateLabel}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -103,7 +107,7 @@ export function exportToPdf(opts: {
     }
   </style>`;
   const body = `<h1>${opts.title}</h1>
-  <div class="meta">المجلس اليمني للاختصاصات الطبية — ${new Date().toLocaleDateString("ar-EG-u-nu-latn")}</div>
+  <div class="meta">المجلس اليمني للاختصاصات الطبية — تاريخ التقرير: ${reportDateLabel}</div>
   <table>
     <thead><tr>${opts.columns.map((c) => `<th>${c}</th>`).join("")}</tr></thead>
     <tbody>${opts.rows
@@ -120,7 +124,7 @@ export function exportToPdf(opts: {
   w.document.close();
 }
 
-export const hafizaPdf = (h: Hafiza[]) =>
+export const hafizaPdf = (h: Hafiza[], reportDate?: string) =>
   exportToPdf({
     title: "حوافظ التوريد واشعارات التوريد",
     columns: [
@@ -149,9 +153,10 @@ export const hafizaPdf = (h: Hafiza[]) =>
       x.notifyNo || "",
       fmt(x.notifyAmount),
     ]),
+    reportDate,
   });
 
-export const accountsPdf = (a: Account[], opening: number) => {
+export const accountsPdf = (a: Account[], opening: number, reportDate?: string) => {
   let bal = opening;
   const rows: (string | number)[][] = [
     [1, "", "", "", "", "", "", "رصيد افتتاحي", "", "", "", fmt(opening), "", fmt(bal)],
@@ -194,10 +199,11 @@ export const accountsPdf = (a: Account[], opening: number) => {
       "الرصيد",
     ],
     rows,
+    reportDate,
   });
 };
 
-export const journalPdf = (j: Journal[]) =>
+export const journalPdf = (j: Journal[], reportDate?: string) =>
   exportToPdf({
     title: "دفتر اليومية العامة",
     columns: [
@@ -222,6 +228,7 @@ export const journalPdf = (j: Journal[]) =>
       fmt(x.debit),
       fmt(x.credit),
     ]),
+    reportDate,
   });
 
 const MONTH_NAMES_PDF = [
@@ -246,8 +253,11 @@ export function monthlyStatementPdf(opts: {
   endMonth: number;
   mode: "month" | "quarter";
   quarter?: number;
+  reportDate?: string;
 }) {
-  const { journal, year, startMonth, endMonth, mode, quarter } = opts;
+  const { journal, year, startMonth, endMonth, mode, quarter, reportDate } = opts;
+  const reportDateLabel =
+    formatReportDate(reportDate) || new Date().toLocaleDateString("ar-EG-u-nu-latn");
   const { map, groups, title, office, gov } = buildMonthlyStatementRows(
     journal,
     year,
@@ -273,6 +283,7 @@ export function monthlyStatementPdf(opts: {
   let body = "";
   body += `<h1>${title}</h1>`;
   body += `<div class="meta">${office} — ${gov}</div>`;
+  body += `<div class="meta">تاريخ التقرير: ${reportDateLabel}</div>`;
   body += `<div class="meta period">${periodLabel}</div>`;
   body += `<table><thead>
     <tr>
@@ -321,7 +332,7 @@ export function monthlyStatementPdf(opts: {
   body += `<tr class="total-row"><td>الإجمالي العام</td><td>${fmt(GPD)}</td><td>${fmt(GPC)}</td><td>${fmt(GCD)}</td><td>${fmt(GCC)}</td><td>${fmt(GPD + GCD)}</td><td>${fmt(GPC + GCC)}</td><td>${fmt(Math.max(0, GPD + GCD - GPC - GCC))}</td><td>${fmt(Math.max(0, GPC + GCC - GPD - GCD))}</td></tr>`;
   body += `</tbody></table>`;
 
-  const head = `<meta charset="utf-8"><title>${title} - ${periodLabel}</title>
+  const head = `<meta charset="utf-8"><title>${title} - ${periodLabel} - ${reportDateLabel}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap">
@@ -452,7 +463,14 @@ const MONTHS_PDF = [
 ];
 const ORDER_AR = ["اﻷول", "الثاني", "الثالث", "الرابع", "الخامس"];
 
-export function revenuePdf(revenue: Record<string, number>, year: number, month: number) {
+export function revenuePdf(
+  revenue: Record<string, number>,
+  year: number,
+  month: number,
+  reportDate?: string,
+) {
+  const reportDateLabel =
+    formatReportDate(reportDate) || new Date().toLocaleDateString("ar-EG-u-nu-latn");
   const get = (m: number, key: string) => revenue[`${year}-${m}-${key}`] || 0;
   const sumPrev = (key: string) => {
     let s = 0;
@@ -502,6 +520,7 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
 
   let body = `<h1>${REV_SCHEMA.title}</h1>`;
   body += `<div class="meta">${REV_SCHEMA.office}</div>`;
+  body += `<div class="meta">تاريخ التقرير: ${reportDateLabel}</div>`;
   body += `<div class="meta period">عن شهر ${MONTHS_PDF[month - 1]} من العام المالي ${year}م</div>`;
   body += `<table><thead>
     <tr>
@@ -537,7 +556,7 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
     body += `<tr class="group-row"><td class="acc">إجمالي ${ch.title}</td><td>${ch.no}</td><td colspan="3"></td><td>${fc(a.cur)}</td><td>${fc(a.prev)}</td><td>${fc(a.cur + a.prev)}</td></tr>`;
   });
 
-  const head = `<meta charset="utf-8"><title>${REV_SCHEMA.title} - ${MONTHS_PDF[month - 1]} ${year}م</title>
+  const head = `<meta charset="utf-8"><title>${REV_SCHEMA.title} - ${MONTHS_PDF[month - 1]} ${year}م - ${reportDateLabel}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap">

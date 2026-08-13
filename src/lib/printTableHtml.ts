@@ -1,5 +1,7 @@
 import { fmt } from "./format";
 
+import { formatReportDate } from "@/lib/reportDate";
+
 export type TableCol = { key: string; label: string };
 
 export const escapeHtml = (s: any) =>
@@ -105,8 +107,9 @@ export function buildTableHtml(opts: {
   rows: Record<string, any>[];
   numericKeys?: string[];
   subtitle?: string;
+  reportDate?: string;
 }) {
-  const { title, columns, rows, numericKeys = [], subtitle } = opts;
+  const { title, columns, rows, numericKeys = [], subtitle, reportDate } = opts;
 
   const head = `<tr><th class="idx">م</th>${columns
     .map((c) => `<th>${escapeHtml(c.label)}</th>`)
@@ -143,10 +146,11 @@ export function buildTableHtml(opts: {
     )
     .join("");
 
-  const today = new Date().toLocaleDateString("ar-EG-u-nu-latn");
+  const reportDateLabel =
+    formatReportDate(reportDate) || new Date().toLocaleDateString("ar-EG-u-nu-latn");
   const sub =
     subtitle ??
-    `المجلس اليمني للاختصاصات الطبية - صعدة • ${today} • عدد السجلات: ${rows.length}`;
+    `المجلس اليمني للاختصاصات الطبية - صعدة • تاريخ التقرير: ${reportDateLabel} • عدد السجلات: ${rows.length}`;
 
   return `
     <h1>${escapeHtml(title)}</h1>

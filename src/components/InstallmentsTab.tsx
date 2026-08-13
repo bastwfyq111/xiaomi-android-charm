@@ -28,6 +28,7 @@ import PrintSettingsModal, {
   type InstallmentsPrintSettings,
 } from "./PrintSettingsModal";
 import { openPrintDocument } from "@/lib/printDocument";
+import { useReportDate } from "@/lib/reportDate";
 
 const MONTHS_2025 = [
   "يونيو 2024",
@@ -165,6 +166,7 @@ export default function InstallmentsTab() {
     setInstallmentCustomColumns2026,
     setInstallmentConditionalRules2026,
   } = useStore() as any;
+  const { reportDate, reportDateLabel } = useReportDate();
 
   const [paymentModal, setPaymentModal] = useState<{ row: any; month: string } | null>(null);
   const [payAmount, setPayAmount] = useState("");
@@ -524,7 +526,7 @@ export default function InstallmentsTab() {
       const worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, `أقساط ${year}`);
-      XLSX.writeFile(workbook, `جدول_أقساط_${year}.xlsx`);
+      XLSX.writeFile(workbook, `جدول_أقساط_${year}_${reportDate}.xlsx`);
       toast.success("تم تصدير ملف Excel بنجاح");
     } catch (error) {
       toast.error("حدث خطأ أثناء تصدير ملف Excel");
@@ -558,7 +560,7 @@ const exportToPDF = (
     const monthsList = year === 2025 ? MONTHS_2025 : MONTHS_2026;
     const rows = year === 2025 ? filteredRows2025 : filteredRows2026;
     const extraCols = year === 2026 ? extraCols2026 : [];
-    const date = new Date().toLocaleDateString("ar-EG-u-nu-latn");
+    const date = reportDateLabel;
     const hidden = new Set(settings.hiddenColumns || []);
 
     type PrintCol = {
@@ -842,7 +844,7 @@ const exportToPDF = (
     `;
 
     const ok = openPrintDocument({
-      title: `تقرير_الأقساط_والمدفوعات_${year}`,
+      title: `تقرير_الأقساط_والمدفوعات_${year}_${reportDate}`,
       body,
       css: reportCss,
       pageSize: settings.pageSize,
@@ -1388,14 +1390,14 @@ const exportToPDF = (
           </tbody>
         </table>
         <div class="foot">
-          <span>تاريخ الإصدار: ${escapeHtml(new Date().toLocaleDateString("ar-EG-u-nu-latn"))}</span>
+          <span>تاريخ التقرير: ${escapeHtml(reportDateLabel)}</span>
           <span>التوقيع: ________________</span>
         </div>
       </div>
     `;
 
     return {
-      title: `كشف_حساب_${safeName}_${year}`,
+      title: `كشف_حساب_${safeName}_${year}_${reportDate}`,
       body,
       css: statementCss,
     };

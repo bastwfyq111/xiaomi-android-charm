@@ -145,6 +145,7 @@ async function htmlTableToPdfPaginated(opts: {
   fileName: string;
   orientation?: 'portrait' | 'landscape';
   pageWidthPx?: number;
+  reportDate?: string;
 }): Promise<void> {
   const {
     title,
@@ -154,6 +155,7 @@ async function htmlTableToPdfPaginated(opts: {
     css,
     fileName,
     orientation = 'landscape',
+    reportDate,
   } = opts;
   const pageWidthPx = opts.pageWidthPx ?? (orientation === 'landscape' ? 1123 : 794);
   // ارتفاع صفحة A4 في نفس مقياس البكسل المستخدم للعرض
@@ -180,7 +182,7 @@ async function htmlTableToPdfPaginated(opts: {
   measureFrame.style.pointerEvents = 'none';
   document.body.appendChild(measureFrame);
 
-  const fullHtml = buildTableHtml({ title, columns, rows, numericKeys });
+  const fullHtml = buildTableHtml({ title, columns, rows, numericKeys, reportDate });
 
   try {
     const mdoc = measureFrame.contentDocument!;
@@ -529,9 +531,10 @@ export async function exportTablePdf(opts: {
   rows: Record<string, any>[];
   numericKeys?: string[];
   fileName: string;
+  reportDate?: string;
 }): Promise<void> {
-  const { title, columns, rows, numericKeys = [], fileName } = opts;
-  const safeDate = new Date().toISOString().slice(0, 10);
+  const { title, columns, rows, numericKeys = [], fileName, reportDate } = opts;
+  const safeDate = reportDate || new Date().toISOString().slice(0, 10);
 
   await htmlTableToPdfPaginated({
     title,
@@ -541,6 +544,7 @@ export async function exportTablePdf(opts: {
     css: tablePrintStyles,
     fileName: `${fileName}-${safeDate}.pdf`,
     orientation: 'landscape',
+    reportDate,
   });
 }
 

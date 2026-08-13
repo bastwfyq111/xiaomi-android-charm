@@ -4,6 +4,7 @@ import { fmt } from "@/lib/format";
 import schema from "@/data/revenueTemplate.json";
 import { exportRevenueStatement } from "@/lib/exportImport";
 import { revenuePdf } from "@/lib/exportPdf";
+import { useReportDate } from "@/lib/reportDate";
 
 // استيراد الأيقونات لإضفاء لمسة بصرية حديثة متناسقة مع الهوية الجديدة
 import { Calendar, FileSpreadsheet, FileText, LayoutGrid, DollarSign } from "lucide-react";
@@ -38,6 +39,7 @@ export function typeKey(c: number, s: number, i: number, t: number) {
 export default function RevenueTab() {
   // 1. استخراج حالة الإيرادات ودالة التحديث من مخزن زوستاند (Zustand Store)
   const { revenue, setRevenue, clearTab } = useStore() as any;
+  const { reportDate } = useReportDate();
 
   // 2. إدارة حالة التاريخ المحاسبي الحالي
   const [year, setYear] = useState(new Date().getFullYear());
@@ -155,7 +157,7 @@ export default function RevenueTab() {
         {/* أزرار الإجراءات والتقارير */}
         <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto sm:col-span-2">
           <button
-            onClick={() => exportRevenueStatement(revenue, year)}
+            onClick={() => exportRevenueStatement(revenue, year, reportDate)}
             className="flex items-center justify-center gap-2 px-5 py-3 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold text-xs rounded-xl transition-all shadow-sm hover:border-teal-500/30 hover:text-teal-700 active:scale-[0.98] flex-1 sm:flex-none"
           >
             <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
@@ -163,7 +165,7 @@ export default function RevenueTab() {
           </button>
 
           <button
-            onClick={() => revenuePdf(revenue, year, month)}
+            onClick={() => revenuePdf(revenue, year, month, reportDate)}
             className="flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-teal-700 to-teal-800 hover:from-teal-800 hover:to-teal-900 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-teal-700/10 active:scale-[0.98] flex-1 sm:flex-none"
           >
             <FileText className="w-4 h-4" />

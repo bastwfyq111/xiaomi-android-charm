@@ -2,6 +2,7 @@ import React, { useMemo, useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 import { toast } from "sonner";
 import schemaJson from "@/lib/expensesSchema.json";
+import { useReportDate } from "@/lib/reportDate";
 
 // ====== نوع الصف ======
 type Row = {
@@ -223,6 +224,7 @@ const TD = ({
 // ============================================================
 export default function ExpensesTab() {
   const [store, setStore] = useState<Store>(() => loadStore());
+  const { reportDate, reportDateLabel } = useReportDate();
   const [year] = useState<number>(YEAR_DEFAULT);
   const [view, setView] = useState<string>("cover");
 
@@ -690,14 +692,14 @@ export default function ExpensesTab() {
               const w = window.open("", "_blank", "width=1200,height=800");
               if (!w) return;
               w.document
-                .write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>المصروفات - ${view}</title>
+                .write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>المصروفات - ${view} - ${reportDateLabel}</title>
                 <style>*{margin:0;padding:0}@page{size:A4 landscape;margin:0mm;padding:0}html{margin:0;padding:0}body{font-family:Tajawal,Cairo,Tahoma,Arial,sans-serif;padding:8px;margin:0;width:100%;box-sizing:border-box;color:#000 !important;font-weight:700 !important}
                 table{width:100%;border-collapse:collapse;font-size:11px}
                 th,td{border:1px solid black;padding:4px 6px;text-align:center;white-space:nowrap;color:whait !important;font-weight:1000 !important}
                 thead th{background:#0b3d6d;color:whait!important;font-weight:700 !important}
                 .cur{background:#fef9c3}.prev{background:#e0f2fe}.tot{background:#d1fae5}
                 @media print{*{margin:0;padding:0;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}body{margin:0;padding:8px;color:#000 !important;font-weight:700 !important}th,td{color:#000 !important;font-weight:700 !important;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}}</style>
-                </head><body><h2 style="text-align:center;color:#000 !important;font-weight:800">جدول المصروفات - ${year}م</h2>${el.innerHTML}
+                </head><body><h2 style="text-align:center;color:#000 !important;font-weight:800">جدول المصروفات - ${year}م</h2><div style="text-align:center;font-size:11px;font-weight:700;margin-bottom:8px;">تاريخ التقرير: ${reportDateLabel}</div>${el.innerHTML}
                 <script>window.onload=()=>setTimeout(()=>window.print(),300)</script></body></html>`);
               w.document.close();
             }}
@@ -719,7 +721,7 @@ export default function ExpensesTab() {
                 const ws = XLSX.utils.table_to_sheet(tb as HTMLTableElement);
                 XLSX.utils.book_append_sheet(wb, ws, `ورقة${i + 1}`.slice(0, 30));
               });
-              XLSX.writeFile(wb, `المصروفات-${view}-${year}.xlsx`);
+              XLSX.writeFile(wb, `المصروفات-${view}-${year}-${reportDate}.xlsx`);
               toast.success("تم التصدير");
             }}
             className="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow-sm hover:bg-emerald-700"

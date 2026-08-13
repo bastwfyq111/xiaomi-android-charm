@@ -8,6 +8,7 @@ import { monthlyStatementPdf } from "@/lib/exportPdf";
 import { AlertOctagon, FileSpreadsheet, FileText } from "lucide-react";
 import { toast } from "sonner";
 import ImportButton from "./ImportButton";
+import { useReportDate } from "@/lib/reportDate";
 
 const MONTH_NAMES = [
   "يناير",
@@ -107,6 +108,7 @@ function useFitText(ref: React.RefObject<HTMLTableElement | null>) {
 
 export default function MonthlyStatementTab() {
   const { journal, accounts, clearJournal } = useStore();
+  const { reportDate } = useReportDate();
   const tableRef1 = useRef<HTMLTableElement>(null);
   const tableRef2 = useRef<HTMLTableElement>(null);
   useFitText(tableRef1);
@@ -244,9 +246,9 @@ export default function MonthlyStatementTab() {
     }
   };
 
-  const handleExport = () => exportMonthlyStatement(journal, year);
+  const handleExport = () => exportMonthlyStatement(journal, year, reportDate);
   const handlePdf = () =>
-    monthlyStatementPdf({ journal, year, startMonth, endMonth, mode, quarter });
+    monthlyStatementPdf({ journal, year, startMonth, endMonth, mode, quarter, reportDate });
 
   const periodLabel =
     mode === "month"

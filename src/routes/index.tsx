@@ -23,6 +23,7 @@ import MonthlyStatementTab from "@/components/MonthlyStatementTab";
 import RevenueTab from "@/components/RevenueTab";
 import ExpensesTab from "@/components/ExpensesTab";
 import AppTabs from "@/components/AppTabs";
+import ReportDatePicker from "@/components/ReportDatePicker";
 
 // استيراد وظائف الـ PWA
 import { canInstall, onInstallAvailability, promptInstall } from "@/lib/pwa";
@@ -176,6 +177,7 @@ function Index() {
               <span>تثبيت التطبيق</span>
             </button>
           )}
+          <ReportDatePicker />
         </div>
       </div>
 

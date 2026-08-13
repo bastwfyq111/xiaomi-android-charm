@@ -120,7 +120,7 @@ export function exportToExcel(data: {
   journal: Journal[];
   installments?: Installment[];
   openingBalance: number;
-}) {
+}, reportDate?: string) {
   const wb = XLSX.utils.book_new();
 
   const hafizaRows = data.hafiza.map((h, i) => ({
@@ -185,7 +185,7 @@ export function exportToExcel(data: {
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(instRows), "الأقساط");
   }
 
-  XLSX.writeFile(wb, `قيود_اليومية_${new Date().toISOString().slice(0, 10)}.xlsx`);
+  XLSX.writeFile(wb, `قيود_اليومية_${reportDate || new Date().toISOString().slice(0, 10)}.xlsx`);
 }
 
 export type ImportKind = "hafiza" | "account" | "journal" | "installments" | "revenue" | "monthly";
@@ -795,7 +795,7 @@ function buildQuarterlySheet(journal: Journal[], year: number, quarter: number):
   return ws;
 }
 
-export function exportMonthlyStatement(journal: Journal[], year: number) {
+export function exportMonthlyStatement(journal: Journal[], year: number, reportDate?: string) {
   const wb = XLSX.utils.book_new();
   for (let m = 1; m <= 12; m++) {
     XLSX.utils.book_append_sheet(
@@ -812,7 +812,7 @@ export function exportMonthlyStatement(journal: Journal[], year: number) {
       `حساب المدة - ${qNames[q - 1]}`,
     );
   }
-  XLSX.writeFile(wb, `كشف_الحساب_الشهري_${year}.xlsx`);
+  XLSX.writeFile(wb, `كشف_الحساب_الشهري_${year}_${reportDate || new Date().toISOString().slice(0, 10)}.xlsx`);
 }
 
 export function buildMonthlyStatementRows(
@@ -1002,10 +1002,10 @@ function buildRevenueSheet(
   return ws;
 }
 
-export function exportRevenueStatement(revenue: Record<string, number>, year: number) {
+export function exportRevenueStatement(revenue: Record<string, number>, year: number, reportDate?: string) {
   const wb = XLSX.utils.book_new();
   for (let m = 1; m <= 12; m++) {
     XLSX.utils.book_append_sheet(wb, buildRevenueSheet(revenue, year, m), `الايرادات شهر ${m}`);
   }
-  XLSX.writeFile(wb, `كشف_الايرادات_${year}.xlsx`);
+  XLSX.writeFile(wb, `كشف_الايرادات_${year}_${reportDate || new Date().toISOString().slice(0, 10)}.xlsx`);
 }

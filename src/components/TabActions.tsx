@@ -2,6 +2,7 @@ import { useState } from "react";
 import * as XLSX from "xlsx";
 import { Printer, FileSpreadsheet, Trash2, Download, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useReportDate } from "@/lib/reportDate";
 import { exportTablePdf } from "@/lib/pdfExporter";
 import { buildTableHtml, escapeHtml, tablePrintStyles } from "@/lib/printTableHtml";
 
@@ -29,9 +30,10 @@ export default function TabActions({
   printLabel = "طباعة",
 }: Props) {
   const [pdfBusy, setPdfBusy] = useState(false);
+  const { reportDate, reportDateLabel } = useReportDate();
 
   // نفس محتوى وأنماط الطباعة المستخدمة في تنزيل PDF (مصدر واحد مشترك)
-  const tableHtml = () => buildTableHtml({ title, columns, rows, numericKeys });
+  const tableHtml = () => buildTableHtml({ title, columns, rows, numericKeys, reportDate });
   const printStyles = tablePrintStyles;
 
 
@@ -45,7 +47,7 @@ export default function TabActions({
 
     const head = `
       <meta charset="utf-8" />
-      <title>${escapeHtml(title)}</title>
+      <title>${escapeHtml(title)} - ${escapeHtml(reportDateLabel)}</title>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
       <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -81,7 +83,7 @@ export default function TabActions({
     if (pdfBusy) return;
     setPdfBusy(true);
     try {
-      await exportTablePdf({ title, columns, rows, numericKeys, fileName });
+      await exportTablePdf({ title, columns, rows, numericKeys, fileName, reportDate });
       toast.success("تم تنزيل الملف بنجاح");
     } catch (err) {
       console.error("PDF export error:", err);
@@ -126,7 +128,7 @@ export default function TabActions({
 
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, title.slice(0, 30) || "Sheet1");
-    XLSX.writeFile(wb, `${fileName}-${new Date().toISOString().slice(0, 10)}.xlsx`);
+    XLSX.writeFile(wb, `${fileName}-${reportDate}.xlsx`);
     toast.success("تم تصدير الملف بنجاح");
   };
 
