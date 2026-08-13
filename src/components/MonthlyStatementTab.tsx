@@ -3,27 +3,20 @@ import { useStore } from "@/lib/store";
 import { fmt } from "@/lib/format";
 import schema from "@/data/monthlyStatement.json";
 import revenueSchema from "@/data/revenueTemplate.json";
-import { exportMonthlyStatement } from "@/lib/exportImport";
+import { exportPeriodicStatement } from "@/lib/exportImport";
 import { monthlyStatementPdf } from "@/lib/exportPdf";
+import {
+  getPeriodRange,
+  getReportMovementLabel,
+  getReportPeriodLabel,
+  REPORT_MONTH_NAMES,
+  type ReportPeriodMode,
+} from "@/lib/reportPeriods";
 import { AlertOctagon, FileSpreadsheet, FileText } from "lucide-react";
 import { toast } from "sonner";
 import ImportButton from "./ImportButton";
 import { useReportDate } from "@/lib/reportDate";
 
-const MONTH_NAMES = [
-  "يناير",
-  "فبراير",
-  "مارس",
-  "أبريل",
-  "مايو",
-  "يونيو",
-  "يوليو",
-  "أغسطس",
-  "سبتمبر",
-  "أكتوبر",
-  "نوفمبر",
-  "ديسمبر",
-];
 
 type Group = { title: string; accounts: string[] };
 const GROUPS = schema.groups as Group[];
@@ -115,12 +108,12 @@ export default function MonthlyStatementTab() {
   useFitText(tableRef2);
 
   const [year, setYear] = useState(new Date().getFullYear());
-  const [mode, setMode] = useState<"month" | "quarter">("month");
+  const [mode, setMode] = useState<ReportPeriodMode>("month");
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [quarter, setQuarter] = useState(Math.floor(new Date().getMonth() / 3) + 1);
+  const [halfYear, setHalfYear] = useState(new Date().getMonth() < 6 ? 1 : 2);
 
-  const startMonth = mode === "month" ? month : (quarter - 1) * 3 + 1;
-  const endMonth = mode === "month" ? month : quarter * 3;
+  const { startMonth, endMonth } = getPeriodRange({ mode, year, month, quarter, halfYear });
 
   const data = useMemo(() => {
     const map: Record<
@@ -246,14 +239,24 @@ export default function MonthlyStatementTab() {
     }
   };
 
-  const handleExport = () => exportMonthlyStatement(journal, year, reportDate);
-  const handlePdf = () =>
-    monthlyStatementPdf({ journal, year, startMonth, endMonth, mode, quarter, reportDate });
+  const periodSelection = { mode, year, month, quarter, halfYear };
+  const periodLabel = getReportPeriodLabel(periodSelection);
+  const movementLabel = getReportMovementLabel(periodSelection);
 
-  const periodLabel =
-    mode === "month"
-      ? `شهر ${MONTH_NAMES[month - 1]} ${year}م`
-      : `حساب المدة - الربع ${["الأول", "الثاني", "الثالث", "الرابع"][quarter - 1]} ${year}م (${MONTH_NAMES[startMonth - 1]} - ${MONTH_NAMES[endMonth - 1]})`;
+  const handleExport = () =>
+    exportPeriodicStatement(journal, year, { ...periodSelection, reportDate });
+  const handlePdf = () =>
+    monthlyStatementPdf({
+      journal,
+      year,
+      startMonth,
+      endMonth,
+      mode,
+      month,
+      quarter,
+      halfYear,
+      reportDate,
+    });
 
   return (
     <div className="space-y-5" dir="rtl">
@@ -276,32 +279,32 @@ export default function MonthlyStatementTab() {
           <label className="text-xs font-bold text-slate-600 block mb-1">طريقة العرض المالي</label>
           <select
             value={mode}
-            onChange={(e) => setMode(e.target.value as "month" | "quarter")}
+            onChange={(e) => setMode(e.target.value as ReportPeriodMode)}
             className="block px-3 py-2 border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
           >
             <option value="month">كشف شهري تفصيلي</option>
-            <option value="quarter">حساب المدة (ربع سنوي)</option>
+            <option value="quarter">تقرير ربع سنوي</option>
+            <option value="halfYear">تقرير نصف سنوي</option>
+            <option value="year">تقرير سنوي</option>
           </select>
         </div>
 
         {mode === "month" ? (
           <div>
-            <label className="text-xs font-bold text-slate-600 block mb-1">
-              الفترة الزمنية (الشهر)
-            </label>
+            <label className="text-xs font-bold text-slate-600 block mb-1">الفترة الزمنية (الشهر)</label>
             <select
               value={month}
               onChange={(e) => setMonth(Number(e.target.value))}
               className="block px-3 py-2 border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
             >
-              {MONTH_NAMES.map((n, i) => (
+              {REPORT_MONTH_NAMES.map((n, i) => (
                 <option key={i} value={i + 1}>
                   {n}
                 </option>
               ))}
             </select>
           </div>
-        ) : (
+        ) : mode === "quarter" ? (
           <div>
             <label className="text-xs font-bold text-slate-600 block mb-1">الربع المالي</label>
             <select
@@ -314,6 +317,22 @@ export default function MonthlyStatementTab() {
               <option value={3}>الربع الثالث (يوليو - سبتمبر)</option>
               <option value={4}>الربع الرابع (أكتوبر - ديسمبر)</option>
             </select>
+          </div>
+        ) : mode === "halfYear" ? (
+          <div>
+            <label className="text-xs font-bold text-slate-600 block mb-1">النصف المالي</label>
+            <select
+              value={halfYear}
+              onChange={(e) => setHalfYear(Number(e.target.value))}
+              className="block px-3 py-2 border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
+            >
+              <option value={1}>النصف الأول (يناير - يونيو)</option>
+              <option value={2}>النصف الثاني (يوليو - ديسمبر)</option>
+            </select>
+          </div>
+        ) : (
+          <div className="px-3 py-2 text-sm font-bold text-slate-700 bg-slate-50 border border-slate-300 rounded-lg">
+            يناير - ديسمبر
           </div>
         )}
 
@@ -381,8 +400,7 @@ export default function MonthlyStatementTab() {
                   colSpan={2}
                   className="border border-black px-2 py-2 text-center bg-teal-50 text-teal-900 font-bold whitespace-normal"
                 >
-                  حركة عمليات التبويب الحالية (
-                  {mode === "month" ? `شهر ${MONTH_NAMES[month - 1]}` : `الربع ${quarter}`})
+                  {movementLabel}
                 </th>
                 <th
                   colSpan={2}

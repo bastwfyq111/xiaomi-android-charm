@@ -2,6 +2,11 @@ import type { Account, Hafiza, Journal } from "./store";
 import { fmt } from "./format";
 import { buildMonthlyStatementRows } from "./exportImport";
 import { formatReportDate } from "@/lib/reportDate";
+import {
+  getReportMovementLabel,
+  getReportPeriodLabel,
+  type ReportPeriodMode,
+} from "./reportPeriods";
 
 const norm = (s: string) => (s || "").replace(/\s+/g, " ").trim();
 
@@ -231,31 +236,18 @@ export const journalPdf = (j: Journal[], reportDate?: string) =>
     reportDate,
   });
 
-const MONTH_NAMES_PDF = [
-  "يناير",
-  "فبراير",
-  "مارس",
-  "أبريل",
-  "مايو",
-  "يونيو",
-  "يوليو",
-  "أغسطس",
-  "سبتمبر",
-  "أكتوبر",
-  "نوفمبر",
-  "ديسمبر",
-];
-
 export function monthlyStatementPdf(opts: {
   journal: Journal[];
   year: number;
   startMonth: number;
   endMonth: number;
-  mode: "month" | "quarter";
+  mode: ReportPeriodMode;
+  month?: number;
   quarter?: number;
+  halfYear?: number;
   reportDate?: string;
 }) {
-  const { journal, year, startMonth, endMonth, mode, quarter, reportDate } = opts;
+  const { journal, year, startMonth, endMonth, mode, month, quarter, halfYear, reportDate } = opts;
   const reportDateLabel =
     formatReportDate(reportDate) || new Date().toLocaleDateString("ar-EG-u-nu-latn");
   const { map, groups, title, office, gov } = buildMonthlyStatementRows(
@@ -264,16 +256,10 @@ export function monthlyStatementPdf(opts: {
     startMonth,
     endMonth,
   );
-  const qNames = ["الأول", "الثاني", "الثالث", "الرابع"];
   const lastDay = new Date(year, endMonth, 0).getDate();
-  const periodLabel =
-    mode === "month"
-      ? `شهر ${MONTH_NAMES_PDF[startMonth - 1]} ${year}م`
-      : `حساب المدة - الربع ${qNames[(quarter || 1) - 1]} (${MONTH_NAMES_PDF[startMonth - 1]} - ${MONTH_NAMES_PDF[endMonth - 1]}) ${year}م`;
-  const colCurLabel =
-    mode === "month"
-      ? `عمليات شهر ${MONTH_NAMES_PDF[startMonth - 1]}`
-      : `حساب المدة الربع ${qNames[(quarter || 1) - 1]}`;
+  const periodSelection = { mode, year, month, quarter, halfYear };
+  const periodLabel = getReportPeriodLabel(periodSelection);
+  const colCurLabel = getReportMovementLabel(periodSelection);
 
   const w = window.open("", "_blank", "width=1100,height=800");
   if (!w) return;

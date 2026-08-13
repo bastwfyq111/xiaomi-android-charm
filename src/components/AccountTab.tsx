@@ -438,6 +438,73 @@ export default function AccountsTab() {
     return [...pinned, ...rest];
   }, [filtered, accounts]);
 
+  const [accountReportMode, setAccountReportMode] = useState<"quarter" | "halfYear" | "year">("quarter");
+  const [accountReportYear, setAccountReportYear] = useState(new Date().getFullYear());
+  const [accountReportPeriod, setAccountReportPeriod] = useState(1);
+
+  const accountReportStartMonth =
+    accountReportMode === "quarter"
+      ? (accountReportPeriod - 1) * 3 + 1
+      : accountReportMode === "halfYear"
+        ? (accountReportPeriod - 1) * 6 + 1
+        : 1;
+  const accountReportEndMonth =
+    accountReportMode === "quarter"
+      ? accountReportPeriod * 3
+      : accountReportMode === "halfYear"
+        ? accountReportPeriod * 6
+        : 12;
+  const accountReportLabel =
+    accountReportMode === "quarter"
+      ? `الربع ${["الأول", "الثاني", "الثالث", "الرابع"][accountReportPeriod - 1]} ${accountReportYear}م`
+      : accountReportMode === "halfYear"
+        ? `النصف ${["الأول", "الثاني"][accountReportPeriod - 1]} ${accountReportYear}م`
+        : `السنة المالية ${accountReportYear}م`;
+
+  const accountReportRows = useMemo(() => {
+    const isOpeningRow = (row: any) => String(row.description ?? "").includes("رصيد افتتاحي");
+    const openingRow = accounts.find(isOpeningRow);
+    let openingBalance = openingRow ? Number(openingRow.income) || 0 : 0;
+    const periodRows: any[] = [];
+
+    accounts.forEach((row: any) => {
+      if (isOpeningRow(row)) return;
+      const date = new Date(row.date);
+      if (isNaN(date.getTime()) || date.getFullYear() !== accountReportYear) return;
+      const rowMonth = date.getMonth() + 1;
+      const movement = (Number(row.income) || 0) - (Number(row.expense) || 0);
+      if (rowMonth < accountReportStartMonth) openingBalance += movement;
+      if (rowMonth >= accountReportStartMonth && rowMonth <= accountReportEndMonth) {
+        periodRows.push(row);
+      }
+    });
+
+    periodRows.sort((a, b) => String(a.date || "").localeCompare(String(b.date || "")));
+    let runningBalance = openingBalance;
+    const rows = periodRows.map((row) => {
+      runningBalance += (Number(row.income) || 0) - (Number(row.expense) || 0);
+      return { ...row, balance: runningBalance };
+    });
+    const openingReportRow = {
+      id: `period-opening-${accountReportYear}-${accountReportStartMonth}`,
+      date: `${accountReportYear}-${String(accountReportStartMonth).padStart(2, "0")}-01`,
+      hafizaNo: "",
+      notifyNo: "",
+      notifyDate: "",
+      checkNo: "",
+      checkDate: "",
+      description: "رصيد افتتاحي للفترة",
+      specialty: "",
+      name: "",
+      hafizaAmount: 0,
+      income: 0,
+      expense: 0,
+      revenueKey: "",
+      balance: openingBalance,
+    };
+    return [openingReportRow, ...rows];
+  }, [accounts, accountReportYear, accountReportStartMonth, accountReportEndMonth]);
+
   const submit = () => {
     if (!form.description && !form.name) {
       toast.error("يرجى إدخال الاسم أو البيان على الأقل");
@@ -559,6 +626,75 @@ export default function AccountsTab() {
         <LedgerStat label="إجمالي الإيرادات" value={totalIncome} tone="income" icon={<ArrowUpRight className="w-6 h-6" />} />
         <LedgerStat label="إجمالي المصروفات" value={totalExpense} tone="expense" icon={<ArrowDownLeft className="w-6 h-6" />} />
         <LedgerStat label="الرصيد الحالي المتوفر" value={currentBalance} tone="balance" icon={<Wallet className="w-6 h-6" />} />
+      </div>
+
+      {/* ===== التقارير الدورية ===== */}
+      <div className="accounts-print-hide w-full bg-white rounded-2xl overflow-hidden border border-black/10 shadow-sm">
+        <div className="bg-[#FAF9F6] px-5 py-4 flex flex-wrap justify-between items-center gap-4 border-b border-black/10">
+          <div>
+            <h2 className="text-sm sm:text-base font-black text-[#171412] tracking-wide">تقارير الحساب الدورية</h2>
+            <p className="text-[11px] text-[#6B655D] font-bold mt-1">اختر الربع أو النصف أو السنة ثم صدّر التقرير</p>
+          </div>
+          <div className="flex flex-wrap items-end gap-2">
+            <label className="text-[11px] font-black text-[#6B655D]">
+              نوع التقرير
+              <select
+                value={accountReportMode}
+                onChange={(e) => {
+                  const nextMode = e.target.value as "quarter" | "halfYear" | "year";
+                  setAccountReportMode(nextMode);
+                  setAccountReportPeriod(1);
+                }}
+                className="block mt-1 px-3 py-2 border border-black/15 rounded-xl bg-white text-[#171412] text-xs font-bold outline-none focus:border-[#2563AC]"
+              >
+                <option value="quarter">ربع سنوي</option>
+                <option value="halfYear">نصف سنوي</option>
+                <option value="year">سنوي</option>
+              </select>
+            </label>
+            {accountReportMode !== "year" && (
+              <label className="text-[11px] font-black text-[#6B655D]">
+                الفترة
+                <select
+                  value={accountReportPeriod}
+                  onChange={(e) => setAccountReportPeriod(Number(e.target.value))}
+                  className="block mt-1 px-3 py-2 border border-black/15 rounded-xl bg-white text-[#171412] text-xs font-bold outline-none focus:border-[#2563AC]"
+                >
+                  {accountReportMode === "quarter" ? (
+                    <>
+                      <option value={1}>الربع الأول</option>
+                      <option value={2}>الربع الثاني</option>
+                      <option value={3}>الربع الثالث</option>
+                      <option value={4}>الربع الرابع</option>
+                    </>
+                  ) : (
+                    <>
+                      <option value={1}>النصف الأول</option>
+                      <option value={2}>النصف الثاني</option>
+                    </>
+                  )}
+                </select>
+              </label>
+            )}
+            <label className="text-[11px] font-black text-[#6B655D]">
+              السنة
+              <input
+                type="number"
+                value={accountReportYear}
+                onChange={(e) => setAccountReportYear(Number(e.target.value) || accountReportYear)}
+                className="block mt-1 w-24 px-3 py-2 border border-black/15 rounded-xl bg-white text-[#171412] text-xs font-bold font-mono text-center outline-none focus:border-[#2563AC]"
+              />
+            </label>
+            <div className="text-xs font-black text-[#2563AC] px-2 py-2">{accountReportLabel}</div>
+            <TabActions
+              title={`تقرير الحساب الجاري - ${accountReportLabel}`}
+              rows={accountReportRows}
+              columns={COLS.filter((c) => c.key !== "revenueKey")}
+              fileName={`الحساب-الجاري-${accountReportYear}`}
+              numericKeys={["hafizaAmount", "income", "expense", "balance"]}
+            />
+          </div>
+        </div>
       </div>
 
       {/* ===== لوحة القيد اليدوي والمطابقة ===== */}

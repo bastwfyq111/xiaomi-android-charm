@@ -3,6 +3,12 @@ import type { Account, Hafiza, Installment, Journal } from "./store";
 import { INSTALLMENT_MONTHS } from "./store";
 import monthlySchema from "@/data/monthlyStatement.json";
 import {
+  getPeriodRange,
+  getReportMovementLabel,
+  getReportPeriodLabel,
+  type ReportPeriodSelection,
+} from "./reportPeriods";
+import {
   TEMPLATE,
   DEBIT_FIRST,
   DEBIT_LAST,
@@ -850,6 +856,136 @@ export function buildMonthlyStatementRows(
     office: STATEMENT_OFFICE,
     gov: STATEMENT_GOV,
   };
+}
+
+
+function buildPeriodicStatementSheet(
+  journal: Journal[],
+  year: number,
+  startMonth: number,
+  endMonth: number,
+  periodLabel: string,
+  movementLabel: string,
+): XLSX.WorkSheet {
+  const { map, groups, title, office, gov } = buildMonthlyStatementRows(
+    journal,
+    year,
+    startMonth,
+    endMonth,
+  );
+  const lastDay = new Date(year, endMonth, 0).getDate();
+  const rows: (string | number)[][] = [];
+
+  rows.push([title, "", "", "", "", "", "", "", ""]);
+  rows.push([`المحافظة: ${gov}`, "", `مكتب: ${office}`, "", "", "", "", "", ""]);
+  rows.push([`تقرير مالي عن: ${periodLabel}`, "", "", "", "", "", "", "", ""]);
+  rows.push([
+    "بيان أنواع الحسابات الوسيطة",
+    `الرصيد قبل الفترة حتى ${year}/${startMonth}/1 مدين`,
+    `الرصيد قبل الفترة حتى ${year}/${startMonth}/1 دائن`,
+    `${movementLabel} مدين`,
+    `${movementLabel} دائن`,
+    "الجملة مدين",
+    "الجملة دائن",
+    `الرصيد الختامي في ${year}/${endMonth}/${lastDay} مدين`,
+    `الرصيد الختامي في ${year}/${endMonth}/${lastDay} دائن`,
+  ]);
+
+  let GPD = 0,
+    GPC = 0,
+    GCD = 0,
+    GCC = 0;
+  groups.forEach((g) => {
+    rows.push([g.title, "", "", "", "", "", "", "", ""]);
+    let gPD = 0,
+      gPC = 0,
+      gCD = 0,
+      gCC = 0;
+    g.accounts.forEach((a) => {
+      const r = map[normName(a)] || { prevD: 0, prevC: 0, curD: 0, curC: 0 };
+      const totD = r.prevD + r.curD;
+      const totC = r.prevC + r.curC;
+      const balD = Math.max(0, totD - totC);
+      const balC = Math.max(0, totC - totD);
+      gPD += r.prevD;
+      gPC += r.prevC;
+      gCD += r.curD;
+      gCC += r.curC;
+      rows.push([a, r.prevD, r.prevC, r.curD, r.curC, totD, totC, balD, balC]);
+    });
+    GPD += gPD;
+    GPC += gPC;
+    GCD += gCD;
+    GCC += gCC;
+    rows.push([
+      `جملة ${g.title}`,
+      gPD,
+      gPC,
+      gCD,
+      gCC,
+      gPD + gCD,
+      gPC + gCC,
+      Math.max(0, gPD + gCD - gPC - gCC),
+      Math.max(0, gPC + gCC - gPD - gCD),
+    ]);
+  });
+  rows.push([
+    "الإجمالي العام",
+    GPD,
+    GPC,
+    GCD,
+    GCC,
+    GPD + GCD,
+    GPC + GCC,
+    Math.max(0, GPD + GCD - GPC - GCC),
+    Math.max(0, GPC + GCC - GPD - GCD),
+  ]);
+
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws["!cols"] = [
+    { wch: 42 },
+    { wch: 17 },
+    { wch: 17 },
+    { wch: 17 },
+    { wch: 17 },
+    { wch: 14 },
+    { wch: 14 },
+    { wch: 17 },
+    { wch: 17 },
+  ];
+  ws["!merges"] = [
+    { s: { r: 0, c: 0 }, e: { r: 0, c: 8 } },
+    { s: { r: 2, c: 0 }, e: { r: 2, c: 8 } },
+  ];
+  if (!ws["!views"]) ws["!views"] = [];
+  ws["!views"].push({ RTL: true });
+  return ws;
+}
+
+export function exportPeriodicStatement(
+  journal: Journal[],
+  year: number,
+  selection: ReportPeriodSelection & { reportDate?: string },
+) {
+  const { startMonth, endMonth } = getPeriodRange(selection);
+  const periodLabel = getReportPeriodLabel(selection);
+  const movementLabel = getReportMovementLabel(selection);
+  const wb = XLSX.utils.book_new();
+  const sheetName = `تقرير ${periodLabel}`.slice(0, 31);
+  XLSX.utils.book_append_sheet(
+    wb,
+    buildPeriodicStatementSheet(
+      journal,
+      year,
+      startMonth,
+      endMonth,
+      periodLabel,
+      movementLabel,
+    ),
+    sheetName,
+  );
+  const dateLabel = selection.reportDate || new Date().toISOString().slice(0, 10);
+  XLSX.writeFile(wb, `تقرير_الحساب_${year}_${dateLabel}.xlsx`);
 }
 
 import revenueSchema from "@/data/revenueTemplate.json";
