@@ -56,19 +56,21 @@ export function exportToPdf(opts: {
       font-size: ${fontSize}px; 
       table-layout: fixed;
       margin-top: 8px;
-      overflow-wrap: anywhere;
-      word-break: break-word;
+      overflow-wrap: normal;
+      word-break: normal;
     }
     th, td { 
       border: 1px solid #000; 
       padding: 0px 0px; 
       text-align: center; 
       vertical-align: middle;
-      white-space: normal;
-      word-wrap: break-word; 
-      overflow-wrap: anywhere;
-      word-break: break-word;
-      overflow: visible;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-wrap: normal;
+      overflow-wrap: normal;
+      word-break: normal;
+      overflow: hidden;
       font-weight: 900 !important;
       color: #000 !important;
     }
@@ -388,10 +390,12 @@ export function monthlyStatementPdf(opts: {
       padding: 5px 4px; 
       text-align: center;
       vertical-align: middle;
-      white-space: normal;
-      word-wrap: break-word; 
-      overflow-wrap: break-word; 
-      word-break: break-word;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-wrap: normal;
+      overflow-wrap: normal;
+      word-break: normal;
       font-weight: 900 !important;
       color: #000 !important;
       line-height: 1.3;
@@ -617,10 +621,12 @@ export function revenuePdf(
       padding: 5px 4px; 
       text-align: center;
       vertical-align: middle;
-      white-space: normal;
-      word-wrap: break-word; 
-      overflow-wrap: break-word; 
-      word-break: break-word;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-wrap: normal;
+      overflow-wrap: normal;
+      word-break: normal;
       font-weight: 900 !important;
       color: #000 !important;
       line-height: 1.3;

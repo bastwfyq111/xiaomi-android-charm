@@ -102,6 +102,10 @@
     text-align: center !important;
     vertical-align: middle !important;
     white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    overflow-wrap: normal;
+    word-break: normal;
     page-break-inside: avoid;
   }
 
@@ -112,6 +116,10 @@
     text-align: center !important;
     vertical-align: middle !important;
     white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    overflow-wrap: normal;
+    word-break: normal;
     page-break-inside: avoid;
     color: #000 !important;
     font-weight: 700 !important;

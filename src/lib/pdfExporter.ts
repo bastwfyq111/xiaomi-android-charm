@@ -455,8 +455,8 @@ export function printHtmlContent(htmlContent: string): void {
           width: 100%;
           border-collapse: collapse;
           table-layout: fixed;
-          overflow-wrap: anywhere;
-          word-break: break-word;
+          overflow-wrap: normal;
+          word-break: normal;
           margin: 10px 0;
         }
         th, td {
@@ -464,10 +464,12 @@ export function printHtmlContent(htmlContent: string): void {
           padding: 6px;
           text-align: center;
           vertical-align: middle;
-          white-space: normal;
-          overflow-wrap: anywhere;
-          word-break: break-word;
-          overflow: visible;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          overflow-wrap: normal;
+          word-break: normal;
+          overflow: hidden;
           color: #000 !important;
           font-weight: 900 !important;
         }
@@ -723,21 +725,25 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       font-size: 10px; 
       table-layout: fixed;
       margin-top: 8px;
-      overflow-wrap: anywhere;
-      word-break: break-word;
+      overflow-wrap: normal;
+      word-break: normal;
     }
     th, td { 
       border: 1.5px solid #000; 
       padding: 1px 1px; 
       text-align: center;
       vertical-align: middle;
-      white-space: normal;
-      word-wrap: break-word; 
-      overflow-wrap: break-word; 
-      word-break: break-word;
-      overflow-wrap: anywhere;
-      white-space: normal;
-      overflow: visible;
+      white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      word-wrap: normal;
+      overflow-wrap: normal;
+      word-break: normal;
+      overflow-wrap: normal;
+      white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      overflow: hidden;
       font-weight: 900 !important;
       color: #000 !important;
     }

@@ -106,10 +106,11 @@ const PRINT_STYLES = `
   .accounts-print-area th,
   .accounts-print-area td {
     border: 1px solid #000 !important;
-    white-space: normal !important;
-    overflow: visible !important;
-    text-overflow: unset !important;
-    word-break: break-word !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
     height: auto !important;
     max-width: none !important;
     color: #000 !important;

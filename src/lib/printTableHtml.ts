@@ -80,9 +80,11 @@ export const tablePrintStyles = `
     border: 0.75pt solid #000;
     padding: 2.5px 3px;
     text-align: center;
-    white-space: normal;
-    overflow-wrap: anywhere;
-    word-break: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow-wrap: normal;
+    word-break: normal;
     color: #000 !important;
     font-weight: 700;
     overflow: visible;
@@ -100,8 +102,8 @@ export const tablePrintStyles = `
     direction: ltr;
     color: #000 !important;
     font-weight: 900 !important;
-    overflow-wrap: anywhere;
-    word-break: break-word;
+    overflow-wrap: normal;
+    word-break: normal;
   }
   
   /* تم تعديل العرض قليلاً لتتسع لكلمة الإجمالي */

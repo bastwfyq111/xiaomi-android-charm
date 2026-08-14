@@ -780,10 +780,12 @@ const exportToPDF = (
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        overflow-wrap: normal;
+        word-break: normal;
         line-height: 1.15;
         font-weight: 700;
       }
-      td.wrap { white-space: normal; }
+      td.wrap { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; overflow-wrap: normal; word-break: normal; }
       th {
         background: ${colorTokens.head} !important;
         color: ${colorTokens.headText} !important;
