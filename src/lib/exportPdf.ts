@@ -7,6 +7,7 @@ import {
   getReportPeriodLabel,
   type ReportPeriodMode,
 } from "./reportPeriods";
+import { reportLetterheadRowHtml } from "./printTableHtml";
 
 const norm = (s: string) => (s || "").replace(/\s+/g, " ").trim();
 
@@ -60,6 +61,10 @@ export function exportToPdf(opts: {
       overflow-wrap: normal;
       word-break: normal;
     }
+    thead { display: table-header-group; }
+    .report-letterhead-row { page-break-inside: avoid; break-inside: avoid; }
+    .report-letterhead-cell { border: 0 !important; padding: 0 !important; background: #fff !important; }
+    .report-letterhead-image { display: block; width: 100%; height: auto; margin: 0 auto; }
     th, td { 
       border: 1px solid #000; 
       padding: 0px 0px; 
@@ -126,7 +131,7 @@ export function exportToPdf(opts: {
   const body = `<h1>${opts.title}</h1>
   <div class="meta">المجلس اليمني للاختصاصات الطبية — تاريخ التقرير: ${reportDateLabel}</div>
   <table>
-    <thead><tr>${opts.columns.map((c) => `<th>${c}</th>`).join("")}</tr></thead>
+    <thead>${reportLetterheadRowHtml(opts.columns.length)}<tr>${opts.columns.map((c) => `<th>${c}</th>`).join("")}</tr></thead>
     <tbody>${opts.rows
       .map(
         (r) =>
@@ -285,7 +290,7 @@ export function monthlyStatementPdf(opts: {
   body += `<div class="meta">${office} — ${gov}</div>`;
   body += `<div class="meta">تاريخ التقرير: ${reportDateLabel}</div>`;
   body += `<div class="meta period">${periodLabel}</div>`;
-  body += `<table><thead>
+  body += `<table><thead>${reportLetterheadRowHtml(9)}
     <tr>
       <th rowspan="2">بيان أنواع الحسابات الوسيطة</th>
       <th colspan="2">الرصيد في ${year}/${startMonth}/1</th>
@@ -387,6 +392,10 @@ export function monthlyStatementPdf(opts: {
        فيُعطى نسبة أكبر ليتسع لأسماء الحسابات الطويلة */
     th:first-child, td:first-child { width: 24%; }
     th:not(:first-child), td:not(:first-child) { width: calc(76% / 8); }
+    thead { display: table-header-group; }
+    .report-letterhead-row { page-break-inside: avoid; break-inside: avoid; }
+    .report-letterhead-cell { border: 0 !important; padding: 0 !important; background: #fff !important; }
+    .report-letterhead-image { display: block; width: 100%; height: auto; margin: 0 auto; }
     th, td { 
       border: 1px solid #000; 
       padding: 5px 4px; 
@@ -525,7 +534,7 @@ export function revenuePdf(
   body += `<div class="meta">${REV_SCHEMA.office}</div>`;
   body += `<div class="meta">تاريخ التقرير: ${reportDateLabel}</div>`;
   body += `<div class="meta period">عن شهر ${MONTHS_PDF[month - 1]} من العام المالي ${year}م</div>`;
-  body += `<table><thead>
+  body += `<table><thead>${reportLetterheadRowHtml(8)}
     <tr>
       <th rowspan="2">بيان مفردات الموارد</th>
       <th rowspan="2">الباب</th><th rowspan="2">الفصل</th><th rowspan="2">البند</th><th rowspan="2">النوع</th>
@@ -619,6 +628,10 @@ export function revenuePdf(
     th:nth-child(6), td:nth-child(6),
     th:nth-child(7), td:nth-child(7),
     th:nth-child(8), td:nth-child(8) { width: 13%; }
+    thead { display: table-header-group; }
+    .report-letterhead-row { page-break-inside: avoid; break-inside: avoid; }
+    .report-letterhead-cell { border: 0 !important; padding: 0 !important; background: #fff !important; }
+    .report-letterhead-image { display: block; width: 100%; height: auto; margin: 0 auto; }
     th, td { 
       border: 1px solid #000; 
       padding: 5px 4px; 

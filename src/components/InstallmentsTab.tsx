@@ -29,6 +29,7 @@ import PrintSettingsModal, {
 } from "./PrintSettingsModal";
 import { openPrintDocument } from "@/lib/printDocument";
 import { useReportDate } from "@/lib/reportDate";
+import { reportLetterheadRowHtml } from "@/lib/printTableHtml";
 
 const MONTHS_2025 = [
   "يونيو 2024",
@@ -801,6 +802,9 @@ const exportToPDF = (
       td.s-ok { background: ${settings.colored ? "#d1fae5" : "#ffffff"} !important; }
       td.s-bad { background: ${settings.colored ? "#fee2e2" : "#ffffff"} !important; }
       thead { display: table-header-group; }
+      .report-letterhead-row { page-break-inside: avoid; break-inside: avoid; }
+      .report-letterhead-cell { border: 0 !important; padding: 0 !important; background: #fff !important; }
+      .report-letterhead-image { display: block; width: 100%; height: auto; margin: 0 auto; }
       .total-row td {
         background: ${colorTokens.totals} !important;
         font-weight: 900;
@@ -837,7 +841,7 @@ const exportToPDF = (
       }
       <table>
         ${colGroup}
-        <thead>${thead}</thead>
+        <thead>${reportLetterheadRowHtml(cols.length)}${thead}</thead>
         <tbody>${tbody}${totalRow}</tbody>
       </table>
       <div class="doc-foot">
@@ -1380,6 +1384,7 @@ const exportToPDF = (
         </div>
         <table>
           <thead>
+            ${reportLetterheadRowHtml(2)}
             <tr>
               <th style="width: 60%">البيان</th>
               <th style="width: 40%">المبلغ</th>

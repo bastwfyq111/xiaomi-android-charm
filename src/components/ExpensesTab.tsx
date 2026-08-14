@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
 import * as XLSX from "xlsx";
+import { reportLetterheadRowHtml } from "@/lib/printTableHtml";
 import { toast } from "sonner";
 import schemaJson from "@/lib/expensesSchema.json";
 import { useReportDate } from "@/lib/reportDate";
@@ -695,11 +696,15 @@ export default function ExpensesTab() {
                 .write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>المصروفات - ${view} - ${reportDateLabel}</title>
                 <style>*{margin:0;padding:0}@page{size:A4 landscape;margin:0mm;padding:0}html{margin:0;padding:0}body{font-family:Tajawal,Cairo,Tahoma,Arial,sans-serif;padding:8px;margin:0;width:100%;box-sizing:border-box;color:#000 !important;font-weight:700 !important}
                 table{width:max-content;min-width:100%;table-layout:auto;border-collapse:collapse;font-size:11px}
+                thead{display:table-header-group}
+                .report-letterhead-row{page-break-inside:avoid;break-inside:avoid}
+                .report-letterhead-cell{border:0 !important;padding:0 !important;background:#fff !important}
+                .report-letterhead-image{display:block;width:100%;height:auto;margin:0 auto}
                 th,td{border:1px solid black;padding:4px 6px;text-align:center;white-space:nowrap;overflow:visible;text-overflow:clip;overflow-wrap:normal;word-break:normal;color:whait !important;font-weight:1000 !important}
                 thead th{background:#0b3d6d;color:whait!important;font-weight:700 !important}
                 .cur{background:#fef9c3}.prev{background:#e0f2fe}.tot{background:#d1fae5}
                 @media print{*{margin:0;padding:0;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}body{margin:0;padding:8px;color:#000 !important;font-weight:700 !important}th,td{color:#000 !important;font-weight:700 !important;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}}</style>
-                </head><body><h2 style="text-align:center;color:#000 !important;font-weight:800">جدول المصروفات - ${year}م</h2><div style="text-align:center;font-size:11px;font-weight:700;margin-bottom:8px;">تاريخ التقرير: ${reportDateLabel}</div>${el.innerHTML}
+                </head><body><h2 style="text-align:center;color:#000 !important;font-weight:800">جدول المصروفات - ${year}م</h2><div style="text-align:center;font-size:11px;font-weight:700;margin-bottom:8px;">تاريخ التقرير: ${reportDateLabel}</div>${el.innerHTML.replace("<thead>", `<thead>${reportLetterheadRowHtml(24)}`)}
                 <script>window.onload=()=>setTimeout(()=>window.print(),300)</script></body></html>`);
               w.document.close();
             }}

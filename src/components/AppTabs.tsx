@@ -3,6 +3,7 @@ import {
   FileSpreadsheet, Plus, Trash2, Upload, Download, FileText, Printer, Eraser,  
 } from "lucide-react";  
 import * as XLSX from "xlsx";
+import { reportLetterheadRowHtml } from "@/lib/printTableHtml";
 import { useReportDate } from "@/lib/reportDate";
   
 const mainHeaders = ["رقم الاستمارة", "كشف التسوية", "التاريخ", "البيان"];  
@@ -393,6 +394,10 @@ const AppTabs: React.FC = () => {
       h2 { text-align:center; color:#000 !important; margin:4px 0 4px; font-weight:800; }
       .report-date { text-align:center; color:#000 !important; margin:0 0 8px; font-size:10px; font-weight:700; }
       table { width:max-content; min-width:100%; border-collapse:collapse; table-layout:auto; font-size:8px; }
+      thead { display: table-header-group; }
+      .report-letterhead-row { page-break-inside: avoid; break-inside: avoid; }
+      .report-letterhead-cell { border:0 !important; padding:0 !important; background:#fff !important; }
+      .report-letterhead-image { display:block; width:100%; height:auto; margin:0 auto; }
       th, td { border:1px solid #000; padding:2px 3px; text-align:center; white-space:nowrap; overflow:visible; text-overflow:clip; overflow-wrap:normal; word-break:normal; color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
       thead th { background:#fff; font-weight:700; color:#000 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       thead .c-total { background:${COLORS.TOTAL_ALL}; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
@@ -408,7 +413,8 @@ const AppTabs: React.FC = () => {
     </style></head><body>  
     <h2>سجل مفردات الاستخدامات والنفقات العامة</h2>
     <div class="report-date">تاريخ التقرير: ${reportDateLabel}</div>
-    <table><thead>${THEAD_HTML}</thead><tbody>${body}</tbody></table>  
+        <table><thead>${reportLetterheadRowHtml(TOTAL_COLS)}${THEAD_HTML}</thead><tbody>${body}</tbody></table>
+
     </body></html>`;  
   };  
   
