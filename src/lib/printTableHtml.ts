@@ -4,6 +4,22 @@ import { formatReportDate } from "@/lib/reportDate";
 
 export type TableCol = { key: string; label: string };
 
+export const REPORT_LETTERHEAD_SRC = "/report-letterhead.png";
+
+export const reportLetterheadHtml = () => `
+  <div class="report-letterhead-block" style="width:100%;margin:0 0 8px;page-break-after:avoid;break-after:avoid;">
+    <img class="report-letterhead-image" style="display:block;width:100%;height:auto;margin:0 auto;" src="${REPORT_LETTERHEAD_SRC}" alt="ترويسة المجلس اليمني للاختصاصات الطبية" />
+  </div>
+`;
+
+export const reportLetterheadRowHtml = (columnCount: number) => `
+  <tr class="report-letterhead-row">
+    <th class="report-letterhead-cell" colspan="${Math.max(1, Math.floor(columnCount))}">
+      <img class="report-letterhead-image" style="display:block;width:100%;height:auto;margin:0 auto;" src="${REPORT_LETTERHEAD_SRC}" alt="ترويسة المجلس اليمني للاختصاصات الطبية" />
+    </th>
+  </tr>
+`;
+
 export const escapeHtml = (s: any) =>
   String(s ?? "")
     .replace(/&/g, "&amp;")
@@ -94,6 +110,25 @@ export const tablePrintStyles = `
     border-top: 1.5pt solid #92400e;
   }
   
+  .report-letterhead-block {
+    width: 100%;
+    margin: 0 0 8px;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  .report-letterhead-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+  .report-letterhead-row { page-break-after: avoid; break-after: avoid; }
+  .pdf-page .report-letterhead-cell {
+    padding: 0 !important;
+    border: 0 !important;
+    background: #fff !important;
+  }
+
   /* هذه الإعدادات تضمن تكرار الترويسة في كل صفحة مطبوعة */
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
@@ -111,7 +146,7 @@ export function buildTableHtml(opts: {
 }) {
   const { title, columns, rows, numericKeys = [], subtitle, reportDate } = opts;
 
-  const head = `<tr><th class="idx">م</th>${columns
+  const head = `${reportLetterheadRowHtml(columns.length + 1)}<tr><th class="idx">م</th>${columns
     .map((c) => `<th>${escapeHtml(c.label)}</th>`)
     .join("")}</tr>`;
 

@@ -5,6 +5,8 @@
  * - يضبط عنوان المستند ليصبح اسم ملف PDF الافتراضي
  */
 
+import { reportLetterheadHtml } from "@/lib/printTableHtml";
+
 export type PrintOrientation = "portrait" | "landscape";
 
 export interface PrintDocumentOptions {
@@ -111,8 +113,10 @@ export function openPrintDocument(options: PrintDocumentOptions): boolean {
     @media print { .print-toolbar { display: none !important; } }
   </style>
 </head>
-<body>
+  <body>
+${reportLetterheadHtml()}
 <div class="print-toolbar no-print-block">
+
   <button type="button" id="btnBack">◀ رجوع للتطبيق</button>
   <button type="button" class="ghost" id="btnPrint">🖨️ طباعة / حفظ PDF</button>
 </div>

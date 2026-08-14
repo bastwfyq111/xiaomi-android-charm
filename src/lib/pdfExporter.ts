@@ -1,5 +1,10 @@
 import { fmt } from './format';
-import { buildTableHtml, escapeHtml, tablePrintStyles } from './printTableHtml';
+import {
+  buildTableHtml,
+  escapeHtml,
+  reportLetterheadHtml,
+  tablePrintStyles,
+} from './printTableHtml';
 
 /**
  * توليد PDF من HTML حقيقي (يعرضه المتصفح) بدل الرسم البرمجي
@@ -47,7 +52,7 @@ async function htmlToPdf(opts: {
         .pdf-page .total-row td { border-top: 2px solid #92400e !important; }
       </style></head>
 
-      <body><div class="pdf-page">${html}</div></body></html>`);
+      <body><div class="pdf-page">${reportLetterheadHtml()}${html}</div></body></html>`);
     fdoc.close();
 
     
@@ -620,7 +625,7 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
   if (!w) return;
   const fc = (n: number) => (n ? fmt(n) : "-");
 
-  let body = `<h1>${REV_SCHEMA.title}</h1>`;
+  let body = `${reportLetterheadHtml()}<h1>${REV_SCHEMA.title}</h1>`;
   body += `<div class="meta">${REV_SCHEMA.office}</div>`;
   body += `<div class="meta period">عن شهر ${MONTHS_PDF[month - 1]} من العام المالي ${year}م</div>`;
   body += `<table><thead>
