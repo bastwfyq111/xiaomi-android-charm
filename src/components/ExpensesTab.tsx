@@ -694,8 +694,8 @@ export default function ExpensesTab() {
               w.document
                 .write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>المصروفات - ${view} - ${reportDateLabel}</title>
                 <style>*{margin:0;padding:0}@page{size:A4 landscape;margin:0mm;padding:0}html{margin:0;padding:0}body{font-family:Tajawal,Cairo,Tahoma,Arial,sans-serif;padding:8px;margin:0;width:100%;box-sizing:border-box;color:#000 !important;font-weight:700 !important}
-                table{width:max-content;min-width:100%;table-layout:auto;border-collapse:collapse;font-size:11px}
-                th,td{border:1px solid black;padding:4px 6px;text-align:center;white-space:nowrap;overflow:visible;text-overflow:clip;overflow-wrap:normal;word-break:normal;color:whait !important;font-weight:1000 !important}
+                table{width:100%;min-width:100%;table-layout:fixed;border-collapse:collapse;font-size:clamp(8px,1.35vw,11px)}
+                th,td{border:1px solid black;padding:0 !important;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal;word-break:normal;font-size:clamp(7px,1.2vw,12px);color:whait !important;font-weight:1000 !important}
                 thead th{background:#0b3d6d;color:whait!important;font-weight:700 !important}
                 .cur{background:#fef9c3}.prev{background:#e0f2fe}.tot{background:#d1fae5}
                 @media print{*{margin:0;padding:0;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}body{margin:0;padding:8px;color:#000 !important;font-weight:700 !important}th,td{color:#000 !important;font-weight:700 !important;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}}</style>

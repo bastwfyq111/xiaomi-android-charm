@@ -71,13 +71,13 @@
 
   /* الجداول */
   table {
-    width: max-content;
+    width: 100%;
     min-width: 100%;
     border-collapse: collapse;
-    table-layout: auto;
+    table-layout: fixed;
     page-break-inside: avoid;
     margin: 6px 0 !important;
-    font-size: 11px;
+    font-size: clamp(8px, 1.35vw, 11px);
   }
 
   table thead {
@@ -100,12 +100,13 @@
     color: white !important;
     font-weight: 700 !important;
     border: 1.5px solid #000 !important;
-    padding: 4px 2px !important;
+    padding: 0 !important;
     text-align: center !important;
     vertical-align: middle !important;
     white-space: nowrap !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: clamp(7px, 1.2vw, 11px);
     overflow-wrap: normal;
     word-break: normal;
     page-break-inside: avoid;
@@ -114,12 +115,13 @@
   /* خلايا الجداول */
   td {
     border: 1.5px solid #000 !important;
-    padding: 3px 2px !important;
+    padding: 0 !important;
     text-align: center !important;
     vertical-align: middle !important;
     white-space: nowrap !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: clamp(7px, 1.2vw, 11px);
     overflow-wrap: normal;
     word-break: normal;
     page-break-inside: avoid;

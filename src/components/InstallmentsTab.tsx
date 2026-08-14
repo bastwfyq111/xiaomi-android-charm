@@ -767,32 +767,33 @@ const exportToPDF = (
 
       table {
         font-size: ${fontSizePx.toFixed(2)}px;
-        table-layout: auto !important;
-        width: max-content !important;
+        table-layout: fixed !important;
+        width: 100% !important;
         min-width: 100% !important;
         border-collapse: collapse;
         border: 0.75pt solid #000;
       }
       th, td {
         border: 0.4pt solid #000;
-        padding: 1px 1px;
+        padding: 0 !important;
         text-align: center;
         vertical-align: middle;
         white-space: nowrap;
-        overflow: visible;
-        text-overflow: clip;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: clamp(7px, 1.2vw, 14px);
         overflow-wrap: normal;
         word-break: normal;
         line-height: 1.15;
         font-weight: 700;
       }
-      td.wrap { white-space: nowrap; overflow: visible; text-overflow: clip; overflow-wrap: normal; word-break: normal; }
+      td.wrap { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; overflow-wrap: normal; word-break: normal; padding: 0 !important; font-size: clamp(7px, 1.2vw, 14px); }
       th {
         background: ${colorTokens.head} !important;
         color: ${colorTokens.headText} !important;
         font-size: ${headerFontSizePx.toFixed(2)}px;
         font-weight: 800;
-        padding: 2px 1px;
+        padding: 0 !important;
       }
       tbody tr:nth-child(even) td { background: ${colorTokens.zebra} !important; }
       td.t-fees { background: ${colorTokens.fees} !important; }
@@ -1321,8 +1322,8 @@ const exportToPDF = (
       .info-lbl { font-size: 14px; font-weight: 600; color: #475569; text-align:center}
       .info-val { font-size: 14px; font-weight: 700; margin-top: 2px; }
       table {
-        table-layout: auto;
-        width: max-content;
+        table-layout: fixed;
+        width: 100%;
         min-width: 100%;
         border-collapse: collapse;
         margin-top: 4px;
@@ -1333,11 +1334,11 @@ const exportToPDF = (
         border: 1px solid #000;
         background: #0f766e;
         color: #fff;
-        padding: 7px 4px;
-        font-size: 14px;
+        padding: 0 !important;
+        font-size: clamp(7px, 1.2vw, 14px);
         font-weight: 700;
       }
-      td { border: 1px solid #000; padding: 0px 0px; font-size: 16.5px; white-space: nowrap; overflow: visible; text-overflow: clip; word-wrap: normal; overflow-wrap: normal; word-break: normal; }
+      td { border: 1px solid #000; padding: 0 !important; font-size: clamp(7px, 1.2vw, 16.5px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; word-wrap: normal; overflow-wrap: normal; word-break: normal; }
       .lbl { text-align: center; font-weight: 1000; }
       .num { font-weight: 700; font-size: 15px; font-variant-numeric: tabular-nums; }
       .row-fees td { background: #eff6ff; }

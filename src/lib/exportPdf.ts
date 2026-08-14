@@ -51,27 +51,28 @@ export function exportToPdf(opts: {
       letter-spacing: -0.01em;
     }
     table { 
-      width: max-content;
+      width: 100%;
       min-width: 100%;
       border-collapse: collapse; 
       font-size: ${fontSize}px; 
-      table-layout: auto;
+      table-layout: fixed;
       margin-top: 8px;
       overflow-wrap: normal;
       word-break: normal;
     }
     th, td { 
       border: 1px solid #000; 
-      padding: 0px 0px; 
+      padding: 0 !important;
       text-align: center; 
       vertical-align: middle;
       white-space: nowrap;
-      overflow: visible;
-      text-overflow: clip;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: clamp(7px, 1.2vw, 14px);
       word-wrap: normal;
       overflow-wrap: normal;
       word-break: normal;
-      overflow: visible;
+      overflow: hidden;
       font-weight: 900 !important;
       color: #000 !important;
     }
@@ -376,11 +377,11 @@ export function monthlyStatementPdf(opts: {
        الصفحة الأفقية بالكامل بأعمدة متساوية العرض النسبي، بدل ترك
        العرض يتحدد حسب محتوى كل خلية (سبب عدم الملاءمة سابقاً) */
     table { 
-      width: max-content;
+      width: 100%;
       min-width: 100%;
       border-collapse: collapse; 
       font-size: 13.5px; 
-      table-layout: auto;
+      table-layout: fixed;
       margin-top: 6px;
     }
     /* عمود البيان (الأول) أعرض من أعمدة الأرقام الثمانية المتبقية،
@@ -389,12 +390,13 @@ export function monthlyStatementPdf(opts: {
     th:not(:first-child), td:not(:first-child) { width: calc(76% / 8); }
     th, td { 
       border: 1px solid #000; 
-      padding: 5px 4px; 
+      padding: 0 !important;
       text-align: center;
       vertical-align: middle;
       white-space: nowrap;
-      overflow: visible;
-      text-overflow: clip;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: clamp(7px, 1.2vw, 14px);
       word-wrap: normal;
       overflow-wrap: normal;
       word-break: normal;
@@ -406,12 +408,12 @@ export function monthlyStatementPdf(opts: {
       background: #1f7fb8;
       color: #000 !important;
       font-weight: 900 !important;
-      padding: 6px 4px;
+      padding: 0 !important;
       font-size: 13px;
     }
     td.acc { 
       text-align: right; 
-      padding-right: 8px;
+      padding-right: 0 !important;
       font-weight: 900 !important; 
       color: #000 !important;
     }
@@ -602,11 +604,11 @@ export function revenuePdf(
     /* table-layout: fixed + width: 100% لملء عرض الصفحة الأفقية كاملة،
        مع عرض نسبي مخصص لكل عمود (بدل التوزيع المتساوي الافتراضي) */
     table { 
-      width: max-content;
+      width: 100%;
       min-width: 100%;
       border-collapse: collapse; 
       font-size: 12.5px; 
-      table-layout: auto;
+      table-layout: fixed;
       margin-top: 6px;
     }
     /* عمود "بيان مفردات الموارد" (الأول) أعرض بكثير من البقية لأنه
@@ -621,12 +623,13 @@ export function revenuePdf(
     th:nth-child(8), td:nth-child(8) { width: 13%; }
     th, td { 
       border: 1px solid #000; 
-      padding: 5px 4px; 
+      padding: 0 !important;
       text-align: center;
       vertical-align: middle;
       white-space: nowrap;
-      overflow: visible;
-      text-overflow: clip;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: clamp(7px, 1.2vw, 14px);
       word-wrap: normal;
       overflow-wrap: normal;
       word-break: normal;
@@ -638,12 +641,12 @@ export function revenuePdf(
       background: #1f7fb8;
       color: #000 !important;
       font-weight: 900 !important;
-      padding: 6px 4px;
+      padding: 0 !important;
       font-size: 12px;
     }
     td.acc { 
       text-align: right; 
-      padding-right: 8px;
+      padding-right: 0 !important;
       font-weight: 900 !important; 
       color: #000 !important;
     }

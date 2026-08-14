@@ -47,11 +47,11 @@ const baseCss = (
   h1, h2, h3 { font-weight: 700; margin: 0; }
 
   /* جداول: محاولة الحفاظ على تنسيق واضح عبر الصفحات */
-  table { width: max-content; min-width: 100%; border-collapse: collapse; table-layout: auto; word-break: normal; overflow-wrap: normal; }
+  table { width: 100%; min-width: 100%; border-collapse: collapse; table-layout: fixed; word-break: normal; overflow-wrap: normal; font-size: clamp(8px, 1.35vw, 12px); }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
   tr { break-inside: avoid; page-break-inside: avoid; page-break-after: auto; }
-  th, td { border: 0.5pt solid #000; text-align: center; vertical-align: middle; word-break: normal; overflow-wrap: normal; white-space: nowrap; overflow: visible; text-overflow: clip; padding: 4px; }
+  th, td { border: 0.5pt solid #000; text-align: center; vertical-align: middle; word-break: normal; overflow-wrap: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 !important; line-height: 1.1; font-size: clamp(7px, 1.2vw, 12px); }
   .num { font-family: 'Times New Roman', Times, serif !important; color: #000 !important; font-weight: 900 !important; direction: ltr; }
   th { font-weight: 700; }
   img { max-width: 100%; height: auto; display: block; }
@@ -70,7 +70,7 @@ const baseCss = (
     .page-break { page-break-after: always; }
     /* تقليل الخط لتحسين تناسق الجدول عبر صفحات متعددة */
     body { font-size: 10px; line-height: 1.3; }
-    th, td { padding: 3px; }
+    th, td { padding: 0 !important; font-size: clamp(7px, 1.2vw, 10px); }
   }
 `;
 
@@ -97,30 +97,9 @@ export function openPrintDocument(options: PrintDocumentOptions): boolean {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>${baseCss(pageSize, orientation, margin)}${css}</style>
-  <style>
-    .print-toolbar {
-      position: sticky; top: 0; z-index: 9999;
-      display: flex; gap: 8px; justify-content: flex-start; align-items: center;
-      padding: 8px; margin-bottom: 8px;
-      background: #0f766e; color: #fff;
-      font-family: 'Cairo', Tahoma, Arial, sans-serif;
-    }
-    .print-toolbar button {
-      font-family: inherit; font-size: 14px; font-weight: 700;
-      padding: 8px 14px; border-radius: 8px; border: 0; cursor: pointer;
-      background: #fff; color: #0f766e;
-    }
-    .print-toolbar button.ghost { background: rgba(255,255,255,.15); color: #fff; }
-    @media print { .print-toolbar { display: none !important; } }
-  </style>
 </head>
   <body>
 ${reportLetterheadHtml()}
-<div class="print-toolbar no-print-block">
-
-  <button type="button" id="btnBack">◀ رجوع للتطبيق</button>
-  <button type="button" class="ghost" id="btnPrint">🖨️ طباعة / حفظ PDF</button>
-</div>
 ${body}
 <script>
   (function () {
@@ -131,22 +110,6 @@ ${body}
       try { window.focus(); } catch (e) {}
       setTimeout(function () { window.print(); }, 150);
     }
-    function back() {
-      try { window.close(); } catch (e) {}
-      // إن لم يُسمح بالإغلاق (بعض المتصفحات/الجوال) نعود للتطبيق
-      setTimeout(function () {
-        if (!window.closed) {
-          if (window.history.length > 1) window.history.back();
-          else if (window.opener) { try { window.opener.focus(); } catch (e) {} }
-          else window.location.replace(${JSON.stringify(typeof window !== "undefined" ? window.location.origin + window.location.pathname : "/")});
-        }
-      }, 120);
-    }
-    var b = document.getElementById('btnBack');
-    if (b) b.addEventListener('click', back);
-    var p = document.getElementById('btnPrint');
-    if (p) p.addEventListener('click', function () { window.print(); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') back(); });
     // انتظار جهوزية الخطوط مع مهلة أمان
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(go).catch(go);

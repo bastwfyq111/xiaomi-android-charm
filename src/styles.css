@@ -99,25 +99,28 @@
   }
   
   /* تنسيق الجداول: منع الالتفاف واحتواء النص داخل الخلية */
-  table { 
-    width: 100%; 
-    border-collapse: collapse; 
-    font-feature-settings: "tnum" 1, "lnum" 1; 
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-feature-settings: "tnum" 1, "lnum" 1;
   }
   th { 
     font-weight: 700; 
   }
   table th, table td {
-    text-align: center;         /* محاذاة أفقية إلى الوسط */
-    vertical-align: middle;       /* محاذاة عمودية إلى الوسط */
+    text-align: center;
+    vertical-align: middle;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     overflow-wrap: normal;
     word-break: normal;
     hyphens: none;
-    padding: 6px 4px;           /* حشوة مدمجة بدون هوامش كبيرة */
-    border: 1px solid #000 !important; /* حدود سوداء موحدة */
+    padding: 0 !important;
+    line-height: 1.1;
+    font-size: clamp(8px, 1.35vw, 14px);
+    border: 1px solid #000 !important;
   }
 
   .font-mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 600; }
@@ -149,7 +152,8 @@
     font-size: 12px; 
   }
   table th, table td {
-    padding: 4px 3px; /* حشوة أصغر للموبايل بدون هوامش */
+    padding: 0 !important;
+    font-size: clamp(7px, 2.8vw, 12px);
   }
   /* Ensure inputs inside table filter rows don't trigger zoom but stay compact visually */
   table input { font-size: 14px; padding: 3px 4px; }
@@ -157,7 +161,7 @@
 
 /* ==== احتواء النصوص داخل خلايا جداول التبويبات بدون التفاف ==== */
 table th,
-table td {
+  table td {
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
@@ -165,6 +169,9 @@ table td {
   word-break: normal;
   hyphens: none;
   vertical-align: middle;
+  padding: 0 !important;
+  line-height: 1.1;
+  font-size: clamp(8px, 1.35vw, 14px);
 }
 
 /* الأرقام تبقى متصلة، سوداء وغامقة بخط Times New Roman كما في التصدير والطباعة */
@@ -188,9 +195,13 @@ table td > * {
 @media print {
   table th,
   table td {
-    white-space: normal !important;
-    overflow-wrap: break-word;
-    word-break: break-word;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    overflow-wrap: normal;
+    word-break: normal;
+    padding: 0 !important;
+    font-size: clamp(7px, 1.2vw, 12px);
   }
 }
 

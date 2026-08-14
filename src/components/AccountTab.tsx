@@ -100,18 +100,21 @@ const PRINT_STYLES = `
   .accounts-print-hide { display: none !important; }
   .accounts-print-area table {
     border-collapse: collapse !important;
-    width: max-content !important;
+    width: 100% !important;
     min-width: 100% !important;
-    table-layout: auto !important;
+    table-layout: fixed !important;
   }
   .accounts-print-area th,
   .accounts-print-area td {
     border: 1px solid #000 !important;
     white-space: nowrap !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
     overflow-wrap: normal !important;
     word-break: normal !important;
+    padding: 0 !important;
+    line-height: 1.1 !important;
+    font-size: clamp(7px, 1.2vw, 12px) !important;
     height: auto !important;
     max-width: none !important;
     color: #000 !important;

@@ -392,15 +392,15 @@ const AppTabs: React.FC = () => {
       body { font-family:'Cairo','Tajawal','Segoe UI',Tahoma,Arial,sans-serif; direction:rtl; color:#000 !important; margin:0; padding:6px; font-weight:700 !important; }  
       h2 { text-align:center; color:#000 !important; margin:4px 0 4px; font-weight:800; }
       .report-date { text-align:center; color:#000 !important; margin:0 0 8px; font-size:10px; font-weight:700; }
-      table { width:max-content; min-width:100%; border-collapse:collapse; table-layout:auto; font-size:8px; }
-      th, td { border:1px solid #000; padding:2px 3px; text-align:center; white-space:nowrap; overflow:visible; text-overflow:clip; overflow-wrap:normal; word-break:normal; color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+      table { width:100%; min-width:100%; border-collapse:collapse; table-layout:fixed; font-size:clamp(7px,1.2vw,8px); }
+      th, td { border:1px solid #000; padding:0 !important; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; overflow-wrap:normal; word-break:normal; font-size:clamp(7px,1.2vw,10px); color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
       thead th { background:#fff; font-weight:700; color:#000 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       thead .c-total { background:${COLORS.TOTAL_ALL}; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       thead .c-bab   { background:${COLORS.BAB_TOTAL}; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       thead .c-fasl  { background:${COLORS.FASL}; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       thead .c-band  { background:${COLORS.BAND}; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       td.formula { background:#f8fafc; font-weight:700; color:#000 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
-      tr.month td { background:#0b3d6d; color:#000 !important; font-weight:700 !important; text-align:right; padding:4px 8px; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
+      tr.month td { background:#0b3d6d; color:#000 !important; font-weight:700 !important; text-align:right; padding:0 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
       tr.t-cur td  { background:#dbeafe; color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       tr.t-prev td { background:#e2e8f0; color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       tr.t-cum td  { background:#0b3d6d; color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
