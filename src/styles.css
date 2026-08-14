@@ -98,7 +98,7 @@
     width: 2px;
   }
   
-  /* تنسيق الجداول: مواءمة العرض، التفاف عند الحاجة، ومحاذاة سنتر */
+  /* تنسيق الجداول: منع الالتفاف واحتواء النص داخل الخلية */
   table { 
     width: 100%; 
     border-collapse: collapse; 
@@ -110,8 +110,10 @@
   table th, table td {
     text-align: center;         /* محاذاة أفقية إلى الوسط */
     vertical-align: middle;       /* محاذاة عمودية إلى الوسط */
-    white-space: normal !important; /* يبقى النص في سطر واحد ما لم يفرض طولُه الالتفاف */
-    overflow-wrap: anywhere;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    overflow-wrap: normal;
     word-break: normal;
     hyphens: none;
     padding: 6px 4px;           /* حشوة مدمجة بدون هوامش كبيرة */
@@ -153,13 +155,13 @@
   table input { font-size: 14px; padding: 3px 4px; }
 }
 
-/* ==== احتواء النصوص داخل خلايا جداول التبويبات عند الحاجة فقط ==== */
+/* ==== احتواء النصوص داخل خلايا جداول التبويبات بدون التفاف ==== */
 table th,
 table td {
-  white-space: normal !important;
-  overflow: visible !important;
-  text-overflow: clip !important;
-  overflow-wrap: anywhere;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  overflow-wrap: normal;
   word-break: normal;
   hyphens: none;
   vertical-align: middle;
