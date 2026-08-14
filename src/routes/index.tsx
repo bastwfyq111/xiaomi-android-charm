@@ -211,25 +211,36 @@ function Index() {
                     key={tab.value}
                     onClick={() => setActiveTab(tab.value)}
                     aria-current={isActive ? "page" : undefined}
-                    className={`
-                      group relative flex flex-1 min-w-[62px] min-h-[54px] flex-col items-center justify-center gap-1 rounded-xl px-2.5 py-1.5
-                      transition-all duration-300 ease-out active:scale-[0.94]
-                      ${isActive
-                        ? "text-[#0e2b40] bg-gradient-to-b from-[#e9cd92] to-[#c99a4e] shadow-[0_6px_16px_-6px_rgba(201,154,78,0.9)]"
-                        : "text-white/60 hover:text-white hover:bg-white/[0.08]"
-                      }
-                    `}
+                    aria-label={tab.label}
+                    title={tab.label}
+                    className={`group relative flex min-w-[68px] flex-1 flex-col items-center justify-center gap-1 rounded-[1.1rem] px-2 py-2 transition-all duration-300 ease-out active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e9cd92] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0e2b40] ${
+                      isActive
+                        ? "bg-white text-[#0e2b40] shadow-[0_8px_22px_-10px_rgba(255,255,255,0.95)]"
+                        : "text-white/60 hover:bg-white/[0.1] hover:text-white"
+                    }`}
                   >
                     <span
-                      className={`transition-transform duration-300 ${isActive ? "-translate-y-[1px] scale-110" : "scale-100 group-hover:scale-105"}`}
+                      className={`relative flex h-8 w-8 items-center justify-center rounded-xl transition-all duration-300 ${
+                        isActive
+                          ? "bg-gradient-to-br from-[#e9cd92] to-[#c99a4e] text-[#0e2b40] shadow-[0_5px_12px_-6px_rgba(201,154,78,0.95)]"
+                          : "bg-white/[0.08] text-current group-hover:bg-white/[0.16]"
+                      }`}
                     >
-                      {tab.icon}
+                      <span className={isActive ? "scale-105" : "transition-transform duration-300 group-hover:scale-110"}>
+                        {tab.icon}
+                      </span>
                     </span>
                     <span
-                      className={`text-[10px] leading-tight whitespace-nowrap ${isActive ? "font-extrabold" : "font-bold"}`}
+                      className={`text-[10px] leading-none whitespace-nowrap ${isActive ? "font-extrabold" : "font-bold"}`}
                     >
                       {tab.shortLabel}
                     </span>
+                    <span
+                      aria-hidden="true"
+                      className={`absolute bottom-1 h-1 rounded-full bg-[#c99a4e] transition-all duration-300 ${
+                        isActive ? "w-5 opacity-100" : "w-0 opacity-0"
+                      }`}
+                    />
                   </button>
                 );
               })}
