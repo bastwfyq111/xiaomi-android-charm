@@ -103,12 +103,15 @@
     padding: 0 !important;
     text-align: center !important;
     vertical-align: middle !important;
-    white-space: nowrap !important;
+    white-space: normal !important;
     overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    font-size: clamp(7px, 1.2vw, 11px);
-    overflow-wrap: normal;
-    word-break: normal;
+    text-overflow: clip !important;
+    font-size: clamp(7px, 1.05vw, 11px);
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
+    line-height: 1.1;
+    max-height: 2.2em;
     page-break-inside: avoid;
   }
 
@@ -118,12 +121,15 @@
     padding: 0 !important;
     text-align: center !important;
     vertical-align: middle !important;
-    white-space: nowrap !important;
+    white-space: normal !important;
     overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    font-size: clamp(7px, 1.2vw, 11px);
-    overflow-wrap: normal;
-    word-break: normal;
+    text-overflow: clip !important;
+    font-size: clamp(7px, 1.05vw, 11px);
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
+    line-height: 1.1;
+    max-height: 2.2em;
     page-break-inside: avoid;
     color: #000 !important;
     font-weight: 700 !important;
@@ -285,7 +291,7 @@
   /* تحسين وضوح النصوص الصغيرة */
   small {
     font-size: 9px;
-    white-space: nowrap;
+    white-space: normal;
   }
 
   /* تحسين وضوح الأرقام */

@@ -57,22 +57,24 @@ export function exportToPdf(opts: {
       font-size: ${fontSize}px; 
       table-layout: fixed;
       margin-top: 8px;
-      overflow-wrap: normal;
-      word-break: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
     th, td { 
       border: 1px solid #000; 
       padding: 0 !important;
       text-align: center; 
       vertical-align: middle;
-      white-space: nowrap;
+      white-space: normal;
       overflow: hidden;
-      text-overflow: ellipsis;
-      font-size: clamp(7px, 1.2vw, 14px);
-      word-wrap: normal;
-      overflow-wrap: normal;
-      word-break: normal;
-      overflow: hidden;
+      text-overflow: clip;
+      font-size: clamp(7px, 1.05vw, 13px);
+      word-wrap: anywhere;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      hyphens: auto;
+      line-height: 1.1;
+      max-height: 2.2em;
       font-weight: 900 !important;
       color: #000 !important;
     }
@@ -86,7 +88,7 @@ export function exportToPdf(opts: {
       background: #1f7fb8;
       color: #000 !important;
       font-weight: 900;
-      padding: 8px 4px;
+      padding: 0 !important;
     }
     tr:nth-child(even) td { background: #f8fafc; }
     tr:nth-child(odd) td { background: #ffffff; }
@@ -393,16 +395,17 @@ export function monthlyStatementPdf(opts: {
       padding: 0 !important;
       text-align: center;
       vertical-align: middle;
-      white-space: nowrap;
+      white-space: normal;
       overflow: hidden;
-      text-overflow: ellipsis;
+      text-overflow: clip;
       font-size: clamp(7px, 1.2vw, 14px);
-      word-wrap: normal;
-      overflow-wrap: normal;
-      word-break: normal;
+      word-wrap: anywhere;
+      overflow-wrap: anywhere;
+      word-break: break-word;
       font-weight: 900 !important;
       color: #000 !important;
-      line-height: 1.3;
+      line-height: 1.1;
+      max-height: 2.2em;
     }
     th { 
       background: #1f7fb8;
@@ -626,16 +629,17 @@ export function revenuePdf(
       padding: 0 !important;
       text-align: center;
       vertical-align: middle;
-      white-space: nowrap;
+      white-space: normal;
       overflow: hidden;
-      text-overflow: ellipsis;
+      text-overflow: clip;
       font-size: clamp(7px, 1.2vw, 14px);
-      word-wrap: normal;
-      overflow-wrap: normal;
-      word-break: normal;
+      word-wrap: anywhere;
+      overflow-wrap: anywhere;
+      word-break: break-word;
       font-weight: 900 !important;
       color: #000 !important;
-      line-height: 1.3;
+      line-height: 1.1;
+      max-height: 2.2em;
     }
     th { 
       background: #1f7fb8;

@@ -456,8 +456,8 @@ export function printHtmlContent(htmlContent: string): void {
           min-width: 100%;
           border-collapse: collapse;
           table-layout: fixed;
-          overflow-wrap: normal;
-          word-break: normal;
+          overflow-wrap: anywhere;
+          word-break: break-word;
           margin: 10px 0;
         }
         th, td {
@@ -465,12 +465,12 @@ export function printHtmlContent(htmlContent: string): void {
           padding: 0 !important;
           text-align: center;
           vertical-align: middle;
-          white-space: nowrap;
+          white-space: normal;
           overflow: hidden;
-          text-overflow: ellipsis;
+          text-overflow: clip;
           font-size: clamp(7px, 1.2vw, 12px);
-          overflow-wrap: normal;
-          word-break: normal;
+          overflow-wrap: anywhere;
+          word-break: break-word;
           overflow: hidden;
           color: #000 !important;
           font-weight: 900 !important;
@@ -728,25 +728,25 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       font-size: 10px; 
       table-layout: fixed;
       margin-top: 8px;
-      overflow-wrap: normal;
-      word-break: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
     th, td { 
       border: 1.5px solid #000; 
       padding: 0 !important;
       text-align: center;
       vertical-align: middle;
-      white-space: nowrap;
+      white-space: normal;
       overflow: hidden;
-      text-overflow: ellipsis;
+      text-overflow: clip;
       font-size: clamp(7px, 1.2vw, 12px);
       word-wrap: normal;
-      overflow-wrap: normal;
-      word-break: normal;
-      overflow-wrap: normal;
-      white-space: nowrap;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      white-space: normal;
       overflow: hidden;
-      text-overflow: ellipsis;
+      text-overflow: clip;
       font-size: clamp(7px, 1.2vw, 12px);
       overflow: hidden;
       font-weight: 900 !important;

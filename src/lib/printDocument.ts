@@ -47,11 +47,11 @@ const baseCss = (
   h1, h2, h3 { font-weight: 700; margin: 0; }
 
   /* جداول: محاولة الحفاظ على تنسيق واضح عبر الصفحات */
-  table { width: 100%; min-width: 100%; border-collapse: collapse; table-layout: fixed; word-break: normal; overflow-wrap: normal; font-size: clamp(8px, 1.35vw, 12px); }
+  table { width: 100%; min-width: 100%; border-collapse: collapse; table-layout: fixed; word-break: break-word; overflow-wrap: anywhere; font-size: clamp(7px, 1.05vw, 12px); }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
   tr { break-inside: avoid; page-break-inside: avoid; page-break-after: auto; }
-  th, td { border: 0.5pt solid #000; text-align: center; vertical-align: middle; word-break: normal; overflow-wrap: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 !important; line-height: 1.1; font-size: clamp(7px, 1.2vw, 12px); }
+  th, td { border: 0.5pt solid #000; text-align: center; vertical-align: middle; word-break: break-word; overflow-wrap: anywhere; white-space: normal; overflow: hidden; text-overflow: clip; padding: 0 !important; line-height: 1.1; max-height: 2.2em; font-size: clamp(7px, 1.05vw, 12px); }
   .num { font-family: 'Times New Roman', Times, serif !important; color: #000 !important; font-weight: 900 !important; direction: ltr; }
   th { font-weight: 700; }
   img { max-width: 100%; height: auto; display: block; }
@@ -70,7 +70,7 @@ const baseCss = (
     .page-break { page-break-after: always; }
     /* تقليل الخط لتحسين تناسق الجدول عبر صفحات متعددة */
     body { font-size: 10px; line-height: 1.3; }
-    th, td { padding: 0 !important; font-size: clamp(7px, 1.2vw, 10px); }
+    th, td { padding: 0 !important; white-space: normal; overflow: hidden; text-overflow: clip; overflow-wrap: anywhere; word-break: break-word; line-height: 1.1; max-height: 2.2em; font-size: clamp(7px, 1.0vw, 10px); }
   }
 `;
 

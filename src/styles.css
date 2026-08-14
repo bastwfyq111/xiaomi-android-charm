@@ -98,7 +98,7 @@
     width: 2px;
   }
   
-  /* تنسيق الجداول: منع الالتفاف واحتواء النص داخل الخلية */
+  /* تنسيق الجداول: احتواء النص مع السماح بحد أقصى سطرين داخل الخلية */
   table {
     width: 100%;
     border-collapse: collapse;
@@ -111,15 +111,16 @@
   table th, table td {
     text-align: center;
     vertical-align: middle;
-    white-space: nowrap !important;
+    white-space: normal !important;
     overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    overflow-wrap: normal;
-    word-break: normal;
-    hyphens: none;
+    text-overflow: clip !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
     padding: 0 !important;
     line-height: 1.1;
-    font-size: clamp(8px, 1.35vw, 14px);
+    max-height: 2.2em;
+    font-size: clamp(7px, 1.05vw, 13px);
     border: 1px solid #000 !important;
   }
 
@@ -147,7 +148,7 @@
   .safe-pad-bottom { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
   .safe-pad-top { padding-top: max(0.5rem, env(safe-area-inset-top)); }
   
-  /* تقليص حجم الخط والحشوة في الجوال ليتناسب العرض مع الشاشات الصغيرة */
+  /* تقليص حجم الخط والحشوة في الجوال مع السماح بسطرين للنصوص الطويلة */
   table { 
     font-size: 12px; 
   }
@@ -159,19 +160,20 @@
   table input { font-size: 14px; padding: 3px 4px; }
 }
 
-/* ==== احتواء النصوص داخل خلايا جداول التبويبات بدون التفاف ==== */
+/* ==== احتواء النصوص داخل خلايا جداول التبويبات بحد أقصى سطرين ==== */
 table th,
   table td {
-  white-space: nowrap !important;
+  white-space: normal !important;
   overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  overflow-wrap: normal;
-  word-break: normal;
-  hyphens: none;
+  text-overflow: clip !important;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
   vertical-align: middle;
   padding: 0 !important;
   line-height: 1.1;
-  font-size: clamp(8px, 1.35vw, 14px);
+  max-height: 2.2em;
+  font-size: clamp(7px, 1.05vw, 13px);
 }
 
 /* الأرقام تبقى متصلة، سوداء وغامقة بخط Times New Roman كما في التصدير والطباعة */
@@ -195,13 +197,15 @@ table td > * {
 @media print {
   table th,
   table td {
-    white-space: nowrap !important;
+    white-space: normal !important;
     overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    overflow-wrap: normal;
-    word-break: normal;
+    text-overflow: clip !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
     padding: 0 !important;
-    font-size: clamp(7px, 1.2vw, 12px);
+    line-height: 1.1;
+    max-height: 2.2em;
+    font-size: clamp(7px, 1.05vw, 12px);
   }
 }
 

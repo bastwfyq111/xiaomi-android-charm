@@ -7,15 +7,15 @@ export type TableCol = { key: string; label: string };
 export const REPORT_LETTERHEAD_SRC = "/report-letterhead.png";
 
 export const reportLetterheadHtml = () => `
-  <div class="report-letterhead-block" style="width:100%;margin:0 0 8px;page-break-after:avoid;break-after:avoid;">
-    <img class="report-letterhead-image" style="display:block;width:100%;height:auto;margin:0 auto;" src="${REPORT_LETTERHEAD_SRC}" alt="ترويسة المجلس اليمني للاختصاصات الطبية" />
+  <div class="report-letterhead-block" style="display:block;position:relative;top:0;width:88%;margin:0 auto 4px;page-break-before:avoid;page-break-after:avoid;break-before:avoid;break-after:avoid;">
+    <img class="report-letterhead-image" style="display:block;width:100%;max-height:54px;height:auto;object-fit:contain;object-position:top center;margin:0 auto;" src="${REPORT_LETTERHEAD_SRC}" alt="ترويسة المجلس اليمني للاختصاصات الطبية" />
   </div>
 `;
 
 export const reportLetterheadRowHtml = (columnCount: number) => `
   <tr class="report-letterhead-row">
     <th class="report-letterhead-cell" colspan="${Math.max(1, Math.floor(columnCount))}">
-      <img class="report-letterhead-image" style="display:block;width:100%;height:auto;margin:0 auto;" src="${REPORT_LETTERHEAD_SRC}" alt="ترويسة المجلس اليمني للاختصاصات الطبية" />
+      <img class="report-letterhead-image" style="display:block;width:88%;max-height:54px;height:auto;object-fit:contain;object-position:top center;margin:0 auto;" src="${REPORT_LETTERHEAD_SRC}" alt="ترويسة المجلس اليمني للاختصاصات الطبية" />
     </th>
   </tr>
 `;
@@ -75,17 +75,19 @@ export const tablePrintStyles = `
     min-width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
-    font-size: clamp(8px, 1.35vw, 14px);
+    font-size: clamp(7px, 1.05vw, 13px);
   }
   th, td {
     border: 0.75pt solid #000;
     padding: 0 !important;
     text-align: center;
-    white-space: nowrap;
+    white-space: normal;
     overflow: hidden;
-    text-overflow: ellipsis;
-    overflow-wrap: normal;
-    word-break: normal;
+    text-overflow: clip;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
+    max-height: 2.2em;
     color: #000 !important;
     font-weight: 700;
     line-height: 1.1;
@@ -104,8 +106,8 @@ export const tablePrintStyles = `
     direction: ltr;
     color: #000 !important;
     font-weight: 900 !important;
-    overflow-wrap: normal;
-    word-break: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
     font-size: inherit;
   }
   
@@ -119,15 +121,23 @@ export const tablePrintStyles = `
   }
   
   .report-letterhead-block {
-    width: 100%;
-    margin: 0 0 8px;
+    display: block;
+    position: relative;
+    top: 0;
+    width: 88%;
+    margin: 0 auto 4px;
+    page-break-before: avoid;
     page-break-after: avoid;
+    break-before: avoid;
     break-after: avoid;
   }
   .report-letterhead-image {
     display: block;
     width: 100%;
+    max-height: 54px;
     height: auto;
+    object-fit: contain;
+    object-position: top center;
     margin: 0 auto;
   }
   .report-letterhead-row { page-break-after: avoid; break-after: avoid; }

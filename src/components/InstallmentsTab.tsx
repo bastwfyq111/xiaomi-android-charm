@@ -778,16 +778,19 @@ const exportToPDF = (
         padding: 0 !important;
         text-align: center;
         vertical-align: middle;
-        white-space: nowrap;
+        white-space: normal;
         overflow: hidden;
-        text-overflow: ellipsis;
-        font-size: clamp(7px, 1.2vw, 14px);
-        overflow-wrap: normal;
-        word-break: normal;
+        text-overflow: clip;
+        font-size: clamp(7px, 1.05vw, 13px);
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        hyphens: auto;
+        line-height: 1.1;
+        max-height: 2.2em;
         line-height: 1.15;
         font-weight: 700;
       }
-      td.wrap { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; overflow-wrap: normal; word-break: normal; padding: 0 !important; font-size: clamp(7px, 1.2vw, 14px); }
+      td.wrap { white-space: normal; overflow: hidden; text-overflow: clip; overflow-wrap: anywhere; word-break: break-word; hyphens: auto; padding: 0 !important; line-height: 1.1; max-height: 2.2em; font-size: clamp(7px, 1.05vw, 13px); }
       th {
         background: ${colorTokens.head} !important;
         color: ${colorTokens.headText} !important;
@@ -1338,7 +1341,7 @@ const exportToPDF = (
         font-size: clamp(7px, 1.2vw, 14px);
         font-weight: 700;
       }
-      td { border: 1px solid #000; padding: 0 !important; font-size: clamp(7px, 1.2vw, 16.5px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; word-wrap: normal; overflow-wrap: normal; word-break: normal; }
+      td { border: 1px solid #000; padding: 0 !important; font-size: clamp(7px, 1.05vw, 15px); white-space: normal; overflow: hidden; text-overflow: clip; word-wrap: anywhere; overflow-wrap: anywhere; word-break: break-word; hyphens: auto; line-height: 1.1; max-height: 2.2em; }
       .lbl { text-align: center; font-weight: 1000; }
       .num { font-weight: 700; font-size: 15px; font-variant-numeric: tabular-nums; }
       .row-fees td { background: #eff6ff; }
