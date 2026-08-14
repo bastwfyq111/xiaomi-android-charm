@@ -100,15 +100,16 @@ const PRINT_STYLES = `
   .accounts-print-hide { display: none !important; }
   .accounts-print-area table {
     border-collapse: collapse !important;
-    width: 100% !important;
+    width: max-content !important;
+    min-width: 100% !important;
     table-layout: auto !important;
   }
   .accounts-print-area th,
   .accounts-print-area td {
     border: 1px solid #000 !important;
     white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
     overflow-wrap: normal !important;
     word-break: normal !important;
     height: auto !important;

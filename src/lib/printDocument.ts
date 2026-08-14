@@ -47,11 +47,11 @@ const baseCss = (
   h1, h2, h3 { font-weight: 700; margin: 0; }
 
   /* جداول: محاولة الحفاظ على تنسيق واضح عبر الصفحات */
-  table { width: 100%; border-collapse: collapse; table-layout: fixed; word-break: normal; overflow-wrap: normal; }
+  table { width: max-content; min-width: 100%; border-collapse: collapse; table-layout: auto; word-break: normal; overflow-wrap: normal; }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
   tr { break-inside: avoid; page-break-inside: avoid; page-break-after: auto; }
-  th, td { border: 0.5pt solid #000; text-align: center; vertical-align: middle; word-break: normal; overflow-wrap: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 4px; }
+  th, td { border: 0.5pt solid #000; text-align: center; vertical-align: middle; word-break: normal; overflow-wrap: normal; white-space: nowrap; overflow: visible; text-overflow: clip; padding: 4px; }
   .num { font-family: 'Times New Roman', Times, serif !important; color: #000 !important; font-weight: 900 !important; direction: ltr; }
   th { font-weight: 700; }
   img { max-width: 100%; height: auto; display: block; }

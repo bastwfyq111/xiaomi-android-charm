@@ -452,9 +452,10 @@ export function printHtmlContent(htmlContent: string): void {
           color: #000 !important;
         }
         table {
-          width: 100%;
+          width: max-content;
+          min-width: 100%;
           border-collapse: collapse;
-          table-layout: fixed;
+          table-layout: auto;
           overflow-wrap: normal;
           word-break: normal;
           margin: 10px 0;
@@ -465,11 +466,11 @@ export function printHtmlContent(htmlContent: string): void {
           text-align: center;
           vertical-align: middle;
           white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+          overflow: visible;
+          text-overflow: clip;
           overflow-wrap: normal;
           word-break: normal;
-          overflow: hidden;
+          overflow: visible;
           color: #000 !important;
           font-weight: 900 !important;
         }
@@ -720,10 +721,11 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       font-size: 13px;
     }
     table { 
-      width: 100%; 
+      width: max-content;
+      min-width: 100%;
       border-collapse: collapse; 
       font-size: 10px; 
-      table-layout: fixed;
+      table-layout: auto;
       margin-top: 8px;
       overflow-wrap: normal;
       word-break: normal;
@@ -734,16 +736,16 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       text-align: center;
       vertical-align: middle;
       white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+      overflow: visible;
+      text-overflow: clip;
       word-wrap: normal;
       overflow-wrap: normal;
       word-break: normal;
       overflow-wrap: normal;
       white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-      overflow: hidden;
+      overflow: visible;
+      text-overflow: clip;
+      overflow: visible;
       font-weight: 900 !important;
       color: #000 !important;
     }

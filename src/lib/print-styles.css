@@ -71,8 +71,10 @@
 
   /* الجداول */
   table {
-    width: 100%;
+    width: max-content;
+    min-width: 100%;
     border-collapse: collapse;
+    table-layout: auto;
     page-break-inside: avoid;
     margin: 6px 0 !important;
     font-size: 11px;
@@ -102,8 +104,8 @@
     text-align: center !important;
     vertical-align: middle !important;
     white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
     overflow-wrap: normal;
     word-break: normal;
     page-break-inside: avoid;
@@ -116,8 +118,8 @@
     text-align: center !important;
     vertical-align: middle !important;
     white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
     overflow-wrap: normal;
     word-break: normal;
     page-break-inside: avoid;

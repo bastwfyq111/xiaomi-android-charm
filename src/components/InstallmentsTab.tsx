@@ -768,24 +768,25 @@ const exportToPDF = (
       table {
         font-size: ${fontSizePx.toFixed(2)}px;
         table-layout: auto !important;
-        width: 100% !important;
+        width: max-content !important;
+        min-width: 100% !important;
         border-collapse: collapse;
-        border: 0.75pt solid #111;
+        border: 0.75pt solid #000;
       }
       th, td {
-        border: 0.4pt solid #333;
+        border: 0.4pt solid #000;
         padding: 1px 1px;
         text-align: center;
         vertical-align: middle;
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        overflow: visible;
+        text-overflow: clip;
         overflow-wrap: normal;
         word-break: normal;
         line-height: 1.15;
         font-weight: 700;
       }
-      td.wrap { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; overflow-wrap: normal; word-break: normal; }
+      td.wrap { white-space: nowrap; overflow: visible; text-overflow: clip; overflow-wrap: normal; word-break: normal; }
       th {
         background: ${colorTokens.head} !important;
         color: ${colorTokens.headText} !important;
@@ -1320,21 +1321,23 @@ const exportToPDF = (
       .info-lbl { font-size: 14px; font-weight: 600; color: #475569; text-align:center}
       .info-val { font-size: 14px; font-weight: 700; margin-top: 2px; }
       table {
-        width: 100%;
-        table-layout: fixed;
+        table-layout: auto;
+        width: max-content;
+        min-width: 100%;
         border-collapse: collapse;
         margin-top: 4px;
         page-break-inside: avoid;
         break-inside: avoid;
       }
       th {
+        border: 1px solid #000;
         background: #0f766e;
         color: #fff;
         padding: 7px 4px;
         font-size: 14px;
         font-weight: 700;
       }
-      td { padding: 0px 0px; font-size: 16.5px; word-wrap: break-word; }
+      td { border: 1px solid #000; padding: 0px 0px; font-size: 16.5px; white-space: nowrap; overflow: visible; text-overflow: clip; word-wrap: normal; overflow-wrap: normal; word-break: normal; }
       .lbl { text-align: center; font-weight: 1000; }
       .num { font-weight: 700; font-size: 15px; font-variant-numeric: tabular-nums; }
       .row-fees td { background: #eff6ff; }

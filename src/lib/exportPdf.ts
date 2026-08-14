@@ -51,10 +51,11 @@ export function exportToPdf(opts: {
       letter-spacing: -0.01em;
     }
     table { 
-      width: 100%;
+      width: max-content;
+      min-width: 100%;
       border-collapse: collapse; 
       font-size: ${fontSize}px; 
-      table-layout: fixed;
+      table-layout: auto;
       margin-top: 8px;
       overflow-wrap: normal;
       word-break: normal;
@@ -65,12 +66,12 @@ export function exportToPdf(opts: {
       text-align: center; 
       vertical-align: middle;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      overflow: visible;
+      text-overflow: clip;
       word-wrap: normal;
       overflow-wrap: normal;
       word-break: normal;
-      overflow: hidden;
+      overflow: visible;
       font-weight: 900 !important;
       color: #000 !important;
     }
@@ -375,10 +376,11 @@ export function monthlyStatementPdf(opts: {
        الصفحة الأفقية بالكامل بأعمدة متساوية العرض النسبي، بدل ترك
        العرض يتحدد حسب محتوى كل خلية (سبب عدم الملاءمة سابقاً) */
     table { 
-      width: 100%;
+      width: max-content;
+      min-width: 100%;
       border-collapse: collapse; 
       font-size: 13.5px; 
-      table-layout: fixed;
+      table-layout: auto;
       margin-top: 6px;
     }
     /* عمود البيان (الأول) أعرض من أعمدة الأرقام الثمانية المتبقية،
@@ -391,8 +393,8 @@ export function monthlyStatementPdf(opts: {
       text-align: center;
       vertical-align: middle;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      overflow: visible;
+      text-overflow: clip;
       word-wrap: normal;
       overflow-wrap: normal;
       word-break: normal;
@@ -600,10 +602,11 @@ export function revenuePdf(
     /* table-layout: fixed + width: 100% لملء عرض الصفحة الأفقية كاملة،
        مع عرض نسبي مخصص لكل عمود (بدل التوزيع المتساوي الافتراضي) */
     table { 
-      width: 100%;
+      width: max-content;
+      min-width: 100%;
       border-collapse: collapse; 
       font-size: 12.5px; 
-      table-layout: fixed;
+      table-layout: auto;
       margin-top: 6px;
     }
     /* عمود "بيان مفردات الموارد" (الأول) أعرض بكثير من البقية لأنه
@@ -622,8 +625,8 @@ export function revenuePdf(
       text-align: center;
       vertical-align: middle;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      overflow: visible;
+      text-overflow: clip;
       word-wrap: normal;
       overflow-wrap: normal;
       word-break: normal;

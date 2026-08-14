@@ -71,9 +71,10 @@ export const tablePrintStyles = `
     padding-bottom: 4px;
   }
   table {
-    width: 100%;
+    width: max-content;
+    min-width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;
+    table-layout: auto;
     font-size: 14px;
   }
   th, td {
@@ -81,8 +82,8 @@ export const tablePrintStyles = `
     padding: 2.5px 3px;
     text-align: center;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow: visible;
+    text-overflow: clip;
     overflow-wrap: normal;
     word-break: normal;
     color: #000 !important;
