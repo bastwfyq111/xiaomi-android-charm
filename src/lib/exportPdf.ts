@@ -51,11 +51,13 @@ export function exportToPdf(opts: {
       letter-spacing: -0.01em;
     }
     table { 
-      width: auto; 
+      width: 100%;
       border-collapse: collapse; 
       font-size: ${fontSize}px; 
-      table-layout: auto;
+      table-layout: fixed;
       margin-top: 8px;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
     th, td { 
       border: 1px solid #000; 
@@ -64,10 +66,17 @@ export function exportToPdf(opts: {
       vertical-align: middle;
       white-space: normal;
       word-wrap: break-word; 
-      overflow-wrap: break-word; 
+      overflow-wrap: anywhere;
       word-break: break-word;
+      overflow: visible;
       font-weight: 900 !important;
       color: #000 !important;
+    }
+    .num {
+      font-family: 'Times New Roman', Times, serif !important;
+      color: #000 !important;
+      font-weight: 900 !important;
+      direction: ltr;
     }
     th { 
       background: #1f7fb8;
@@ -118,7 +127,9 @@ export function exportToPdf(opts: {
     <tbody>${opts.rows
       .map(
         (r) =>
-          `<tr>${r.map((c) => `<td>${c === undefined || c === null ? "" : c}</td>`).join("")}</tr>`,
+          `<tr>${r
+            .map((c) => `<td${typeof c === "number" ? ' class="num"' : ""}>${c === undefined || c === null ? "" : c}</td>`)
+            .join("")}</tr>`,
       )
       .join("")}</tbody>
   </table>
@@ -333,7 +344,7 @@ export function monthlyStatementPdf(opts: {
       color: #000 !important; 
       margin: 0; 
       padding: 6px; 
-      width: 100%; 
+      width: 100%;
       background: white;
       line-height: 1.35;
       font-weight: 900 !important;
@@ -362,7 +373,7 @@ export function monthlyStatementPdf(opts: {
        الصفحة الأفقية بالكامل بأعمدة متساوية العرض النسبي، بدل ترك
        العرض يتحدد حسب محتوى كل خلية (سبب عدم الملاءمة سابقاً) */
     table { 
-      width: 100%; 
+      width: 100%;
       border-collapse: collapse; 
       font-size: 13.5px; 
       table-layout: fixed;
@@ -557,7 +568,7 @@ export function revenuePdf(
       color: #000 !important; 
       margin: 0; 
       padding: 6px; 
-      width: 100%; 
+      width: 100%;
       background: white;
       line-height: 1.3;
       font-weight: 900 !important;
@@ -585,7 +596,7 @@ export function revenuePdf(
     /* table-layout: fixed + width: 100% لملء عرض الصفحة الأفقية كاملة،
        مع عرض نسبي مخصص لكل عمود (بدل التوزيع المتساوي الافتراضي) */
     table { 
-      width: 100%; 
+      width: 100%;
       border-collapse: collapse; 
       font-size: 12.5px; 
       table-layout: fixed;

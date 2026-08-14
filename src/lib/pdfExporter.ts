@@ -454,6 +454,9 @@ export function printHtmlContent(htmlContent: string): void {
         table {
           width: 100%;
           border-collapse: collapse;
+          table-layout: fixed;
+          overflow-wrap: anywhere;
+          word-break: break-word;
           margin: 10px 0;
         }
         th, td {
@@ -461,8 +464,18 @@ export function printHtmlContent(htmlContent: string): void {
           padding: 6px;
           text-align: center;
           vertical-align: middle;
+          white-space: normal;
+          overflow-wrap: anywhere;
+          word-break: break-word;
+          overflow: visible;
           color: #000 !important;
           font-weight: 900 !important;
+        }
+        .num {
+          font-family: 'Times New Roman', Times, serif !important;
+          color: #000 !important;
+          font-weight: 900 !important;
+          direction: ltr;
         }
         th {
           background: #1f7fb8;
@@ -511,11 +524,12 @@ export function printTable(title: string, columns: string[], rows: (string | num
         </tr>
       </thead>
       <tbody>
-        ${rows.map(row => `
+                  ${rows.map(row => `
           <tr>
-            ${row.map(cell => `<td>${cell === undefined || cell === null ? '' : cell}</td>`).join('')}
+            ${row.map(cell => `<td${typeof cell === 'number' ? ' class="num"' : ''}>${cell === undefined || cell === null ? '' : cell}</td>`).join('')}
           </tr>
         `).join('')}
+
       </tbody>
     </table>
   `;
@@ -623,7 +637,8 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
 
   const w = window.open("", "_blank", "width=1100,height=800");
   if (!w) return;
-  const fc = (n: number) => (n ? fmt(n) : "-");
+  const fc = (n: number) =>
+    `<span class="num">${escapeHtml(n ? fmt(n) : "-")}</span>`;
 
   let body = `${reportLetterheadHtml()}<h1>${REV_SCHEMA.title}</h1>`;
   body += `<div class="meta">${REV_SCHEMA.office}</div>`;
@@ -708,6 +723,8 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       font-size: 10px; 
       table-layout: fixed;
       margin-top: 8px;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
     th, td { 
       border: 1.5px solid #000; 
@@ -718,8 +735,17 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       word-wrap: break-word; 
       overflow-wrap: break-word; 
       word-break: break-word;
+      overflow-wrap: anywhere;
+      white-space: normal;
+      overflow: visible;
       font-weight: 900 !important;
       color: #000 !important;
+    }
+    .num {
+      font-family: 'Times New Roman', Times, serif !important;
+      color: #000 !important;
+      font-weight: 900 !important;
+      direction: ltr;
     }
     th { 
       background: #1f7fb8;

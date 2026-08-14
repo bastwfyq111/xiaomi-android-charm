@@ -71,9 +71,9 @@ export const tablePrintStyles = `
     padding-bottom: 4px;
   }
   table {
-    width: auto;
+    width: 100%;
     border-collapse: collapse;
-    table-layout: auto;
+    table-layout: fixed;
     font-size: 14px;
   }
   th, td {
@@ -81,10 +81,11 @@ export const tablePrintStyles = `
     padding: 2.5px 3px;
     text-align: center;
     white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
     color: #000 !important;
     font-weight: 700;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow: visible;
   }
   thead th {
     background: #f5deb3 !important;
@@ -94,11 +95,13 @@ export const tablePrintStyles = `
   }
   tbody tr:nth-child(even) td { background: #f8fafc !important; }
   .num {
-    font-family: 'Courier New', monospace;
+    font-family: 'Times New Roman', Times, serif !important;
     text-align: center;
     direction: ltr;
     color: #000 !important;
-    font-weight: 1000;
+    font-weight: 900 !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
   
   /* تم تعديل العرض قليلاً لتتسع لكلمة الإجمالي */
