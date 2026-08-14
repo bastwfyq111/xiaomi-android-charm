@@ -98,7 +98,7 @@
     width: 2px;
   }
   
-  /* تنسيق الجداول: مواءمة العرض، منع الالتفاف، ومحاذاة سنتر */
+  /* تنسيق الجداول: مواءمة العرض، التفاف عند الحاجة، ومحاذاة سنتر */
   table { 
     width: 100%; 
     border-collapse: collapse; 
@@ -110,7 +110,10 @@
   table th, table td {
     text-align: center;         /* محاذاة أفقية إلى الوسط */
     vertical-align: middle;       /* محاذاة عمودية إلى الوسط */
-    white-space: nowrap !important; /* منع التفاف النص نهائياً */
+    white-space: normal !important; /* يبقى النص في سطر واحد ما لم يفرض طولُه الالتفاف */
+    overflow-wrap: anywhere;
+    word-break: normal;
+    hyphens: none;
     padding: 6px 4px;           /* حشوة مدمجة بدون هوامش كبيرة */
     border: 1px solid #000 !important; /* حدود سوداء موحدة */
   }
@@ -150,24 +153,28 @@
   table input { font-size: 14px; padding: 3px 4px; }
 }
 
-/* ==== احتواء النصوص تلقائياً داخل خلايا جداول التبويبات ==== */
-/* تلتف الكلمات داخل الخلية بدل قطعها أو خروجها عن الحدود */
+/* ==== احتواء النصوص داخل خلايا جداول التبويبات عند الحاجة فقط ==== */
 table th,
 table td {
   white-space: normal !important;
   overflow: visible !important;
   text-overflow: clip !important;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  hyphens: auto;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  hyphens: none;
   vertical-align: middle;
 }
 
-/* الأرقام تبقى متصلة بدون كسر في منتصف الرقم */
+/* الأرقام تبقى متصلة، سوداء وغامقة بخط Times New Roman كما في التصدير والطباعة */
 table td.font-mono,
 table th.font-mono,
-table .tabular-nums {
+table .tabular-nums,
+table input[type="number"] {
+  font-family: 'Times New Roman', Times, serif !important;
+  color: #000 !important;
+  font-weight: 900 !important;
   word-break: keep-all;
+  overflow-wrap: normal;
 }
 
 /* الحقول والمحتوى داخل الخلايا لا تتجاوز عرض الخلية */
