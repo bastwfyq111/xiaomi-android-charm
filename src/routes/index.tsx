@@ -182,7 +182,12 @@ function Index() {
       </div>
 
       {/* محتوى التبويب النشط */}
-      <div className="w-full bg-[#faf8f3] p-2 sm:p-4 md:p-6 min-h-[calc(100vh-140px)]">
+      <div
+        id="active-tab-panel"
+        role="tabpanel"
+        aria-labelledby={`tab-${activeTab}`}
+        className="w-full bg-[#faf8f3] p-2 sm:p-4 md:p-6 min-h-[calc(100vh-140px)]"
+      >
         {activeTab === "installments" && <InstallmentsTab />}
         {activeTab === "hafiza" && <HafizaTab />}
         {activeTab === "account" && <AccountTab />}
@@ -193,52 +198,62 @@ function Index() {
         {activeTab === "general-expenses-ledger" && <AppTabs />}
       </div>
 
-      {/* شريط التنقل السفلي — تصميم عائم زجاجي عصري */}
+      {/* شريط تنقّل سفلي عائم — بطاقات لمس واضحة ومناسبة للشاشات الصغيرة */}
       <nav
-        className="fixed bottom-0 left-0 right-0 z-50 px-2 pb-[calc(8px+env(safe-area-inset-bottom))] pt-1 pointer-events-none"
+        className="pointer-events-none fixed inset-x-0 bottom-0 z-50 px-2 pb-[max(8px,env(safe-area-inset-bottom))] pt-2 sm:px-4"
         dir="rtl"
+        aria-label="التنقل الرئيسي"
       >
-        <div className="pointer-events-auto mx-auto max-w-3xl rounded-2xl border border-[#c99a4e]/30 bg-[#0e2b40]/85 backdrop-blur-xl shadow-[0_10px_30px_-8px_rgba(0,0,0,0.55)] overflow-hidden">
-          {/* خيط برونزي زخرفي */}
-          <div className="h-[2px] w-full bg-[linear-gradient(90deg,transparent,#c99a4e,transparent)] opacity-70" />
+        <div className="pointer-events-auto relative mx-auto max-w-4xl overflow-hidden rounded-[1.65rem] border border-[#e3c281]/35 bg-gradient-to-b from-[#173e59]/[0.98] to-[#092438]/[0.98] shadow-[0_18px_42px_-14px_rgba(7,25,39,0.78)] ring-1 ring-white/10 backdrop-blur-2xl">
+          {/* وهج علوي هادئ يحافظ على الهوية المؤسسية */}
+          <div aria-hidden="true" className="absolute inset-x-8 top-0 h-px bg-gradient-to-l from-transparent via-[#f5db9e] to-transparent" />
+          <div aria-hidden="true" className="absolute -right-12 -top-16 h-36 w-36 rounded-full bg-[#c99a4e]/10 blur-3xl" />
 
-          <div className="overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <div className="flex w-max min-w-full gap-1 p-1.5">
+          <div
+            className="overflow-x-auto overscroll-x-contain px-1.5 py-1.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            role="tablist"
+            aria-label="أقسام النظام المالي"
+          >
+            <div className="flex w-max min-w-full snap-x snap-mandatory gap-1">
               {tabs.map((tab) => {
                 const isActive = activeTab === tab.value;
                 return (
                   <button
                     key={tab.value}
+                    id={`tab-${tab.value}`}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-controls="active-tab-panel"
+                    tabIndex={isActive ? 0 : -1}
                     onClick={() => setActiveTab(tab.value)}
-                    aria-current={isActive ? "page" : undefined}
                     aria-label={tab.label}
                     title={tab.label}
-                    className={`group relative flex min-w-[68px] flex-1 flex-col items-center justify-center gap-1 rounded-[1.1rem] px-2 py-2 transition-all duration-300 ease-out active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e9cd92] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0e2b40] ${
+                    className={`group relative isolate flex min-w-[72px] snap-center flex-1 flex-col items-center justify-center gap-1.5 rounded-[1.25rem] px-2 py-2.5 text-[10px] leading-none transition-[transform,background-color,color,box-shadow] duration-300 ease-out active:scale-[0.94] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f5db9e] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0e2b40] sm:min-w-0 sm:px-3 ${
                       isActive
-                        ? "bg-white text-[#0e2b40] shadow-[0_8px_22px_-10px_rgba(255,255,255,0.95)]"
-                        : "text-white/60 hover:bg-white/[0.1] hover:text-white"
+                        ? "-translate-y-0.5 bg-[#faf8f3] text-[#0e2b40] shadow-[0_12px_24px_-14px_rgba(255,255,255,0.98)]"
+                        : "text-[#dce8ef]/65 hover:-translate-y-0.5 hover:bg-white/[0.11] hover:text-white"
                     }`}
                   >
                     <span
-                      className={`relative flex h-8 w-8 items-center justify-center rounded-xl transition-all duration-300 ${
+                      aria-hidden="true"
+                      className={`relative flex h-9 w-9 items-center justify-center rounded-[0.95rem] transition-all duration-300 ${
                         isActive
-                          ? "bg-gradient-to-br from-[#e9cd92] to-[#c99a4e] text-[#0e2b40] shadow-[0_5px_12px_-6px_rgba(201,154,78,0.95)]"
-                          : "bg-white/[0.08] text-current group-hover:bg-white/[0.16]"
+                          ? "bg-gradient-to-br from-[#f5db9e] via-[#e3c281] to-[#bc863e] text-[#0e2b40] shadow-[0_8px_15px_-8px_rgba(144,94,23,0.9)]"
+                          : "bg-white/[0.08] text-current group-hover:bg-white/[0.17]"
                       }`}
                     >
-                      <span className={isActive ? "scale-105" : "transition-transform duration-300 group-hover:scale-110"}>
+                      <span className={`transition-transform duration-300 ${isActive ? "scale-105" : "group-hover:scale-110"}`}>
                         {tab.icon}
                       </span>
                     </span>
-                    <span
-                      className={`text-[10px] leading-none whitespace-nowrap ${isActive ? "font-extrabold" : "font-bold"}`}
-                    >
+                    <span className={`whitespace-nowrap ${isActive ? "font-extrabold" : "font-bold"}`}>
                       {tab.shortLabel}
                     </span>
                     <span
                       aria-hidden="true"
-                      className={`absolute bottom-1 h-1 rounded-full bg-[#c99a4e] transition-all duration-300 ${
-                        isActive ? "w-5 opacity-100" : "w-0 opacity-0"
+                      className={`absolute bottom-1.5 h-1 rounded-full bg-[#c99a4e] transition-all duration-300 ${
+                        isActive ? "w-6 opacity-100" : "w-1 opacity-0 group-hover:opacity-70"
                       }`}
                     />
                   </button>

@@ -11,6 +11,7 @@ import {
 import appCss from "../styles.css?url";
 import { useEffect } from "react";
 import { initPwa } from "@/lib/pwa";
+import { ReportDateProvider } from "@/lib/reportDate";
 
 function NotFoundComponent() {
   return (
@@ -138,7 +139,9 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <ReportDateProvider>
+        <Outlet />
+      </ReportDateProvider>
     </QueryClientProvider>
   );
 }
