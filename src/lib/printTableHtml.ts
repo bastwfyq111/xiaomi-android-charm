@@ -7,15 +7,15 @@ export type TableCol = { key: string; label: string };
 export const REPORT_LETTERHEAD_SRC = "/report-letterhead.png";
 
 export const reportLetterheadHtml = () => `
-  <div class="report-letterhead-block" style="display:block;position:relative;top:0;width:88%;margin:0 auto 4px;page-break-before:avoid;page-break-after:avoid;break-before:avoid;break-after:avoid;">
-    <img class="report-letterhead-image" style="display:block;width:100%;max-height:54px;height:auto;object-fit:contain;object-position:top center;margin:0 auto;" src="${REPORT_LETTERHEAD_SRC}" alt="ترويسة المجلس اليمني للاختصاصات الطبية" />
+  <div class="report-letterhead-block" style="display:flex;position:relative;top:0;width:100%;height:20mm;max-height:16vh;overflow:hidden;align-items:flex-start;justify-content:center;margin:0 auto 2mm;page-break-before:avoid;page-break-after:avoid;break-before:avoid;break-after:avoid;">
+    <img class="report-letterhead-image" style="display:block;width:auto;max-width:100%;height:auto;max-height:100%;object-fit:contain;object-position:top center;margin:0 auto;" src="${REPORT_LETTERHEAD_SRC}" alt="ترويسة المجلس اليمني للاختصاصات الطبية" />
   </div>
 `;
 
 export const reportLetterheadRowHtml = (columnCount: number) => `
   <tr class="report-letterhead-row">
     <th class="report-letterhead-cell" colspan="${Math.max(1, Math.floor(columnCount))}">
-      <img class="report-letterhead-image" style="display:block;width:88%;max-height:54px;height:auto;object-fit:contain;object-position:top center;margin:0 auto;" src="${REPORT_LETTERHEAD_SRC}" alt="ترويسة المجلس اليمني للاختصاصات الطبية" />
+      <img class="report-letterhead-image" style="display:block;width:auto;max-width:100%;height:auto;max-height:20mm;object-fit:contain;object-position:top center;margin:0 auto;" src="${REPORT_LETTERHEAD_SRC}" alt="ترويسة المجلس اليمني للاختصاصات الطبية" />
     </th>
   </tr>
 `;
@@ -121,11 +121,16 @@ export const tablePrintStyles = `
   }
   
   .report-letterhead-block {
-    display: block;
+    display: flex;
     position: relative;
     top: 0;
-    width: 88%;
-    margin: 0 auto 4px;
+    width: 100%;
+    height: 20mm;
+    max-height: 16vh;
+    overflow: hidden;
+    align-items: flex-start;
+    justify-content: center;
+    margin: 0 auto 2mm;
     page-break-before: avoid;
     page-break-after: avoid;
     break-before: avoid;
@@ -133,12 +138,20 @@ export const tablePrintStyles = `
   }
   .report-letterhead-image {
     display: block;
-    width: 100%;
-    max-height: 54px;
+    width: auto;
+    max-width: 100%;
     height: auto;
+    max-height: 100%;
     object-fit: contain;
     object-position: top center;
+    image-rendering: auto;
     margin: 0 auto;
+  }
+  @media print and (orientation: portrait) {
+    .report-letterhead-block { height: 18mm; max-height: 14vh; }
+  }
+  @media print and (orientation: landscape) {
+    .report-letterhead-block { height: 20mm; max-height: 16vh; }
   }
   .report-letterhead-row { page-break-after: avoid; break-after: avoid; }
   .pdf-page .report-letterhead-cell {
