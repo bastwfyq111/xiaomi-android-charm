@@ -209,7 +209,7 @@ export default function HafizaTab() {
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="hidden sm:flex gap-2">
+          <div className="flex flex-wrap items-center justify-end gap-2">
             <Button onClick={() => setShowForm((s) => !s)} className="bg-gradient-to-r from-rose-400 to-orange-300 text-white rounded-full px-3 py-1 text-sm shadow-sm">
               <Plus className="w-4 h-4" /> {showForm ? "إخفاء" : "إضافة"}
             </Button>
