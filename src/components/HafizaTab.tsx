@@ -76,7 +76,7 @@ const empty: Form = {
 };
 
 export default function HafizaTab() {
-  const { trainees, hafiza, addHafiza, deleteHafiza, addTrainee, updateHafiza } = useStore();
+  const { trainees, hafiza, addHafiza, deleteHafiza, clearHafiza, addTrainee, updateHafiza } = useStore();
   const [form, setForm] = useState<Form>(empty);
   const [nameQuery, setNameQuery] = useState("");
   const [showSugg, setShowSugg] = useState(false);
@@ -151,6 +151,17 @@ export default function HafizaTab() {
     setShowForm(false);
   };
 
+  const handleClearHafiza = () => {
+    if (hafiza.length === 0) {
+      toast.info("لا توجد سجلات حوافظ لمسحها");
+      return;
+    }
+    if (!confirm("هل أنت متأكد من مسح جميع سجلات الحوافظ؟ لا يمكن التراجع عن هذا الإجراء.")) return;
+    clearHafiza();
+    setActiveCell(null);
+    toast.success("تم مسح جميع سجلات الحوافظ بنجاح");
+  };
+
   const handleCopyAmountsToNotify = () => {
     if (filtered.length === 0) {
       toast.error("لا توجد سجلات حالية لنقل مبالغها");
@@ -203,84 +214,25 @@ export default function HafizaTab() {
               <Plus className="w-4 h-4" /> {showForm ? "إخفاء" : "إضافة"}
             </Button>
             <ImportButton kind="hafiza" />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleClearHafiza}
+              className="rounded-full border-red-200 text-red-600 hover:bg-red-50 px-3 py-1 text-sm"
+              disabled={hafiza.length === 0}
+            >
+              <Trash2 className="w-4 h-4" />
+              مسح البيانات
+            </Button>
           </div>
 
-          <div className="flex gap-2">
-            <Card className="px-3 py-2 bg-white border border-emerald-100 rounded-2xl shadow-sm flex items-center gap-3 border-l-4 border-emerald-200">
-              <div className="p-2 rounded-lg bg-emerald-50 text-emerald-600">
-                <Layers className="w-4 h-4" />
-              </div>
-              <div className="text-right">
-                <div className="text-[11px] text-slate-500 font-semibold uppercase">السجلات</div>
-                <div className="text-lg font-black">{hafiza.length}</div>
-              </div>
-            </Card>
-
-            <Card className="px-3 py-2 bg-white border border-amber-100 rounded-2xl shadow-sm flex items-center gap-3 border-l-4 border-amber-200">
-              <div className="p-2 rounded-lg bg-amber-50 text-amber-700">
-                <ArrowUpRight className="w-4 h-4" />
-              </div>
-              <div className="text-right">
-                <div className="text-[11px] text-slate-500 font-semibold uppercase">المبلغ الإجمالي</div>
-                <div className="text-lg font-black">{fmt(totalHafizaAmount)}</div>
-              </div>
-            </Card>
-          </div>
         </div>
       </div>
 
       {/* MAIN LAYOUT: SIDEBAR + CONTENT */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
-        {/* SIDEBAR */}
-        <aside className="lg:col-span-3 flex flex-col gap-3">
-          <div className="sticky top-4 space-y-2">
-            <Card className="p-3 bg-white border border-emerald-50 rounded-2xl shadow-sm border-l-4 border-emerald-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-xs text-slate-600 font-semibold">حالة التوازن</div>
-                  <div className="mt-1 text-sm font-bold text-slate-800">{fmt(totalHafizaAmount - totalNotifyAmount)}</div>
-                </div>
-                <div className="p-2 rounded-full bg-amber-50">
-                  <Wallet className="w-5 h-5 text-amber-600" />
-                </div>
-              </div>
-
-              <div className="mt-2">
-                <div className="text-[11px] text-slate-600 font-semibold">نسخة سريعة</div>
-                <div className="flex gap-2 mt-2">
-                  <Button size="sm" onClick={handleCopyAmountsToNotify} className="bg-emerald-500 text-white rounded-full shadow-sm px-3 py-1 text-sm">
-                    <CheckSquare className="w-4 h-4" />
-                  </Button>
-                  <Button size="sm" variant="ghost" onClick={() => { setForm(empty); setNameQuery(""); }} className="rounded-full text-slate-700/90 px-3 py-1 border border-emerald-50 text-sm">
-                    <Eraser className="w-4 h-4 text-orange-400" />
-                  </Button>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-3 bg-white border border-indigo-50 rounded-2xl shadow-sm border-l-4 border-indigo-200">
-              <div className="text-xs text-slate-600 font-semibold">إحصاءات سريعة</div>
-              <div className="mt-2 space-y-1">
-                <Stat label="حوافظ مسجلة" value={`${hafiza.length}`} icon={<Layers className="w-4 h-4 text-indigo-400" />} />
-                <Stat label="المبلغ الكلي" value={fmt(totalHafizaAmount)} icon={<Banknote className="w-4 h-4 text-emerald-400" />} />
-                <Stat label="ترحيلات التوريد" value={fmt(totalNotifyAmount)} icon={<CreditCard className="w-4 h-4 text-teal-400" />} />
-              </div>
-            </Card>
-
-            <Card className="p-3 bg-white border border-pink-50 rounded-2xl shadow-sm border-l-4 border-pink-200">
-              <div className="flex items-center justify-between">
-                <div className="text-sm font-bold">تلميحات</div>
-                <PartyPopper className="w-5 h-5 text-pink-400" />
-              </div>
-              <div className="mt-1 text-xs text-slate-600">
-                اضغط على أي خلية لبدء التعديل أو استخدم زر "نسخ مبالغ" لنسخ مبالغ الحافظة إلى عمود التوريد تلقائياً.
-              </div>
-            </Card>
-          </div>
-        </aside>
-
         {/* CONTENT */}
-        <main className="lg:col-span-9 space-y-3">
+        <main className="lg:col-span-12 space-y-3">
           {/* FORM (قابلة للطي) */}
           <div className={`transition-all duration-300 ${showForm ? "max-h-[1400px] opacity-100" : "max-h-0 opacity-0 overflow-hidden"}`}>
             <Card className="p-3 bg-white rounded-2xl border border-rose-50 shadow-sm border-l-4 border-rose-200">
@@ -416,15 +368,15 @@ export default function HafizaTab() {
             </CardHeader>
 
             <CardContent className="p-0">
-              <div className="overflow-x-auto">
-                <Table>
+              <div className="w-full overflow-x-auto overscroll-x-contain rounded-xl">
+                <Table className="w-max min-w-[1280px] table-auto text-sm">
                   <TableHeader className="bg-white sticky top-0 z-10">
                     <TableRow>
-                      <TableHead className="w-12 text-center text-slate-500">#</TableHead>
+                      <TableHead className="w-12 min-w-12 whitespace-nowrap p-1 text-center text-slate-500 sm:p-2">#</TableHead>
                       {COLS.map((c) => (
-                        <TableHead key={c.key} className="text-center py-2">
+                        <TableHead key={c.key} className={`min-w-[120px] whitespace-nowrap p-1 text-center py-2 sm:p-2 ${c.key === "name" || c.key === "specialty" || c.key === "description" ? "min-w-[180px]" : ""}`}>
                           <div className="flex flex-col items-center">
-                            <button onClick={() => toggleSort(c.key)} className="flex items-center gap-2 text-slate-800 text-sm">
+                            <button onClick={() => toggleSort(c.key)} className="flex items-center gap-2 whitespace-nowrap text-slate-800 text-sm">
                               <span className="font-semibold">{c.label}</span>
                               {sortIndicator(sortKey === c.key, sortDir)}
                             </button>
@@ -434,20 +386,20 @@ export default function HafizaTab() {
                                 value={filters[c.key] || ""}
                                 onChange={(e) => setFilter(c.key, e.target.value)}
                                 placeholder="فلتر..."
-                                className="w-full pr-8 pl-2 py-1 text-[11px] bg-white text-slate-800 border border-gray-200 rounded-full text-center"
+                                className="w-full min-w-[92px] whitespace-nowrap bg-white px-2 py-1 text-xs text-center text-slate-800 border border-gray-200 rounded-full"
                               />
                             </div>
                           </div>
                         </TableHead>
                       ))}
-                      <TableHead className="w-24 text-center text-slate-500">إجراءات</TableHead>
+                      <TableHead className="w-24 min-w-24 whitespace-nowrap p-1 text-center text-slate-500 sm:p-2">إجراءات</TableHead>
                     </TableRow>
                   </TableHeader>
 
                   <TableBody>
                     {filtered.map((row, idx) => (
                       <TableRow key={row.id} className="hover:bg-amber-50 transition-colors">
-                        <TableCell className="text-center text-slate-600 text-sm">{idx + 1}</TableCell>
+                        <TableCell className="whitespace-nowrap p-1 text-center text-slate-600 text-sm sm:p-2">{idx + 1}</TableCell>
                         {COLS.map((c) => {
                           const isEditing = activeCell?.rowId === row.id && activeCell?.colKey === c.key;
                           const val = (row as any)[c.key];
@@ -456,7 +408,7 @@ export default function HafizaTab() {
                           return (
                             <TableCell
                               key={c.key}
-                              className={`text-center py-1 align-middle ${isEditing ? "bg-amber-50" : "cursor-pointer"}`}
+                              className={`min-w-[120px] whitespace-nowrap p-1 text-center py-1 align-middle sm:p-2 ${isEditing ? "bg-amber-50" : "cursor-pointer"}`}
                               onClick={() => !isEditing && handleCellClick(row.id, c.key, val)}
                             >
                               {isEditing ? (
@@ -469,14 +421,14 @@ export default function HafizaTab() {
                                   className="h-8 text-sm bg-white text-slate-900 border-2 border-amber-400 text-center rounded-md"
                                 />
                               ) : (
-                                <span className={`${isMoney ? "font-mono font-bold text-amber-700 px-2 py-1 rounded-md bg-amber-50 inline-block text-sm" : "text-slate-800 font-medium text-sm"}`}>
+                                <span className={`${isMoney ? "font-mono font-bold text-amber-700 px-2 py-1 rounded-md bg-amber-50 inline-block text-sm" : "text-slate-800 font-medium text-sm whitespace-nowrap"}`}>
                                   {isMoney ? fmt(Number(val) || 0) : String(val ?? "")}
                                 </span>
                               )}
                             </TableCell>
                           );
                         })}
-                        <TableCell className="text-center">
+                        <TableCell className="whitespace-nowrap p-1 text-center sm:p-2">
                           <div className="flex items-center justify-center gap-2">
                             <Button
                               variant="ghost"
