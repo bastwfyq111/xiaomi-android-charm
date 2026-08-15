@@ -1563,12 +1563,12 @@ const exportToPDF = (
         <div className="p-3 sm:p-4">
           <StatsGrid stats={stats2025} columns={3} />
           <div className="overflow-auto max-h-[65vh] rounded-lg border border-slate-200 shadow-sm relative">
-            <table className="w-full text-xs sm:text-sm">
+            <table className="w-max min-w-full table-auto text-sm sm:text-base">
               <thead className="bg-gradient-to-b from-teal-700 to-teal-800 font-bold border-b-2 border-emerald-900 text-white sticky top-0 z-20 shadow-md">
                 <tr>
-                  <th className="text-center whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">#</th>
+                  <th className="text-center whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">#</th>
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors p-1 sm:p-2 text-[10px] sm:text-xs"
+                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !p-1 sm:!p-2 !text-xs sm:!text-sm"
                     onClick={() => handleSort2025("name")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1576,7 +1576,7 @@ const exportToPDF = (
                     </div>
                   </th>
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors p-1 sm:p-2 text-[10px] sm:text-xs"
+                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !p-1 sm:!p-2 !text-xs sm:!text-sm"
                     onClick={() => handleSort2025("batch")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1584,7 +1584,7 @@ const exportToPDF = (
                     </div>
                   </th>
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors p-1 sm:p-2 text-[10px] sm:text-xs"
+                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !p-1 sm:!p-2 !text-xs sm:!text-sm"
                     onClick={() => handleSort2025("specialty")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1592,7 +1592,7 @@ const exportToPDF = (
                     </div>
                   </th>
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors p-1 sm:p-2 text-[10px] sm:text-xs"
+                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !p-1 sm:!p-2 !text-xs sm:!text-sm"
                     onClick={() => handleSort2025("fees")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1602,13 +1602,13 @@ const exportToPDF = (
                   {MONTHS_2025.map((m) => (
                     <th
                       key={m}
-                      className="text-center border-l border-white/25 whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs"
+                      className="text-center border-l border-white/25 whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm"
                     >
                       {m}
                     </th>
                   ))}
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors p-1 sm:p-2 text-[10px] sm:text-xs"
+                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !p-1 sm:!p-2 !text-xs sm:!text-sm"
                     onClick={() => handleSort2025("totalPaid")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1616,20 +1616,20 @@ const exportToPDF = (
                     </div>
                   </th>
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors p-1 sm:p-2 text-[10px] sm:text-xs"
+                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !p-1 sm:!p-2 !text-xs sm:!text-sm"
                     onClick={() => handleSort2025("remaining")}
                   >
                     <div className="flex items-center justify-center gap-1">
                       المتبقي <SortIcon sortConfig={sortConfig2025} columnKey="remaining" />
                     </div>
                   </th>
-                  <th className="text-center whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">إجراءات</th>
+                  <th className="text-center whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">إجراءات</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredRows2025.length === 0 ? (
                   <tr>
-                    <td colSpan={8 + MONTHS_2025.length} className="text-center text-slate-400 p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
+                    <td colSpan={8 + MONTHS_2025.length} className="text-center text-slate-400 !p-1 sm:!p-2 !text-xs sm:!text-sm whitespace-nowrap">
                       لا توجد بيانات (يرجى التأكد من استيراد الملف أو تعديل البحث)
                     </td>
                   </tr>
@@ -1644,19 +1644,19 @@ const exportToPDF = (
                           key={i}
                           className="border-t border-slate-200 hover:bg-slate-50/80 transition-colors"
                         >
-                          <td className="text-center text-black whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
+                          <td className="text-center text-black whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">
                             {i + 1}
                           </td>
-                          <td className="text-center font-semibold text-black whitespace-nowrap bg-teal-50/70 p-1 sm:p-2 text-[10px] sm:text-xs">
+                          <td className="text-center font-semibold text-black whitespace-nowrap bg-teal-50/70 !p-1 sm:!p-2 !text-xs sm:!text-sm">
                             {r.name}
                           </td>
-                          <td className="text-center text-black whitespace-nowrap bg-cyan-50/70 p-1 sm:p-2 text-[10px] sm:text-xs">
+                          <td className="text-center text-black whitespace-nowrap bg-cyan-50/70 !p-1 sm:!p-2 !text-xs sm:!text-sm">
                             {r.batch || "—"}
                           </td>
-                          <td className="text-center text-black whitespace-nowrap bg-sky-50/70 p-1 sm:p-2 text-[10px] sm:text-xs">
+                          <td className="text-center text-black whitespace-nowrap bg-sky-50/70 !p-1 sm:!p-2 !text-xs sm:!text-sm">
                             {r.specialty || "—"}
                           </td>
-                          <td className="text-center font-mono font-semibold text-black whitespace-nowrap bg-blue-50/70 p-1 sm:p-2 text-[10px] sm:text-xs">
+                          <td className="text-center font-mono font-semibold text-black whitespace-nowrap bg-blue-50/70 !p-1 sm:!p-2 !text-xs sm:!text-sm">
                             {fmt(r.fees)}
                           </td>
                           {MONTHS_2025.map((m) => {
@@ -1664,7 +1664,7 @@ const exportToPDF = (
                             return (
                               <td
                                 key={m}
-                                className="text-center bg-slate-50/50 border-l border-slate-200 whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs"
+                                className="text-center bg-slate-50/50 border-l border-slate-200 whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm"
                               >
                                 {paid > 0 ? (
                                   <span className="text-black font-bold font-mono">
@@ -1676,13 +1676,13 @@ const exportToPDF = (
                               </td>
                             );
                           })}
-                          <td className="text-center font-mono text-black font-bold bg-emerald-50/30 whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
+                          <td className="text-center font-mono text-black font-bold bg-emerald-50/30 whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">
                             {fmt(r.totalPaid)}
                           </td>
-                          <td className="text-center font-mono text-black font-bold bg-rose-50/30 whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
+                          <td className="text-center font-mono text-black font-bold bg-rose-50/30 whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">
                             {fmt(r.remaining)}
                           </td>
-                          <td className="text-center whitespace-nowrap flex justify-center gap-1 p-1 sm:p-2 text-[10px] sm:text-xs">
+                          <td className="text-center whitespace-nowrap flex justify-center gap-1 !p-1 sm:!p-2 !text-xs sm:!text-sm">
                             <button
                               onClick={() => {
                                 setEditRowData(r);
@@ -1712,27 +1712,27 @@ const exportToPDF = (
                       );
                     })}
                     <tr className="border-t-2 border-teal-800 bg-teal-100/80 font-extrabold">
-                      <td className="text-center text-black whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs" colSpan={4}>
+                      <td className="text-center text-black whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm" colSpan={4}>
                         الإجماليات
                       </td>
-                      <td className="text-center font-mono text-black whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
+                      <td className="text-center font-mono text-black whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">
                         {fmt(totals2025.fees)}
                       </td>
                       {MONTHS_2025.map((m) => (
                         <td
                           key={m}
-                          className="text-center font-mono text-black border-l border-slate-200 whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs"
+                          className="text-center font-mono text-black border-l border-slate-200 whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm"
                         >
                           {totals2025.months[m] > 0 ? fmt(totals2025.months[m]) : "—"}
                         </td>
                       ))}
-                      <td className="text-center font-mono text-black whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
+                      <td className="text-center font-mono text-black whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">
                         {fmt(totals2025.paid)}
                       </td>
-                      <td className="text-center font-mono text-black whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
+                      <td className="text-center font-mono text-black whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">
                         {fmt(totals2025.remaining)}
                       </td>
-                      <td className="text-center whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs"></td>
+                      <td className="text-center whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm"></td>
                     </tr>
                   </>
                 )}
@@ -1852,12 +1852,12 @@ const exportToPDF = (
         <div className="p-3 sm:p-4">
           <StatsGrid stats={stats2026} columns={3} />
           <div className="overflow-auto max-h-[65vh] rounded-lg border border-slate-200 shadow-sm relative">
-            <table className="w-full text-xs sm:text-sm">
+            <table className="w-max min-w-full table-auto text-sm sm:text-base">
               <thead className="bg-gradient-to-b from-teal-700 to-teal-800 font-bold border-b-2 border-emerald-900 text-white sticky top-0 z-20 shadow-md">
                 <tr>
-                  <th className="text-center whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">#</th>
+                  <th className="text-center whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">#</th>
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors p-1 sm:p-2 text-[10px] sm:text-xs"
+                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !p-1 sm:!p-2 !text-xs sm:!text-sm"
                     onClick={() => handleSort2026("name")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1865,7 +1865,7 @@ const exportToPDF = (
                     </div>
                   </th>
                   <th
-                    className="text-center cursor-pointer hover:bg-white/10 transition-colors p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap"
+                    className="text-center cursor-pointer hover:bg-white/10 transition-colors !p-1 sm:!p-2 !text-xs sm:!text-sm whitespace-nowrap"
                     onClick={() => handleSort2026("batch")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1873,7 +1873,7 @@ const exportToPDF = (
                     </div>
                   </th>
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors p-1 sm:p-2 text-[10px] sm:text-xs"
+                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !p-1 sm:!p-2 !text-xs sm:!text-sm"
                     onClick={() => handleSort2026("specialty")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1881,7 +1881,7 @@ const exportToPDF = (
                     </div>
                   </th>
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors border-x border-white/25 p-1 sm:p-2 text-[10px] sm:text-xs"
+                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors border-x border-white/25 !p-1 sm:!p-2 !text-xs sm:!text-sm"
                     onClick={() => handleSort2026("prevDue")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1889,7 +1889,7 @@ const exportToPDF = (
                     </div>
                   </th>
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors p-1 sm:p-2 text-[10px] sm:text-xs"
+                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !p-1 sm:!p-2 !text-xs sm:!text-sm"
                     onClick={() => handleSort2026("fees")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1899,7 +1899,7 @@ const exportToPDF = (
                   {MONTHS_2026.map((m) => (
                     <th
                       key={m}
-                      className="text-center border-l border-white/25 whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs"
+                      className="text-center border-l border-white/25 whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm"
                     >
                       {m.trim()}
                     </th>
@@ -1907,7 +1907,7 @@ const exportToPDF = (
                   {extraCols2026.map((col) => (
                     <th
                       key={col.name}
-                      className="text-center border-l border-white/25 whitespace-nowrap text-black p-1 sm:p-2 text-[10px] sm:text-xs"
+                      className="text-center border-l border-white/25 !whitespace-nowrap text-black !p-1 sm:!p-2 !text-xs sm:!text-sm"
                     >
                       <div className="flex items-center justify-center gap-1">
                         {col.name}
@@ -1930,7 +1930,7 @@ const exportToPDF = (
                     </th>
                   ))}
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors p-1 sm:p-2 text-[10px] sm:text-xs"
+                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !p-1 sm:!p-2 !text-xs sm:!text-sm"
                     onClick={() => handleSort2026("totalPaid")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -1938,15 +1938,15 @@ const exportToPDF = (
                     </div>
                   </th>
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors p-1 sm:p-2 text-[10px] sm:text-xs"
+                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !p-1 sm:!p-2 !text-xs sm:!text-sm"
                     onClick={() => handleSort2026("remaining")}
                   >
                     <div className="flex items-center justify-center gap-1">
                       الرصيد المتبقي <SortIcon sortConfig={sortConfig2026} columnKey="remaining" />
                     </div>
                   </th>
-                  <th className="text-center whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">حالة</th>
-                  <th className="text-center whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">إجراءات</th>
+                  <th className="text-center whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">حالة</th>
+                  <th className="text-center whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">إجراءات</th>
                 </tr>
               </thead>
               <tbody>
@@ -1954,7 +1954,7 @@ const exportToPDF = (
                   <tr>
                     <td
                       colSpan={10 + MONTHS_2026.length + extraCols2026.length}
-                      className="text-center text-slate-400 p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap"
+                      className="text-center text-slate-400 !p-1 sm:!p-2 !text-xs sm:!text-sm whitespace-nowrap"
                     >
                       لا توجد بيانات (يرجى التأكد من استيراد الملف أو تعديل البحث)
                     </td>
@@ -1973,10 +1973,10 @@ const exportToPDF = (
                           key={i}
                           className={`border-t border-slate-200 transition-colors ${rowBgClass}`}
                         >
-                          <td className="text-center text-black whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
+                          <td className="text-center text-black whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">
                             {i + 1}
                           </td>
-                          <td className="text-center font-bold text-black whitespace-nowrap bg-fuchsia-50/70 p-1 sm:p-2 text-[10px] sm:text-xs">
+                          <td className="text-center font-bold text-black whitespace-nowrap bg-fuchsia-50/70 !p-1 sm:!p-2 !text-xs sm:!text-sm">
                             <input
                               value={r.name || ""}
                               onChange={(e) =>
@@ -1985,7 +1985,7 @@ const exportToPDF = (
                               className="w-full min-w-32 bg-transparent text-center text-black text-[11px] sm:text-xs outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
                             />
                           </td>
-                          <td className="text-center text-black whitespace-nowrap bg-violet-50/70 p-1 sm:p-2 text-[10px] sm:text-xs">
+                          <td className="text-center text-black whitespace-nowrap bg-violet-50/70 !p-1 sm:!p-2 !text-xs sm:!text-sm">
                             <input
                               value={r.batch || ""}
                               onChange={(e) =>
@@ -1995,7 +1995,7 @@ const exportToPDF = (
                               placeholder="—"
                             />
                           </td>
-                          <td className="text-center text-black whitespace-nowrap bg-teal-50/60 p-1 sm:p-2 text-[10px] sm:text-xs">
+                          <td className="text-center text-black whitespace-nowrap bg-teal-50/60 !p-1 sm:!p-2 !text-xs sm:!text-sm">
                             <input
                               value={r.specialty || ""}
                               onChange={(e) =>
@@ -2005,7 +2005,7 @@ const exportToPDF = (
                               placeholder="—"
                             />
                           </td>
-                          <td className="text-center font-mono text-black font-bold bg-amber-50/20 whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
+                          <td className="text-center font-mono text-black font-bold bg-amber-50/20 whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">
                             <input
                               type="number"
                               value={r.prevDue || 0}
@@ -2015,7 +2015,7 @@ const exportToPDF = (
                               className="w-full min-w-20 bg-transparent text-center text-black text-[11px] sm:text-xs outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
                             />
                           </td>
-                          <td className="text-center font-mono text-black font-bold whitespace-nowrap bg-indigo-50/70 p-1 sm:p-2 text-[10px] sm:text-xs">
+                          <td className="text-center font-mono text-black font-bold whitespace-nowrap bg-indigo-50/70 !p-1 sm:!p-2 !text-xs sm:!text-sm">
                             <input
                               type="number"
                               value={r.fees || 0}
@@ -2031,7 +2031,7 @@ const exportToPDF = (
                             return (
                               <td
                                 key={m}
-                                className="text-center relative bg-white/40 border-l border-slate-200 hover:bg-slate-100 cursor-pointer group transition-colors whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs"
+                                className="text-center relative bg-white/40 border-l border-slate-200 hover:bg-slate-100 cursor-pointer group transition-colors whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm"
                                 onMouseEnter={() => setHoveredCell(cellId)}
                                 onMouseLeave={() => setHoveredCell(null)}
                               >
@@ -2051,7 +2051,7 @@ const exportToPDF = (
                           })}
 
                           {extraCols2026.map((col) => (
-                            <td key={col.name} className="border-l border-slate-200 p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
+                            <td key={col.name} className="border-l border-slate-200 !p-1 sm:!p-2 !text-xs sm:!text-sm whitespace-nowrap">
                               {col.type === "select" ? (
                                 <select
                                   className="w-full text-center text-black bg-transparent outline-none focus:bg-white focus:ring-1 ring-blue-300 rounded px-1 py-1 text-xs"
@@ -2085,20 +2085,20 @@ const exportToPDF = (
                             </td>
                           ))}
 
-                          <td className="text-center font-mono text-black font-bold bg-emerald-50/30 whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
+                          <td className="text-center font-mono text-black font-bold bg-emerald-50/30 whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">
                             {fmt(r.totalPaid)}
                           </td>
-                          <td className="text-center font-mono text-black font-bold bg-rose-50/30 whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
+                          <td className="text-center font-mono text-black font-bold bg-rose-50/30 whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">
                             {fmt(r.remaining)}
                           </td>
-                          <td className="text-center whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
+                          <td className="text-center whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">
                             <span
                               className={`px-1.5 py-0.5 rounded-full text-xs font-bold ${status.bg} ${status.color}`}
                             >
                               {status.text}
                             </span>
                           </td>
-                          <td className="text-center whitespace-nowrap flex justify-center gap-1 p-1 sm:p-2 text-[10px] sm:text-xs">
+                          <td className="text-center whitespace-nowrap flex justify-center gap-1 !p-1 sm:!p-2 !text-xs sm:!text-sm">
                             <button
                               onClick={() => {
                                 setEditRowData(r);
@@ -2135,20 +2135,20 @@ const exportToPDF = (
                       );
                     })}
                     <tr className="border-t-2 border-teal-800 bg-teal-100/80 font-extrabold">
-                      <td className="text-center text-black whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs" colSpan={4}>
+                      <td className="text-center text-black whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm" colSpan={4}>
                         الإجماليات
                       </td>
-                      <td className="text-center font-mono text-black whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
+                      <td className="text-center font-mono text-black whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">
                         {fmt(totals2026.prevDue)}
                       </td>
-                      <td className="text-center font-mono text-black whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
+                      <td className="text-center font-mono text-black whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">
                         {fmt(totals2026.fees)}
                       </td>
 
                       {MONTHS_2026.map((m) => (
                         <td
                           key={m}
-                          className="text-center font-mono text-black border-l border-slate-200 whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs"
+                          className="text-center font-mono text-black border-l border-slate-200 whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm"
                         >
                           {totals2026.months[m] > 0 ? fmt(totals2026.months[m]) : "—"}
                         </td>
@@ -2156,19 +2156,19 @@ const exportToPDF = (
                       {extraCols2026.map((col) => (
                         <td
                           key={col.name}
-                          className="text-center text-black border-l border-slate-200 whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs"
+                          className="text-center text-black border-l border-slate-200 whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm"
                         >
                           —
                         </td>
                       ))}
-                      <td className="text-center font-mono text-black whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
+                      <td className="text-center font-mono text-black whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">
                         {fmt(totals2026.paid)}
                       </td>
-                      <td className="text-center font-mono text-black whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
+                      <td className="text-center font-mono text-black whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">
                         {fmt(totals2026.remaining)}
                       </td>
-                      <td className="text-center whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs"></td>
-                      <td className="text-center whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs"></td>
+                      <td className="text-center whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm"></td>
+                      <td className="text-center whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm"></td>
                     </tr>
                   </>
                 )}
