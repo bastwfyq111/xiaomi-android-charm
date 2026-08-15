@@ -386,7 +386,7 @@ export default function HafizaTab() {
                                 value={filters[c.key] || ""}
                                 onChange={(e) => setFilter(c.key, e.target.value)}
                                 placeholder="فلتر..."
-                                className="w-full whitespace-nowrap bg-white px-1.5 py-0.5 text-[10px] text-center text-slate-800 border border-gray-200 rounded-full"
+                        className="w-16 min-w-0 max-w-[60px] whitespace-nowrap bg-white px-1 py-0.5 text-[9px] text-center text-slate-800 border border-gray-200 rounded-full"
                               />
                             </div>
                           </div>
