@@ -203,7 +203,7 @@ export default function HafizaTab() {
             <span className="p-2 rounded-lg bg-gradient-to-br from-rose-100 to-amber-100 shadow-sm text-amber-700">
               <Wallet className="w-5 h-5" />
             </span>
-            لوحة الحوافظ — واجهة موبايل مدمجة
+            لوحة الحوافظ التوريد
           </h1>
           <p className="text-xs text-slate-600 mt-1">تصميم ملائم للهواتف: صفان من الحقول، عناصر متراصة وأقسام مرقمة بألوان مميزة.</p>
         </div>
@@ -369,7 +369,7 @@ export default function HafizaTab() {
 
             <CardContent className="p-0">
               <div className="w-full overflow-x-auto overscroll-x-contain rounded-xl">
-                <Table className="w-max table-auto text-[10px] sm:text-xs">
+                <Table className="w-max table-auto text-[14px] sm:text-xs">
                   <TableHeader className="bg-white sticky top-0 z-10">
                     <TableRow>
                       <TableHead className="whitespace-nowrap px-1 py-0.5 text-center text-slate-500">#</TableHead>
