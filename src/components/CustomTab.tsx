@@ -104,21 +104,21 @@ export default function CustomTab({ tabId }: { tabId: string }) {
         <table className="w-full text-sm">
           <thead className="bg-secondary text-secondary-foreground">
             <tr>
-              <th className="px-2 py-2 text-right">م</th>
+              <th className="text-right p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">م</th>
               {tab.columns.map((c) => (
-                <th key={c} className="px-2 py-2 text-right whitespace-nowrap">
+                <th key={c} className="text-right whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
                   {c}
                 </th>
               ))}
-              <th className="px-2 py-2 text-right">إجراءات</th>
+              <th className="text-right p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">إجراءات</th>
             </tr>
           </thead>
           <tbody>
             {tab.rows.map((r, i) => (
               <tr key={i} className="border-t hover:bg-muted/40">
-                <td className="px-2 py-1.5">{i + 1}</td>
+                <td className="p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">{i + 1}</td>
                 {tab.columns.map((c) => (
-                  <td key={c} className="px-2 py-1.5">
+                  <td key={c} className="p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                     <input
                       value={String(r[c] ?? "")}
                       onChange={(e) => updateCustomRow(tab.id, i, { ...r, [c]: e.target.value })}
@@ -126,7 +126,7 @@ export default function CustomTab({ tabId }: { tabId: string }) {
                     />
                   </td>
                 ))}
-                <td className="px-2 py-1.5">
+                <td className="p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                   <button
                     onClick={() => deleteCustomRow(tab.id, i)}
                     className="text-destructive text-xs"
@@ -140,7 +140,7 @@ export default function CustomTab({ tabId }: { tabId: string }) {
               <tr>
                 <td
                   colSpan={tab.columns.length + 2}
-                  className="text-center py-8 text-muted-foreground"
+                  className="text-center text-muted-foreground p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap"
                 >
                   لا توجد بيانات
                 </td>

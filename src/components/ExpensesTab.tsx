@@ -317,7 +317,7 @@ export default function ExpensesTab() {
                     : "bg-slate-50 font-semibold";
                 return (
                   <tr key={i} className={base}>
-                    <td className="border border-black px-2 py-1.5 text-right whitespace-nowrap text-xs font-semibold">
+                    <td className="border border-black text-right whitespace-nowrap font-semibold p-1 sm:p-2 text-[10px] sm:text-xs">
                       {t.label}
                     </td>
                     <TD cls={isGrand ? "" : CUR_C}>{fmt(t.cur.f)}</TD>
@@ -438,7 +438,7 @@ export default function ExpensesTab() {
                   const editable = opts.editable && isLeaf(r) && opts.editMonthIdx !== undefined;
                   return (
                     <tr key={idx} className={rowClass(r.lv)}>
-                      <td className="border border-black px-2 py-1 text-right whitespace-nowrap text-xs">
+                      <td className="border border-black text-right whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
                         {r.n}
                       </td>
                       <TD>{r.b || ""}</TD>
@@ -581,7 +581,7 @@ export default function ExpensesTab() {
               <tbody>
                 {schema.rows.map((r, idx) => (
                   <tr key={idx} className={rowClass(r.lv)}>
-                    <td className="border border-black px-2 py-1 text-right whitespace-nowrap text-xs">
+                    <td className="border border-black text-right whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
                       {r.n}
                     </td>
                     {MONTHS.map((_, mi) => (
@@ -624,7 +624,7 @@ export default function ExpensesTab() {
                       : "bg-slate-50 font-semibold";
                   return (
                     <tr key={btIdx} className={base}>
-                      <td className="border border-black px-2 py-1.5 text-right whitespace-nowrap text-xs">
+                      <td className="border border-black text-right whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
                         {bt.label}
                       </td>
                       {MONTHS.map((_, mi) => (

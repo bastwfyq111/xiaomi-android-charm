@@ -913,13 +913,13 @@ export default function AccountsTab() {
             <table className="w-full text-[15px] text-right border-collapse border-2 border-black table-auto">
               <thead className="sticky top-0 z-20 text-[#171412] font-black text-[13px] bg-[#E7E2D8]">
                 <tr>
-                  <th className="p-2 border border-black text-center w-10 bg-[#E7E2D8] sticky top-0 z-20">
+                  <th className="border border-black text-center w-10 bg-[#E7E2D8] sticky top-0 z-20 p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                     م
                   </th>
                   {COLS.map((c) => (
                     <th
                       key={c.key}
-                      className="p-2 border border-black min-w-[80px] cursor-pointer hover:bg-[#DCD5C6] transition-colors select-none sticky top-0 z-20 bg-[#E7E2D8]"
+                      className="border border-black min-w-[80px] cursor-pointer hover:bg-[#DCD5C6] transition-colors select-none sticky top-0 z-20 bg-[#E7E2D8] p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap"
                       onClick={() => toggleSort(c.key)}
                     >
                       <div className="flex items-center justify-center gap-1.5">
@@ -930,14 +930,14 @@ export default function AccountsTab() {
                       </div>
                     </th>
                   ))}
-                  <th className="p-2 border border-black text-center bg-[#E7E2D8] sticky top-0 z-20 min-w-[60px]">
+                  <th className="border border-black text-center bg-[#E7E2D8] sticky top-0 z-20 min-w-[60px] p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                     إجراءات
                   </th>
                 </tr>
                 <tr className="accounts-print-hide bg-[#F2EFEA]">
-                  <th className="p-1 border border-black bg-[#F2EFEA]"></th>
+                  <th className="border border-black bg-[#F2EFEA] p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap"></th>
                   {COLS.map((c) => (
-                    <th key={c.key} className="p-1 border border-black bg-[#F2EFEA]">
+                    <th key={c.key} className="border border-black bg-[#F2EFEA] p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                       <input
                         value={filters[c.key] || ""}
                         onChange={(e) => setFilter(c.key, e.target.value)}
@@ -946,7 +946,7 @@ export default function AccountsTab() {
                       />
                     </th>
                   ))}
-                  <th className="p-1 border border-black bg-[#F2EFEA]"></th>
+                  <th className="border border-black bg-[#F2EFEA] p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap"></th>
                 </tr>
               </thead>
 
@@ -955,7 +955,7 @@ export default function AccountsTab() {
                   <tr>
                     <td
                       colSpan={COLS.length + 2}
-                      className="p-12 text-center text-[#6B655D] font-black border border-black bg-white"
+                      className="text-center font-black border border-black bg-white p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap"
                     >
                       لا توجد بيانات تطابق مرشحات البحث.
                     </td>
@@ -963,47 +963,47 @@ export default function AccountsTab() {
                 ) : (
                   filteredWithBalance.map((acc, index) => (
                     <tr key={acc.id} className="odd:bg-white even:bg-[#FAF9F6] hover:bg-[#F0EBDE] transition-colors group">
-                      <td className="p-2 border border-black text-center font-mono tabular-nums text-[#6B655D]">
+                      <td className="border border-black text-center font-mono tabular-nums p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                         {index + 1}
                       </td>
-                      <td className="p-2 border border-black font-mono tabular-nums min-w-[85px] text-center">
+                      <td className="border border-black font-mono tabular-nums min-w-[85px] text-center p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                         {acc.date}
                       </td>
-                      <td className="p-2 border border-black font-mono tabular-nums font-black text-center">
+                      <td className="border border-black font-mono tabular-nums font-black text-center p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                         {acc.hafizaNo || "—"}
                       </td>
-                      <td className="p-2 border border-black font-mono tabular-nums text-center">
+                      <td className="border border-black font-mono tabular-nums text-center p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                         {acc.notifyNo || "—"}
                       </td>
-                      <td className="p-2 border border-black font-mono tabular-nums min-w-[85px] text-center">
+                      <td className="border border-black font-mono tabular-nums min-w-[85px] text-center p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                         {acc.notifyDate || "—"}
                       </td>
-                      <td className="p-2 border border-black font-mono tabular-nums text-center">
+                      <td className="border border-black font-mono tabular-nums text-center p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                         {acc.checkNo || "—"}
                       </td>
-                      <td className="p-2 border border-black font-mono tabular-nums min-w-[85px] text-center">
+                      <td className="border border-black font-mono tabular-nums min-w-[85px] text-center p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                         {acc.checkDate || "—"}
                       </td>
-                      <td className="p-2 border border-black min-w-[140px] text-[#171412]">
+                      <td className="border border-black min-w-[140px] p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                         {acc.description || "—"}
                       </td>
-                      <td className="p-2 border border-black min-w-[100px]">
+                      <td className="border border-black min-w-[100px] p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                         {acc.specialty || "—"}
                       </td>
-                      <td className="p-2 border border-black font-black min-w-[120px] text-[#171412]">
+                      <td className="border border-black font-black min-w-[120px] p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                         {acc.name || "—"}
                       </td>
-                      <td className="p-2 border border-black font-mono tabular-nums text-center">
+                      <td className="border border-black font-mono tabular-nums text-center p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                         {Number(acc.hafizaAmount) > 0 ? fmt(Number(acc.hafizaAmount)) : "—"}
                       </td>
-                      <td className="p-2 border border-black font-mono tabular-nums font-black text-[#1E8E5A] text-center bg-[#1E8E5A]/[0.06]">
+                      <td className="border border-black font-mono tabular-nums font-black text-center bg-[#1E8E5A]/[0.06] p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                         {Number(acc.income) > 0 ? fmt(Number(acc.income)) : "—"}
                       </td>
-                      <td className="p-2 border border-black font-mono tabular-nums font-black text-[#D14343] text-center bg-[#D14343]/[0.06]">
+                      <td className="border border-black font-mono tabular-nums font-black text-center bg-[#D14343]/[0.06] p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                         {Number(acc.expense) > 0 ? fmt(Number(acc.expense)) : "—"}
                       </td>
 
-                      <td className="accounts-print-hide p-1 border border-black text-center min-w-[110px]">
+                      <td className="accounts-print-hide border border-black text-center min-w-[110px] p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                         <select
                           value={acc.revenueKey || ""}
                           onChange={(e) => {
@@ -1022,10 +1022,10 @@ export default function AccountsTab() {
                         </select>
                       </td>
 
-                      <td className="p-2 border border-black font-mono tabular-nums font-black text-[#2563AC] text-center bg-[#2563AC]/[0.06]">
+                      <td className="border border-black font-mono tabular-nums font-black text-center bg-[#2563AC]/[0.06] p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                         {fmt(acc.balance)}
                       </td>
-                      <td className="accounts-print-hide p-2 border border-black text-center">
+                      <td className="accounts-print-hide border border-black text-center p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                         <div className="flex justify-center gap-1.5">
                           <button
                             onClick={() => setEditingRow(acc)}
@@ -1050,20 +1050,20 @@ export default function AccountsTab() {
               {filteredWithBalance.length > 0 && (
                 <tfoot>
                   <tr className="bg-[#E7E2D8]">
-                    <td colSpan={10} className="p-2.5 border border-black text-left font-black text-[#171412] text-sm">
+                    <td colSpan={10} className="border border-black text-left font-black p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                       رصيد الإقفال
                     </td>
-                    <td className="p-2.5 border border-black font-mono tabular-nums font-black text-[#1E8E5A] text-center">
+                    <td className="border border-black font-mono tabular-nums font-black text-center p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                       {fmt(totalIncome)}
                     </td>
-                    <td className="p-2.5 border border-black font-mono tabular-nums font-black text-[#D14343] text-center">
+                    <td className="border border-black font-mono tabular-nums font-black text-center p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                       {fmt(totalExpense)}
                     </td>
-                    <td className="border border-black"></td>
-                    <td className="p-2.5 border border-black font-mono tabular-nums font-black text-[#2563AC] text-center bg-[#2563AC]/10">
+                    <td className="border border-black p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap"></td>
+                    <td className="border border-black font-mono tabular-nums font-black text-center bg-[#2563AC]/10 p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                       {fmt(currentBalance)}
                     </td>
-                    <td className="accounts-print-hide border border-black"></td>
+                    <td className="accounts-print-hide border border-black p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap"></td>
                   </tr>
                 </tfoot>
               )}

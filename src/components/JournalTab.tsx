@@ -363,7 +363,7 @@ export default function JournalTab() {
           isDebit ? "bg-emerald-50/40 hover:bg-emerald-50/70" : "bg-rose-50/40 hover:bg-rose-50/70"
         }`}
       >
-        <td className="whitespace-nowrap px-2.5 py-2 text-center">
+        <td className="whitespace-nowrap text-center p-1 sm:p-2 text-[10px] sm:text-xs">
           <span
             className={`inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[10px] font-black text-white
             ${isDebit ? "bg-emerald-600" : "bg-rose-600"}`}
@@ -371,14 +371,14 @@ export default function JournalTab() {
             {idx + 1} · {isDebit ? "مدين" : "دائن"}
           </span>
         </td>
-        <td className="min-w-[210px] px-2.5 py-2">
+        <td className="min-w-[210px] p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
           <AccountDropdownCell
             value={l.account}
             onChange={(v) => updateLine(l.id, "account", v)}
             type={l.type}
           />
         </td>
-        <td className="min-w-[180px] px-2.5 py-2">
+        <td className="min-w-[180px] p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
           <input
             type="text"
             value={l.description || ""}
@@ -392,7 +392,7 @@ export default function JournalTab() {
               }`}
           />
         </td>
-        <td className="w-[130px] px-2.5 py-2">
+        <td className="w-[130px] p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
           <input
             type="number"
             inputMode="decimal"
@@ -408,7 +408,7 @@ export default function JournalTab() {
               }`}
           />
         </td>
-        <td className="w-[52px] px-2 py-2 text-center">
+        <td className="w-[52px] text-center p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
           {total > 1 && (
             <button
               onClick={() => removeLine(l.id)}
@@ -516,19 +516,19 @@ export default function JournalTab() {
               <table className="w-full min-w-[640px] border-collapse text-right text-[13px]">
                 <thead className="bg-[#0e2b40] text-white">
                   <tr>
-                    <th className="whitespace-nowrap px-2.5 py-2.5 text-center text-[11px] font-bold">
+                    <th className="whitespace-nowrap text-center font-bold p-1 sm:p-2 text-[10px] sm:text-xs">
                       #
                     </th>
-                    <th className="whitespace-nowrap px-2.5 py-2.5 text-right text-[11px] font-bold">
+                    <th className="whitespace-nowrap text-right font-bold p-1 sm:p-2 text-[10px] sm:text-xs">
                       الحساب
                     </th>
-                    <th className="whitespace-nowrap px-2.5 py-2.5 text-right text-[11px] font-bold">
+                    <th className="whitespace-nowrap text-right font-bold p-1 sm:p-2 text-[10px] sm:text-xs">
                       بيان السطر
                     </th>
-                    <th className="whitespace-nowrap px-2.5 py-2.5 text-center text-[11px] font-bold">
+                    <th className="whitespace-nowrap text-center font-bold p-1 sm:p-2 text-[10px] sm:text-xs">
                       المبلغ
                     </th>
-                    <th className="whitespace-nowrap px-2 py-2.5 text-center text-[11px] font-bold" />
+                    <th className="whitespace-nowrap text-center font-bold p-1 sm:p-2 text-[10px] sm:text-xs" />
                   </tr>
                 </thead>
                 <tbody>
@@ -537,7 +537,7 @@ export default function JournalTab() {
                 </tbody>
                 <tfoot>
                   <tr className="border-t border-slate-200 bg-slate-50">
-                    <td colSpan={5} className="px-2.5 py-2.5">
+                    <td colSpan={5} className="p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                       <div className="flex flex-wrap items-center gap-2">
                         <button
                           onClick={() => addLine("debit")}
@@ -668,7 +668,7 @@ export default function JournalTab() {
                     ].map((h) => (
                       <th
                         key={h}
-                        className="whitespace-nowrap border-b border-white/10 px-3 py-2.5 text-center text-[12px] font-bold"
+                        className="whitespace-nowrap border-b border-white/10 text-center font-bold p-1 sm:p-2 text-[10px] sm:text-xs"
                       >
                         {h}
                       </th>
@@ -681,38 +681,38 @@ export default function JournalTab() {
                       key={j.id}
                       className="border-b border-slate-100 odd:bg-white even:bg-slate-50/70 transition-colors hover:bg-teal-50/60"
                     >
-                      <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-600">
+                      <td className="whitespace-nowrap font-mono text-slate-600 p-1 sm:p-2 text-[10px] sm:text-xs">
                         {j.formNo || "—"}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-2.5 text-slate-600">
+                      <td className="whitespace-nowrap text-slate-600 p-1 sm:p-2 text-[10px] sm:text-xs">
                         {j.settlement || "—"}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-2.5 font-mono text-slate-600">
+                      <td className="whitespace-nowrap font-mono text-slate-600 p-1 sm:p-2 text-[10px] sm:text-xs">
                         {j.date || "—"}
                       </td>
                       <td
-                        className="max-w-[260px] truncate px-3 py-2.5 font-medium text-slate-800"
+                        className="max-w-[260px] truncate font-medium text-slate-800 p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap"
                         title={j.description}
                       >
                         {j.description || "—"}
                       </td>
-                      <td className="px-3 py-2.5">
+                      <td className="p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                         <span className="inline-block max-w-[190px] truncate rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-800">
                           {j.debitAccount || "—"}
                         </span>
                       </td>
-                      <td className="px-3 py-2.5">
+                      <td className="p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                         <span className="inline-block max-w-[190px] truncate rounded-full bg-rose-50 px-2.5 py-1 text-[11px] font-bold text-rose-800">
                           {j.creditAccount || "—"}
                         </span>
                       </td>
-                      <td className="whitespace-nowrap px-3 py-2.5 font-mono font-black text-emerald-700">
+                      <td className="whitespace-nowrap font-mono font-black text-emerald-700 p-1 sm:p-2 text-[10px] sm:text-xs">
                         {j.debit ? j.debit.toLocaleString("en-US") : "—"}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-2.5 font-mono font-black text-rose-700">
+                      <td className="whitespace-nowrap font-mono font-black text-rose-700 p-1 sm:p-2 text-[10px] sm:text-xs">
                         {j.credit ? j.credit.toLocaleString("en-US") : "—"}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-2.5">
+                      <td className="whitespace-nowrap p-1 sm:p-2 text-[10px] sm:text-xs">
                         <div className="flex justify-center gap-1.5">
                           <button
                             onClick={() => startEdit(j)}
@@ -733,13 +733,13 @@ export default function JournalTab() {
                 </tbody>
                 <tfoot className="sticky bottom-0 bg-[#f5f2ea]">
                   <tr className="border-t-2 border-[#c99a4e]/60">
-                    <td colSpan={6} className="px-3 py-2.5 text-right font-bold text-slate-700">
+                    <td colSpan={6} className="text-right font-bold text-slate-700 p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                       الإجمالي
                     </td>
-                    <td className="px-3 py-2.5 font-mono font-black text-emerald-800">
+                    <td className="font-mono font-black text-emerald-800 p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                       {grandDebit.toLocaleString("en-US")}
                     </td>
-                    <td className="px-3 py-2.5 font-mono font-black text-rose-800">
+                    <td className="font-mono font-black text-rose-800 p-1 sm:p-2 text-[10px] sm:text-xs whitespace-nowrap">
                       {grandCredit.toLocaleString("en-US")}
                     </td>
                     <td />
