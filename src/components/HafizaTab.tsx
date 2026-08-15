@@ -369,12 +369,12 @@ export default function HafizaTab() {
 
             <CardContent className="p-0">
               <div className="w-full overflow-x-auto overscroll-x-contain rounded-xl">
-                <Table className="w-max min-w-[1280px] table-auto text-sm">
+                <Table className="w-max table-auto text-[10px] sm:text-xs">
                   <TableHeader className="bg-white sticky top-0 z-10">
                     <TableRow>
-                      <TableHead className="w-12 min-w-12 whitespace-nowrap p-1 text-center text-slate-500 sm:p-2">#</TableHead>
+                      <TableHead className="whitespace-nowrap px-1 py-0.5 text-center text-slate-500">#</TableHead>
                       {COLS.map((c) => (
-                        <TableHead key={c.key} className={`min-w-[120px] whitespace-nowrap p-1 text-center py-2 sm:p-2 ${c.key === "name" || c.key === "specialty" || c.key === "description" ? "min-w-[180px]" : ""}`}>
+                        <TableHead key={c.key} className="whitespace-nowrap px-1 py-1 text-center">
                           <div className="flex flex-col items-center">
                             <button onClick={() => toggleSort(c.key)} className="flex items-center gap-2 whitespace-nowrap text-slate-800 text-sm">
                               <span className="font-semibold">{c.label}</span>
@@ -386,20 +386,20 @@ export default function HafizaTab() {
                                 value={filters[c.key] || ""}
                                 onChange={(e) => setFilter(c.key, e.target.value)}
                                 placeholder="فلتر..."
-                                className="w-full min-w-[92px] whitespace-nowrap bg-white px-2 py-1 text-xs text-center text-slate-800 border border-gray-200 rounded-full"
+                                className="w-full whitespace-nowrap bg-white px-1.5 py-0.5 text-[10px] text-center text-slate-800 border border-gray-200 rounded-full"
                               />
                             </div>
                           </div>
                         </TableHead>
                       ))}
-                      <TableHead className="w-24 min-w-24 whitespace-nowrap p-1 text-center text-slate-500 sm:p-2">إجراءات</TableHead>
+                      <TableHead className="whitespace-nowrap px-1 py-0.5 text-center text-slate-500">إجراءات</TableHead>
                     </TableRow>
                   </TableHeader>
 
                   <TableBody>
                     {filtered.map((row, idx) => (
                       <TableRow key={row.id} className="hover:bg-amber-50 transition-colors">
-                        <TableCell className="whitespace-nowrap p-1 text-center text-slate-600 text-sm sm:p-2">{idx + 1}</TableCell>
+                        <TableCell className="whitespace-nowrap px-1 py-0.5 text-center text-slate-600">{idx + 1}</TableCell>
                         {COLS.map((c) => {
                           const isEditing = activeCell?.rowId === row.id && activeCell?.colKey === c.key;
                           const val = (row as any)[c.key];
@@ -408,7 +408,7 @@ export default function HafizaTab() {
                           return (
                             <TableCell
                               key={c.key}
-                              className={`min-w-[120px] whitespace-nowrap p-1 text-center py-1 align-middle sm:p-2 ${isEditing ? "bg-amber-50" : "cursor-pointer"}`}
+                              className={`whitespace-nowrap px-1 py-0.5 text-center align-middle ${isEditing ? "bg-amber-50" : "cursor-pointer"}`}
                               onClick={() => !isEditing && handleCellClick(row.id, c.key, val)}
                             >
                               {isEditing ? (
@@ -428,7 +428,7 @@ export default function HafizaTab() {
                             </TableCell>
                           );
                         })}
-                        <TableCell className="whitespace-nowrap p-1 text-center sm:p-2">
+                        <TableCell className="whitespace-nowrap px-1 py-0.5 text-center">
                           <div className="flex items-center justify-center gap-2">
                             <Button
                               variant="ghost"
