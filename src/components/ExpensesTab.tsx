@@ -285,7 +285,7 @@ export default function ExpensesTab() {
           إجمالي الاستخدامات — ملخص حسب الأبواب
         </div>
         <div className="overflow-x-auto">
-          <table className="w-max min-w-full table-auto border-collapse text-sm sm:text-base">
+          <table className="w-max w-max table-auto border-collapse text-sm sm:text-base">
             <thead className="font-bold text-xs">
               <tr>
                 <TH rowSpan={2} cls="bg-slate-200 text-slate-800 min-w-[240px] text-right">
@@ -317,7 +317,7 @@ export default function ExpensesTab() {
                     : "bg-slate-50 font-semibold";
                 return (
                   <tr key={i} className={base}>
-                    <td className="border border-black text-right !whitespace-nowrap font-semibold !p-1 sm:!p-2 !text-xs sm:!text-sm">
+                    <td className="border border-black text-right !whitespace-nowrap font-semibold !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
                       {t.label}
                     </td>
                     <TD cls={isGrand ? "" : CUR_C}>{fmt(t.cur.f)}</TD>
@@ -396,7 +396,7 @@ export default function ExpensesTab() {
             </p>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-max min-w-full table-auto border-collapse text-sm sm:text-base">
+            <table className="w-max w-max table-auto border-collapse text-sm sm:text-base">
               <thead className="sticky top-0 z-10 font-bold text-xs">
                 <tr>
                   <TH rowSpan={2} cls="bg-slate-200 text-slate-800 min-w-[240px] text-right">
@@ -438,7 +438,7 @@ export default function ExpensesTab() {
                   const editable = opts.editable && isLeaf(r) && opts.editMonthIdx !== undefined;
                   return (
                     <tr key={idx} className={rowClass(r.lv)}>
-                      <td className="border border-black text-right whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">
+                      <td className="border border-black text-right whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
                         {r.n}
                       </td>
                       <TD>{r.b || ""}</TD>
@@ -566,7 +566,7 @@ export default function ExpensesTab() {
             <p className="text-xs opacity-90">ملخص جميع الأشهر للعام {year}م</p>
           </div>
           <div className="overflow-auto max-h-[65vh]">
-            <table className="w-max min-w-full table-auto border-collapse text-sm sm:text-base">
+            <table className="w-max w-max table-auto border-collapse text-sm sm:text-base">
               <thead className="font-bold text-xs sticky top-0 z-20">
                 <tr>
                   <TH cls="bg-slate-200 text-slate-800 min-w-[220px] text-right">البيان</TH>
@@ -581,7 +581,7 @@ export default function ExpensesTab() {
               <tbody>
                 {schema.rows.map((r, idx) => (
                   <tr key={idx} className={rowClass(r.lv)}>
-                    <td className="border border-black text-right whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">
+                    <td className="border border-black text-right whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
                       {r.n}
                     </td>
                     {MONTHS.map((_, mi) => (
@@ -602,7 +602,7 @@ export default function ExpensesTab() {
             <p className="text-xs opacity-80">المبالغ بالريال — الشهر الجاري فقط</p>
           </div>
           <div className="overflow-auto">
-            <table className="w-max min-w-full table-auto border-collapse text-sm sm:text-base">
+            <table className="w-max w-max table-auto border-collapse text-sm sm:text-base">
               <thead className="font-bold text-xs sticky top-0 z-10">
                 <tr>
                   <TH cls="bg-slate-200 text-slate-800 min-w-[260px] text-right">البيان</TH>
@@ -624,7 +624,7 @@ export default function ExpensesTab() {
                       : "bg-slate-50 font-semibold";
                   return (
                     <tr key={btIdx} className={base}>
-                      <td className="border border-black text-right whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">
+                      <td className="border border-black text-right whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
                         {bt.label}
                       </td>
                       {MONTHS.map((_, mi) => (

@@ -101,24 +101,24 @@ export default function CustomTab({ tabId }: { tabId: string }) {
       </div>
 
       <div className="bg-card rounded-xl border p-4 overflow-x-auto">
-        <table className="w-max min-w-full table-auto text-sm sm:text-base">
+        <table className="w-max w-max table-auto text-sm sm:text-base">
           <thead className="bg-secondary text-secondary-foreground">
             <tr>
-              <th className="text-right !p-1 sm:!p-2 !text-xs sm:!text-sm whitespace-nowrap">م</th>
+              <th className="text-right !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap">م</th>
               {tab.columns.map((c) => (
-                <th key={c} className="text-right whitespace-nowrap !p-1 sm:!p-2 !text-xs sm:!text-sm">
+                <th key={c} className="text-right whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
                   {c}
                 </th>
               ))}
-              <th className="text-right !p-1 sm:!p-2 !text-xs sm:!text-sm whitespace-nowrap">إجراءات</th>
+              <th className="text-right !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap">إجراءات</th>
             </tr>
           </thead>
           <tbody>
             {tab.rows.map((r, i) => (
               <tr key={i} className="border-t hover:bg-muted/40">
-                <td className="!p-1 sm:!p-2 !text-xs sm:!text-sm whitespace-nowrap">{i + 1}</td>
+                <td className="!px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap">{i + 1}</td>
                 {tab.columns.map((c) => (
-                  <td key={c} className="!p-1 sm:!p-2 !text-xs sm:!text-sm whitespace-nowrap">
+                  <td key={c} className="!px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap">
                     <input
                       value={String(r[c] ?? "")}
                       onChange={(e) => updateCustomRow(tab.id, i, { ...r, [c]: e.target.value })}
@@ -126,7 +126,7 @@ export default function CustomTab({ tabId }: { tabId: string }) {
                     />
                   </td>
                 ))}
-                <td className="!p-1 sm:!p-2 !text-xs sm:!text-sm whitespace-nowrap">
+                <td className="!px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap">
                   <button
                     onClick={() => deleteCustomRow(tab.id, i)}
                     className="text-destructive text-xs"
@@ -140,7 +140,7 @@ export default function CustomTab({ tabId }: { tabId: string }) {
               <tr>
                 <td
                   colSpan={tab.columns.length + 2}
-                  className="text-center text-muted-foreground !p-1 sm:!p-2 !text-xs sm:!text-sm whitespace-nowrap"
+                  className="text-center text-muted-foreground !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"
                 >
                   لا توجد بيانات
                 </td>
