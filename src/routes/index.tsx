@@ -139,9 +139,9 @@ function Index() {
   };
 
   return (
-    // الحاوية الرئيسية مع مساحة جانبية لقائمة التبويبات
+    // الحاوية الرئيسية مع قائمة تبويبات جانبية تظهر فوق المحتوى عند فتحها
     <div
-      className="w-full min-h-screen bg-[#f5f2ea] font-tajawal selection:bg-[#1a3a52]/20 text-sm sm:text-base pr-12 sm:pr-14"
+      className="w-full min-h-screen bg-[#f5f2ea] font-tajawal selection:bg-[#1a3a52]/20 text-sm sm:text-base"
       dir="rtl"
     >
       {/* قسم الهيدر العلوي — هوية كحلية مؤسسية بلمسة ختم برونزي */}
@@ -194,7 +194,7 @@ function Index() {
 
       {/* قائمة التبويبات الجانبية العمودية القابلة للفتح والإخفاء */}
       <nav
-        className={`fixed top-1/2 right-0 z-50 w-64 -translate-y-1/2 rounded-l-2xl bg-[#0e2b40] border border-r-0 border-[#c99a4e]/35 shadow-[-8px_0_28px_rgba(0,0,0,0.28)] transition-transform duration-300 ease-in-out ${
+        className={`fixed top-1/2 right-0 z-50 w-56 max-w-[calc(100vw-0.5rem)] -translate-y-1/2 rounded-l-xl sm:w-64 sm:rounded-l-2xl bg-[#0e2b40] border border-r-0 border-[#c99a4e]/35 shadow-[-8px_0_28px_rgba(0,0,0,0.28)] transition-transform duration-300 ease-out ${
           navOpen ? "translate-x-0" : "translate-x-[calc(100%_-_3rem)]"
         }`}
         dir="rtl"
@@ -203,13 +203,13 @@ function Index() {
         <button
           type="button"
           onClick={() => setNavOpen((open) => !open)}
-          className="absolute left-0 top-1/2 flex h-12 w-12 -translate-x-0 -translate-y-1/2 items-center justify-center rounded-l-xl bg-[#c99a4e] text-[#1a1206] shadow-md transition-colors hover:bg-[#d9ac63] focus:outline-none focus:ring-2 focus:ring-[#e3c281] focus:ring-offset-2 focus:ring-offset-[#0e2b40]"
+          className="absolute left-0 top-1/2 flex h-11 w-11 -translate-x-0 -translate-y-1/2 items-center justify-center rounded-l-lg bg-[#c99a4e] text-[#1a1206] shadow-md transition-colors hover:bg-[#d9ac63] focus:outline-none focus:ring-2 focus:ring-[#e3c281] focus:ring-offset-2 focus:ring-offset-[#0e2b40] sm:h-12 sm:w-12 sm:rounded-l-xl"
           aria-label={navOpen ? "إغلاق قائمة التبويبات" : "فتح قائمة التبويبات"}
           title={navOpen ? "إغلاق قائمة التبويبات" : "فتح قائمة التبويبات"}
         >
           {navOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
-        <div className="flex max-h-[min(80vh,38rem)] flex-col gap-1 overflow-y-auto py-3 pl-14 pr-3">
+        <div className="flex max-h-[min(76vh,38rem)] flex-col gap-1 overflow-y-auto py-2.5 pl-12 pr-2 sm:max-h-[min(80vh,38rem)] sm:py-3 sm:pl-14 sm:pr-3">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.value;
             return (
@@ -227,7 +227,7 @@ function Index() {
                 }`}
               >
                 <span className={isActive ? "scale-110" : "scale-100"}>{tab.icon}</span>
-                <span className="text-xs font-bold leading-tight whitespace-nowrap">{tab.label}</span>
+                <span className="text-[11px] font-bold leading-tight whitespace-nowrap sm:text-xs">{tab.label}</span>
               </button>
             );
           })}
