@@ -58,7 +58,7 @@ async function htmlToPdf(opts: {
       <style>${css}</style>
       <style>
         /* تحسينات خاصة بالتصوير: حدود واضحة ومسافات لا تقطع الأرقام */
-        .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 0 !important; line-height: 1.25 !important; vertical-align: middle !important; }
+        .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 1.5px 2.5px !important; line-height: 1.18 !important; vertical-align: middle !important; }
         .pdf-page .num { font-family: 'Cairo', Tahoma, Arial, sans-serif !important; font-weight: 700 !important; letter-spacing: 0.3px; }
         .pdf-page .sub { border-bottom-width: 2px !important; padding-bottom: 6px !important; margin-bottom: 8px !important; }
         .pdf-page .total-row td { border-top: 2px solid #92400e !important; }
@@ -202,7 +202,7 @@ async function htmlTableToPdfPaginated(opts: {
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
       <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       <style>${css}</style>
-      <style>.pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 0 !important; line-height: 1.25 !important; vertical-align: middle !important; }</style>
+      <style>.pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 1.5px 2.5px !important; line-height: 1.18 !important; vertical-align: middle !important; }</style>
       </head><body><div class="pdf-page">${fullHtml}</div></body></html>`);
     mdoc.close();
 
@@ -292,7 +292,7 @@ async function htmlTableToPdfPaginated(opts: {
           <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
           <style>${css}</style>
           <style>
-            .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 0 !important; line-height: 1.25 !important; vertical-align: middle !important; }
+            .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 1.5px 2.5px !important; line-height: 1.18 !important; vertical-align: middle !important; }
             .pdf-page .num { font-family: 'Cairo', Tahoma, Arial, sans-serif !important; font-weight: 700 !important; letter-spacing: 0.3px; }
             .pdf-page .sub { border-bottom-width: 2px !important; padding-bottom: 6px !important; margin-bottom: 8px !important; }
             .pdf-page .total-row td { border-top: 2px solid #92400e !important; }
@@ -307,7 +307,7 @@ async function htmlTableToPdfPaginated(opts: {
 
         const pageEl = fdoc.querySelector('.pdf-page') as HTMLElement;
         const canvas = await html2canvas(pageEl, {
-          scale: rows.length > 500 ? 1.25 : 1.5,
+            scale: rows.length > 500 ? 1.5 : 1.75,
           useCORS: true,
           backgroundColor: '#ffffff',
           width: pageWidthPx,

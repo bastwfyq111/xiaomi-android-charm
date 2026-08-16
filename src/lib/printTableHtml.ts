@@ -34,22 +34,23 @@ export const escapeHtml = (s: any) =>
 export const tablePrintStyles = `
   /* إضافة إعداد جعل الصفحة أفقية */
   @page {
-    size: landscape;
+    size: A4 landscape;
+    margin: 6mm;
   }
   
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { margin: 0; padding: 0; }
   body {
     font-family: 'Cairo', 'Tajawal', Tahoma, Arial, sans-serif;
-    padding: 4mm 6mm;
+    padding: 3mm 4mm;
     color: #000 !important;
     direction: rtl;
     margin: 0;
     width: auto;
     box-sizing: border-box;
     font-weight: 1000;
-    font-size: 14px;
-    line-height: 1.35;
+    font-size: 12px;
+    line-height: 1.3;
     background: #fff;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
@@ -72,26 +73,25 @@ export const tablePrintStyles = `
   }
   table {
     width: 100%;
-    min-width: 100%;
+    min-width: 0;
     border-collapse: collapse;
     table-layout: fixed;
-    font-size: clamp(7px, 1.05vw, 13px);
+    font-size: clamp(8px, 0.95vw, 11px);
   }
   th, td {
     border: 0.75pt solid #000;
-    padding: 0 !important;
+    padding: 1.5px 2.5px !important;
     text-align: center;
     white-space: normal;
-    overflow: hidden;
+    overflow: visible;
     text-overflow: clip;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-    hyphens: auto;
-    max-height: 2.2em;
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: none;
     color: #000 !important;
     font-weight: 700;
-    line-height: 1.1;
-    font-size: clamp(7px, 1.2vw, 14px);
+    line-height: 1.18;
+    font-size: clamp(8px, 0.95vw, 11px);
   }
   thead th {
     background: #f5deb3 !important;
@@ -106,13 +106,14 @@ export const tablePrintStyles = `
     direction: ltr;
     color: #000 !important;
     font-weight: 900 !important;
-    overflow-wrap: anywhere;
-    word-break: break-word;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    word-break: normal;
     font-size: inherit;
   }
   
   /* تم تعديل العرض قليلاً لتتسع لكلمة الإجمالي */
-  .idx { width: 50px; text-align: center; color: #000 !important; font-weight: 700; } 
+  .idx { width: 34px; min-width: 34px; max-width: 48px; text-align: center; color: #000 !important; font-weight: 700; }
   
   .total-row td {
     background: #fef3c7 !important;
