@@ -259,15 +259,17 @@ export default function MonthlyStatementTab() {
     });
 
   return (
-    <div className="space-y-5" dir="rtl">
+    <div className="space-y-3 p-1.5 sm:space-y-5 sm:p-3" dir="rtl">
       {/* لوحة التحكم العلوية */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex flex-wrap items-end gap-3">
-        <div className="w-full sm:w-auto sm:order-last sm:ml-auto flex gap-2">
-          <ImportButton kind="monthly" />
+      <div className="grid grid-cols-2 items-end gap-1.5 rounded-xl border border-slate-200 bg-white p-1.5 shadow-sm sm:flex sm:flex-wrap sm:gap-3 sm:p-4">
+        <div className="col-span-2 grid w-full grid-cols-2 gap-1.5 sm:order-last sm:ml-auto sm:flex sm:w-auto sm:gap-2">
+          <div className="[&>label]:min-w-0 [&>label]:justify-center [&>label]:px-1.5 [&>label]:py-1 [&>label]:text-[11px] sm:[&>label]:px-2 sm:[&>label]:py-1 sm:[&>label]:text-xs">
+            <ImportButton kind="monthly" />
+          </div>
           {journal.length > 0 && (
             <button
               onClick={handleClearAllData}
-              className="px-4 py-2 bg-rose-50 border border-rose-200 text-rose-700 font-bold text-sm rounded-lg hover:bg-rose-600 hover:text-white transition-all flex items-center gap-2"
+              className="min-w-0 justify-center px-1.5 py-1 text-[11px] sm:px-2 sm:py-1 sm:text-xs bg-rose-50 border border-rose-200 text-rose-700 font-bold rounded-lg hover:bg-rose-600 hover:text-white transition-all flex items-center gap-1 sm:gap-2"
               title="مسح كامل القيود الحالية"
             >
               <AlertOctagon className="w-4 h-4" /> مسح البيانات
@@ -276,11 +278,11 @@ export default function MonthlyStatementTab() {
         </div>
 
         <div>
-          <label className="text-xs font-bold text-slate-600 block mb-1">طريقة العرض المالي</label>
+          <label className="mb-1 block text-[10px] font-bold text-slate-600 sm:text-xs">طريقة العرض المالي</label>
           <select
             value={mode}
             onChange={(e) => setMode(e.target.value as ReportPeriodMode)}
-            className="block px-3 py-2 border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
+            className="block w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 sm:w-auto sm:px-3 sm:py-2 sm:text-sm"
           >
             <option value="month">كشف شهري تفصيلي</option>
             <option value="quarter">تقرير ربع سنوي</option>
@@ -291,11 +293,11 @@ export default function MonthlyStatementTab() {
 
         {mode === "month" ? (
           <div>
-            <label className="text-xs font-bold text-slate-600 block mb-1">الفترة الزمنية (الشهر)</label>
+            <label className="mb-1 block text-[10px] font-bold text-slate-600 sm:text-xs">الفترة الزمنية (الشهر)</label>
             <select
               value={month}
               onChange={(e) => setMonth(Number(e.target.value))}
-              className="block px-3 py-2 border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
+              className="block w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 sm:w-auto sm:px-3 sm:py-2 sm:text-sm"
             >
               {REPORT_MONTH_NAMES.map((n, i) => (
                 <option key={i} value={i + 1}>
@@ -306,11 +308,11 @@ export default function MonthlyStatementTab() {
           </div>
         ) : mode === "quarter" ? (
           <div>
-            <label className="text-xs font-bold text-slate-600 block mb-1">الربع المالي</label>
+            <label className="mb-1 block text-[10px] font-bold text-slate-600 sm:text-xs">الربع المالي</label>
             <select
               value={quarter}
               onChange={(e) => setQuarter(Number(e.target.value))}
-              className="block px-3 py-2 border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
+              className="block w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 sm:w-auto sm:px-3 sm:py-2 sm:text-sm"
             >
               <option value={1}>الربع الأول (يناير - مارس)</option>
               <option value={2}>الربع الثاني (أبريل - يونيو)</option>
@@ -320,44 +322,44 @@ export default function MonthlyStatementTab() {
           </div>
         ) : mode === "halfYear" ? (
           <div>
-            <label className="text-xs font-bold text-slate-600 block mb-1">النصف المالي</label>
+            <label className="mb-1 block text-[10px] font-bold text-slate-600 sm:text-xs">النصف المالي</label>
             <select
               value={halfYear}
               onChange={(e) => setHalfYear(Number(e.target.value))}
-              className="block px-3 py-2 border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm"
+              className="block w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 sm:w-auto sm:px-3 sm:py-2 sm:text-sm"
             >
               <option value={1}>النصف الأول (يناير - يونيو)</option>
               <option value={2}>النصف الثاني (يوليو - ديسمبر)</option>
             </select>
           </div>
         ) : (
-          <div className="px-3 py-2 text-sm font-bold text-slate-700 bg-slate-50 border border-slate-300 rounded-lg">
+          <div className="px-2 py-1.5 text-xs font-bold text-slate-700 bg-slate-50 border border-slate-300 rounded-lg sm:px-3 sm:py-2 sm:text-sm">
             يناير - ديسمبر
           </div>
         )}
 
         <div>
-          <label className="text-xs font-bold text-slate-600 block mb-1">السنة المالية</label>
+          <label className="mb-1 block text-[10px] font-bold text-slate-600 sm:text-xs">السنة المالية</label>
           <input
             type="number"
             value={year}
             onChange={(e) => setYear(Number(e.target.value) || year)}
-            className="block px-3 py-2 border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm font-mono text-center"
+            className="block w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 sm:w-auto sm:px-3 sm:py-2 sm:text-sm font-mono text-center"
           />
         </div>
 
         <div className="flex-1" />
 
-        <div className="flex gap-2 w-full sm:w-auto">
+        <div className="col-span-2 grid w-full grid-cols-2 gap-1.5 sm:col-span-1 sm:flex sm:w-auto sm:gap-2">
           <button
             onClick={handleExport}
-            className="flex-1 sm:flex-initial px-4 py-2 bg-emerald-600 text-white rounded-lg text-sm font-bold hover:bg-emerald-700 shadow-sm transition flex items-center justify-center gap-1.5"
+            className="min-w-0 flex-1 justify-center px-1.5 py-1 text-[11px] sm:flex-initial sm:px-2 sm:py-1 sm:text-xs bg-emerald-600 text-white rounded-lg font-bold hover:bg-emerald-700 shadow-sm transition flex items-center gap-1 sm:gap-1.5"
           >
             <FileSpreadsheet className="w-4 h-4" /> تصدير Excel
           </button>
           <button
             onClick={handlePdf}
-            className="flex-1 sm:flex-initial px-4 py-2 bg-teal-700 text-white rounded-lg text-sm font-bold hover:bg-teal-800 shadow-sm transition flex items-center justify-center gap-1.5"
+            className="min-w-0 flex-1 justify-center px-1.5 py-1 text-[11px] sm:flex-initial sm:px-2 sm:py-1 sm:text-xs bg-teal-700 text-white rounded-lg font-bold hover:bg-teal-800 shadow-sm transition flex items-center gap-1 sm:gap-1.5"
           >
             <FileText className="w-4 h-4" /> تصدير PDF
           </button>
@@ -366,8 +368,8 @@ export default function MonthlyStatementTab() {
 
       {/* جدول البيانات المالي */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-        <div className="bg-gradient-to-r from-slate-800 to-slate-950 text-white p-5 text-center">
-          <h2 className="font-bold text-xl tracking-wide">
+        <div className="bg-gradient-to-r from-slate-800 to-slate-950 text-white p-2.5 text-center sm:p-5">
+          <h2 className="font-bold text-lg tracking-wide sm:text-xl">
             {schema.title || "المجلس اليمني للاختصاصات الطبية"}
           </h2>
           <p className="text-xs opacity-80 mt-1">
@@ -379,65 +381,65 @@ export default function MonthlyStatementTab() {
           </div>
         </div>
 
-        <div className="overflow-auto max-h-[65vh] relative">
-          <table ref={tableRef1} className="w-max w-max table-auto text-sm sm:text-base border-collapse text-center">
+        <div className="relative max-h-[72vh] overflow-auto">
+          <table ref={tableRef1} className="min-w-max table-auto border-collapse text-sm sm:text-base text-center">
             <thead className="bg-slate-100 text-slate-800 font-bold border-b border-black sticky top-0 z-20 shadow-sm">
               <tr>
                 <th
                   rowSpan={2}
-                  className="border border-black text-center bg-slate-100 text-slate-900 font-extrabold break-words !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"
+                  className="border border-black text-center bg-slate-100 text-slate-900 font-extrabold break-words !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap"
                 >
                   بيان الحسابات (طبقاً للنظام المحاسبي الموحد)
                 </th>
                 <th
                   colSpan={2}
-                  className="border border-black text-center bg-slate-200/60 font-bold text-slate-800 !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"
+                  className="border border-black text-center bg-slate-200/60 font-bold text-slate-800 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap"
                 >
                   الرصيد الافتتاحي / السابق في{" "}
                   {startMonth === 1 ? `1/1/${year}` : `${year}/${startMonth}/1`}م
                 </th>
                 <th
                   colSpan={2}
-                  className="border border-black text-center bg-teal-50 text-teal-900 font-bold !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"
+                  className="border border-black text-center bg-teal-50 text-teal-900 font-bold !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap"
                 >
                   {movementLabel}
                 </th>
                 <th
                   colSpan={2}
-                  className="border border-black text-center bg-slate-200/60 font-bold text-slate-800 !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"
+                  className="border border-black text-center bg-slate-200/60 font-bold text-slate-800 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap"
                 >
                   الجملــــــــــــة التراكمية
                 </th>
                 <th
                   colSpan={2}
-                  className="border border-black text-center bg-amber-50 text-amber-900 font-extrabold !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"
+                  className="border border-black text-center bg-amber-50 text-amber-900 font-extrabold !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap"
                 >
                   الرصيد الختامي في {year}/{endMonth}/{lastDayOfMonth(year, endMonth)}م
                 </th>
               </tr>
               <tr className="bg-slate-50 text-xs text-slate-600 border-b border-black">
-                <th className="border border-black text-center font-semibold bg-slate-50 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th className="border border-black text-center font-semibold bg-slate-50 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   إيرادات / مدين
                 </th>
-                <th className="border border-black text-center font-semibold bg-slate-50 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th className="border border-black text-center font-semibold bg-slate-50 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   مصروفات / دائن
                 </th>
-                <th className="border border-black text-center font-semibold bg-teal-50/50 text-teal-950 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th className="border border-black text-center font-semibold bg-teal-50/50 text-teal-950 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   إيرادات / مدين
                 </th>
-                <th className="border border-black text-center font-semibold bg-teal-50/50 text-teal-950 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th className="border border-black text-center font-semibold bg-teal-50/50 text-teal-950 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   مصروفات / دائن
                 </th>
-                <th className="border border-black text-center font-semibold bg-slate-50 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th className="border border-black text-center font-semibold bg-slate-50 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   إيرادات / مدين
                 </th>
-                <th className="border border-black text-center font-semibold bg-slate-50 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th className="border border-black text-center font-semibold bg-slate-50 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   مصروفات / دائن
                 </th>
-                <th className="border border-black text-center font-bold bg-amber-50/50 text-amber-950 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th className="border border-black text-center font-bold bg-amber-50/50 text-amber-950 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   أرصدة مدينة
                 </th>
-                <th className="border border-black text-center font-bold bg-amber-50/50 text-amber-950 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th className="border border-black text-center font-bold bg-amber-50/50 text-amber-950 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   أرصدة دائنة
                 </th>
               </tr>
@@ -453,7 +455,7 @@ export default function MonthlyStatementTab() {
                     <tr className="bg-slate-100/80 font-bold">
                       <td
                         colSpan={9}
-                        className="border border-black text-center text-slate-900 font-bold bg-slate-200/50 !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"
+                        className="border border-black text-center text-slate-900 font-bold bg-slate-200/50 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap"
                       >
                         📁 {g.title}
                       </td>
@@ -477,62 +479,62 @@ export default function MonthlyStatementTab() {
 
                       return (
                         <tr key={a} className="hover:bg-slate-50/80 transition-colors">
-                          <td className="border border-black font-medium text-slate-700 text-center min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                          <td className="border border-black font-medium text-slate-700 text-center min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                             {a}
                           </td>
-                          <td className="border border-black font-mono text-center text-slate-600 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                          <td className="border border-black font-mono text-center text-slate-600 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                             {r.prevDebit ? fmt(r.prevDebit) : "—"}
                           </td>
-                          <td className="border border-black font-mono text-center text-slate-600 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                          <td className="border border-black font-mono text-center text-slate-600 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                             {r.prevCredit ? fmt(r.prevCredit) : "—"}
                           </td>
-                          <td className="border border-black font-mono text-center text-teal-700 bg-teal-50/10 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                          <td className="border border-black font-mono text-center text-teal-700 bg-teal-50/10 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                             {r.curDebit ? fmt(r.curDebit) : "—"}
                           </td>
-                          <td className="border border-black font-mono text-center text-teal-700 bg-teal-50/10 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                          <td className="border border-black font-mono text-center text-teal-700 bg-teal-50/10 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                             {r.curCredit ? fmt(r.curCredit) : "—"}
                           </td>
-                          <td className="border border-black font-mono text-center text-slate-800 font-medium min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                          <td className="border border-black font-mono text-center text-slate-800 font-medium min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                             {totD ? fmt(totD) : "—"}
                           </td>
-                          <td className="border border-black font-mono text-center text-slate-800 font-medium min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                          <td className="border border-black font-mono text-center text-slate-800 font-medium min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                             {totC ? fmt(totC) : "—"}
                           </td>
-                          <td className="border border-black font-mono text-center text-emerald-700 font-bold bg-emerald-50/20 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                          <td className="border border-black font-mono text-center text-emerald-700 font-bold bg-emerald-50/20 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                             {balD ? fmt(balD) : "—"}
                           </td>
-                          <td className="border border-black font-mono text-center text-rose-700 font-bold bg-rose-50/20 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                          <td className="border border-black font-mono text-center text-rose-700 font-bold bg-rose-50/20 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                             {balC ? fmt(balC) : "—"}
                           </td>
                         </tr>
                       );
                     })}
                     <tr className="bg-slate-50 font-bold text-slate-900 border-b border-black">
-                      <td className="border border-black text-center text-slate-800 font-bold min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                      <td className="border border-black text-center text-slate-800 font-bold min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                         جملة بند: {g.title}
                       </td>
-                      <td className="border border-black font-mono text-center text-slate-700 bg-slate-100/50 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                      <td className="border border-black font-mono text-center text-slate-700 bg-slate-100/50 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                         {fmt(gPD)}
                       </td>
-                      <td className="border border-black font-mono text-center text-slate-700 bg-slate-100/50 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                      <td className="border border-black font-mono text-center text-slate-700 bg-slate-100/50 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                         {fmt(gPC)}
                       </td>
-                      <td className="border border-black font-mono text-center text-teal-800 bg-teal-50/40 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                      <td className="border border-black font-mono text-center text-teal-800 bg-teal-50/40 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                         {fmt(gCD)}
                       </td>
-                      <td className="border border-black font-mono text-center text-teal-800 bg-teal-50/40 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                      <td className="border border-black font-mono text-center text-teal-800 bg-teal-50/40 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                         {fmt(gCC)}
                       </td>
-                      <td className="border border-black font-mono text-center text-slate-900 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                      <td className="border border-black font-mono text-center text-slate-900 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                         {fmt(gPD + gCD)}
                       </td>
-                      <td className="border border-black font-mono text-center text-slate-900 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                      <td className="border border-black font-mono text-center text-slate-900 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                         {fmt(gPC + gCC)}
                       </td>
-                      <td className="border border-black font-mono text-center text-emerald-800 bg-emerald-100/20 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                      <td className="border border-black font-mono text-center text-emerald-800 bg-emerald-100/20 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                         {fmt(Math.max(0, gPD + gCD - (gPC + gCC)))}
                       </td>
-                      <td className="border border-black font-mono text-center text-rose-800 bg-rose-100/20 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                      <td className="border border-black font-mono text-center text-rose-800 bg-rose-100/20 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                         {fmt(Math.max(0, gPC + gCC - (gPD + gCD)))}
                       </td>
                     </tr>
@@ -541,28 +543,28 @@ export default function MonthlyStatementTab() {
               })}
 
               <tr className="bg-slate-900 text-white font-extrabold text-sm border-t-2 border-black">
-                <td className="border border-black text-center bg-slate-950 font-black min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <td className="border border-black text-center bg-slate-950 font-black min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   الإجمالي العام النهائي للحسابات الكلية
                 </td>
-                <td className="border border-black font-mono text-center text-slate-200 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <td className="border border-black font-mono text-center text-slate-200 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   {fmt(totals.prevDebit)}
                 </td>
-                <td className="border border-black font-mono text-center text-slate-200 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <td className="border border-black font-mono text-center text-slate-200 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   {fmt(totals.prevCredit)}
                 </td>
-                <td className="border border-black font-mono text-center text-teal-300 bg-slate-800 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <td className="border border-black font-mono text-center text-teal-300 bg-slate-800 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   {fmt(totals.curDebit)}
                 </td>
-                <td className="border border-black font-mono text-center text-teal-300 bg-slate-800 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <td className="border border-black font-mono text-center text-teal-300 bg-slate-800 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   {fmt(totals.curCredit)}
                 </td>
-                <td className="border border-black font-mono text-center text-slate-100 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <td className="border border-black font-mono text-center text-slate-100 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   {fmt(totals.prevDebit + totals.curDebit)}
                 </td>
-                <td className="border border-black font-mono text-center text-slate-100 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <td className="border border-black font-mono text-center text-slate-100 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   {fmt(totals.prevCredit + totals.curCredit)}
                 </td>
-                <td className="border border-black font-mono text-center text-emerald-400 bg-teal-950/50 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <td className="border border-black font-mono text-center text-emerald-400 bg-teal-950/50 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   {fmt(
                     Math.max(
                       0,
@@ -570,7 +572,7 @@ export default function MonthlyStatementTab() {
                     ),
                   )}
                 </td>
-                <td className="border border-black font-mono text-center text-rose-400 bg-teal-950/50 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <td className="border border-black font-mono text-center text-rose-400 bg-teal-950/50 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   {fmt(
                     Math.max(
                       0,
@@ -586,7 +588,7 @@ export default function MonthlyStatementTab() {
 
       {/* جدول تجميع إيرادات الحساب */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-        <div className="bg-gradient-to-r from-teal-700 to-teal-900 text-white p-4 flex flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-col items-stretch justify-between gap-2 bg-gradient-to-r from-teal-700 to-teal-900 p-2.5 text-white sm:flex-row sm:items-center sm:p-4">
           <div>
             <h3 className="font-bold text-base">📊 تجميع إيرادات الحساب حسب رمز الإيراد</h3>
             <p className="text-xs opacity-80 mt-0.5">
@@ -597,29 +599,29 @@ export default function MonthlyStatementTab() {
             عدد الرموز: {revenueByCode.length} | عدد السجلات: {revenueTotals.count}
           </div>
         </div>
-        <div className="overflow-auto max-h-[50vh] relative">
-          <table ref={tableRef2} className="w-max w-max table-auto text-sm sm:text-base border-collapse text-center">
+        <div className="relative max-h-[72vh] overflow-auto">
+          <table ref={tableRef2} className="min-w-max table-auto border-collapse text-sm sm:text-base text-center">
             <thead className="bg-teal-50 text-teal-900 font-bold border-b border-black sticky top-0 z-20 shadow-sm">
               <tr>
-                <th className="border border-black text-center min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th className="border border-black text-center min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   م
                 </th>
-                <th className="border border-black text-center min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th className="border border-black text-center min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   رمز الإيراد
                 </th>
-                <th className="border border-black text-center min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th className="border border-black text-center min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   بيان الإيراد (من قالب الإيرادات)
                 </th>
-                <th className="border border-black text-center min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th className="border border-black text-center min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   عدد السجلات
                 </th>
-                <th className="border border-black text-center min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th className="border border-black text-center min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   إيراد الفترة السابقة
                 </th>
-                <th className="border border-black text-center min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th className="border border-black text-center min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   إيراد الفترة الحالية
                 </th>
-                <th className="border border-black text-center min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th className="border border-black text-center min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                   الإجمالي التراكمي
                 </th>
               </tr>
@@ -627,32 +629,32 @@ export default function MonthlyStatementTab() {
             <tbody className="divide-y divide-black">
               {revenueByCode.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="text-center text-slate-500 font-medium !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap">
+                  <td colSpan={7} className="text-center text-slate-500 font-medium !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
                     لا توجد سجلات في تبويب الحساب لها رمز إيراد ضمن الفترة المختارة.
                   </td>
                 </tr>
               ) : (
                 revenueByCode.map((r, i) => (
                   <tr key={r.code} className="hover:bg-teal-50/40 transition-colors">
-                    <td className="border border-black text-center font-mono text-slate-500 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                    <td className="border border-black text-center font-mono text-slate-500 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                       {i + 1}
                     </td>
-                    <td className="border border-black text-center font-mono font-extrabold text-teal-800 bg-teal-50/40 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                    <td className="border border-black text-center font-mono font-extrabold text-teal-800 bg-teal-50/40 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                       {r.code}
                     </td>
-                    <td className="border border-black text-center font-medium text-slate-800 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                    <td className="border border-black text-center font-medium text-slate-800 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                       {r.label}
                     </td>
-                    <td className="border border-black text-center font-mono text-slate-600 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                    <td className="border border-black text-center font-mono text-slate-600 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                       {r.count}
                     </td>
-                    <td className="border border-black text-center font-mono text-slate-700 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                    <td className="border border-black text-center font-mono text-slate-700 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                       {r.prev ? fmt(r.prev) : "—"}
                     </td>
-                    <td className="border border-black text-center font-mono text-teal-700 font-bold bg-teal-50/30 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                    <td className="border border-black text-center font-mono text-teal-700 font-bold bg-teal-50/30 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                       {r.cur ? fmt(r.cur) : "—"}
                     </td>
-                    <td className="border border-black text-center font-mono text-emerald-700 font-black bg-emerald-50/30 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                    <td className="border border-black text-center font-mono text-emerald-700 font-black bg-emerald-50/30 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                       {fmt(r.total)}
                     </td>
                   </tr>
@@ -664,20 +666,20 @@ export default function MonthlyStatementTab() {
                 <tr className="bg-slate-900 text-white font-extrabold">
                   <td
                     colSpan={3}
-                    className="border border-black text-center !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"
+                    className="border border-black text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap"
                   >
                     الإجمالي العام لرموز الإيراد
                   </td>
-                  <td className="border border-black text-center font-mono min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                  <td className="border border-black text-center font-mono min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                     {revenueTotals.count}
                   </td>
-                  <td className="border border-black text-center font-mono text-slate-200 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                  <td className="border border-black text-center font-mono text-slate-200 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                     {fmt(revenueTotals.prev)}
                   </td>
-                  <td className="border border-black text-center font-mono text-teal-300 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                  <td className="border border-black text-center font-mono text-teal-300 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                     {fmt(revenueTotals.cur)}
                   </td>
-                  <td className="border border-black text-center font-mono text-emerald-400 min-w-[120px] whitespace-nowrap overflow-hidden !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                  <td className="border border-black text-center font-mono text-emerald-400 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm">
                     {fmt(revenueTotals.total)}
                   </td>
                 </tr>
