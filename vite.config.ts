@@ -22,6 +22,7 @@ export default defineConfig({
         strategies: "generateSW",
         registerType: "autoUpdate",
         filename: "sw.js",
+        outDir: ".output/public",
         injectRegister: null,
         devOptions: { enabled: false },
         // public/manifest.json is maintained by hand and linked from the route head.
