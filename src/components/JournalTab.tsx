@@ -21,6 +21,18 @@ import { toast } from "sonner";
 import ImportButton from "@/components/ImportButton";
 import TabActions from "@/components/TabActions";
 import type { Journal } from "@/lib/store";
+import { useTableControls } from "@/hooks/useTableControls";
+
+const JOURNAL_COLS = [
+  { key: "formNo", label: "رقم الاستمارة" },
+  { key: "settlement", label: "التسوية" },
+  { key: "date", label: "التاريخ" },
+  { key: "description", label: "البيان" },
+  { key: "debitAccount", label: "الحساب المدين" },
+  { key: "creditAccount", label: "الحساب الدائن" },
+  { key: "debit", label: "مدين" },
+  { key: "credit", label: "دائن" },
+] as const;
 
 const ALL_EXCEL_ACCOUNTS = [
   "الباب الاول (الأجور والمرتبات)",
@@ -269,8 +281,15 @@ export default function JournalTab() {
       ? Math.min(totalDebit, totalCredit) / Math.max(totalDebit, totalCredit)
       : 0;
 
-  const grandDebit = journal.reduce((s, j) => s + (Number(j.debit) || 0), 0);
-  const grandCredit = journal.reduce((s, j) => s + (Number(j.credit) || 0), 0);
+  const {
+    rows: filteredJournal,
+    filters: journalFilters,
+    setFilter: setJournalFilter,
+    clearFilters: clearJournalFilters,
+  } = useTableControls(journal, JOURNAL_COLS.map((c) => c.key));
+
+  const grandDebit = filteredJournal.reduce((s, j) => s + (Number(j.debit) || 0), 0);
+  const grandCredit = filteredJournal.reduce((s, j) => s + (Number(j.credit) || 0), 0);
 
   const resetForm = () => {
     setFormNo("");
@@ -636,9 +655,19 @@ export default function JournalTab() {
       <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 sm:gap-3 bg-gradient-to-l from-[#0e2b40] to-[#12405c] px-2 py-2 sm:px-4 sm:py-2.5">
           <h3 className="truncate text-[14px] font-bold text-white">سجل القيود اليومية</h3>
-          <span className="shrink-0 rounded-full bg-white/15 px-2.5 py-0.5 text-xs font-bold text-[#e3c281]">
-            {journal.length} قيد
-          </span>
+          <div className="flex min-w-0 items-center justify-end gap-1.5 sm:gap-2">
+            {Object.values(journalFilters).some(Boolean) && (
+              <button
+                onClick={clearJournalFilters}
+                className="min-w-0 rounded-full bg-white/15 px-2 py-1 text-[11px] font-bold text-white transition-colors hover:bg-white/25 sm:text-xs"
+              >
+                مسح التصفية
+              </button>
+            )}
+            <span className="shrink-0 rounded-full bg-white/15 px-2.5 py-0.5 text-xs font-bold text-[#e3c281]">
+              {filteredJournal.length} قيد
+            </span>
+          </div>
         </div>
 
         {journal.length === 0 ? (
@@ -658,28 +687,42 @@ export default function JournalTab() {
               <table className="min-w-max table-auto border-collapse text-center text-sm sm:text-base font-semibold">
                 <thead className="sticky top-0 z-20 bg-[#0e2b40] text-white shadow-md">
                   <tr>
-                    {[
-                      "رقم الاستمارة",
-                      "التسوية",
-                      "التاريخ",
-                      "البيان",
-                      "الحساب المدين",
-                      "الحساب الدائن",
-                      "مدين",
-                      "دائن",
-                      "الإجراءات",
-                    ].map((h) => (
+                    {JOURNAL_COLS.map((c) => (
                       <th
-                        key={h}
+                        key={c.key}
                         className="!whitespace-nowrap border-b border-white/10 text-center font-bold !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
                       >
-                        {h}
+                        {c.label}
                       </th>
                     ))}
+                    <th className="!whitespace-nowrap border-b border-white/10 text-center font-bold !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      الإجراءات
+                    </th>
+                  </tr>
+                  <tr className="bg-[#f5f2ea] text-slate-700">
+                    {JOURNAL_COLS.map((c) => (
+                      <th key={c.key} className="border-b border-slate-200 !px-1 !py-1.5 sm:!px-2 sm:!py-2">
+                        <input
+                          value={journalFilters[c.key] || ""}
+                          onChange={(e) => setJournalFilter(c.key, e.target.value)}
+                          placeholder="تصفية..."
+                          aria-label={`تصفية ${c.label}`}
+                          className="w-full min-w-[58px] rounded border border-slate-300 bg-white px-1 py-1 text-xs font-bold text-slate-800 outline-none transition-colors placeholder:text-slate-400 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 sm:text-sm"
+                        />
+                      </th>
+                    ))}
+                    <th className="border-b border-slate-200 !px-1 !py-1.5 sm:!px-2 sm:!py-2" />
                   </tr>
                 </thead>
                 <tbody>
-                  {journal.map((j) => (
+                  {filteredJournal.length === 0 ? (
+                    <tr>
+                      <td colSpan={JOURNAL_COLS.length + 1} className="border-b border-slate-100 bg-white px-2 py-4 text-center text-sm font-bold text-slate-500 sm:text-base">
+                        لا توجد قيود تطابق حقول التصفية.
+                      </td>
+                    </tr>
+                  ) : (
+                  filteredJournal.map((j) => (
                     <tr
                       key={j.id}
                       className="border-b border-slate-100 odd:bg-white even:bg-slate-50/70 transition-colors hover:bg-teal-50/60"
@@ -732,7 +775,8 @@ export default function JournalTab() {
                         </div>
                       </td>
                     </tr>
-                  ))}
+                  ))
+                  )}
                 </tbody>
                 <tfoot className="sticky bottom-0 bg-[#f5f2ea]">
                   <tr className="border-t-2 border-[#c99a4e]/60">
