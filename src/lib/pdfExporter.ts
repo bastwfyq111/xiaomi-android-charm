@@ -202,7 +202,12 @@ async function htmlTableToPdfPaginated(opts: {
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
       <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       <style>${css}</style>
-      <style>.pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 1.5px 2.5px !important; line-height: 1.18 !important; vertical-align: middle !important; }</style>
+      <style>
+        .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 1.5px 2.5px !important; line-height: 1.18 !important; vertical-align: middle !important; }
+        .pdf-page > table:not(.info) { font-size: 12px !important; }
+        .pdf-page > table:not(.info) th, .pdf-page > table:not(.info) td { padding: 2.5px 3.5px !important; line-height: 1.28 !important; font-size: 11px !important; }
+        .pdf-page > table:not(.info) thead th { font-size: 13px !important; }
+      </style>
       </head><body><div class="pdf-page">${fullHtml}</div></body></html>`);
     mdoc.close();
 
@@ -236,25 +241,42 @@ async function htmlTableToPdfPaginated(opts: {
     const usableHeightPx = (ph - margin * 2) * pxPerMm;
     const usableWidthMm = pw - margin * 2;
 
-    // توزيع الصفوف على صفحات: الصفحة الأولى تتضمن العنوان، البقية لا
+    // توزيع الصفوف على صفحات: الصفحة الأولى تتضمن العنوان، والبقية تبدأ برأس الجدول فقط.
     const pages: number[][] = [];
     let current: number[] = [];
     let currentH = topBlockH + theadH;
     for (let i = 0; i < rowHeights.length; i++) {
       const rh = rowHeights[i];
-      // نحجز مسبقاً مساحة صف الإجمالي في آخر صفحة محتملة فقط عند آخر صف فعلي
+      // نحجز مسبقاً مساحة صف الإجمالي في آخر صفحة محتملة فقط عند آخر صف فعلي.
       const isLast = i === rowHeights.length - 1;
       const neededExtra = isLast ? totalRowH : 0;
       if (current.length > 0 && currentH + rh + neededExtra > usableHeightPx) {
         pages.push(current);
         current = [];
-        currentH = theadH; // الصفحات التالية تبدأ برأس الجدول فقط (بدون العنوان)
+        currentH = theadH;
       }
       current.push(i);
       currentH += rh;
     }
     if (current.length > 0) pages.push(current);
     if (pages.length === 0) pages.push([]);
+
+    // موازنة الصفحات لمنع بقاء الصفحة الأخيرة بعدد قليل من الصفوف مع فراغ أبيض كبير.
+    for (let p = 0; p < pages.length - 1; p++) {
+      const currentPage = pages[p];
+      const nextPage = pages[p + 1];
+      let nextRowsH = nextPage.reduce((sum, idx) => sum + rowHeights[idx], 0);
+      const nextBaseH = theadH + (p + 1 === pages.length - 1 ? totalRowH : 0);
+
+      while (currentPage.length > nextPage.length + 1 && currentPage.length > 1) {
+        const candidate = currentPage[currentPage.length - 1];
+        const candidateH = rowHeights[candidate];
+        if (nextBaseH + nextRowsH + candidateH > usableHeightPx) break;
+        currentPage.pop();
+        nextPage.unshift(candidate);
+        nextRowsH += candidateH;
+      }
+    }
 
     for (let p = 0; p < pages.length; p++) {
       const isFirstPage = p === 0;
@@ -293,6 +315,9 @@ async function htmlTableToPdfPaginated(opts: {
           <style>${css}</style>
           <style>
             .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 1.5px 2.5px !important; line-height: 1.18 !important; vertical-align: middle !important; }
+            .pdf-page > table:not(.info) { font-size: 12px !important; }
+            .pdf-page > table:not(.info) th, .pdf-page > table:not(.info) td { padding: 2.5px 3.5px !important; line-height: 1.28 !important; font-size: 11px !important; }
+            .pdf-page > table:not(.info) thead th { font-size: 13px !important; }
             .pdf-page .num { font-family: 'Cairo', Tahoma, Arial, sans-serif !important; font-weight: 700 !important; letter-spacing: 0.3px; }
             .pdf-page .sub { border-bottom-width: 2px !important; padding-bottom: 6px !important; margin-bottom: 8px !important; }
             .pdf-page .total-row td { border-top: 2px solid #92400e !important; }
@@ -307,7 +332,7 @@ async function htmlTableToPdfPaginated(opts: {
 
         const pageEl = fdoc.querySelector('.pdf-page') as HTMLElement;
         const canvas = await html2canvas(pageEl, {
-            scale: rows.length > 500 ? 1.5 : 1.75,
+            scale: rows.length > 500 ? 1.6 : 2,
           useCORS: true,
           backgroundColor: '#ffffff',
           width: pageWidthPx,
