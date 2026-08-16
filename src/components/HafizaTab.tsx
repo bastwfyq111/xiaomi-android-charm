@@ -208,25 +208,26 @@ export default function HafizaTab() {
           <p className="text-xs text-slate-600 mt-1">تصميم ملائم للهواتف: صفان من الحقول، عناصر متراصة وأقسام مرقمة بألوان مميزة.</p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <div className="flex flex-wrap items-center justify-end gap-2">
-            <Button onClick={() => setShowForm((s) => !s)} className="bg-gradient-to-r from-rose-400 to-orange-300 text-white rounded-full px-3 py-1 text-sm shadow-sm">
-              <Plus className="w-4 h-4" /> {showForm ? "إخفاء" : "إضافة"}
-            </Button>
+        <Card className="w-full md:w-auto p-2 bg-white rounded-2xl border border-rose-50 shadow-sm">
+          <div className="grid grid-cols-2 sm:flex items-center justify-end gap-1.5 sm:gap-2">
+            {!showForm && (
+              <Button onClick={() => setShowForm(true)} className="min-w-0 justify-center bg-gradient-to-r from-rose-400 to-orange-300 text-white rounded-full px-2 sm:px-3 py-1 text-[11px] sm:text-sm shadow-sm">
+                <Plus className="w-4 h-4" /> إضافة
+              </Button>
+            )}
             <ImportButton kind="hafiza" />
             <Button
               type="button"
               variant="outline"
               onClick={handleClearHafiza}
-              className="rounded-full border-red-200 text-red-600 hover:bg-red-50 px-3 py-1 text-sm"
+              className="min-w-0 justify-center rounded-full border-red-200 text-red-600 hover:bg-red-50 px-2 sm:px-3 py-1 text-[11px] sm:text-sm"
               disabled={hafiza.length === 0}
             >
               <Trash2 className="w-4 h-4" />
               مسح البيانات
             </Button>
           </div>
-
-        </div>
+        </Card>
       </div>
 
       {/* MAIN LAYOUT: SIDEBAR + CONTENT */}
@@ -247,9 +248,6 @@ export default function HafizaTab() {
                   <p className="text-xs text-slate-600 mt-1">صفان من الحقول في كل صف — تصميم مدمج للهواتف.</p>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <ImportButton kind="hafiza" />
-                </div>
               </div>
 
               <CardContent className="p-0 mt-3">
@@ -485,14 +483,6 @@ export default function HafizaTab() {
         </main>
       </div>
 
-      {/* Floating Action Button for small screens */}
-      <button
-        onClick={() => setShowForm((s) => !s)}
-        className="fixed bottom-4 left-4 md:left-auto md:right-6 z-50 bg-gradient-to-br from-rose-400 to-orange-300 text-white p-2 rounded-full shadow-lg hover:scale-105 transition-transform"
-        aria-label="Toggle form"
-      >
-        <Plus className="w-5 h-5" />
-      </button>
     </div>
   );
 }
