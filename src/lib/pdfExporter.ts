@@ -6,6 +6,18 @@ import {
   tablePrintStyles,
 } from './printTableHtml';
 
+function downloadPdfBlob(pdf: any, fileName: string): void {
+  const blob = pdf.output('blob') as Blob;
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 /**
  * توليد PDF من HTML حقيقي (يعرضه المتصفح) بدل الرسم البرمجي
  * السبب: jsPDF لا يدعم تشكيل الحروف العربية ولا اتجاه الأرقام،
@@ -120,14 +132,7 @@ async function htmlToPdf(opts: {
       offset += sliceH;
     }
 
-    // Data URI بدلاً من Blob لتوافق أندرويد/شاومي
-    const dataUri = pdf.output('datauristring');
-    const link = document.createElement('a');
-    link.href = dataUri;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    downloadPdfBlob(pdf, fileName);
   } finally {
     frame.remove();
   }
@@ -302,7 +307,7 @@ async function htmlTableToPdfPaginated(opts: {
 
         const pageEl = fdoc.querySelector('.pdf-page') as HTMLElement;
         const canvas = await html2canvas(pageEl, {
-          scale: 2,
+          scale: rows.length > 500 ? 1.25 : 1.5,
           useCORS: true,
           backgroundColor: '#ffffff',
           width: pageWidthPx,
@@ -313,7 +318,7 @@ async function htmlTableToPdfPaginated(opts: {
         const imgW = usableWidthMm;
         const imgH = (canvas.height * imgW) / canvas.width;
         pdf.addImage(
-          canvas.toDataURL('image/jpeg', 0.95),
+          canvas.toDataURL('image/jpeg', 0.88),
           'JPEG',
           margin,
           margin,
@@ -325,13 +330,7 @@ async function htmlTableToPdfPaginated(opts: {
       }
     }
 
-    const dataUri = pdf.output('datauristring');
-    const link = document.createElement('a');
-    link.href = dataUri;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    downloadPdfBlob(pdf, fileName);
   } finally {
     measureFrame.remove();
   }
