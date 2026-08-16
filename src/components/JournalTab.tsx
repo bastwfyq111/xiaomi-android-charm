@@ -113,7 +113,7 @@ const inputCls =
   "w-full min-w-0 rounded-xl border border-slate-200 bg-slate-50/80 px-2.5 py-2.5 text-[13px] font-medium text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-4 focus:ring-teal-500/10 sm:px-3 sm:py-3 sm:text-sm";
 
 const journalClampCls =
-  "block max-w-full overflow-hidden break-words whitespace-normal leading-snug [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2]";
+  "block max-w-[90px] overflow-hidden text-ellipsis whitespace-nowrap leading-snug sm:max-w-[180px]";
 
 // ── قائمة اختيار الحساب: تُفتح كنافذة منبثقة فوق خلية الجدول ───────────────
 function AccountDropdownCell({
@@ -693,12 +693,12 @@ export default function JournalTab() {
                     {JOURNAL_COLS.map((c) => (
                       <th
                         key={c.key}
-                        className="min-w-0 max-w-[120px] whitespace-normal break-words border-b border-white/10 text-center font-bold leading-tight !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
+                        className="min-w-0 max-w-[120px] whitespace-nowrap border-b border-white/10 text-center font-bold leading-tight !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
                       >
                         {c.label}
                       </th>
                     ))}
-                    <th className="min-w-0 max-w-[120px] whitespace-normal break-words border-b border-white/10 text-center font-bold leading-tight !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                    <th className="min-w-0 max-w-[120px] whitespace-nowrap border-b border-white/10 text-center font-bold leading-tight !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                       الإجراءات
                     </th>
                   </tr>
