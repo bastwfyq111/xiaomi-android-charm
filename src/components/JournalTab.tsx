@@ -88,7 +88,7 @@ function Field({
 }) {
   return (
     <label className={`group relative block min-w-0 ${className}`}>
-      <span className="mb-1.5 flex items-center gap-1.5 text-[11px] font-bold text-slate-500">
+      <span className="mb-1 flex items-center gap-1.5 text-[10px] font-bold text-slate-500 sm:mb-1.5 sm:text-[11px]">
         {icon}
         {label}
       </span>
@@ -98,7 +98,7 @@ function Field({
 }
 
 const inputCls =
-  "w-full min-w-0 rounded-xl border border-slate-200 bg-slate-50/80 px-3 py-3 text-sm font-medium text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-4 focus:ring-teal-500/10";
+  "w-full min-w-0 rounded-xl border border-slate-200 bg-slate-50/80 px-2.5 py-2.5 text-[13px] font-medium text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-4 focus:ring-teal-500/10 sm:px-3 sm:py-3 sm:text-sm";
 
 // ── قائمة اختيار الحساب: تُفتح كنافذة منبثقة فوق خلية الجدول ───────────────
 function AccountDropdownCell({
@@ -145,11 +145,11 @@ function AccountDropdownCell({
   };
 
   return (
-    <div ref={wrapRef} className="relative w-full min-w-[200px]">
+    <div ref={wrapRef} className="relative w-full min-w-[180px] sm:min-w-[210px]">
       <button
         type="button"
         onClick={handleOpen}
-        className={`flex min-h-[42px] w-full items-center justify-between gap-2 rounded-lg border px-2.5 py-2 text-right text-[13px] font-bold transition-all active:scale-[0.99]
+        className={`flex min-h-[40px] w-full items-center justify-between gap-1.5 rounded-lg border px-2 py-2 text-right text-[12px] font-bold transition-all active:scale-[0.99] sm:min-h-[42px] sm:gap-2 sm:px-2.5 sm:text-[13px]
           ${
             value
               ? isDebit
@@ -169,12 +169,12 @@ function AccountDropdownCell({
           <div className="fixed inset-0 z-[998] bg-slate-950/40 backdrop-blur-[2px] md:hidden" />
           <div
             className="fixed inset-x-0 bottom-0 z-[999] max-h-[72vh] overflow-hidden rounded-t-3xl border border-slate-200 bg-white shadow-2xl
-              md:absolute md:inset-x-auto md:bottom-auto md:right-0 md:left-0 md:top-full md:mt-1 md:max-h-[55vh] md:w-[320px] md:rounded-2xl"
+              md:absolute md:inset-x-auto md:bottom-auto md:right-0 md:left-0 md:top-full md:mt-1 md:max-h-[60vh] md:w-[360px] md:rounded-2xl"
             dir="rtl"
           >
             <div className="mx-auto mt-2 h-1.5 w-12 rounded-full bg-slate-200 md:hidden" />
             <div
-              className={`mt-2 flex items-center gap-2 px-3 py-3 md:mt-0
+              className={`mt-2 flex items-center gap-1.5 px-2.5 py-2.5 md:mt-0 md:gap-2 md:px-3 md:py-3
               ${isDebit ? "bg-gradient-to-l from-emerald-700 to-emerald-500" : "bg-gradient-to-l from-rose-700 to-rose-500"}`}
             >
               <Search className="h-4 w-4 shrink-0 text-white" />
@@ -183,7 +183,7 @@ function AccountDropdownCell({
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={isDebit ? "ابحث في الحسابات المدينة…" : "ابحث في الحسابات الدائنة…"}
-                className="min-w-0 flex-1 bg-transparent text-right text-sm text-white outline-none placeholder:text-white/70"
+                className="min-w-0 flex-1 bg-transparent text-right text-[13px] text-white outline-none placeholder:text-white/70 sm:text-sm"
                 onKeyDown={(e) => e.key === "Escape" && setOpen(false)}
               />
               <button
@@ -198,7 +198,7 @@ function AccountDropdownCell({
               {filtered.length} حساب متاح
             </div>
 
-            <div className="overflow-y-auto overscroll-contain" style={{ maxHeight: "52vh" }}>
+            <div className="overflow-y-auto overscroll-contain" style={{ maxHeight: "56vh" }}>
               {filtered.length === 0 ? (
                 <p className="p-8 text-center text-sm text-slate-400">لا توجد نتائج مطابقة</p>
               ) : (
@@ -207,7 +207,7 @@ function AccountDropdownCell({
                     key={acc}
                     type="button"
                     onClick={() => pick(acc)}
-                    className={`w-full border-b border-slate-100 px-4 py-3.5 text-right text-sm font-medium leading-snug transition-colors last:border-0
+                    className={`w-full break-words border-b border-slate-100 px-3 py-3 text-right text-[13px] font-medium leading-relaxed transition-colors last:border-0 sm:px-4 sm:py-3.5 sm:text-sm
                       ${
                         value === acc
                           ? isDebit
@@ -371,20 +371,20 @@ export default function JournalTab() {
             {idx + 1} · {isDebit ? "مدين" : "دائن"}
           </span>
         </td>
-        <td className="min-w-[210px] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+        <td className="min-w-[180px] sm:min-w-[210px] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
           <AccountDropdownCell
             value={l.account}
             onChange={(v) => updateLine(l.id, "account", v)}
             type={l.type}
           />
         </td>
-        <td className="min-w-[180px] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+        <td className="min-w-[150px] sm:min-w-[180px] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
           <input
             type="text"
             value={l.description || ""}
             onChange={(e) => updateLine(l.id, "description", e.target.value)}
             placeholder="بيان السطر (اختياري)"
-            className={`min-w-0 w-full rounded-lg border bg-white px-2.5 py-2 text-[13px] outline-none transition-all
+            className={`min-w-0 w-full rounded-lg border bg-white px-2 py-2.5 text-[12px] outline-none transition-all sm:px-2.5 sm:py-2 sm:text-[13px]
               ${
                 isDebit
                   ? "border-emerald-200 text-emerald-900 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
@@ -392,7 +392,7 @@ export default function JournalTab() {
               }`}
           />
         </td>
-        <td className="w-[130px] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+        <td className="w-[110px] sm:w-[130px] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
           <input
             type="number"
             inputMode="decimal"
@@ -400,7 +400,7 @@ export default function JournalTab() {
             value={l.amount || ""}
             onChange={(e) => updateLine(l.id, "amount", e.target.value)}
             placeholder="0.00"
-            className={`min-w-0 w-full rounded-lg border bg-white px-2 py-2 text-center font-mono text-sm font-bold outline-none transition-all
+            className={`min-w-0 w-full rounded-lg border bg-white px-1.5 py-2.5 text-center font-mono text-[13px] font-bold outline-none transition-all sm:px-2 sm:py-2 sm:text-sm
               ${
                 isDebit
                   ? "border-emerald-200 text-emerald-700 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
