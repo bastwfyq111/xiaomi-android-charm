@@ -203,7 +203,7 @@ export default function HafizaTab() {
             <span className="p-2 rounded-lg bg-gradient-to-br from-rose-100 to-amber-100 shadow-sm text-amber-700">
               <Wallet className="w-5 h-5" />
             </span>
-            لوحة الحوافظ التوريد
+    لوحة الحوافظ التوريد
           </h1>
           <p className="text-xs text-slate-600 mt-1">تصميم ملائم للهواتف: صفان من الحقول، عناصر متراصة وأقسام مرقمة بألوان مميزة.</p>
         </div>
@@ -234,7 +234,7 @@ export default function HafizaTab() {
         {/* CONTENT */}
         <main className="lg:col-span-12 space-y-3">
           {/* FORM (قابلة للطي) */}
-          <div className={`transition-all duration-300 ${showForm ? "max-h-[1400px] opacity-100" : "max-h-0 opacity-0 overflow-hidden"}`}>
+ <div className={`transition-all duration-300 ${showForm ? "max-h-[1400px] opacity-100" : "max-h-0 opacity-0 overflow-hidden"}`}>
             <Card className="p-3 bg-white rounded-2xl border border-rose-50 shadow-sm border-l-4 border-rose-200">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1">
@@ -386,7 +386,7 @@ export default function HafizaTab() {
                                 value={filters[c.key] || ""}
                                 onChange={(e) => setFilter(c.key, e.target.value)}
                                 placeholder="فلتر..."
-                        className="w-16 min-w-0 max-w-[60px] whitespace-nowrap bg-white px-1 py-0.5 text-[9px] text-center text-slate-800 border border-gray-200 rounded-full"
+                        className="w-16 min-w-0 max-w-[30px] whitespace-nowrap bg-white px-1 py-0.5 text-[9px] text-center text-slate-800 border border-gray-200 rounded-full"
                               />
                             </div>
                           </div>
@@ -470,8 +470,8 @@ export default function HafizaTab() {
                         <TableCell className="text-center font-mono font-bold text-amber-700 text-sm">
                           {fmt(totalHafizaAmount)}
                         </TableCell>
-                        <TableCell colSpan={2}></TableCell>
-                        <TableCell className="text-center font-mono font-bold text-emerald-700 text-sm">
+                        <TableCell colSpan={4}></TableCell>
+                        <TableCell className="text-center font-mono font-bolder text-emerald-700 text-sm">
                           {fmt(totalNotifyAmount)}
                         </TableCell>
                         <TableCell></TableCell>
