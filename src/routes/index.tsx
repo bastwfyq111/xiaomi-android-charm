@@ -232,7 +232,7 @@ function Index() {
                 }`}
               >
                 <span className={isActive ? "scale-110" : "scale-100"}>{tab.icon}</span>
-                <span className="text-[11px] font-bold leading-tight whitespace-nowrap sm:text-xs">{tab.label}</span>
+                <span className="text-sm sm:text-base font-bold leading-tight whitespace-nowrap">{tab.label}</span>
               </button>
             );
           })}

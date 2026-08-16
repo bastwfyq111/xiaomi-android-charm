@@ -211,7 +211,7 @@ export default function HafizaTab() {
         <Card className="w-full md:w-auto p-2 bg-white rounded-2xl border border-rose-50 shadow-sm">
           <div className="grid grid-cols-2 sm:flex items-center justify-end gap-1.5 sm:gap-2">
             {!showForm && (
-              <Button onClick={() => setShowForm(true)} className="min-w-0 justify-center bg-gradient-to-r from-rose-400 to-orange-300 text-white rounded-full px-2 sm:px-3 py-1 text-[11px] sm:text-sm shadow-sm">
+              <Button onClick={() => setShowForm(true)} className="min-w-0 justify-center bg-gradient-to-r from-rose-400 to-orange-300 text-white rounded-full px-2 sm:px-3 py-1 text-xs sm:text-sm shadow-sm">
                 <Plus className="w-4 h-4" /> إضافة
               </Button>
             )}
@@ -220,7 +220,7 @@ export default function HafizaTab() {
               type="button"
               variant="outline"
               onClick={handleClearHafiza}
-              className="min-w-0 justify-center rounded-full border-red-200 text-red-600 hover:bg-red-50 px-2 sm:px-3 py-1 text-[11px] sm:text-sm"
+              className="min-w-0 justify-center rounded-full border-red-200 text-red-600 hover:bg-red-50 px-2 sm:px-3 py-1 text-xs sm:text-sm"
               disabled={hafiza.length === 0}
             >
               <Trash2 className="w-4 h-4" />
@@ -346,33 +346,33 @@ export default function HafizaTab() {
                     value={filters.name || ""}
                     onChange={(e) => setFilter("name", e.target.value)}
                     placeholder="بحث بالاسم..."
-                    className="w-full sm:w-40 px-1.5 py-1 rounded-full border border-gray-200 text-[11px] sm:text-xs bg-white text-slate-800"
+                    className="w-full sm:w-40 px-1.5 py-1 rounded-full border border-gray-200 text-xs sm:text-xs bg-white text-slate-800"
                   />
                   <Search className="w-3.5 h-3.5 absolute left-2 top-1.5 text-slate-400" />
                 </div>
 
-                <Button size="sm" onClick={handleCopyAmountsToNotify} className="min-w-0 justify-center bg-emerald-500 text-white rounded-full px-1.5 sm:px-2 py-1 text-[11px] sm:text-xs">
+                <Button size="sm" onClick={handleCopyAmountsToNotify} className="min-w-0 justify-center bg-emerald-500 text-white rounded-full px-1.5 sm:px-2 py-1 text-xs sm:text-xs">
                   <CheckSquare className="w-4 h-4" />
                 </Button>
 
                 {Object.values(filters).some(Boolean) && (
-                  <Button variant="ghost" size="sm" onClick={clearFilters} className="min-w-0 justify-center text-red-500 px-1.5 py-1 text-[11px] sm:text-xs">
+                  <Button variant="ghost" size="sm" onClick={clearFilters} className="min-w-0 justify-center text-red-500 px-1.5 py-1 text-xs sm:text-xs">
                     <X className="w-4 h-4" />
                   </Button>
                 )}
 
-                <TabActions title="حوافظ التوريد" rows={hafiza} columns={COLS} fileName="حوافظ-التوريد" className="col-span-2 w-full !grid !grid-cols-2 sm:!flex !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-1 [&>button]:py-1 sm:[&>button]:px-2 sm:[&>button]:py-1 [&>button]:text-[11px] sm:[&>button]:text-xs" />
+                <TabActions title="حوافظ التوريد" rows={hafiza} columns={COLS} fileName="حوافظ-التوريد" className="col-span-2 w-full !grid !grid-cols-2 sm:!flex !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-1 [&>button]:py-1 sm:[&>button]:px-2 sm:[&>button]:py-1 [&>button]:text-xs sm:[&>button]:text-xs" />
               </div>
             </CardHeader>
 
             <CardContent className="p-0">
               <div className="w-full overflow-auto max-h-[72vh] overscroll-x-contain rounded-xl">
-                <Table className="min-w-max table-auto text-sm sm:text-base">
+                <Table className="min-w-max table-auto text-sm sm:text-base font-semibold">
                   <TableHeader className="bg-white sticky top-0 z-10">
                     <TableRow>
-                      <TableHead className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm text-center text-slate-500">#</TableHead>
+                      <TableHead className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center text-slate-500">#</TableHead>
                       {COLS.map((c) => (
-                        <TableHead key={c.key} className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm text-center">
+                        <TableHead key={c.key} className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center">
                           <div className="flex flex-col items-center">
                             <button onClick={() => toggleSort(c.key)} className="flex items-center gap-1 whitespace-nowrap text-slate-800 text-xs sm:text-sm">
                               <span className="font-semibold">{c.label}</span>
@@ -384,20 +384,20 @@ export default function HafizaTab() {
                                 value={filters[c.key] || ""}
                                 onChange={(e) => setFilter(c.key, e.target.value)}
                                 placeholder="فلتر..."
-                        className="w-20 sm:w-24 max-w-none whitespace-nowrap bg-white px-1 py-1 text-[10px] sm:text-xs text-center text-slate-800 border border-gray-200 rounded-full"
+                        className="w-20 sm:w-24 max-w-none whitespace-nowrap bg-white px-1 py-1 text-xs sm:text-xs text-center text-slate-800 border border-gray-200 rounded-full"
                               />
                             </div>
                           </div>
                         </TableHead>
                       ))}
-                      <TableHead className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm text-center text-slate-500">إجراءات</TableHead>
+                      <TableHead className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center text-slate-500">إجراءات</TableHead>
                     </TableRow>
                   </TableHeader>
 
                   <TableBody>
                     {filtered.map((row, idx) => (
                       <TableRow key={row.id} className="hover:bg-amber-50 transition-colors">
-                        <TableCell className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm text-center text-slate-600">{idx + 1}</TableCell>
+                        <TableCell className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center text-slate-600">{idx + 1}</TableCell>
                         {COLS.map((c) => {
                           const isEditing = activeCell?.rowId === row.id && activeCell?.colKey === c.key;
                           const val = (row as any)[c.key];
@@ -406,7 +406,7 @@ export default function HafizaTab() {
                           return (
                             <TableCell
                               key={c.key}
-                              className={`whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm text-center align-middle ${isEditing ? "bg-amber-50" : "cursor-pointer"}`}
+                              className={`whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center align-middle ${isEditing ? "bg-amber-50" : "cursor-pointer"}`}
                               onClick={() => !isEditing && handleCellClick(row.id, c.key, val)}
                             >
                               {isEditing ? (
@@ -426,7 +426,7 @@ export default function HafizaTab() {
                             </TableCell>
                           );
                         })}
-                        <TableCell className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm text-center">
+                        <TableCell className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center">
                           <div className="flex items-center justify-center gap-2">
                             <Button
                               variant="ghost"

@@ -187,7 +187,7 @@ function Field({
 }) {
   return (
     <div className="w-full">
-      <label className="block text-[12px] font-black text-[#171412]/70 mb-1.5 mr-0.5 tracking-wide">
+      <label className="block text-sm font-black text-[#171412]/70 mb-1.5 mr-0.5 tracking-wide">
         {label}
       </label>
       <div className="relative flex items-center">
@@ -225,7 +225,7 @@ function LedgerStat({
     <div className="relative bg-white rounded-2xl px-2 py-2 sm:px-4 sm:py-3 border border-black/10 shadow-sm">
       <div className="flex items-center justify-between">
         <div>
-          <span className="text-[10px] sm:text-[12px] font-black text-[#6B655D] tracking-wide">{label}</span>
+          <span className="text-xs sm:text-sm font-black text-[#6B655D] tracking-wide">{label}</span>
           <div className={`text-base sm:text-2xl font-black font-mono tabular-nums mt-0.5 sm:mt-1.5 ${t.text}`}>
             {fmt(value)}
           </div>
@@ -618,13 +618,13 @@ export default function AccountsTab() {
           <h1 className="text-xl sm:text-2xl font-black text-[#171412] tracking-tight">
             الحساب الجاري
           </h1>
-          <p className="text-[12px] text-[#6B655D] font-bold tracking-wide mt-0.5">
+          <p className="text-sm text-[#6B655D] font-bold tracking-wide mt-0.5">
             سجل الحركات المالية المُرحّلة
           </p>
         </div>
         <div className="hidden sm:flex items-center gap-2 px-3.5 py-2 bg-white rounded-xl border border-black/10 shadow-sm">
           <Landmark className="w-4 h-4 text-[#8B5CF6]" />
-          <span className="text-[12px] text-[#6B655D] font-bold">عدد القيود</span>
+          <span className="text-sm text-[#6B655D] font-bold">عدد القيود</span>
           <span className="text-[#171412] font-mono text-base tabular-nums font-black">{accounts.length}</span>
         </div>
       </div>
@@ -641,10 +641,10 @@ export default function AccountsTab() {
         <div className="bg-[#FAF9F6] px-5 py-4 flex flex-wrap justify-between items-center gap-4 border-b border-black/10">
           <div>
             <h2 className="text-sm sm:text-base font-black text-[#171412] tracking-wide">تقارير الحساب الدورية</h2>
-            <p className="text-[11px] text-[#6B655D] font-bold mt-1">اختر الربع أو النصف أو السنة ثم صدّر التقرير</p>
+            <p className="text-xs text-[#6B655D] font-bold mt-1">اختر الربع أو النصف أو السنة ثم صدّر التقرير</p>
           </div>
           <div className="flex flex-wrap items-end gap-2">
-            <label className="text-[11px] font-black text-[#6B655D]">
+            <label className="text-xs font-black text-[#6B655D]">
               نوع التقرير
               <select
                 value={accountReportMode}
@@ -661,7 +661,7 @@ export default function AccountsTab() {
               </select>
             </label>
             {accountReportMode !== "year" && (
-              <label className="text-[11px] font-black text-[#6B655D]">
+              <label className="text-xs font-black text-[#6B655D]">
                 الفترة
                 <select
                   value={accountReportPeriod}
@@ -684,7 +684,7 @@ export default function AccountsTab() {
                 </select>
               </label>
             )}
-            <label className="text-[11px] font-black text-[#6B655D]">
+            <label className="text-xs font-black text-[#6B655D]">
               السنة
               <input
                 type="number"
@@ -719,12 +719,12 @@ export default function AccountsTab() {
           <div className="flex items-center gap-2.5 flex-wrap">
             <button
               onClick={handleSyncFromHafiza}
-              className="flex items-center justify-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 bg-[#D97706] text-white rounded-full text-[10px] sm:text-xs font-black hover:bg-[#B8620A] transition-colors active:scale-95 shadow-sm"
+              className="flex items-center justify-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 bg-[#D97706] text-white rounded-full text-xs sm:text-xs font-black hover:bg-[#B8620A] transition-colors active:scale-95 shadow-sm"
             >
               <Zap className="w-3.5 h-3.5" />
               <span>مطابقة شاملة ٢٠٢٦</span>
             </button>
-            <label className="flex items-center justify-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 border border-black/15 text-[#171412] rounded-full text-[10px] sm:text-xs font-bold cursor-pointer hover:bg-black/5 transition-colors">
+            <label className="flex items-center justify-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 border border-black/15 text-[#171412] rounded-full text-xs sm:text-xs font-bold cursor-pointer hover:bg-black/5 transition-colors">
               <FileSpreadsheet className="w-3.5 h-3.5 text-[#1E8E5A]" /> <span>استيراد إكسل</span>
               <input
                 type="file"
@@ -864,13 +864,13 @@ export default function AccountsTab() {
             <div className="sm:col-span-2 flex gap-2 pt-2">
               <button
                 onClick={submit}
-                className="flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 sm:px-4 sm:py-2.5 bg-[#171412] text-white rounded-xl font-black hover:bg-[#2A2521] text-[10px] sm:text-xs shadow-sm active:scale-95 transition-transform"
+                className="flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 sm:px-4 sm:py-2.5 bg-[#171412] text-white rounded-xl font-black hover:bg-[#2A2521] text-xs sm:text-xs shadow-sm active:scale-95 transition-transform"
               >
                 <Save className="w-4 h-4 text-[#4ADE80]" /> ترحيل القيد
               </button>
               <button
                 onClick={() => setForm(emptyForm)}
-                className="flex items-center justify-center gap-1.5 px-2 py-1.5 sm:px-3 sm:py-2.5 border border-black/15 text-[#171412] bg-white rounded-xl font-bold text-[10px] sm:text-xs active:scale-95 transition-transform hover:bg-black/5"
+                className="flex items-center justify-center gap-1.5 px-2 py-1.5 sm:px-3 sm:py-2.5 border border-black/15 text-[#171412] bg-white rounded-xl font-bold text-xs sm:text-xs active:scale-95 transition-transform hover:bg-black/5"
               >
                 <Eraser className="w-4 h-4 text-[#D14343]" /> مسح
               </button>
@@ -892,7 +892,7 @@ export default function AccountsTab() {
             {Object.values(filters).some(Boolean) && (
               <button
                 onClick={clearFilters}
-                className="px-1.5 py-1 sm:px-2 sm:py-1 bg-black/5 hover:bg-black/10 text-[#171412] rounded-full text-[11px] sm:text-xs font-bold transition-colors"
+                className="px-1.5 py-1 sm:px-2 sm:py-1 bg-black/5 hover:bg-black/10 text-[#171412] rounded-full text-xs sm:text-xs font-bold transition-colors"
               >
                 مسح مرشحات التصفية
               </button>
@@ -904,23 +904,23 @@ export default function AccountsTab() {
               fileName="الحساب-الجاري"
               numericKeys={["hafizaAmount", "income", "expense", "balance"]}
               onClear={clearAccounts}
-              className="col-span-2 w-full !grid !grid-cols-2 sm:!flex !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-1 [&>button]:py-1 sm:[&>button]:px-2 sm:[&>button]:py-1 [&>button]:text-[11px] sm:[&>button]:text-xs"
+              className="col-span-2 w-full !grid !grid-cols-2 sm:!flex !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-1 [&>button]:py-1 sm:[&>button]:px-2 sm:[&>button]:py-1 [&>button]:text-xs sm:[&>button]:text-xs"
             />
           </div>
         </div>
 
         <div className="p-1.5 sm:p-3">
           <div className="overflow-x-auto overflow-y-auto max-h-[72vh] relative rounded-xl">
-            <table className="min-w-max table-auto text-sm sm:text-base text-center border-collapse border-2 border-black">
+            <table className="min-w-max table-auto text-sm sm:text-base text-center font-semibold border-collapse border-2 border-black">
               <thead className="sticky top-0 z-20 text-[#171412] font-black text-[16px] bg-[#E7E2D8]">
                 <tr>
-                  <th className="border border-black text-center w-10 bg-[#E7E2D8] sticky top-0 z-20 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                  <th className="border border-black text-center w-10 bg-[#E7E2D8] sticky top-0 z-20 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                     م
                   </th>
                   {COLS.map((c) => (
                     <th
                       key={c.key}
-                      className="border border-black cursor-pointer hover:bg-[#DCD5C6] transition-colors select-none sticky top-0 z-20 bg-[#E7E2D8] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap"
+                      className="border border-black cursor-pointer hover:bg-[#DCD5C6] transition-colors select-none sticky top-0 z-20 bg-[#E7E2D8] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"
                       onClick={() => toggleSort(c.key)}
                     >
                       <div className="flex items-center justify-center gap-1.5">
@@ -931,23 +931,23 @@ export default function AccountsTab() {
                       </div>
                     </th>
                   ))}
-                  <th className="border border-black text-center bg-[#E7E2D8] sticky top-0 z-20 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                  <th className="border border-black text-center bg-[#E7E2D8] sticky top-0 z-20 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                     إجراءات
                   </th>
                 </tr>
                 <tr className="accounts-print-hide bg-[#F2EFEA]">
-                  <th className="border border-black bg-[#F2EFEA] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap"></th>
+                  <th className="border border-black bg-[#F2EFEA] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></th>
                   {COLS.map((c) => (
-                    <th key={c.key} className="border border-black bg-[#F2EFEA] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                    <th key={c.key} className="border border-black bg-[#F2EFEA] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                       <input
                         value={filters[c.key] || ""}
                         onChange={(e) => setFilter(c.key, e.target.value)}
                         placeholder="تصفية..."
-                        className="w-16 min-w-0 max-w-[50px] px-1 py-1 text-[10px] border border-black/15 rounded bg-white text-[#171412] outline-none focus:border-[#171412] font-bold transition-colors"
+                        className="w-16 min-w-0 max-w-[50px] px-1 py-1 text-xs border border-black/15 rounded bg-white text-[#171412] outline-none focus:border-[#171412] font-bold transition-colors"
                       />
                     </th>
                   ))}
-                  <th className="border border-black bg-[#F2EFEA] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap"></th>
+                  <th className="border border-black bg-[#F2EFEA] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></th>
                 </tr>
               </thead>
 
@@ -956,7 +956,7 @@ export default function AccountsTab() {
                   <tr>
                     <td
                       colSpan={COLS.length + 2}
-                      className="text-center font-black border border-black bg-white !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap"
+                      className="text-center font-black border border-black bg-white !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"
                     >
                       لا توجد بيانات تطابق مرشحات البحث.
                     </td>
@@ -964,47 +964,47 @@ export default function AccountsTab() {
                 ) : (
                   filteredWithBalance.map((acc, index) => (
                     <tr key={acc.id} className="odd:bg-white even:bg-[#FAF9F6] hover:bg-[#F0EBDE] transition-colors group">
-                      <td className="border border-black text-center font-mono tabular-nums !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                      <td className="border border-black text-center font-mono tabular-nums !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         {index + 1}
                       </td>
-                      <td className="border border-black font-mono tabular-nums text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         {acc.date}
                       </td>
-                      <td className="border border-black font-mono tabular-nums font-black text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums font-black text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         {acc.hafizaNo || "—"}
                       </td>
-                      <td className="border border-black font-mono tabular-nums text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         {acc.notifyNo || "—"}
                       </td>
-                      <td className="border border-black font-mono tabular-nums text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         {acc.notifyDate || "—"}
                       </td>
-                      <td className="border border-black font-mono tabular-nums text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         {acc.checkNo || "—"}
                       </td>
-                      <td className="border border-black font-mono tabular-nums text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         {acc.checkDate || "—"}
                       </td>
-                      <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                      <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         {acc.description || "—"}
                       </td>
-                      <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                      <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         {acc.specialty || "—"}
                       </td>
-                      <td className="border border-black font-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                      <td className="border border-black font-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         {acc.name || "—"}
                       </td>
-                      <td className="border border-black font-mono tabular-nums text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         {Number(acc.hafizaAmount) > 0 ? fmt(Number(acc.hafizaAmount)) : "—"}
                       </td>
-                      <td className="border border-black font-mono tabular-nums font-black text-center bg-[#1E8E5A]/[0.06] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums font-black text-center bg-[#1E8E5A]/[0.06] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         {Number(acc.income) > 0 ? fmt(Number(acc.income)) : "—"}
                       </td>
-                      <td className="border border-black font-mono tabular-nums font-black text-center bg-[#D14343]/[0.06] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums font-black text-center bg-[#D14343]/[0.06] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         {Number(acc.expense) > 0 ? fmt(Number(acc.expense)) : "—"}
                       </td>
 
-                      <td className="accounts-print-hide border border-black text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                      <td className="accounts-print-hide border border-black text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         <select
                           value={acc.revenueKey || ""}
                           onChange={(e) => {
@@ -1023,10 +1023,10 @@ export default function AccountsTab() {
                         </select>
                       </td>
 
-                      <td className="border border-black font-mono tabular-nums font-black text-center bg-[#2563AC]/[0.06] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums font-black text-center bg-[#2563AC]/[0.06] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         {fmt(acc.balance)}
                       </td>
-                      <td className="accounts-print-hide border border-black text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                      <td className="accounts-print-hide border border-black text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         <div className="flex justify-center gap-1.5">
                           <button
                             onClick={() => setEditingRow(acc)}
@@ -1051,20 +1051,20 @@ export default function AccountsTab() {
               {filteredWithBalance.length > 0 && (
                 <tfoot>
                   <tr className="bg-[#E7E2D8]">
-                    <td colSpan={10} className="border border-black text-left font-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                    <td colSpan={10} className="border border-black text-left font-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                       رصيد الإقفال
                     </td>
-                    <td className="border border-black font-mono tabular-nums font-black text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                    <td className="border border-black font-mono tabular-nums font-black text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                       {fmt(totalIncome)}
                     </td>
-                    <td className="border border-black font-mono tabular-nums font-black text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                    <td className="border border-black font-mono tabular-nums font-black text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                       {fmt(totalExpense)}
                     </td>
-                    <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap"></td>
-                    <td className="border border-black font-mono tabular-nums font-black text-center bg-[#2563AC]/10 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap">
+                    <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                    <td className="border border-black font-mono tabular-nums font-black text-center bg-[#2563AC]/10 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                       {fmt(currentBalance)}
                     </td>
-                    <td className="accounts-print-hide border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xs sm:!text-sm whitespace-nowrap"></td>
+                    <td className="accounts-print-hide border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
                   </tr>
                 </tfoot>
               )}
@@ -1083,7 +1083,7 @@ export default function AccountsTab() {
           <form onSubmit={handleEditSave} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-[12px] font-black text-[#171412]/70 mb-1 tracking-wide">التاريخ</label>
+                <label className="block text-sm font-black text-[#171412]/70 mb-1 tracking-wide">التاريخ</label>
                 <input
                   type="date"
                   value={editingRow.date}
@@ -1093,7 +1093,7 @@ export default function AccountsTab() {
                 />
               </div>
               <div>
-                <label className="block text-[12px] font-black text-[#171412]/70 mb-1 tracking-wide">رقم الحافظة</label>
+                <label className="block text-sm font-black text-[#171412]/70 mb-1 tracking-wide">رقم الحافظة</label>
                 <input
                   value={editingRow.hafizaNo}
                   onChange={(e) => setEditingRow({ ...editingRow, hafizaNo: e.target.value })}
@@ -1101,7 +1101,7 @@ export default function AccountsTab() {
                 />
               </div>
               <div>
-                <label className="block text-[12px] font-black text-[#171412]/70 mb-1 tracking-wide">رقم الإشعار</label>
+                <label className="block text-sm font-black text-[#171412]/70 mb-1 tracking-wide">رقم الإشعار</label>
                 <input
                   value={editingRow.notifyNo}
                   onChange={(e) => setEditingRow({ ...editingRow, notifyNo: e.target.value })}
@@ -1109,7 +1109,7 @@ export default function AccountsTab() {
                 />
               </div>
               <div>
-                <label className="block text-[12px] font-black text-[#171412]/70 mb-1 tracking-wide">تاريخ التوريد</label>
+                <label className="block text-sm font-black text-[#171412]/70 mb-1 tracking-wide">تاريخ التوريد</label>
                 <input
                   type="date"
                   value={editingRow.notifyDate}
@@ -1118,7 +1118,7 @@ export default function AccountsTab() {
                 />
               </div>
               <div className="sm:col-span-2">
-                <label className="block text-[12px] font-black text-[#171412]/70 mb-1 tracking-wide">البيان والشرح</label>
+                <label className="block text-sm font-black text-[#171412]/70 mb-1 tracking-wide">البيان والشرح</label>
                 <input
                   value={editingRow.description}
                   onChange={(e) => setEditingRow({ ...editingRow, description: e.target.value })}
@@ -1126,7 +1126,7 @@ export default function AccountsTab() {
                 />
               </div>
               <div>
-                <label className="block text-[12px] font-black text-[#171412]/70 mb-1 tracking-wide">الاسم</label>
+                <label className="block text-sm font-black text-[#171412]/70 mb-1 tracking-wide">الاسم</label>
                 <input
                   value={editingRow.name}
                   onChange={(e) => setEditingRow({ ...editingRow, name: e.target.value })}
@@ -1134,7 +1134,7 @@ export default function AccountsTab() {
                 />
               </div>
               <div>
-                <label className="block text-[12px] font-black text-[#171412]/70 mb-1 tracking-wide">مبلغ الحافظة</label>
+                <label className="block text-sm font-black text-[#171412]/70 mb-1 tracking-wide">مبلغ الحافظة</label>
                 <input
                   type="number"
                   value={editingRow.hafizaAmount}
@@ -1143,7 +1143,7 @@ export default function AccountsTab() {
                 />
               </div>
               <div>
-                <label className="block text-[12px] font-black text-[#1E8E5A] mb-1 tracking-wide">الإيرادات</label>
+                <label className="block text-sm font-black text-[#1E8E5A] mb-1 tracking-wide">الإيرادات</label>
                 <input
                   type="number"
                   value={editingRow.income}
@@ -1152,7 +1152,7 @@ export default function AccountsTab() {
                 />
               </div>
               <div>
-                <label className="block text-[12px] font-black text-[#D14343] mb-1 tracking-wide">المصروفات</label>
+                <label className="block text-sm font-black text-[#D14343] mb-1 tracking-wide">المصروفات</label>
                 <input
                   type="number"
                   value={editingRow.expense}
