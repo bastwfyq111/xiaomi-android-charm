@@ -83,22 +83,22 @@ const safePdfFileName = (value: any): string =>
 
 // شبكة إحصائيات علوية بتصميم عصري
 const StatsGrid = ({ stats, columns = 3 }: { stats: any[]; columns?: number }) => {
-  const colClass = columns === 4 ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-1 sm:grid-cols-3";
+  const colClass = columns === 4 ? "grid-cols-4" : "grid-cols-3";
   return (
-    <div className={`grid ${colClass} gap-2 mb-4`}>
+    <div className={`grid ${colClass} gap-1.5 sm:gap-2 mb-3 sm:mb-4`}>
       {stats.map((stat, idx) => (
         <div
           key={idx}
-          className={`${stat.bgClass} relative overflow-hidden min-h-[64px] px-3 py-2.5 rounded-2xl border ${stat.borderClass} shadow-sm hover:shadow-md active:scale-[0.99] transition-all`}
+          className={`${stat.bgClass} relative overflow-hidden min-h-[54px] sm:min-h-[64px] px-1.5 sm:px-3 py-1.5 sm:py-2.5 rounded-xl sm:rounded-2xl border ${stat.borderClass} shadow-sm hover:shadow-md active:scale-[0.99] transition-all`}
         >
           <span
-            className={`absolute inset-y-0 right-0 w-1.5 ${stat.accentClass || "bg-teal-500"}`}
+            className={`absolute inset-y-0 right-0 w-1 sm:w-1.5 ${stat.accentClass || "bg-teal-500"}`}
           />
-          <div className="pr-2 min-w-0">
-            <div className="text-[11px] sm:text-xs font-bold text-slate-500 truncate">
+          <div className="pr-1.5 sm:pr-2 min-w-0">
+            <div className="text-[10px] leading-tight sm:text-xs font-bold text-slate-500 truncate">
               {stat.label}
             </div>
-            <div className="text-base sm:text-xl font-mono font-extrabold mt-0.5 text-slate-900 tabular-nums truncate">
+            <div className="text-sm sm:text-xl font-mono font-extrabold mt-0.5 text-slate-900 tabular-nums truncate">
               {stat.value}
             </div>
           </div>
@@ -1490,26 +1490,26 @@ const exportToPDF = (
     <div className="w-full space-y-4 sm:space-y-6 p-0" dir="rtl">
       {/* ========== واجهة جدول 2025 ========== */}
       <div className="w-full bg-gradient-to-b from-teal-50/60 to-white shadow-lg border border-teal-100 rounded-2xl overflow-hidden">
-        <div className="bg-gradient-to-l from-teal-800 via-teal-600 to-emerald-600 px-3 sm:px-6 py-3 sm:py-4 flex justify-between items-center flex-wrap gap-2">
-          <div>
-            <h2 className="text-sm sm:text-lg font-bold text-white">
+        <div className="bg-gradient-to-l from-teal-800 via-teal-600 to-emerald-600 px-2 sm:px-6 py-2.5 sm:py-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center flex-wrap gap-2">
+          <div className="min-w-0">
+            <h2 className="text-base sm:text-lg font-bold text-white">
               📊 أقساط ومستندات العام 2025
             </h2>
             <p className="text-xs text-teal-100">يشمل جميع الدفعات لعامي 2024 و 2025</p>
           </div>
-          <div className="flex gap-2 flex-wrap items-center">
-            <div className="relative">
-              <Search className="w-4 h-4 absolute right-2.5 top-2 text-teal-500" />
+          <div className="w-full sm:w-auto grid grid-cols-2 sm:flex gap-1.5 sm:gap-2 items-center">
+            <div className="relative w-full sm:w-auto">
+              <Search className="w-4 h-4 absolute right-2.5 top-2.5 text-teal-500" />
               <input
                 type="text"
                 placeholder="بحث (الاسم، الدفعة، المساق)..."
                 value={search2025}
                 onChange={(e) => setSearch2025(e.target.value)}
-                className="pl-3 pr-8 py-1.5 rounded-lg text-xs border border-teal-300 outline-none focus:ring-2 focus:ring-teal-300 w-48 text-slate-800 shadow-sm"
+                className="pl-3 pr-8 py-2 rounded-lg text-sm border border-teal-300 outline-none focus:ring-2 focus:ring-teal-300 w-full sm:w-48 text-slate-800 shadow-sm"
               />
             </div>
 
-            <label className="px-3 py-1.5 bg-white text-teal-700 rounded-lg text-xs font-bold cursor-pointer hover:bg-teal-50 shadow">
+            <label className="w-full px-2 sm:px-3 py-2 sm:py-1.5 bg-white text-teal-700 rounded-lg text-sm sm:text-xs font-bold cursor-pointer hover:bg-teal-50 shadow text-center truncate">
               📥 استيراد الملف{" "}
               <input
                 type="file"
@@ -1519,16 +1519,16 @@ const exportToPDF = (
               />
             </label>
 
-            <div className="flex gap-1">
+            <div className="col-span-2 flex gap-1 w-full sm:w-auto">
               <button
                 onClick={() => exportToExcel(2025)}
-                className="px-3 py-1.5 bg-green-100 text-green-700 rounded-lg text-xs font-bold shadow hover:bg-green-200 transition-colors flex items-center gap-1"
+                className="flex-1 sm:flex-none px-2 sm:px-3 py-2 sm:py-1.5 bg-green-100 text-green-700 rounded-lg text-sm sm:text-xs font-bold shadow hover:bg-green-200 transition-colors flex items-center justify-center gap-1 truncate"
               >
                 <FileSpreadsheet className="w-3.5 h-3.5" /> Excel
               </button>
               <button
                 onClick={() => setPrintSettingsYear(2025)}
-                className="px-3 py-1.5 bg-white/95 text-teal-800 rounded-lg text-xs font-bold shadow hover:bg-white transition-colors flex items-center gap-1"
+                className="flex-1 sm:flex-none px-2 sm:px-3 py-2 sm:py-1.5 bg-white/95 text-teal-800 rounded-lg text-sm sm:text-xs font-bold shadow hover:bg-white transition-colors flex items-center justify-center gap-1 truncate"
               >
                 <Printer className="w-3.5 h-3.5" /> طباعة تفصيلية
               </button>
@@ -1549,6 +1549,7 @@ const exportToPDF = (
               numericKeys={["fees", "totalPaid", "remaining"]}
               onClear={() => clearInstallments("2025")}
               printLabel="الأقساط/إجمالي"
+              className="col-span-2 w-full !grid !grid-cols-2 sm:!flex !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-1.5 [&>button]:py-2 sm:[&>button]:px-3 sm:[&>button]:py-1.5 [&>button]:text-sm sm:[&>button]:text-xs"
             />
           </div>
         </div>
@@ -1744,17 +1745,17 @@ const exportToPDF = (
 
       {/* ========== واجهة جدول 2026 ========== */}
       <div className="w-full bg-gradient-to-b from-teal-50/60 to-white shadow-lg border border-teal-100 rounded-2xl overflow-hidden">
-        <div className="bg-gradient-to-l from-teal-800 via-teal-600 to-emerald-600 px-3 sm:px-6 py-3 sm:py-4 flex justify-between items-center flex-wrap gap-2">
-          <div>
-            <h2 className="text-sm sm:text-lg font-bold text-white">
+        <div className="bg-gradient-to-l from-teal-800 via-teal-600 to-emerald-600 px-2 sm:px-6 py-2.5 sm:py-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center flex-wrap gap-2">
+          <div className="min-w-0">
+            <h2 className="text-base sm:text-lg font-bold text-white">
               📊 سجل أقساط العام الحالي 2026
             </h2>
             <p className="text-xs text-teal-100">بيانات المسدد والرصيد المدور لعام 2026</p>
           </div>
-          <div className="flex gap-2 flex-wrap items-center">
+          <div className="w-full sm:w-auto grid grid-cols-2 sm:flex gap-1.5 sm:gap-2 items-center">
             <button
               onClick={() => setCondFormatModal(true)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold shadow transition-colors flex items-center gap-1 ${
+              className={`w-full px-2 sm:px-3 py-2 sm:py-1.5 rounded-lg text-sm sm:text-xs font-bold shadow transition-colors flex items-center justify-center gap-1 ${
                 condFormatRules.length
                   ? "bg-yellow-400 text-yellow-900 animate-pulse"
                   : "bg-white/20 text-white hover:bg-white/30"
@@ -1772,31 +1773,31 @@ const exportToPDF = (
                 placeholder="بحث (الاسم، الدفعة، المساق)..."
                 value={search2026}
                 onChange={(e) => setSearch2026(e.target.value)}
-                className="pl-3 pr-8 py-1.5 rounded-lg text-xs border border-teal-300 outline-none focus:ring-2 focus:ring-teal-300 w-48 text-slate-800 shadow-sm"
+                className="pl-3 pr-8 py-2 rounded-lg text-sm border border-teal-300 outline-none focus:ring-2 focus:ring-teal-300 w-full sm:w-48 text-slate-800 shadow-sm"
               />
             </div>
 
             <button
               onClick={() => setNewRowModal2026(true)}
-              className="px-3 py-1.5 bg-blue-100 text-blue-800 rounded-lg text-xs font-bold shadow hover:bg-blue-200 transition-colors flex items-center gap-1"
+              className="w-full px-2 sm:px-3 py-2 sm:py-1.5 bg-blue-100 text-blue-800 rounded-lg text-sm sm:text-xs font-bold shadow hover:bg-blue-200 transition-colors flex items-center justify-center gap-1 truncate"
             >
               <Plus className="w-3 h-3" /> طالب جديد
             </button>
 
             <button
               onClick={() => setNewColModal(true)}
-              className="px-3 py-1.5 bg-amber-100 text-amber-800 rounded-lg text-xs font-bold shadow hover:bg-amber-200 transition-colors flex items-center gap-1"
+              className="w-full px-2 sm:px-3 py-2 sm:py-1.5 bg-amber-100 text-amber-800 rounded-lg text-sm sm:text-xs font-bold shadow hover:bg-amber-200 transition-colors flex items-center justify-center gap-1 truncate"
             >
               <Plus className="w-3 h-3" /> عمود جديد
             </button>
 
             <button
               onClick={() => setNewPaymentModal(true)}
-              className="px-3 py-1.5 bg-white/20 text-white rounded-lg text-xs font-bold shadow hover:bg-white/30 transition-colors"
+              className="w-full px-2 sm:px-3 py-2 sm:py-1.5 bg-white/20 text-white rounded-lg text-sm sm:text-xs font-bold shadow hover:bg-white/30 transition-colors truncate"
             >
               ➕ إضافة قسط
             </button>
-            <label className="px-3 py-1.5 bg-white text-teal-700 rounded-lg text-xs font-bold cursor-pointer shadow hover:bg-teal-50 transition-colors">
+            <label className="w-full px-2 sm:px-3 py-2 sm:py-1.5 bg-white text-teal-700 rounded-lg text-sm sm:text-xs font-bold cursor-pointer shadow hover:bg-teal-50 transition-colors text-center truncate">
               📥 استيراد{" "}
               <input
                 type="file"
@@ -1806,16 +1807,16 @@ const exportToPDF = (
               />
             </label>
 
-            <div className="flex gap-1">
+            <div className="col-span-2 flex gap-1 w-full sm:w-auto">
               <button
                 onClick={() => exportToExcel(2026)}
-                className="px-3 py-1.5 bg-green-100 text-green-700 rounded-lg text-xs font-bold shadow hover:bg-green-200 transition-colors flex items-center gap-1"
+                className="flex-1 sm:flex-none px-2 sm:px-3 py-2 sm:py-1.5 bg-green-100 text-green-700 rounded-lg text-sm sm:text-xs font-bold shadow hover:bg-green-200 transition-colors flex items-center justify-center gap-1 truncate"
               >
                 <FileSpreadsheet className="w-3.5 h-3.5" /> Excel
               </button>
               <button
                 onClick={() => setPrintSettingsYear(2026)}
-                className="px-3 py-1.5 bg-white/95 text-teal-800 rounded-lg text-xs font-bold shadow hover:bg-white transition-colors flex items-center gap-1"
+                className="flex-1 sm:flex-none px-2 sm:px-3 py-2 sm:py-1.5 bg-white/95 text-teal-800 rounded-lg text-sm sm:text-xs font-bold shadow hover:bg-white transition-colors flex items-center justify-center gap-1 truncate"
               >
                 <Printer className="w-3.5 h-3.5" /> طباعة تفصيلية
               </button>
@@ -1845,6 +1846,7 @@ const exportToPDF = (
               numericKeys={["prevDue", "fees", "totalPaid", "remaining"]}
               onClear={() => clearInstallments()}
               printLabel="الأقساط/إجمالي"
+              className="col-span-2 w-full !grid !grid-cols-2 sm:!flex !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-1.5 [&>button]:py-2 sm:[&>button]:px-3 sm:[&>button]:py-1.5 [&>button]:text-sm sm:[&>button]:text-xs"
             />
           </div>
         </div>
