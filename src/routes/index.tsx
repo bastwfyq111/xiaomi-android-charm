@@ -23,7 +23,6 @@ import MonthlyStatementTab from "@/components/MonthlyStatementTab";
 import RevenueTab from "@/components/RevenueTab";
 import ExpensesTab from "@/components/ExpensesTab";
 import AppTabs from "@/components/AppTabs";
-import LocalAiAssistant from "@/components/LocalAiAssistant";
 
 // استيراد وظائف الـ PWA
 import { canInstall, onInstallAvailability, promptInstall } from "@/lib/pwa";
@@ -189,8 +188,6 @@ function Index() {
         {activeTab === "expenses-table" && <ExpensesTab />}
         {activeTab === "general-expenses-ledger" && <AppTabs />}
       </div>
-
-      <LocalAiAssistant />
 
       {/* شريط التنقل السفلي الثابت */}
       <nav
