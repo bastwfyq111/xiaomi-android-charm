@@ -463,7 +463,7 @@ export default function JournalTab() {
                 </p>
               </div>
             </div>
-            <div className="shrink-0 [&>label]:px-1.5 [&>label]:py-1 [&>label]:text-[11px] sm:[&>label]:px-2 sm:[&>label]:py-1 sm:[&>label]:text-xs">
+            <div className="shrink-0 [&>label]:border-emerald-700 [&>label]:bg-emerald-600 [&>label]:text-white [&>label]:hover:bg-emerald-700 [&>label]:px-1.5 [&>label]:py-1 [&>label]:text-[11px] sm:[&>label]:px-2 sm:[&>label]:py-1 sm:[&>label]:text-xs">
               <ImportButton kind="journal" />
             </div>
           </div>
@@ -648,7 +648,9 @@ export default function JournalTab() {
             </span>
             <p className="text-sm font-bold text-slate-500">لا توجد قيود يومية بعد</p>
             <p className="text-xs text-slate-400">ابدأ بإضافة قيد جديد أعلاه أو استورد ملف Excel</p>
-            <ImportButton kind="journal" />
+            <div className="[&>label]:border-emerald-700 [&>label]:bg-emerald-600 [&>label]:text-white [&>label]:hover:bg-emerald-700">
+              <ImportButton kind="journal" />
+            </div>
           </div>
         ) : (
           <>
