@@ -12,6 +12,8 @@ import {
   TrendingUp,
   ReceiptText,
   DownloadCloud,
+  Menu,
+  X,
 } from "lucide-react";
 
 // استيراد ملفات التبويبات الفرعية المكونة للنظام
@@ -118,6 +120,7 @@ const tabs: { value: Tab; label: string; shortLabel: string; icon: React.ReactNo
 function Index() {
   const [activeTab, setActiveTab] = useState<Tab>("installments");
   const [pwaInstallable, setPwaInstallable] = useState<boolean>(false);
+  const [navOpen, setNavOpen] = useState(false);
 
   useEffect(() => {
     setPwaInstallable(canInstall());
@@ -136,9 +139,9 @@ function Index() {
   };
 
   return (
-    // الحاوية الرئيسية مع مساحة سفلية لشريط التنقل
+    // الحاوية الرئيسية مع مساحة جانبية لقائمة التبويبات
     <div
-      className="w-full min-h-screen bg-[#f5f2ea] font-tajawal selection:bg-[#1a3a52]/20 text-sm sm:text-base pb-[72px]"
+      className="w-full min-h-screen bg-[#f5f2ea] font-tajawal selection:bg-[#1a3a52]/20 text-sm sm:text-base pr-12 sm:pr-14"
       dir="rtl"
     >
       {/* قسم الهيدر العلوي — هوية كحلية مؤسسية بلمسة ختم برونزي */}
@@ -189,42 +192,46 @@ function Index() {
         {activeTab === "general-expenses-ledger" && <AppTabs />}
       </div>
 
-      {/* شريط التنقل السفلي الثابت */}
+      {/* قائمة التبويبات الجانبية العمودية القابلة للفتح والإخفاء */}
       <nav
-        className="fixed bottom-0 left-0 right-0 z-50 bg-[#0e2b40] border-t border-[#c99a4e]/25 shadow-[0_-4px_20px_rgba(0,0,0,0.3)]"
+        className={`fixed top-1/2 right-0 z-50 w-64 -translate-y-1/2 rounded-l-2xl bg-[#0e2b40] border border-r-0 border-[#c99a4e]/35 shadow-[-8px_0_28px_rgba(0,0,0,0.28)] transition-transform duration-300 ease-in-out ${
+          navOpen ? "translate-x-0" : "translate-x-[calc(100%_-_3rem)]"
+        }`}
         dir="rtl"
+        aria-label="التنقل الرئيسي"
       >
-        {/* شريط التمرير الأفقي للتبويبات */}
-        <div className="overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <div className="flex w-max min-w-full">
-            {tabs.map((tab) => {
-              const isActive = activeTab === tab.value;
-              return (
-                <button
-                  key={tab.value}
-                  onClick={() => setActiveTab(tab.value)}
-                  className={`
-                    flex flex-col items-center justify-center gap-1 px-3 py-2 flex-1 min-w-[64px] transition-all duration-200
-                    ${isActive
-                      ? "text-[#e3c281] bg-white/[0.07] border-t-2 border-[#c99a4e]"
-                      : "text-white/55 hover:text-white hover:bg-white/5 border-t-2 border-transparent"
-                    }
-                  `}
-                >
-                  <span className={`transition-transform duration-200 ${isActive ? "scale-110" : "scale-100"}`}>
-                    {tab.icon}
-                  </span>
-                  <span className="text-[10px] font-bold leading-tight whitespace-nowrap">
-                    {tab.shortLabel}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+        <button
+          type="button"
+          onClick={() => setNavOpen((open) => !open)}
+          className="absolute left-0 top-1/2 flex h-12 w-12 -translate-x-0 -translate-y-1/2 items-center justify-center rounded-l-xl bg-[#c99a4e] text-[#1a1206] shadow-md transition-colors hover:bg-[#d9ac63] focus:outline-none focus:ring-2 focus:ring-[#e3c281] focus:ring-offset-2 focus:ring-offset-[#0e2b40]"
+          aria-label={navOpen ? "إغلاق قائمة التبويبات" : "فتح قائمة التبويبات"}
+          title={navOpen ? "إغلاق قائمة التبويبات" : "فتح قائمة التبويبات"}
+        >
+          {navOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+        <div className="flex max-h-[min(80vh,38rem)] flex-col gap-1 overflow-y-auto py-3 pl-14 pr-3">
+          {tabs.map((tab) => {
+            const isActive = activeTab === tab.value;
+            return (
+              <button
+                key={tab.value}
+                type="button"
+                onClick={() => {
+                  setActiveTab(tab.value);
+                  setNavOpen(false);
+                }}
+                className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-right transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#e3c281] ${
+                  isActive
+                    ? "bg-white/[0.12] text-[#e3c281] shadow-sm"
+                    : "text-white/65 hover:bg-white/[0.07] hover:text-white"
+                }`}
+              >
+                <span className={isActive ? "scale-110" : "scale-100"}>{tab.icon}</span>
+                <span className="text-xs font-bold leading-tight whitespace-nowrap">{tab.label}</span>
+              </button>
+            );
+          })}
         </div>
-
-        {/* مساحة آمنة للأجهزة ذات الشريط السفلي (iPhone X وما بعده) */}
-        <div className="bg-[#0e2b40]" style={{ height: "env(safe-area-inset-bottom)" }} />
       </nav>
 
       <Toaster position="top-center" richColors />
