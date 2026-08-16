@@ -192,24 +192,29 @@ function Index() {
         {activeTab === "general-expenses-ledger" && <AppTabs />}
       </div>
 
-      {/* قائمة التبويبات الجانبية العمودية القابلة للفتح والإخفاء */}
+      {/* زر القائمة الثلاثي في أعلى الركن الأيمن */}
+      <button
+        type="button"
+        onClick={() => setNavOpen((open) => !open)}
+        className="fixed top-2 right-2 z-[60] flex h-11 w-11 items-center justify-center rounded-lg bg-[#0e2b40] text-[#e3c281] shadow-lg ring-1 ring-[#c99a4e]/50 transition-all duration-200 hover:bg-[#153a54] focus:outline-none focus:ring-2 focus:ring-[#e3c281] active:scale-95 sm:top-4 sm:right-4 sm:h-12 sm:w-12"
+        aria-label={navOpen ? "إغلاق قائمة التبويبات" : "فتح قائمة التبويبات"}
+        aria-expanded={navOpen}
+        title={navOpen ? "إغلاق قائمة التبويبات" : "فتح قائمة التبويبات"}
+      >
+        {navOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+      </button>
+
+      {/* قائمة التبويبات الجانبية المخفية حتى الضغط على الزر */}
       <nav
-        className={`fixed top-1/2 right-0 z-50 w-56 max-w-[calc(100vw-0.5rem)] -translate-y-1/2 rounded-l-xl sm:w-64 sm:rounded-l-2xl bg-[#0e2b40] border border-r-0 border-[#c99a4e]/35 shadow-[-8px_0_28px_rgba(0,0,0,0.28)] transition-transform duration-300 ease-out ${
-          navOpen ? "translate-x-0" : "translate-x-[calc(100%_-_3rem)]"
+        className={`fixed top-16 right-2 z-50 w-[calc(100vw-1rem)] max-w-xs rounded-xl bg-[#0e2b40] border border-[#c99a4e]/35 shadow-[-8px_0_28px_rgba(0,0,0,0.28)] transition-all duration-200 ease-out sm:top-20 sm:right-4 sm:w-64 sm:rounded-2xl ${
+          navOpen
+            ? "translate-y-0 opacity-100"
+            : "pointer-events-none -translate-y-2 opacity-0"
         }`}
         dir="rtl"
         aria-label="التنقل الرئيسي"
       >
-        <button
-          type="button"
-          onClick={() => setNavOpen((open) => !open)}
-          className="absolute left-0 top-1/2 flex h-11 w-11 -translate-x-0 -translate-y-1/2 items-center justify-center rounded-l-lg bg-[#c99a4e] text-[#1a1206] shadow-md transition-colors hover:bg-[#d9ac63] focus:outline-none focus:ring-2 focus:ring-[#e3c281] focus:ring-offset-2 focus:ring-offset-[#0e2b40] sm:h-12 sm:w-12 sm:rounded-l-xl"
-          aria-label={navOpen ? "إغلاق قائمة التبويبات" : "فتح قائمة التبويبات"}
-          title={navOpen ? "إغلاق قائمة التبويبات" : "فتح قائمة التبويبات"}
-        >
-          {navOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
-        <div className="flex max-h-[min(76vh,38rem)] flex-col gap-1 overflow-y-auto py-2.5 pl-12 pr-2 sm:max-h-[min(80vh,38rem)] sm:py-3 sm:pl-14 sm:pr-3">
+        <div className="flex max-h-[min(76vh,38rem)] flex-col gap-1 overflow-y-auto p-2 sm:max-h-[min(80vh,38rem)] sm:p-3">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.value;
             return (
