@@ -115,12 +115,12 @@ export default function RevenueTab() {
 
   return (
     // الحاوية الخارجية: فرض الاتجاه العربي العام وضمان التباعد العمودي
-    <div className="w-full space-y-6 text-right" dir="rtl">
+    <div className="w-full space-y-3 p-1.5 text-right sm:space-y-5 sm:p-3" dir="rtl">
       {/* لوحة التحكم والتحقق: تم تغيير لون الحدود هنا أيضاً إلى أسود متناسق */}
-      <div className="bg-white rounded-2xl shadow-sm border border-black p-5 grid grid-cols-1 sm:grid-cols-2 lg:flex lg:items-end lg:flex-wrap gap-4">
+      <div className="grid grid-cols-2 items-end gap-1.5 rounded-xl border border-black bg-white p-1.5 shadow-sm sm:flex sm:flex-wrap sm:gap-3 sm:p-4">
         {/* اختيار الشهر */}
         <div className="flex flex-col gap-2 flex-1 min-w-[140px]">
-          <label className="text-xs font-bold text-slate-600 flex items-center gap-1.5">
+          <label className="text-sm font-bold text-slate-600 flex items-center gap-1.5">
             <Calendar className="w-4 h-4 text-teal-600" />
             <span>الشهر المحاسبي</span>
           </label>
@@ -139,7 +139,7 @@ export default function RevenueTab() {
 
         {/* اختيار السنة */}
         <div className="flex flex-col gap-2 flex-1 min-w-[140px]">
-          <label className="text-xs font-bold text-slate-600 flex items-center gap-1.5">
+          <label className="text-sm font-bold text-slate-600 flex items-center gap-1.5">
             <Calendar className="w-4 h-4 text-teal-600" />
             <span>السنة المالية</span>
           </label>
@@ -155,10 +155,10 @@ export default function RevenueTab() {
         <div className="hidden lg:block lg:flex-1" />
 
         {/* أزرار الإجراءات والتقارير */}
-        <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto sm:col-span-2">
+        <div className="col-span-2 grid w-full grid-cols-2 gap-1.5 sm:flex sm:w-auto sm:gap-2 lg:col-span-1">
           <button
             onClick={() => exportRevenueStatement(revenue, year, reportDate)}
-            className="flex items-center justify-center gap-2 px-5 py-3 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold text-xs rounded-xl transition-all shadow-sm hover:border-teal-500/30 hover:text-teal-700 active:scale-[0.98] flex-1 sm:flex-none"
+            className="min-w-0 flex flex-1 items-center justify-center gap-1 px-1.5 py-1 text-sm sm:flex-initial sm:gap-1.5 sm:px-2 sm:py-1 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold rounded-lg transition-all shadow-sm hover:border-teal-500/30 hover:text-teal-700 active:scale-[0.98]"
           >
             <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
             <span>تصدير Excel السنوي</span>
@@ -166,7 +166,7 @@ export default function RevenueTab() {
 
           <button
             onClick={() => revenuePdf(revenue, year, month, reportDate)}
-            className="flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-teal-700 to-teal-800 hover:from-teal-800 hover:to-teal-900 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-teal-700/10 active:scale-[0.98] flex-1 sm:flex-none"
+            className="min-w-0 flex flex-1 items-center justify-center gap-1 px-1.5 py-1 text-sm sm:flex-initial sm:gap-1.5 sm:px-2 sm:py-1 bg-gradient-to-r from-teal-700 to-teal-800 hover:from-teal-800 hover:to-teal-900 text-white font-bold rounded-lg transition-all shadow-md shadow-teal-700/10 active:scale-[0.98]"
           >
             <FileText className="w-4 h-4" />
             <span>طباعة / PDF</span>
@@ -177,7 +177,7 @@ export default function RevenueTab() {
               if (!confirm("هل أنت متأكد من مسح جميع بيانات الإيرادات؟ لا يمكن التراجع.")) return;
               useStore.setState({ revenue: {} });
             }}
-            className="flex items-center justify-center gap-2 px-5 py-3 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl transition-all shadow-md active:scale-[0.98] flex-1 sm:flex-none"
+            className="min-w-0 flex flex-1 items-center justify-center gap-1 px-1.5 py-1 text-sm sm:flex-initial sm:gap-1.5 sm:px-2 sm:py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-lg transition-all shadow-md active:scale-[0.98]"
           >
             🗑️ <span>مسح بيانات الإيرادات</span>
           </button>
@@ -185,15 +185,15 @@ export default function RevenueTab() {
       </div>
 
       {/* لوحة وعاء الجدول الكبيرة الزجاجية بحدود سوداء */}
-      <div className="bg-white rounded-3xl shadow-xl shadow-slate-100/50 border-2 border-black overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-xl shadow-slate-100/50 border-2 border-black overflow-hidden">
         {/* الترويسة العلوية للجدول المالي للمجلس */}
-        <div className="bg-gradient-to-r from-teal-700 to-teal-800 text-white p-6 text-center space-y-1.5 border-b-2 border-black">
-          <h2 className="font-extrabold text-lg md:text-xl font-cairo tracking-wide">
+        <div className="bg-gradient-to-r from-teal-700 to-teal-800 text-white p-3 sm:p-6 text-center space-y-1.5 border-b-2 border-black">
+          <h2 className="font-extrabold text-lg sm:text-xl font-cairo tracking-wide">
             {SCHEMA.title}
           </h2>
-          <p className="text-xs opacity-90 font-medium">{SCHEMA.office}</p>
-          <div className="inline-flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm mt-2">
-            <LayoutGrid className="w-3.5 h-3.5" />
+          <p className="text-sm opacity-90 font-medium">{SCHEMA.office}</p>
+          <div className="inline-flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-full text-sm font-semibold backdrop-blur-sm mt-2">
+            <LayoutGrid className="w-4 h-4" />
             <span>
               عن شهر {MONTH_NAMES[month - 1]} من العام المالي {year}م
             </span>
@@ -201,70 +201,70 @@ export default function RevenueTab() {
         </div>
 
         {/* صندوق الحماية من الضيق: الجدول والحدود كلها سوداء واحتواء الخلايا تلقائي */}
-        <div className="w-full overflow-auto max-h-[65vh] [-ms-overflow-style:none] [scrollbar-width:thin] relative">
-          <table className="w-max w-max table-auto text-right border-collapse text-xs md:text-sm border border-black">
+        <div className="w-full overflow-auto max-h-[72vh] [-ms-overflow-style:none] [scrollbar-width:thin] relative">
+          <table className="min-w-max table-auto text-right border-collapse text-sm sm:text-base font-semibold border border-black">
             <thead className="sticky top-0 z-20 shadow-sm">
               <tr className="bg-slate-100 text-slate-700 font-bold border-b-2 border-black">
-                <th rowSpan={2} className="border border-black text-right whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th rowSpan={2} className="border border-black text-right whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   بيان مفردات الموارد المعتمدة
                 </th>
-                <th rowSpan={2} className="border border-black text-center whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th rowSpan={2} className="border border-black text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   الباب
                 </th>
-                <th rowSpan={2} className="border border-black text-center whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th rowSpan={2} className="border border-black text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   الفصل
                 </th>
-                <th rowSpan={2} className="border border-black text-center whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th rowSpan={2} className="border border-black text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   البند
                 </th>
-                <th rowSpan={2} className="border border-black text-center whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <th rowSpan={2} className="border border-black text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   النوع
                 </th>
                 <th
                   colSpan={2}
-                  className="border border-black text-center bg-teal-50/50 text-teal-900 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs"
+                  className="border border-black text-center bg-teal-50/50 text-teal-900 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
                 >
                   الشهر الجاري
                 </th>
                 <th
                   colSpan={2}
-                  className="border border-black text-center bg-slate-50 text-slate-800 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs"
+                  className="border border-black text-center bg-slate-50 text-slate-800 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
                 >
                   الأشهر السابقة
                 </th>
                 <th
                   colSpan={2}
-                  className="border border-black text-center bg-emerald-50/50 text-emerald-900 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs"
+                  className="border border-black text-center bg-emerald-50/50 text-emerald-900 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
                 >
                   الجملــة والتراكمي
                 </th>
               </tr>
               <tr className="bg-slate-50 text-slate-500 font-bold border-b-2 border-black">
-                <th className="border border-black text-center whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">ف</th>
-                <th className="border border-black text-center whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">ريال</th>
-                <th className="border border-black text-center whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">ف</th>
-                <th className="border border-black text-center whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">ريال</th>
-                <th className="border border-black text-center whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">ف</th>
-                <th className="border border-black text-center whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">ريال</th>
+                <th className="border border-black text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">ف</th>
+                <th className="border border-black text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">ريال</th>
+                <th className="border border-black text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">ف</th>
+                <th className="border border-black text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">ريال</th>
+                <th className="border border-black text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">ف</th>
+                <th className="border border-black text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">ريال</th>
               </tr>
             </thead>
             <tbody className="font-medium">
               {/* السطر الإجمالي العلوي السريع */}
               <tr className="bg-teal-700/[0.04] font-bold text-teal-950 border-b-2 border-black">
-                <td className="border border-black text-right font-cairo whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <td className="border border-black text-right font-cairo whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   إجمالي الموارد العامة للوحدة
                 </td>
-                <td colSpan={4} className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                <td className="border border-black font-mono text-left text-teal-700 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <td colSpan={4} className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                <td className="border border-black font-mono text-left text-teal-700 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   {cellNum(data.grandCur)}
                 </td>
-                <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                <td className="border border-black font-mono text-left text-slate-600 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                <td className="border border-black font-mono text-left text-slate-600 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   {cellNum(data.grandPrev)}
                 </td>
-                <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                <td className="font-mono text-left text-emerald-700 bg-emerald-50/30 border border-black whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                <td className="font-mono text-left text-emerald-700 bg-emerald-50/30 border border-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   {cellNum(data.grandCur + data.grandPrev)}
                 </td>
               </tr>
@@ -274,23 +274,23 @@ export default function RevenueTab() {
                   <Fragment key={`ch-${ch.no}`}>
                     {/* مستوى الأبواب الرئيسية */}
                     <tr className="bg-slate-100/80 font-bold text-slate-900 border-b border-black">
-                      <td className="border border-black text-right text-teal-900 font-cairo whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                      <td className="border border-black text-right text-teal-900 font-cairo whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                         {ch.longTitle || ch.title}
                       </td>
-                      <td className="border border-black text-center font-bold text-teal-800 bg-teal-50/20 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                      <td className="border border-black text-center font-bold text-teal-800 bg-teal-50/20 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                         {ch.no}
                       </td>
-                      <td colSpan={3} className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                      <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                      <td className="border border-black font-mono text-left whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                      <td colSpan={3} className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                      <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                      <td className="border border-black font-mono text-left whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                         {cellNum(data.chaptersAgg[ch.no].cur)}
                       </td>
-                      <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                      <td className="border border-black font-mono text-left whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                      <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                      <td className="border border-black font-mono text-left whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                         {cellNum(data.chaptersAgg[ch.no].prev)}
                       </td>
-                      <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                      <td className="font-mono text-left bg-slate-200/40 border border-black whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                      <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                      <td className="font-mono text-left bg-slate-200/40 border border-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                         {cellNum(data.chaptersAgg[ch.no].tot)}
                       </td>
                     </tr>
@@ -299,24 +299,24 @@ export default function RevenueTab() {
                       <Fragment key={`sec-${ch.no}-${sec.no}`}>
                         {/* مستوى الفصول الفرعية */}
                         <tr className="bg-slate-50 font-semibold text-slate-800 border-b border-black">
-                          <td className="border border-black text-right text-slate-700 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                          <td className="border border-black text-right text-slate-700 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                             {sec.title}
                           </td>
-                          <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                          <td className="border border-black text-center text-slate-600 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                          <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                          <td className="border border-black text-center text-slate-600 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                             {sec.no}
                           </td>
-                          <td colSpan={2} className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                          <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                          <td className="border border-black font-mono text-left text-slate-600 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                          <td colSpan={2} className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                          <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                          <td className="border border-black font-mono text-left text-slate-600 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                             {cellNum(data.sectionsAgg[`${ch.no}-${sec.no}`].cur)}
                           </td>
-                          <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                          <td className="border border-black font-mono text-left text-slate-500 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                          <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                          <td className="border border-black font-mono text-left text-slate-500 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                             {cellNum(data.sectionsAgg[`${ch.no}-${sec.no}`].prev)}
                           </td>
-                          <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                          <td className="font-mono text-left text-slate-700 border border-black whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                          <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                          <td className="font-mono text-left text-slate-700 border border-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                             {cellNum(data.sectionsAgg[`${ch.no}-${sec.no}`].tot)}
                           </td>
                         </tr>
@@ -325,24 +325,24 @@ export default function RevenueTab() {
                           <Fragment key={`it-${ch.no}-${sec.no}-${it.no}`}>
                             {/* مستوى البنود */}
                             <tr className="bg-white text-slate-700 border-b border-black">
-                              <td className="border border-black text-right text-slate-600 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                              <td className="border border-black text-right text-slate-600 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                                 {it.title}
                               </td>
-                              <td colSpan={2} className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                              <td className="border border-black text-center text-slate-500 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                              <td colSpan={2} className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                              <td className="border border-black text-center text-slate-500 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                                 {it.no}
                               </td>
-                              <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                              <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                              <td className="border border-black font-mono text-left text-slate-600 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                              <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                              <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                              <td className="border border-black font-mono text-left text-slate-600 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                                 {cellNum(data.itemsAgg[`${ch.no}-${sec.no}-${it.no}`].cur)}
                               </td>
-                              <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                              <td className="border border-black font-mono text-left text-slate-500 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                              <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                              <td className="border border-black font-mono text-left text-slate-500 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                                 {cellNum(data.itemsAgg[`${ch.no}-${sec.no}-${it.no}`].prev)}
                               </td>
-                              <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                              <td className="font-mono text-left text-slate-700 border border-black whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                              <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                              <td className="font-mono text-left text-slate-700 border border-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                                 {cellNum(data.itemsAgg[`${ch.no}-${sec.no}-${it.no}`].tot)}
                               </td>
                             </tr>
@@ -356,17 +356,17 @@ export default function RevenueTab() {
                                   key={k}
                                   className="bg-white hover:bg-teal-50/40 transition-colors text-slate-600 border-b border-black"
                                 >
-                                  <td className="border border-black text-right text-slate-500 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                                  <td className="border border-black text-right text-slate-500 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                                     {t.title}
                                   </td>
-                                  <td colSpan={3} className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                                  <td className="border border-black text-center text-slate-400 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                                  <td colSpan={3} className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                                  <td className="border border-black text-center text-slate-400 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                                     {t.no}
                                   </td>
-                                  <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
+                                  <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
 
                                   {/* خانة إدخال المبلغ للشهر الجاري المعدلة بصرياً بالكامل */}
-                                  <td className="border border-black bg-teal-50/10 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                                  <td className="border border-black bg-teal-50/10 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                                     <div className="relative flex items-center min-w-[100px]">
                                       <input
                                         type="number"
@@ -381,12 +381,12 @@ export default function RevenueTab() {
                                     </div>
                                   </td>
 
-                                  <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                                  <td className="border border-black font-mono text-left text-slate-500 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                                  <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                                  <td className="border border-black font-mono text-left text-slate-500 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                                     {cellNum(v.prev)}
                                   </td>
-                                  <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                                  <td className="font-mono text-left text-slate-800 font-semibold border border-black whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                                  <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                                  <td className="font-mono text-left text-slate-800 font-semibold border border-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                                     {cellNum(v.tot)}
                                   </td>
                                 </tr>
@@ -404,7 +404,7 @@ export default function RevenueTab() {
               <tr className="bg-slate-100 font-bold text-slate-800 border-t-2 border-black border-b border-black">
                 <td
                   colSpan={5}
-                  className="text-center font-cairo bg-slate-200/50 text-slate-900 border-l border-black whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs"
+                  className="text-center font-cairo bg-slate-200/50 text-slate-900 border-l border-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
                 >
                   ملخص وعصارة مجاميع الحسابات والأبواب
                 </td>
@@ -420,20 +420,20 @@ export default function RevenueTab() {
                   >
                     <td
                       colSpan={5}
-                      className="border border-black text-right whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs"
+                      className="border border-black text-right whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
                     >
                       جملة ميرادات الباب {order[ch.no - 1]} : {ch.title}
                     </td>
-                    <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                    <td className="border border-black font-mono text-left text-teal-700 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                    <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                    <td className="border border-black font-mono text-left text-teal-700 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                       {cellNum(agg.cur)}
                     </td>
-                    <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                    <td className="border border-black font-mono text-left text-slate-500 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                    <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                    <td className="border border-black font-mono text-left text-slate-500 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                       {cellNum(agg.prev)}
                     </td>
-                    <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                    <td className="font-mono text-left text-slate-900 bg-slate-200/30 border border-black whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                    <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                    <td className="font-mono text-left text-slate-900 bg-slate-200/30 border border-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                       {cellNum(agg.tot)}
                     </td>
                   </tr>
@@ -444,20 +444,20 @@ export default function RevenueTab() {
               <tr className="bg-gradient-to-r from-teal-50 to-emerald-50 font-black text-teal-950 border-t-4 border-black">
                 <td
                   colSpan={5}
-                  className="border border-black text-right font-cairo tracking-wide text-teal-900 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs"
+                  className="border border-black text-right font-cairo tracking-wide text-teal-900 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
                 >
                   الإجمالي العام والنهائي لجميع موارد المجلس
                 </td>
-                <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                <td className="border border-black font-mono text-left text-teal-700 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                <td className="border border-black font-mono text-left text-teal-700 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   {cellNum(data.grandCur)}
                 </td>
-                <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                <td className="border border-black font-mono text-left text-slate-600 whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                <td className="border border-black font-mono text-left text-slate-600 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   {cellNum(data.grandPrev)}
                 </td>
-                <td className="border border-black !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
-                <td className="font-mono text-left text-emerald-800 bg-emerald-50 border border-black whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                <td className="font-mono text-left text-emerald-800 bg-emerald-50 border border-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   {cellNum(data.grandCur + data.grandPrev)}
                 </td>
               </tr>
