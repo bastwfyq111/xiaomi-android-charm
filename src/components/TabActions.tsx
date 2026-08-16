@@ -1,5 +1,13 @@
 import { useState } from "react";
-import * as XLSX from "xlsx";
+import {
+  addReportHeader,
+  appendRows,
+  createExcelWorkbook,
+  downloadWorkbook,
+  formatWorksheet,
+  getExcelPalette,
+  loadReportLetterhead,
+} from "@/lib/excelExport";
 import { Printer, FileSpreadsheet, Trash2, Download, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useReportDate } from "@/lib/reportDate";
@@ -94,42 +102,53 @@ export default function TabActions({
   };
 
 
-  const handleExcel = () => {
+  const handleExcel = async () => {
     if (!rows.length) {
       toast.error("لا توجد بيانات للتصدير");
       return;
     }
 
-    const data = rows.map((r, i) => {
-      const out: Record<string, any> = { م: i + 1 };
-      columns.forEach((c) => {
-        const v = r[c.key];
-        out[c.label] =
-          numericKeys.includes(c.key) || typeof v === "number" ? Number(v) || 0 : v ?? "";
+    try {
+      const headers = ["م", ...columns.map((c) => c.label)];
+      const dataRows = rows.map((r, i) => [
+        i + 1,
+        ...columns.map((c) => {
+          const v = r[c.key];
+          return numericKeys.includes(c.key) || typeof v === "number" ? Number(v) || 0 : v ?? "";
+        }),
+      ]);
+      const totalRow = [
+        "الإجمالي",
+        ...columns.map((c) =>
+          numericKeys.includes(c.key)
+            ? rows.reduce((sum, r) => sum + (Number(r[c.key]) || 0), 0)
+            : "",
+        ),
+      ];
+
+      const workbook = await createExcelWorkbook();
+      const worksheet = workbook.addWorksheet(title.slice(0, 31) || "Sheet1");
+      const imageId = await loadReportLetterhead(workbook);
+      const dataStartRow = addReportHeader(workbook, worksheet, {
+        title,
+        reportDateLabel,
+        recordCount: rows.length,
+        totalColumns: headers.length,
+        palette: getExcelPalette(title),
+      }, imageId);
+
+      appendRows(worksheet, [headers, ...dataRows, totalRow], dataStartRow);
+      formatWorksheet(worksheet, {
+        headerRow: dataStartRow,
+        totalRows: [dataStartRow + dataRows.length + 1],
+        palette: getExcelPalette(title),
       });
-      return out;
-    });
-
-    // إضافة صف الإجمالي للتصدير Excel
-    const totalRow: Record<string, any> = { م: "الإجمالي" };
-    columns.forEach((c) => {
-      if (numericKeys.includes(c.key)) {
-        totalRow[c.label] = rows.reduce((sum, r) => sum + (Number(r[c.key]) || 0), 0);
-      } else {
-        totalRow[c.label] = "";
-      }
-    });
-    data.push(totalRow);
-
-    const ws = XLSX.utils.json_to_sheet(data);
-
-    if (!ws["!views"]) ws["!views"] = [];
-    ws["!views"].push({ RTL: true });
-
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, title.slice(0, 30) || "Sheet1");
-    XLSX.writeFile(wb, `${fileName}-${reportDate}.xlsx`);
-    toast.success("تم تصدير الملف بنجاح");
+      await downloadWorkbook(workbook, `${fileName}-${reportDate}.xlsx`);
+      toast.success("تم تصدير الملف بنجاح");
+    } catch (error) {
+      console.error("Excel export error:", error);
+      toast.error("تعذّر تصدير ملف Excel، حاول مرة أخرى");
+    }
   };
 
   const handleClear = () => {

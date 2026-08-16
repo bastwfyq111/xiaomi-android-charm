@@ -260,36 +260,52 @@ const AppTabs: React.FC = () => {
   };  
   
   const border = {  
-    top: { style: "thin" as const, color: { argb: "FF94A3B8" } },  
-    left: { style: "thin" as const, color: { argb: "FF94A3B8" } },  
-    bottom: { style: "thin" as const, color: { argb: "FF94A3B8" } },  
-    right: { style: "thin" as const, color: { argb: "FF94A3B8" } },  
+    top: { style: "thin" as const, color: { argb: "FF000000" } },
+    left: { style: "thin" as const, color: { argb: "FF000000" } },
+    bottom: { style: "thin" as const, color: { argb: "FF000000" } },
+    right: { style: "thin" as const, color: { argb: "FF000000" } },
   };  
   
   const handleExportExcel = async () => {  
     const ExcelJS = (await import("exceljs")).default;  
     const wb = new ExcelJS.Workbook();  
 
-    const disp = wb.addWorksheet("عرض", { views: [{ rightToLeft: true }] });  
+    const disp = wb.addWorksheet("عرض", {
+      views: [{ rightToLeft: true, state: "frozen", ySplit: 2 }],
+      properties: { defaultRowHeight: 20, tabColor: { argb: ARGB.DARK } },
+      pageSetup: {
+        orientation: "landscape",
+        paperSize: 9,
+        fitToPage: true,
+        fitToWidth: 1,
+        fitToHeight: 0,
+        horizontalDpi: 300,
+        verticalDpi: 300,
+        margins: { left: 0.25, right: 0.25, top: 0.35, bottom: 0.35, header: 0.15, footer: 0.15 },
+      },
+      printOptions: { horizontalCentered: true, verticalCentered: false },
+    });
   
     disp.mergeCells(1, 1, 1, allCols.length);  
     const title = disp.getCell(1, 1);  
     title.value = "سجل مفردات الاستخدامات والنفقات العامة";  
     title.font = { bold: true, size: 14, color: { argb: ARGB.DARK } };  
-    title.alignment = { horizontal: "center", vertical: "middle" };  
+    title.alignment = { horizontal: "center", vertical: "middle", wrapText: true, shrinkToFit: true };
   
-    const hdr = disp.getRow(2);  
+    disp.getRow(1).height = 28;
+    const hdr = disp.getRow(2);
+    hdr.height = 40;
     allCols.forEach((c, i) => {  
       const cell = hdr.getCell(i + 1);  
       cell.value = c;  
       cell.font = { bold: true, size: 9 };  
-      cell.alignment = { horizontal: "center", vertical: "middle", wrapText: true };  
+      cell.alignment = { horizontal: "center", vertical: "middle", wrapText: true, shrinkToFit: true };
       cell.border = border;  
       const argb = colArgb(c);  
       if (argb) cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb } };  
     });  
-    disp.getColumn(1).width = 12;  
-    allCols.forEach((_, i) => (disp.getColumn(i + 1).width = i < 4 ? 14 : 11));  
+    disp.getColumn(1).width = 12;
+    allCols.forEach((_, i) => (disp.getColumn(i + 1).width = i < 4 ? 14 : 11));
   
     let r = 3;  
     MONTHS.forEach((m) => {  
@@ -301,7 +317,7 @@ const AppTabs: React.FC = () => {
       mc.value = `شهر ${m.name}`;  
       mc.font = { bold: true, color: { argb: ARGB.GOLD } };  
       mc.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.DARK } };  
-      mc.alignment = { horizontal: "right" };  
+      mc.alignment = { horizontal: "right", vertical: "middle", wrapText: true, shrinkToFit: true };
       r++;  
   
       rows.forEach((row) => {  
@@ -309,7 +325,7 @@ const AppTabs: React.FC = () => {
           const cell = disp.getCell(r, i + 1);  
           const v = row[c];  
           cell.value = (typeof v === "number") ? v : (v === "" ? "" : (isNaN(Number(v)) ? v : Number(v)));  
-          cell.alignment = { horizontal: "center" };  
+          cell.alignment = { horizontal: "center", vertical: "middle", wrapText: true, shrinkToFit: true };
           cell.font = { size: 9, bold: isFormulaCol(c) };  
           cell.border = border;  
           const argb = colArgb(c);  
@@ -322,14 +338,14 @@ const AppTabs: React.FC = () => {
         disp.mergeCells(r, 1, r, 4);  
         const lc = disp.getCell(r, 1);  
         lc.value = label; lc.font = { bold: true, color: { argb: fontArgb } };  
-        lc.alignment = { horizontal: "right" };  
+        lc.alignment = { horizontal: "right", vertical: "middle", wrapText: true, shrinkToFit: true };
         lc.fill = { type: "pattern", pattern: "solid", fgColor: { argb: fillArgb } };  
         dataColumnsOrder.forEach((c, i) => {  
           const cell = disp.getCell(r, 5 + i);  
           const val = getter(c);  
           cell.value = val || "";  
           cell.font = { bold: true, size: 9, color: { argb: fontArgb } };  
-          cell.alignment = { horizontal: "center" };  
+          cell.alignment = { horizontal: "center", vertical: "middle", wrapText: true, shrinkToFit: true };
           cell.border = border;  
           cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: fillArgb } };  
         });  
@@ -338,14 +354,57 @@ const AppTabs: React.FC = () => {
       rowCur(`إجمالي شهر ${m.name}`, t.current, ARGB.CUR, ARGB.DARK);  
       rowCur(`إجمالي الأشهر السابقة (قبل ${m.name})`, t.before, ARGB.PREV, "FF334155");  
       rowCur(`الإجمالي العام (حتى ${m.name})`, t.cumulative, ARGB.DARK, ARGB.GOLD);  
-    });  
-  
-    const flat = wb.addWorksheet("بيانات");  
-    flat.addRow(["monthId", ...allCols]);  
-    MONTHS.forEach((m) =>  
-      rowsOfMonth(m.id).forEach((row) => flat.addRow([m.id, ...allCols.map((c) => row[c])]))  
-    );  
-  
+        });
+
+    for (let col = 1; col <= allCols.length; col++) {
+      let maxLength = allCols[col - 1].length;
+      for (let row = 1; row <= disp.rowCount; row++) {
+        const value = disp.getCell(row, col).value;
+        maxLength = Math.max(maxLength, String(value ?? "").length);
+      }
+      disp.getColumn(col).width = Math.min(22, Math.max(col <= 4 ? 12 : 9, maxLength + 2));
+    }
+    disp.pageSetup.printArea = `A1:${XLSX.utils.encode_col(Math.min(allCols.length, 16384) - 1)}${Math.max(1, disp.rowCount)}`;
+    disp.pageSetup.printTitlesRow = "2:2";
+    disp.headerFooter = {
+      oddFooter: '&L&"Arial"المجلس اليمني للاختصاصات الطبية&C&"Arial"صفحة &P من &N&R&"Arial"فرع صعدة',
+    };
+
+    const flat = wb.addWorksheet("بيانات", { views: [{ rightToLeft: true }] });
+    flat.addRow(["monthId", ...allCols]);
+    flat.getRow(1).height = 34;
+    flat.getRow(1).eachCell({ includeEmpty: true }, (cell: any) => {
+      cell.font = { bold: true, size: 9, color: { argb: "FFFFFFFF" } };
+      cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ARGB.DARK } };
+      cell.alignment = { horizontal: "center", vertical: "middle", wrapText: true, shrinkToFit: true };
+      cell.border = border;
+    });
+        MONTHS.forEach((m) =>
+      rowsOfMonth(m.id).forEach((row) => flat.addRow([m.id, ...allCols.map((c) => row[c])]))
+    );
+    flat.eachRow({ includeEmpty: true }, (row: any) => {
+      row.eachCell({ includeEmpty: true }, (cell: any) => {
+        cell.alignment = { horizontal: "center", vertical: "middle", wrapText: true, shrinkToFit: true };
+        cell.border = border;
+      });
+    });
+    allCols.forEach((col, index) => {
+      const maxLength = Math.max(col.length, ...flat.getColumn(index + 2).values.slice(1).map((value: any) => String(value ?? "").length));
+      flat.getColumn(index + 2).width = Math.min(22, Math.max(9, maxLength + 2));
+    });
+    flat.pageSetup = {
+      orientation: "landscape",
+      paperSize: 9,
+      fitToPage: true,
+      fitToWidth: 1,
+      fitToHeight: 0,
+      margins: { left: 0.25, right: 0.25, top: 0.35, bottom: 0.35, header: 0.15, footer: 0.15 },
+    };
+    flat.pageSetup.printArea = `A1:${XLSX.utils.encode_col(Math.min(allCols.length + 1, 16384) - 1)}${Math.max(1, flat.rowCount)}`;
+    flat.pageSetup.printTitlesRow = "1:1";
+    flat.headerFooter = {
+      oddFooter: '&L&"Arial"المجلس اليمني للاختصاصات الطبية&C&"Arial"صفحة &P من &N&R&"Arial"فرع صعدة',
+    };
     const buf = await wb.xlsx.writeBuffer();  
     const blob = new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });  
     const url = URL.createObjectURL(blob);  

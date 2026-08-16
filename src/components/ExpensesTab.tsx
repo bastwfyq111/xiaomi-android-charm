@@ -1,5 +1,13 @@
 import React, { useMemo, useState, useEffect } from "react";
-import * as XLSX from "xlsx";
+import {
+  addReportHeader,
+  appendRows,
+  createExcelWorkbook,
+  downloadWorkbook,
+  formatWorksheet,
+  getExcelPalette,
+  loadReportLetterhead,
+} from "@/lib/excelExport";
 import { toast } from "sonner";
 import schemaJson from "@/lib/expensesSchema.json";
 import { useReportDate } from "@/lib/reportDate";
@@ -708,7 +716,7 @@ export default function ExpensesTab() {
             🖨️ طباعة
           </button>
           <button
-            onClick={() => {
+            onClick={async () => {
               const el = document.getElementById("expenses-view-content");
               if (!el) return;
               const tables = el.querySelectorAll("table");
@@ -716,13 +724,38 @@ export default function ExpensesTab() {
                 toast.error("لا يوجد جدول للتصدير");
                 return;
               }
-              const wb = XLSX.utils.book_new();
-              tables.forEach((tb, i) => {
-                const ws = XLSX.utils.table_to_sheet(tb as HTMLTableElement);
-                XLSX.utils.book_append_sheet(wb, ws, `ورقة${i + 1}`.slice(0, 30));
-              });
-              XLSX.writeFile(wb, `المصروفات-${view}-${year}-${reportDate}.xlsx`);
-              toast.success("تم التصدير");
+              try {
+                const workbook = await createExcelWorkbook();
+                const imageId = await loadReportLetterhead(workbook);
+                for (let i = 0; i < tables.length; i++) {
+                  const table = tables[i] as HTMLTableElement;
+                  const values = Array.from(table.rows).map((row) =>
+                    Array.from(row.cells).map((cell) => cell.textContent?.trim() || ""),
+                  );
+                  const worksheet = workbook.addWorksheet(`ورقة${i + 1}`.slice(0, 31), {
+                    views: [{ rightToLeft: true }],
+                  });
+                  const totalColumns = Math.max(1, ...values.map((row) => row.length));
+                  const dataStartRow = addReportHeader(workbook, worksheet, {
+                    title: `المصروفات - ${view} - ${year}م`,
+                    reportDateLabel,
+                    recordCount: Math.max(0, values.length - 1),
+                    totalColumns,
+                    palette: getExcelPalette("المصروفات"),
+                  }, imageId);
+                  appendRows(worksheet, values, dataStartRow);
+                  formatWorksheet(worksheet, {
+                    headerRow: dataStartRow,
+                    palette: getExcelPalette("المصروفات"),
+                    maxColumnWidth: 32,
+                  });
+                }
+                await downloadWorkbook(workbook, `المصروفات-${view}-${year}-${reportDate}.xlsx`);
+                toast.success("تم التصدير");
+              } catch (error) {
+                console.error("Expenses Excel export error:", error);
+                toast.error("تعذّر تصدير ملف Excel");
+              }
             }}
             className="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow-sm hover:bg-emerald-700"
           >

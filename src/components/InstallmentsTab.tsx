@@ -29,6 +29,15 @@ import PrintSettingsModal, {
 } from "./PrintSettingsModal";
 import { openPrintDocument } from "@/lib/printDocument";
 import { useReportDate } from "@/lib/reportDate";
+import {
+  addReportHeader,
+  appendRows,
+  createExcelWorkbook,
+  downloadWorkbook,
+  formatWorksheet,
+  getExcelPalette,
+  loadReportLetterhead,
+} from "@/lib/excelExport";
 
 const MONTHS_2025 = [
   "يونيو 2024",
@@ -439,7 +448,7 @@ export default function InstallmentsTab() {
   const updateInstallments2025 = (list: any[]) => useStore.setState({ installments2025: list });
 
   // تصدير ملف Excel مصحح ومكتمل
-  const exportToExcel = (year: number) => {
+  const exportToExcel = async (year: number) => {
     try {
       const monthsList = year === 2025 ? MONTHS_2025 : MONTHS_2026;
       const rows = year === 2025 ? filteredRows2025 : filteredRows2026;
@@ -474,61 +483,60 @@ export default function InstallmentsTab() {
             row.totalPaid || 0,
             row.remaining || 0,
           ];
-        } else {
-          const status = row.remaining <= 0 ? "له" : "عليه";
-          return [
-            i + 1,
-            row.name || "",
-            row.batch || "",
-            row.specialty || "",
-            row.prevDue || 0,
-            row.fees || 0,
-            ...monthsList.map((m) => row.payments?.[m] || 0),
-            ...extraCols.map((col) => {
-              if (col.type === "formula") return evaluateFormula(col.formula || "", row);
-              return row.customData?.[col.name] || "";
-            }),
-            row.totalPaid || 0,
-            row.remaining || 0,
-            status,
-          ];
         }
+        const status = row.remaining <= 0 ? "له" : "عليه";
+        return [
+          i + 1,
+          row.name || "",
+          row.batch || "",
+          row.specialty || "",
+          row.prevDue || 0,
+          row.fees || 0,
+          ...monthsList.map((m) => row.payments?.[m] || 0),
+          ...extraCols.map((col) => {
+            if (col.type === "formula") return evaluateFormula(col.formula || "", row);
+            return row.customData?.[col.name] || "";
+          }),
+          row.totalPaid || 0,
+          row.remaining || 0,
+          status,
+        ];
       });
 
-      // إضافة صف الإجماليات
-      if (year === 2025) {
-        data.push([
-          "الإجمالي",
-          "",
-          "",
-          "",
-          totals2025.fees,
-          ...monthsList.map((m) => totals2025.months[m] || 0),
-          totals2025.paid,
-          totals2025.remaining,
-        ]);
-      } else {
-        data.push([
-          "الإجمالي",
-          "",
-          "",
-          "",
-          totals2026.prevDue,
-          totals2026.fees,
-          ...monthsList.map((m) => totals2026.months[m] || 0),
-          ...extraCols.map(() => ""),
-          totals2026.paid,
-          totals2026.remaining,
-          "",
-        ]);
-      }
+      const totalRow =
+        year === 2025
+          ? [
+              "الإجمالي", "", "", "", totals2025.fees,
+              ...monthsList.map((m) => totals2025.months[m] || 0),
+              totals2025.paid, totals2025.remaining,
+            ]
+          : [
+              "الإجمالي", "", "", "", totals2026.prevDue, totals2026.fees,
+              ...monthsList.map((m) => totals2026.months[m] || 0),
+              ...extraCols.map(() => ""), totals2026.paid, totals2026.remaining, "",
+            ];
 
-      const worksheet = XLSX.utils.aoa_to_sheet([headers, ...data]);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, `أقساط ${year}`);
-      XLSX.writeFile(workbook, `جدول_أقساط_${year}_${reportDate}.xlsx`);
+      const workbook = await createExcelWorkbook();
+      const worksheet = workbook.addWorksheet(`أقساط ${year}`, { views: [{ rightToLeft: true }] });
+      const imageId = await loadReportLetterhead(workbook);
+      const dataStartRow = addReportHeader(workbook, worksheet, {
+        title: `أقساط العام ${year}`,
+        reportDateLabel,
+        recordCount: rows.length,
+        totalColumns: headers.length,
+        palette: getExcelPalette(`أقساط العام ${year}`),
+      }, imageId);
+      appendRows(worksheet, [headers, ...data, totalRow], dataStartRow);
+      formatWorksheet(worksheet, {
+        headerRow: dataStartRow,
+        totalRows: [dataStartRow + data.length + 1],
+        palette: getExcelPalette(`أقساط العام ${year}`),
+        maxColumnWidth: 28,
+      });
+      await downloadWorkbook(workbook, `جدول_أقساط_${year}_${reportDate}.xlsx`);
       toast.success("تم تصدير ملف Excel بنجاح");
     } catch (error) {
+      console.error("Installments Excel export error:", error);
       toast.error("حدث خطأ أثناء تصدير ملف Excel");
     }
   };

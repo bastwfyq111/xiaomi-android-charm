@@ -19,6 +19,14 @@ import {
   colLetterToIndex,
   findColByName,
 } from "./journalTemplate";
+import {
+  appendXlsxSheet,
+  createExcelWorkbook,
+  downloadWorkbook,
+  getExcelPalette,
+  loadReportLetterhead,
+} from "./excelExport";
+import { formatReportDate } from "./reportDate";
 
 const JOURNAL_SHEET_NAME = "المجلس الطبي يومية";
 
@@ -120,14 +128,16 @@ function buildJournalSheet(journal: Journal[]): XLSX.WorkSheet {
 /**
  * دالة تصدير بيانات النظام إلى ملف Excel متعدد الأوراق
  */
-export function exportToExcel(data: {
+export async function exportToExcel(data: {
   hafiza: Hafiza[];
   accounts: Account[];
   journal: Journal[];
   installments?: Installment[];
   openingBalance: number;
 }, reportDate?: string) {
-  const wb = XLSX.utils.book_new();
+  const dateValue = reportDate || new Date().toISOString().slice(0, 10);
+  const reportDateLabel = formatReportDate(dateValue);
+  const sourceSheets: { name: string; source: XLSX.WorkSheet; title: string; count: number }[] = [];
 
   const hafizaRows = data.hafiza.map((h, i) => ({
     م: i + 1,
@@ -142,7 +152,12 @@ export function exportToExcel(data: {
     "رقم الاشعار": h.notifyNo || "",
     "مبلغ التوريد": h.notifyAmount || "",
   }));
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(hafizaRows), "الحوافظ");
+  sourceSheets.push({
+    name: "الحوافظ",
+    source: XLSX.utils.json_to_sheet(hafizaRows),
+    title: "حوافظ التوريد",
+    count: data.hafiza.length,
+  });
 
   let bal = data.openingBalance;
   const accRows: Record<string, string | number>[] = [
@@ -167,9 +182,18 @@ export function exportToExcel(data: {
       الرصيد: bal,
     });
   });
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(accRows), "الحساب");
-
-  XLSX.utils.book_append_sheet(wb, buildJournalSheet(data.journal), JOURNAL_SHEET_NAME);
+  sourceSheets.push({
+    name: "الحساب",
+    source: XLSX.utils.json_to_sheet(accRows),
+    title: "الحساب الجاري",
+    count: data.accounts.length,
+  });
+  sourceSheets.push({
+    name: JOURNAL_SHEET_NAME,
+    source: buildJournalSheet(data.journal),
+    title: "قيود اليومية",
+    count: data.journal.length,
+  });
 
   if (data.installments && data.installments.length) {
     const instRows = data.installments.map((i, idx) => {
@@ -188,10 +212,27 @@ export function exportToExcel(data: {
       row["الجوال"] = i.phone;
       return row;
     });
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(instRows), "الأقساط");
+    sourceSheets.push({
+      name: "الأقساط",
+      source: XLSX.utils.json_to_sheet(instRows),
+      title: "الأقساط",
+      count: data.installments.length,
+    });
   }
 
-  XLSX.writeFile(wb, `قيود_اليومية_${reportDate || new Date().toISOString().slice(0, 10)}.xlsx`);
+  const workbook = await createExcelWorkbook();
+  const imageId = await loadReportLetterhead(workbook);
+  for (const item of sourceSheets) {
+    const sourceRange = XLSX.utils.decode_range(item.source["!ref"] || "A1");
+    appendXlsxSheet(workbook, item.source, item.name, {
+      title: item.title,
+      reportDateLabel,
+      recordCount: item.count,
+      totalColumns: sourceRange.e.c - sourceRange.s.c + 1,
+      palette: getExcelPalette(item.title),
+    }, imageId);
+  }
+  await downloadWorkbook(workbook, `قيود_اليومية_${dateValue}.xlsx`);
 }
 
 export type ImportKind = "hafiza" | "account" | "journal" | "installments" | "revenue" | "monthly";
@@ -801,24 +842,35 @@ function buildQuarterlySheet(journal: Journal[], year: number, quarter: number):
   return ws;
 }
 
-export function exportMonthlyStatement(journal: Journal[], year: number, reportDate?: string) {
-  const wb = XLSX.utils.book_new();
+export async function exportMonthlyStatement(journal: Journal[], year: number, reportDate?: string) {
+  const dateValue = reportDate || new Date().toISOString().slice(0, 10);
+  const reportDateLabel = formatReportDate(dateValue);
+  const workbook = await createExcelWorkbook();
+  const imageId = await loadReportLetterhead(workbook);
   for (let m = 1; m <= 12; m++) {
-    XLSX.utils.book_append_sheet(
-      wb,
-      buildMonthlySheet(journal, year, m),
-      `شهر ${MONTHLY_NAMES[m - 1]}`,
-    );
+    const source = buildMonthlySheet(journal, year, m);
+    const range = XLSX.utils.decode_range(source["!ref"] || "A1");
+    appendXlsxSheet(workbook, source, `شهر ${MONTHLY_NAMES[m - 1]}`, {
+      title: `الحساب الشهري - شهر ${MONTHLY_NAMES[m - 1]} ${year}م`,
+      reportDateLabel,
+      recordCount: journal.length,
+      totalColumns: range.e.c - range.s.c + 1,
+      palette: getExcelPalette("الحساب الشهري"),
+    }, imageId);
   }
   const qNames = ["الأول", "الثاني", "الثالث", "الرابع"];
   for (let q = 1; q <= 4; q++) {
-    XLSX.utils.book_append_sheet(
-      wb,
-      buildQuarterlySheet(journal, year, q),
-      `حساب المدة - ${qNames[q - 1]}`,
-    );
+    const source = buildQuarterlySheet(journal, year, q);
+    const range = XLSX.utils.decode_range(source["!ref"] || "A1");
+    appendXlsxSheet(workbook, source, `حساب المدة - ${qNames[q - 1]}`, {
+      title: `حساب المدة - الربع ${qNames[q - 1]} ${year}م`,
+      reportDateLabel,
+      recordCount: journal.length,
+      totalColumns: range.e.c - range.s.c + 1,
+      palette: getExcelPalette("الحساب الشهري"),
+    }, imageId);
   }
-  XLSX.writeFile(wb, `كشف_الحساب_الشهري_${year}_${reportDate || new Date().toISOString().slice(0, 10)}.xlsx`);
+  await downloadWorkbook(workbook, `كشف_الحساب_الشهري_${year}_${dateValue}.xlsx`);
 }
 
 export function buildMonthlyStatementRows(
@@ -962,7 +1014,7 @@ function buildPeriodicStatementSheet(
   return ws;
 }
 
-export function exportPeriodicStatement(
+export async function exportPeriodicStatement(
   journal: Journal[],
   year: number,
   selection: ReportPeriodSelection & { reportDate?: string },
@@ -970,22 +1022,26 @@ export function exportPeriodicStatement(
   const { startMonth, endMonth } = getPeriodRange(selection);
   const periodLabel = getReportPeriodLabel(selection);
   const movementLabel = getReportMovementLabel(selection);
-  const wb = XLSX.utils.book_new();
-  const sheetName = `تقرير ${periodLabel}`.slice(0, 31);
-  XLSX.utils.book_append_sheet(
-    wb,
-    buildPeriodicStatementSheet(
-      journal,
-      year,
-      startMonth,
-      endMonth,
-      periodLabel,
-      movementLabel,
-    ),
-    sheetName,
+  const dateValue = selection.reportDate || new Date().toISOString().slice(0, 10);
+  const source = buildPeriodicStatementSheet(
+    journal,
+    year,
+    startMonth,
+    endMonth,
+    periodLabel,
+    movementLabel,
   );
-  const dateLabel = selection.reportDate || new Date().toISOString().slice(0, 10);
-  XLSX.writeFile(wb, `تقرير_الحساب_${year}_${dateLabel}.xlsx`);
+  const range = XLSX.utils.decode_range(source["!ref"] || "A1");
+  const workbook = await createExcelWorkbook();
+  const imageId = await loadReportLetterhead(workbook);
+  appendXlsxSheet(workbook, source, `تقرير ${periodLabel}`.slice(0, 31), {
+    title: `تقرير مالي عن: ${periodLabel}`,
+    reportDateLabel: formatReportDate(dateValue),
+    recordCount: journal.length,
+    totalColumns: range.e.c - range.s.c + 1,
+    palette: getExcelPalette("الحساب الشهري"),
+  }, imageId);
+  await downloadWorkbook(workbook, `تقرير_الحساب_${year}_${dateValue}.xlsx`);
 }
 
 import revenueSchema from "@/data/revenueTemplate.json";
@@ -1138,10 +1194,21 @@ function buildRevenueSheet(
   return ws;
 }
 
-export function exportRevenueStatement(revenue: Record<string, number>, year: number, reportDate?: string) {
-  const wb = XLSX.utils.book_new();
+export async function exportRevenueStatement(revenue: Record<string, number>, year: number, reportDate?: string) {
+  const dateValue = reportDate || new Date().toISOString().slice(0, 10);
+  const reportDateLabel = formatReportDate(dateValue);
+  const workbook = await createExcelWorkbook();
+  const imageId = await loadReportLetterhead(workbook);
   for (let m = 1; m <= 12; m++) {
-    XLSX.utils.book_append_sheet(wb, buildRevenueSheet(revenue, year, m), `الايرادات شهر ${m}`);
+    const source = buildRevenueSheet(revenue, year, m);
+    const range = XLSX.utils.decode_range(source["!ref"] || "A1");
+    appendXlsxSheet(workbook, source, `الايرادات شهر ${m}`, {
+      title: `كشف الحساب الشهري للموارد - شهر ${MONTHLY_NAMES[m - 1]} ${year}م`,
+      reportDateLabel,
+      recordCount: Object.keys(revenue).filter((key) => key.startsWith(`${year}-${m}-`)).length,
+      totalColumns: range.e.c - range.s.c + 1,
+      palette: getExcelPalette("الإيرادات"),
+    }, imageId);
   }
-  XLSX.writeFile(wb, `كشف_الايرادات_${year}_${reportDate || new Date().toISOString().slice(0, 10)}.xlsx`);
+  await downloadWorkbook(workbook, `كشف_الايرادات_${year}_${dateValue}.xlsx`);
 }
