@@ -1294,75 +1294,84 @@ const exportToPDF = (
           : "الحالة: تم السداد بالكامل";
 
     const statementCss = `
-      @page { size: A4 portrait; margin: 8mm; }
-      html, body { width: 100%; min-height: 0; }
+      @page { size: A4 portrait; margin: 10mm; }
+      * { box-sizing: border-box; }
+      html, body { width: 100%; min-height: 0; margin: 0; padding: 0; }
       body {
-        box-sizing: border-box;
-        padding: 4mm;
-        font-size: 13px;
+        font-family: "Times New Roman", "Noto Naskh Arabic", "Cairo", Tahoma, sans-serif;
+        color: #111827;
+        font-size: 11pt;
+        line-height: 1.35;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
       .container {
         width: 100%;
-        max-width: 190mm;
-        margin: 0 auto;
-        box-sizing: border-box;
+        max-width: none;
+        margin: 0;
       }
-      * { box-sizing: border-box; }
       .header {
         background: #0f766e;
         color: #fff;
-        padding: 12px;
-        border-radius: 6px;
+        padding: 5mm 4mm;
+        border-radius: 2mm;
         text-align: center;
-        margin-bottom: 12px;
+        margin-bottom: 5mm;
       }
-      .header h1 { font-size: 20px; font-weight: 800; color: #fff; }
-      .header p { margin: 4px 0 0; font-size: 14px; font-weight: 600; color: #fff; }
-      .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-      .info-box { border: 0.5pt solid #94a3b8; background: #f8fafc; padding: 8px; border-radius: 6px; text-align: center; }
-      .info-lbl { font-size: 14px; font-weight: 600; color: #475569; text-align:center}
-      .info-val { font-size: 14px; font-weight: 700; margin-top: 2px; }
+      .header h1 { margin: 0; font-size: 16pt; line-height: 1.25; font-weight: 800; color: #fff; }
+      .header p { margin: 2mm 0 0; font-size: 11pt; line-height: 1.25; font-weight: 700; color: #fff; }
+      .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; margin-bottom: 5mm; }
+      .info-box { border: 0.5pt solid #64748b; background: #f8fafc; padding: 3mm 2mm; min-height: 16mm; border-radius: 1.5mm; text-align: center; }
+      .info-lbl { font-size: 9.5pt; line-height: 1.2; font-weight: 700; color: #475569; text-align: center; }
+      .info-val { font-size: 11pt; line-height: 1.25; font-weight: 800; margin-top: 1mm; overflow-wrap: anywhere; }
       table {
         table-layout: fixed;
         width: 100%;
         min-width: 100%;
         border-collapse: collapse;
-        margin-top: 4px;
+        margin-top: 1mm;
         page-break-inside: avoid;
         break-inside: avoid;
       }
-      th {
-        border: 1px solid #000;
-        background: #0f766e;
-        color: #fff;
-        padding: 0 !important;
-        font-size: clamp(7px, 1.2vw, 14px);
-        font-weight: 700;
+      th, td {
+        border: 0.75pt solid #000;
+        text-align: center;
+        vertical-align: middle;
+        padding: 2.5mm 2mm;
+        font-size: 10.5pt;
+        line-height: 1.3;
+        white-space: normal;
+        overflow: hidden;
+        text-overflow: clip;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        hyphens: auto;
       }
-      td { border: 1px solid #000; padding: 0 !important; font-size: clamp(7px, 1.05vw, 15px); white-space: normal; overflow: hidden; text-overflow: clip; word-wrap: anywhere; overflow-wrap: anywhere; word-break: break-word; hyphens: auto; line-height: 1.1; max-height: 2.2em; }
-      .lbl { text-align: center; font-weight: 1000; }
-      .num { font-weight: 700; font-size: 15px; font-variant-numeric: tabular-nums; }
+      th { background: #0f766e; color: #fff; font-weight: 800; }
+      td { color: #111827; font-weight: 600; }
+      .lbl { text-align: center; font-weight: 800; }
+      .num { font-family: "Times New Roman", Times, serif; font-weight: 800; font-size: 11pt; font-variant-numeric: tabular-nums; direction: ltr; }
       .row-fees td { background: #eff6ff; }
       .row-due-old td { background: #fef3c7; color: #b91c1c; }
-      .row-total-due td { background: #fee2e2; font-weight: 700; }
+      .row-total-due td { background: #fee2e2; font-weight: 800; }
       .row-paid td { color: #1d4ed8; }
-      .row-total-paid td { background: #d1fae5; font-weight: 700; }
-      .row-final td { background: #fee2e2; font-size: 16px; font-weight: 800; color: #b91c1c; border-top: 1pt solid #b91c1c; }
+      .row-total-paid td { background: #d1fae5; font-weight: 800; }
+      .row-final td { background: #fee2e2; font-size: 12pt; font-weight: 800; color: #b91c1c; border-top: 1pt solid #b91c1c; }
       .foot {
-        margin-top: 14px;
+        margin-top: 7mm;
         display: flex;
         justify-content: space-between;
-        gap: 12px;
-        font-size: 11.5px;
-        font-weight: 600;
+        gap: 8mm;
+        font-size: 9.5pt;
+        line-height: 1.3;
+        font-weight: 700;
         page-break-inside: avoid;
         break-inside: avoid;
       }
       .header, .info-grid { page-break-inside: avoid; break-inside: avoid; }
       @media print {
-        body { margin: 0; }
+        html, body { width: auto; }
+        body { margin: 0; padding: 0; }
         .header, .info-box, th, td {
           -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
