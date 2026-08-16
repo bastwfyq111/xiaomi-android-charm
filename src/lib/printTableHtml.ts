@@ -7,15 +7,15 @@ export type TableCol = { key: string; label: string };
 export const REPORT_LETTERHEAD_SRC = "/report-letterhead.png";
 
 export const reportLetterheadHtml = () => `
-  <div class="report-letterhead-block" style="display:flex;position:relative;top:0;width:100%;height:20mm;max-height:16vh;overflow:hidden;align-items:flex-start;justify-content:center;margin:0 auto 2mm;page-break-before:avoid;page-break-after:avoid;break-before:avoid;break-after:avoid;">
-    <img class="report-letterhead-image" style="display:block;width:auto;max-width:100%;height:auto;max-height:100%;object-fit:contain;object-position:top center;margin:0 auto;" src="${REPORT_LETTERHEAD_SRC}" alt="ترويسة المجلس اليمني للاختصاصات الطبية" />
+  <div class="report-letterhead-block" style="display:flex;position:relative;top:0;width:100%;height:34mm;min-height:34mm;max-height:34mm;overflow:hidden;align-items:stretch;justify-content:center;margin:0 auto 5mm;page-break-before:avoid;page-break-after:avoid;break-before:avoid;break-after:avoid;">
+    <img class="report-letterhead-image" style="display:block;width:100%;max-width:100%;height:100%;max-height:100%;object-fit:fill;object-position:center;margin:0;" src="${REPORT_LETTERHEAD_SRC}" alt="ترويسة المجلس اليمني للاختصاصات الطبية" />
   </div>
 `;
 
 export const reportLetterheadRowHtml = (columnCount: number) => `
   <tr class="report-letterhead-row">
     <th class="report-letterhead-cell" colspan="${Math.max(1, Math.floor(columnCount))}">
-      <img class="report-letterhead-image" style="display:block;width:auto;max-width:100%;height:auto;max-height:20mm;object-fit:contain;object-position:top center;margin:0 auto;" src="${REPORT_LETTERHEAD_SRC}" alt="ترويسة المجلس اليمني للاختصاصات الطبية" />
+      <img class="report-letterhead-image" style="display:block;width:100%;max-width:100%;height:30mm;max-height:30mm;object-fit:fill;object-position:center;margin:0;" src="${REPORT_LETTERHEAD_SRC}" alt="ترويسة المجلس اليمني للاختصاصات الطبية" />
     </th>
   </tr>
 `;
@@ -125,12 +125,13 @@ export const tablePrintStyles = `
     position: relative;
     top: 0;
     width: 100%;
-    height: 20mm;
-    max-height: 16vh;
+    height: 34mm;
+    min-height: 34mm;
+    max-height: 34mm;
     overflow: hidden;
-    align-items: flex-start;
+    align-items: stretch;
     justify-content: center;
-    margin: 0 auto 2mm;
+    margin: 0 auto 5mm;
     page-break-before: avoid;
     page-break-after: avoid;
     break-before: avoid;
@@ -138,23 +139,25 @@ export const tablePrintStyles = `
   }
   .report-letterhead-image {
     display: block;
-    width: auto;
+    width: 100%;
     max-width: 100%;
-    height: auto;
+    height: 100%;
     max-height: 100%;
-    object-fit: contain;
-    object-position: top center;
+    object-fit: fill;
+    object-position: center;
     image-rendering: auto;
-    margin: 0 auto;
+    margin: 0;
   }
   @media print and (orientation: portrait) {
-    .report-letterhead-block { height: 18mm; max-height: 14vh; }
+    .report-letterhead-block { height: 28mm; min-height: 28mm; max-height: 28mm; }
   }
   @media print and (orientation: landscape) {
-    .report-letterhead-block { height: 20mm; max-height: 16vh; }
+    .report-letterhead-block { height: 34mm; min-height: 34mm; max-height: 34mm; }
   }
   .report-letterhead-row { page-break-after: avoid; break-after: avoid; }
   .pdf-page .report-letterhead-cell {
+    height: 30mm !important;
+    min-height: 30mm !important;
     padding: 0 !important;
     border: 0 !important;
     background: #fff !important;
