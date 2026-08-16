@@ -112,6 +112,9 @@ function Field({
 const inputCls =
   "w-full min-w-0 rounded-xl border border-slate-200 bg-slate-50/80 px-2.5 py-2.5 text-[13px] font-medium text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-4 focus:ring-teal-500/10 sm:px-3 sm:py-3 sm:text-sm";
 
+const journalClampCls =
+  "block max-w-full overflow-hidden break-words whitespace-normal leading-snug [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2]";
+
 // ── قائمة اختيار الحساب: تُفتح كنافذة منبثقة فوق خلية الجدول ───────────────
 function AccountDropdownCell({
   value,
@@ -684,18 +687,18 @@ export default function JournalTab() {
         ) : (
           <>
             <div className="overflow-auto max-h-[72vh]">
-              <table className="min-w-max table-auto border-collapse text-center text-sm sm:text-base font-semibold">
+              <table className="w-full min-w-0 table-auto border-collapse text-center text-sm sm:text-base font-semibold">
                 <thead className="sticky top-0 z-20 bg-[#0e2b40] text-white shadow-md">
                   <tr>
                     {JOURNAL_COLS.map((c) => (
                       <th
                         key={c.key}
-                        className="!whitespace-nowrap border-b border-white/10 text-center font-bold !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
+                        className="min-w-0 max-w-[120px] whitespace-normal break-words border-b border-white/10 text-center font-bold leading-tight !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
                       >
                         {c.label}
                       </th>
                     ))}
-                    <th className="!whitespace-nowrap border-b border-white/10 text-center font-bold !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                    <th className="min-w-0 max-w-[120px] whitespace-normal break-words border-b border-white/10 text-center font-bold leading-tight !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                       الإجراءات
                     </th>
                   </tr>
@@ -727,38 +730,38 @@ export default function JournalTab() {
                       key={j.id}
                       className="border-b border-slate-100 odd:bg-white even:bg-slate-50/70 transition-colors hover:bg-teal-50/60"
                     >
-                      <td className="!whitespace-nowrap font-mono text-slate-600 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
-                        {j.formNo || "—"}
+                      <td className="min-w-0 max-w-[90px] font-mono text-slate-600 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                        <span className={journalClampCls}>{j.formNo || "—"}</span>
                       </td>
-                      <td className="!whitespace-nowrap text-slate-600 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
-                        {j.settlement || "—"}
+                      <td className="min-w-0 max-w-[90px] text-slate-600 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                        <span className={journalClampCls}>{j.settlement || "—"}</span>
                       </td>
-                      <td className="!whitespace-nowrap font-mono text-slate-600 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
-                        {j.date || "—"}
+                      <td className="min-w-0 max-w-[105px] font-mono text-slate-600 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                        <span className={journalClampCls}>{j.date || "—"}</span>
                       </td>
                       <td
-                        className="max-w-[260px] truncate font-medium text-slate-800 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"
+                        className="min-w-0 max-w-[180px] font-medium text-slate-800 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
                         title={j.description}
                       >
-                        {j.description || "—"}
+                        <span className={journalClampCls}>{j.description || "—"}</span>
                       </td>
-                      <td className="!px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
-                        <span className="inline-block max-w-[190px] truncate rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-800">
+                      <td className="min-w-0 max-w-[180px] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                        <span className={`${journalClampCls} rounded-full bg-emerald-50 px-2 py-1 text-sm font-bold text-emerald-800`}>
                           {j.debitAccount || "—"}
                         </span>
                       </td>
-                      <td className="!px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
-                        <span className="inline-block max-w-[190px] truncate rounded-full bg-rose-50 px-2.5 py-1 text-xs font-bold text-rose-800">
+                      <td className="min-w-0 max-w-[180px] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                        <span className={`${journalClampCls} rounded-full bg-rose-50 px-2 py-1 text-sm font-bold text-rose-800`}>
                           {j.creditAccount || "—"}
                         </span>
                       </td>
-                      <td className="!whitespace-nowrap font-mono font-black text-emerald-700 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
-                        {j.debit ? j.debit.toLocaleString("en-US") : "—"}
+                      <td className="min-w-0 max-w-[105px] font-mono font-black text-emerald-700 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                        <span className={journalClampCls}>{j.debit ? j.debit.toLocaleString("en-US") : "—"}</span>
                       </td>
-                      <td className="!whitespace-nowrap font-mono font-black text-rose-700 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
-                        {j.credit ? j.credit.toLocaleString("en-US") : "—"}
+                      <td className="min-w-0 max-w-[105px] font-mono font-black text-rose-700 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                        <span className={journalClampCls}>{j.credit ? j.credit.toLocaleString("en-US") : "—"}</span>
                       </td>
-                      <td className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      <td className="min-w-0 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                         <div className="flex justify-center gap-1.5">
                           <button
                             onClick={() => startEdit(j)}
