@@ -37,8 +37,12 @@ export default defineConfig({
           "robots.txt",
         ],
         workbox: {
+          // احفظ ملفات التطبيق والجذر عند تثبيت SW، لا عند أول زيارة فقط.
           globPatterns: ["**/*.{js,css,html,ico,png,svg,woff,woff2,ttf,json}"],
           additionalManifestEntries: [{ url: "/", revision: null }],
+          cleanupOutdatedCaches: true,
+          clientsClaim: true,
+          skipWaiting: true,
           navigateFallback: "/",
           navigateFallbackDenylist: [/^\/~oauth/, /^\/api\//],
           maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
@@ -53,7 +57,12 @@ export default defineConfig({
                   {
                     // في أول فتح دون اتصال، استخدم نسخة الصفحة التي جرى حفظها أثناء التثبيت.
                     handlerDidError: async ({ request }) => {
-                      return (await caches.match(request)) || Response.error();
+                      return (
+                        (await caches.match(request, { ignoreSearch: true })) ||
+                        (await caches.match("/", { ignoreSearch: true })) ||
+                        (await caches.match("/index.html", { ignoreSearch: true })) ||
+                        Response.error()
+                      );
                     },
                   },
                 ],
