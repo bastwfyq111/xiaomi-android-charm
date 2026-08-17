@@ -12,8 +12,6 @@ import {
   TrendingUp,
   ReceiptText,
   DownloadCloud,
-  Menu,
-  X,
 } from "lucide-react";
 
 // استيراد ملفات التبويبات الفرعية المكونة للنظام
@@ -60,62 +58,77 @@ type Tab =
   | "expenses-table"
   | "general-expenses-ledger";
 
-// تعريف قائمة التبويبات مع بياناتها
-const tabs: { value: Tab; label: string; shortLabel: string; icon: React.ReactNode }[] = [
+type TabItem = {
+  value: Tab;
+  label: string;
+  shortLabel: string;
+  icon: React.ReactNode;
+  activeClass: string;
+};
+
+// تعريف قائمة التبويبات مع بياناتها وألوانها
+const tabs: TabItem[] = [
   {
     value: "installments",
     label: "كشف الأقساط",
     shortLabel: "أقساط",
     icon: <WalletCards className="w-5 h-5" />,
+    activeClass: "bg-teal-700",
   },
   {
     value: "hafiza",
     label: "حوافظ التوريد",
     shortLabel: "حوافظ",
     icon: <FileBox className="w-5 h-5" />,
+    activeClass: "bg-amber-600",
   },
   {
     value: "account",
     label: "الحساب الجاري",
     shortLabel: "حساب",
     icon: <FileSpreadsheet className="w-5 h-5" />,
+    activeClass: "bg-stone-600",
   },
   {
     value: "journal",
     label: "القيود اليومية",
     shortLabel: "قيود",
     icon: <BookOpenText className="w-5 h-5" />,
+    activeClass: "bg-[#0e2b40]",
   },
   {
     value: "monthly",
     label: "كشف شهري",
     shortLabel: "شهري",
     icon: <PieChart className="w-5 h-5" />,
+    activeClass: "bg-slate-700",
   },
   {
     value: "revenue",
     label: "الإيرادات",
     shortLabel: "إيرادات",
     icon: <TrendingUp className="w-5 h-5" />,
+    activeClass: "bg-emerald-700",
   },
   {
     value: "expenses-table",
     label: "المصروفات",
     shortLabel: "مصروفات",
     icon: <ReceiptText className="w-5 h-5" />,
+    activeClass: "bg-indigo-700",
   },
   {
     value: "general-expenses-ledger",
     label: "سجل النفقات",
     shortLabel: "السجل",
     icon: <FileSpreadsheet className="w-5 h-5" />,
+    activeClass: "bg-rose-700",
   },
 ];
 
 function Index() {
   const [activeTab, setActiveTab] = useState<Tab>("installments");
   const [pwaInstallable, setPwaInstallable] = useState<boolean>(false);
-  const [navOpen, setNavOpen] = useState(false);
 
   useEffect(() => {
     setPwaInstallable(canInstall());
@@ -176,7 +189,7 @@ function Index() {
       </div>
 
       {/* محتوى التبويب النشط */}
-      <div className="w-full bg-[#faf8f3] p-2 sm:p-4 md:p-6 min-h-[calc(100vh-140px)]">
+      <div className="w-full bg-[#faf8f3] p-2 pb-24 sm:p-4 sm:pb-20 md:p-6 min-h-[calc(100vh-140px)]">
         {activeTab === "installments" && <InstallmentsTab />}
         {activeTab === "hafiza" && <HafizaTab />}
         {activeTab === "account" && <AccountTab />}
@@ -187,47 +200,34 @@ function Index() {
         {activeTab === "general-expenses-ledger" && <AppTabs />}
       </div>
 
-      {/* زر القائمة الثلاثي في أعلى الركن الأيمن */}
-      <button
-        type="button"
-        onClick={() => setNavOpen((open) => !open)}
-        className="fixed top-2 right-2 z-[60] flex h-11 w-11 items-center justify-center rounded-lg bg-[#0e2b40] text-[#e3c281] shadow-lg ring-1 ring-[#c99a4e]/50 transition-all duration-200 hover:bg-[#153a54] focus:outline-none focus:ring-2 focus:ring-[#e3c281] active:scale-95 sm:top-4 sm:right-4 sm:h-12 sm:w-12"
-        aria-label={navOpen ? "إغلاق قائمة التبويبات" : "فتح قائمة التبويبات"}
-        aria-expanded={navOpen}
-        title={navOpen ? "إغلاق قائمة التبويبات" : "فتح قائمة التبويبات"}
-      >
-        {navOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-      </button>
-
-      {/* قائمة التبويبات الجانبية المخفية حتى الضغط على الزر */}
+      {/* شريط التبويبات السفلي */}
       <nav
-        className={`fixed top-16 right-2 z-50 w-[calc(100vw-1rem)] max-w-xs rounded-xl bg-[#0e2b40] border border-[#c99a4e]/35 shadow-[-8px_0_28px_rgba(0,0,0,0.28)] transition-all duration-200 ease-out sm:top-20 sm:right-4 sm:w-64 sm:rounded-2xl ${
-          navOpen
-            ? "translate-y-0 opacity-100"
-            : "pointer-events-none -translate-y-2 opacity-0"
-        }`}
+        className="fixed inset-x-0 bottom-0 z-[60] border-t-2 border-[#c99a4e]/60 bg-[#0e2b40]/[0.98] pb-[env(safe-area-inset-bottom)] shadow-[0_-6px_24px_rgba(0,0,0,0.2)] backdrop-blur-md"
         dir="rtl"
         aria-label="التنقل الرئيسي"
       >
-        <div className="flex max-h-[min(76vh,38rem)] flex-col gap-1 overflow-y-auto p-2 sm:max-h-[min(80vh,38rem)] sm:p-3">
+        <div className="mx-auto flex max-w-7xl gap-1 overflow-x-auto px-1 py-1.5 sm:gap-2 sm:px-2 sm:py-2">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.value;
             return (
               <button
                 key={tab.value}
                 type="button"
-                onClick={() => {
-                  setActiveTab(tab.value);
-                  setNavOpen(false);
-                }}
-                className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-right transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#e3c281] ${
+                onClick={() => setActiveTab(tab.value)}
+                aria-current={isActive ? "page" : undefined}
+                className={`flex min-w-[74px] shrink-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-lg px-1.5 py-1.5 text-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#e3c281] sm:min-w-[92px] sm:gap-1 sm:px-2 sm:py-2 ${
                   isActive
-                    ? "bg-white/[0.12] text-[#e3c281] shadow-sm"
-                    : "text-white/65 hover:bg-white/[0.07] hover:text-white"
+                    ? `${tab.activeClass} text-white shadow-md`
+                    : "text-white/70 hover:bg-white/[0.1] hover:text-white"
                 }`}
               >
                 <span className={isActive ? "scale-110" : "scale-100"}>{tab.icon}</span>
-                <span className="text-sm sm:text-base font-bold leading-tight whitespace-nowrap">{tab.label}</span>
+                <span className="text-[10px] font-bold leading-tight whitespace-nowrap sm:hidden">
+                  {tab.shortLabel}
+                </span>
+                <span className="hidden text-xs font-bold leading-tight whitespace-nowrap sm:inline">
+                  {tab.label}
+                </span>
               </button>
             );
           })}
