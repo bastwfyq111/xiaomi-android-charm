@@ -65,6 +65,40 @@ function saveStore(s: Store) {
 
 const isLeaf = (r: Row) => r.lv === "type";
 
+function htmlTableToMatrix(table: HTMLTableElement): string[][] {
+  const grid: string[][] = [];
+
+  Array.from(table.rows).forEach((row, rowIndex) => {
+    if (!grid[rowIndex]) grid[rowIndex] = [];
+    let columnIndex = 0;
+
+    Array.from(row.cells).forEach((cell) => {
+      while (grid[rowIndex][columnIndex] !== undefined) columnIndex += 1;
+
+      const rowSpan = Math.max(1, cell.rowSpan || 1);
+      const columnSpan = Math.max(1, cell.colSpan || 1);
+      const value = cell.textContent?.replace(/\s+/g, " ").trim() || "";
+
+      for (let rowOffset = 0; rowOffset < rowSpan; rowOffset += 1) {
+        const targetRowIndex = rowIndex + rowOffset;
+        if (!grid[targetRowIndex]) grid[targetRowIndex] = [];
+        for (let columnOffset = 0; columnOffset < columnSpan; columnOffset += 1) {
+          const targetColumnIndex = columnIndex + columnOffset;
+          grid[targetRowIndex][targetColumnIndex] =
+            rowOffset === 0 && columnOffset === 0 ? value : "";
+        }
+      }
+
+      columnIndex += columnSpan;
+    });
+  });
+
+  const columnCount = Math.max(1, ...grid.map((row) => row.length));
+  return grid.map((row) =>
+    Array.from({ length: columnCount }, (_, index) => row[index] ?? ""),
+  );
+}
+
 // ===== حساب التجميعات =====
 function computeAggregates(values: Cell[]): Cell[] {
   const rows = schema.rows;
@@ -719,37 +753,83 @@ export default function ExpensesTab() {
             onClick={async () => {
               const el = document.getElementById("expenses-view-content");
               if (!el) return;
-              const tables = el.querySelectorAll("table");
+              const tables = Array.from(el.querySelectorAll("table")) as HTMLTableElement[];
               if (!tables.length) {
                 toast.error("لا يوجد جدول للتصدير");
                 return;
               }
+
               try {
                 const workbook = await createExcelWorkbook();
                 const imageId = await loadReportLetterhead(workbook);
-                for (let i = 0; i < tables.length; i++) {
-                  const table = tables[i] as HTMLTableElement;
-                  const values = Array.from(table.rows).map((row) =>
-                    Array.from(row.cells).map((cell) => cell.textContent?.trim() || ""),
-                  );
-                  const worksheet = workbook.addWorksheet(`ورقة${i + 1}`.slice(0, 31), {
-                    views: [{ rightToLeft: true }],
-                  });
-                  const totalColumns = Math.max(1, ...values.map((row) => row.length));
-                  const dataStartRow = addReportHeader(workbook, worksheet, {
+                const tableMatrices = tables.map(htmlTableToMatrix);
+                const totalColumns = Math.max(
+                  1,
+                  ...tableMatrices.map((matrix) => matrix[0]?.length || 1),
+                );
+                const worksheet = workbook.addWorksheet("المصروفات", {
+                  views: [{ rightToLeft: true }],
+                });
+                const dataStartRow = addReportHeader(
+                  workbook,
+                  worksheet,
+                  {
                     title: `المصروفات - ${view} - ${year}م`,
                     reportDateLabel,
-                    recordCount: Math.max(0, values.length - 1),
+                    recordCount: tableMatrices.reduce(
+                      (count, matrix) => count + Math.max(0, matrix.length - 2),
+                      0,
+                    ),
                     totalColumns,
                     palette: getExcelPalette("المصروفات"),
-                  }, imageId);
-                  appendRows(worksheet, values, dataStartRow);
-                  formatWorksheet(worksheet, {
-                    headerRow: dataStartRow,
-                    palette: getExcelPalette("المصروفات"),
-                    maxColumnWidth: 32,
-                  });
-                }
+                  },
+                  imageId,
+                );
+
+                let nextRow = dataStartRow;
+                let firstHeaderRow = dataStartRow;
+                tableMatrices.forEach((matrix, tableIndex) => {
+                  if (tableIndex > 0) nextRow += 1;
+                  const sectionRow = worksheet.getRow(nextRow);
+                  sectionRow.getCell(1).value =
+                    tableIndex === 0 ? `تفاصيل تقرير ${view}` : "ملخص إجمالي الاستخدامات حسب الأبواب";
+                  worksheet.mergeCells(nextRow, 1, nextRow, totalColumns);
+                  sectionRow.height = 22;
+                  sectionRow.getCell(1).font = {
+                    name: "Arial",
+                    size: 11,
+                    bold: true,
+                    color: { argb: "FF000000" },
+                  };
+                  sectionRow.getCell(1).alignment = {
+                    horizontal: "right",
+                    vertical: "middle",
+                    wrapText: true,
+                    shrinkToFit: true,
+                  };
+                  sectionRow.getCell(1).border = {
+                    top: { style: "thin", color: { argb: "FF000000" } },
+                    left: { style: "thin", color: { argb: "FF000000" } },
+                    bottom: { style: "thin", color: { argb: "FF000000" } },
+                    right: { style: "thin", color: { argb: "FF000000" } },
+                  };
+                  sectionRow.getCell(1).fill = {
+                    type: "pattern",
+                    pattern: "solid",
+                    fgColor: { argb: "FFE7E2D8" },
+                  };
+
+                  const headerRow = nextRow + 1;
+                  if (tableIndex === 0) firstHeaderRow = headerRow;
+                  appendRows(worksheet, matrix, headerRow);
+                  nextRow = headerRow + matrix.length;
+                });
+
+                formatWorksheet(worksheet, {
+                  headerRow: firstHeaderRow,
+                  palette: getExcelPalette("المصروفات"),
+                  maxColumnWidth: 32,
+                });
                 await downloadWorkbook(workbook, `المصروفات-${view}-${year}-${reportDate}.xlsx`);
                 toast.success("تم التصدير");
               } catch (error) {
