@@ -27,29 +27,33 @@ export default defineConfig({
         devOptions: { enabled: false },
         // public/manifest.json is maintained by hand and linked from the route head.
         manifest: false,
-        includeAssets: ["icon-192.png", "icon-512.png", "Cairo-Regular.ttf", "manifest.json"],
+        includeAssets: [
+          "favicon.ico",
+          "icon-192.png",
+          "icon-512.png",
+          "Cairo-Regular.ttf",
+          "manifest.json",
+          "report-letterhead.png",
+          "robots.txt",
+        ],
         workbox: {
-          globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2,ttf}"],
+          globPatterns: ["**/*.{js,css,html,ico,png,svg,woff,woff2,ttf,json}"],
+          additionalManifestEntries: [{ url: "/", revision: null }],
           navigateFallback: "/",
           navigateFallbackDenylist: [/^\/~oauth/, /^\/api\//],
           maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
           runtimeCaching: [
             {
+              // يقدّم آخر نسخة محفوظة فورًا، ثم يحدّثها في الخلفية عند توفر الشبكة.
               urlPattern: ({ request }) => request.mode === "navigate",
-              handler: "NetworkFirst",
+              handler: "StaleWhileRevalidate",
               options: {
                 cacheName: "html-navigations",
-                networkTimeoutSeconds: 5,
                 plugins: [
                   {
-                    // بدون إنترنت: أعِد آخر نسخة محفوظة من الصفحة الرئيسية
-                    handlerDidError: async () => {
-                      const cache = await caches.open("html-navigations");
-                      return (
-                        (await cache.match("/", { ignoreSearch: true })) ||
-                        (await cache.match("/index.html", { ignoreSearch: true })) ||
-                        Response.error()
-                      );
+                    // في أول فتح دون اتصال، استخدم نسخة الصفحة التي جرى حفظها أثناء التثبيت.
+                    handlerDidError: async ({ request }) => {
+                      return (await caches.match(request)) || Response.error();
                     },
                   },
                 ],

@@ -12,6 +12,7 @@ import appCss from "../styles.css?url";
 import { useEffect } from "react";
 import { initPwa } from "@/lib/pwa";
 import { ReportDateProvider } from "@/lib/reportDate";
+import OfflineStatus from "@/components/OfflineStatus";
 
 function NotFoundComponent() {
   return (
@@ -140,6 +141,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <ReportDateProvider>
+        <OfflineStatus />
         <Outlet />
       </ReportDateProvider>
     </QueryClientProvider>
