@@ -154,7 +154,7 @@ export function addReportHeader(
     cell.font = { name: "Arial", size: 11, bold: true, color: { argb: BLACK } };
     cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFFFFFFF" } };
   });
-  reportTitleCell.font = { name: "Arial", size: 13, bold: true, color: { argb: readableHeaderFont(palette.header) } };
+  reportTitleCell.font = { name: "Arial", size: 13, bold: true, color: { argb: BLACK } };
   reportTitleCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: palette.header } };
   worksheet.getRow(1).height = 30;
   worksheet.getRow(2).height = 30;
@@ -216,7 +216,7 @@ export function formatWorksheet(
   if (headerRow) {
     worksheet.getRow(headerRow).eachCell({ includeEmpty: true }, (cell: any) => {
       cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: palette.header } };
-      cell.font = { name: "Arial", size: 10, bold: true, color: { argb: readableHeaderFont(palette.header) } };
+      cell.font = { name: "Arial", size: 10, bold: true, color: { argb: BLACK } };
       cell.alignment = { horizontal: "center", vertical: "middle", wrapText: true, shrinkToFit: true };
       cell.border = blackBorder;
     });

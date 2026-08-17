@@ -97,7 +97,7 @@
   /* رؤوس الجداول */
   th {
     background: #1f7fb8 !important;
-    color: white !important;
+    color: #000 !important;
     font-weight: 700 !important;
     border: 1.5px solid #000 !important;
     padding: 0 !important;

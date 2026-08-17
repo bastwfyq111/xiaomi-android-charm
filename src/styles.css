@@ -182,6 +182,23 @@ table th,
   line-height: 1.1;
   max-height: 2.2em;
   font-size: clamp(7px, 1.05vw, 13px);
+  color: #000 !important;
+  font-weight: 700 !important;
+}
+
+/* توحيد نصوص خلايا جميع جداول التبويبات إلى الأسود الغامق */
+table th :where(span, div, p, label, strong, b, small, a),
+table td :where(span, div, p, label, strong, b, small, a),
+table th input,
+table th select,
+table th textarea,
+table td input,
+table td select,
+table td textarea,
+table th button,
+table td button {
+  color: #000 !important;
+  font-weight: 700 !important;
 }
 
 /* الأرقام تبقى متصلة، سوداء وغامقة بخط Times New Roman كما في التصدير والطباعة */

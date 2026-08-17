@@ -736,7 +736,7 @@ const exportToPDF = (
     const colorTokens = settings.colored
       ? {
           head: "#0f766e",
-          headText: "#ffffff",
+          headText: "#000000",
           zebra: "#f0fdfa",
           totals: "#ccfbf1",
           fees: "#eff6ff",
@@ -797,11 +797,12 @@ const exportToPDF = (
         max-height: 2.2em;
         line-height: 1.15;
         font-weight: 700;
+        color: #000 !important;
       }
       td.wrap { white-space: normal; overflow: hidden; text-overflow: clip; overflow-wrap: anywhere; word-break: break-word; hyphens: auto; padding: 0 !important; line-height: 1.1; max-height: 2.2em; font-size: clamp(7px, 1.05vw, 13px); }
       th {
         background: ${colorTokens.head} !important;
-        color: ${colorTokens.headText} !important;
+        color: #000 !important;
         font-size: ${headerFontSizePx.toFixed(2)}px;
         font-weight: 800;
         padding: 0 !important;
@@ -809,7 +810,7 @@ const exportToPDF = (
       tbody tr:nth-child(even) td { background: ${colorTokens.zebra} !important; }
       td.t-fees { background: ${colorTokens.fees} !important; }
       td.t-paid { background: ${colorTokens.paid} !important; font-weight: 800; }
-      td.t-due { background: ${colorTokens.due} !important; font-weight: 800; }
+      td.t-due { background: ${colorTokens.due} !important; color: #000 !important; font-weight: 800; }
       td.s-ok { background: ${settings.colored ? "#d1fae5" : "#ffffff"} !important; }
       td.s-bad { background: ${settings.colored ? "#fee2e2" : "#ffffff"} !important; }
       thead { display: table-header-group; }
@@ -1355,16 +1356,16 @@ const exportToPDF = (
         word-break: break-word;
         hyphens: auto;
       }
-      th { background: #0f766e; color: #fff; font-weight: 800; }
-      td { color: #111827; font-weight: 600; }
+      th { background: #0f766e; color: #000 !important; font-weight: 800; }
+      td { color: #000 !important; font-weight: 700; }
       .lbl { text-align: center; font-weight: 800; }
       .num { font-family: "Times New Roman", Times, serif; font-weight: 800; font-size: 11pt; font-variant-numeric: tabular-nums; direction: ltr; }
       .row-fees td { background: #eff6ff; }
-      .row-due-old td { background: #fef3c7; color: #b91c1c; }
-      .row-total-due td { background: #fee2e2; font-weight: 800; }
-      .row-paid td { color: #1d4ed8; }
-      .row-total-paid td { background: #d1fae5; font-weight: 800; }
-      .row-final td { background: #fee2e2; font-size: 12pt; font-weight: 800; color: #b91c1c; border-top: 1pt solid #b91c1c; }
+      .row-due-old td { background: #fef3c7; color: #000 !important; }
+      .row-total-due td { background: #fee2e2; color: #000 !important; font-weight: 800; }
+      .row-paid td { color: #000 !important; }
+      .row-total-paid td { background: #d1fae5; color: #000 !important; font-weight: 800; }
+      .row-final td { background: #fee2e2; font-size: 12pt; font-weight: 800; color: #000 !important; border-top: 1pt solid #000; }
       .foot {
         margin-top: 7mm;
         display: flex;
