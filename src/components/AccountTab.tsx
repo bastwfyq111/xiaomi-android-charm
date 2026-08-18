@@ -104,6 +104,15 @@ const PRINT_STYLES = `
     min-width: 100% !important;
     table-layout: fixed !important;
   }
+  .accounts-print-area thead th {
+    color: #171412 !important;
+    font-weight: 900 !important;
+  }
+  .accounts-print-area tbody td,
+  .accounts-print-area tfoot td {
+    color: #000 !important;
+    font-weight: 800 !important;
+  }
   .accounts-print-area th,
   .accounts-print-area td {
     border: 1px solid #000 !important;

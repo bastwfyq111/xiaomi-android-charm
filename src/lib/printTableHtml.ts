@@ -89,14 +89,19 @@ export const tablePrintStyles = `
     word-break: normal;
     hyphens: none;
     color: #000 !important;
-    font-weight: 700;
+    font-weight: 800 !important;
     line-height: 1.18;
     font-size: clamp(8px, 0.95vw, 11px);
   }
+  tbody td,
+  tfoot td {
+    color: #000 !important;
+    font-weight: 800 !important;
+  }
   thead th {
     background: #f5deb3 !important;
-    color: #000 !important;
-    font-weight: 800;
+    color: #171412 !important;
+    font-weight: 900 !important;
     font-size: 14px;
   }
   tbody tr:nth-child(even) td { background: #f8fafc !important; }
