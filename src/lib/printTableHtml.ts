@@ -81,23 +81,41 @@ export const tablePrintStyles = `
   }
   th, td {
     border: 0.75pt solid #000;
-    padding: 4px 6px !important;
-    text-align: center;
+    padding: 6px 8px !important;
+    text-align: center !important;
     vertical-align: middle !important;
-    white-space: normal;
-    overflow: visible;
+    white-space: normal !important;
+    overflow: visible !important;
     text-overflow: clip;
-    overflow-wrap: anywhere;
-    word-break: normal;
+    overflow-wrap: anywhere !important;
+    word-break: normal !important;
     hyphens: none;
     color: #000 !important;
     font-weight: 800 !important;
-    line-height: 1.35;
-    font-size: clamp(9px, 1.05vw, 13px);
+    line-height: 1.5 !important;
+    height: auto !important;
+    min-height: 30px;
+    font-size: clamp(10px, 1.15vw, 14px) !important;
+  }
+  .pdf-cell-text {
+    display: inline-block;
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+    vertical-align: middle;
+    white-space: normal !important;
+    overflow: visible !important;
+    overflow-wrap: anywhere !important;
+    word-break: normal !important;
+    line-height: 1.5 !important;
   }
   tbody td,
-  tfoot td {
+  tfoot td,
+  tbody td *,
+  tfoot td * {
     color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    text-shadow: none !important;
     font-weight: 800 !important;
   }
   thead th {
@@ -109,9 +127,11 @@ export const tablePrintStyles = `
   tbody tr:nth-child(even) td { background: #f8fafc !important; }
   .num {
     font-family: 'Times New Roman', Times, serif !important;
-    text-align: center;
+    text-align: center !important;
     direction: ltr;
     color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    text-shadow: none !important;
     font-weight: 900 !important;
     white-space: nowrap;
     overflow-wrap: normal;
@@ -120,7 +140,7 @@ export const tablePrintStyles = `
   }
   
   /* تم تعديل العرض قليلاً لتتسع لكلمة الإجمالي */
-  .idx { width: 34px; min-width: 34px; max-width: 48px; text-align: center; color: #000 !important; font-weight: 700; }
+  .idx { width: 34px; min-width: 34px; max-width: 48px; text-align: center !important; color: #000 !important; font-weight: 700; }
   
   .total-row td {
     background: #fef3c7 !important;
@@ -203,8 +223,8 @@ export function buildTableHtml(opts: {
   const totalRow = `<tr class="total-row"><td class="idx" style="font-size:12px;">الإجمالي</td>${columns
     .map((c) =>
       numericKeys.includes(c.key)
-        ? `<td class="num">${escapeHtml(fmt(totals[c.key] || 0))}</td>`
-        : `<td></td>`
+        ? `<td class="num"><span class="pdf-cell-text" style="color:#000000 !important;font-weight:800 !important;">${escapeHtml(fmt(totals[c.key] || 0))}</span></td>`
+        : `<td><span class="pdf-cell-text" style="color:#000000 !important;font-weight:800 !important;"></span></td>`
     )
     .join("")}</tr>`;
 
@@ -215,9 +235,9 @@ export function buildTableHtml(opts: {
           .map((c) => {
             const v = r[c.key];
             const isNum = numericKeys.includes(c.key) || typeof v === "number";
-            return `<td class="${isNum ? "num" : ""}">${
+            return `<td class="${isNum ? "num" : ""}"><span class="pdf-cell-text" style="color:#000000 !important;font-weight:800 !important;">${
               isNum ? escapeHtml(fmt(Number(v) || 0)) : escapeHtml(v)
-            }</td>`;
+            }</span></td>`;
           })
           .join("")}</tr>`
     )

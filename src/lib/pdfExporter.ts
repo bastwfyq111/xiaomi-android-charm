@@ -18,6 +18,57 @@ function downloadPdfBlob(pdf: any, fileName: string): void {
   window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
+function forcePdfDataCellTextColor(doc: Document): void {
+  doc.querySelectorAll<HTMLElement>('.pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx').forEach((cell) => {
+    cell.style.setProperty('color', '#000000', 'important');
+    cell.style.setProperty('-webkit-text-fill-color', '#000000', 'important');
+    cell.style.setProperty('text-shadow', 'none', 'important');
+    cell.style.setProperty('font-weight', '800', 'important');
+    cell.querySelectorAll<HTMLElement>('*').forEach((textNode) => {
+      textNode.style.setProperty('color', '#000000', 'important');
+      textNode.style.setProperty('-webkit-text-fill-color', '#000000', 'important');
+      textNode.style.setProperty('text-shadow', 'none', 'important');
+      textNode.style.setProperty('font-weight', '800', 'important');
+    });
+  });
+}
+
+/**
+ * html2canvas قد يحتفظ بلون أخضر موروث للأرقام رغم أن computed style أسود.
+ * نعالج بكسلات النص الخضراء داخل خلايا البيانات بعد التصوير فقط، مع ترك
+ * الترويسة والصور والخلفيات خارج نطاق المعالجة.
+ */
+function blackenGreenDataPixels(canvas: HTMLCanvasElement, root: HTMLElement): void {
+  const rootRect = root.getBoundingClientRect();
+  const scaleX = canvas.width / Math.max(rootRect.width, 1);
+  const scaleY = canvas.height / Math.max(rootRect.height, 1);
+  const regions = root.querySelectorAll<HTMLElement>('tbody td, tfoot td');
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  regions.forEach((region) => {
+    const rect = region.getBoundingClientRect();
+    const left = Math.max(0, Math.floor((rect.left - rootRect.left) * scaleX));
+    const top = Math.max(0, Math.floor((rect.top - rootRect.top) * scaleY));
+    const right = Math.min(canvas.width, Math.ceil((rect.right - rootRect.left) * scaleX));
+    const bottom = Math.min(canvas.height, Math.ceil((rect.bottom - rootRect.top) * scaleY));
+    if (right <= left || bottom <= top) return;
+
+    const image = ctx.getImageData(left, top, right - left, bottom - top);
+    for (let i = 0; i < image.data.length; i += 4) {
+      const r = image.data[i];
+      const g = image.data[i + 1];
+      const b = image.data[i + 2];
+      if (g > r + 18 && g > b + 8 && r < 210 && g < 245) {
+        image.data[i] = 0;
+        image.data[i + 1] = 0;
+        image.data[i + 2] = 0;
+      }
+    }
+    ctx.putImageData(image, left, top);
+  });
+}
+
 /**
  * توليد PDF من HTML حقيقي (يعرضه المتصفح) بدل الرسم البرمجي
  * السبب: jsPDF لا يدعم تشكيل الحروف العربية ولا اتجاه الأرقام،
@@ -57,9 +108,11 @@ async function htmlToPdf(opts: {
       <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       <style>${css}</style>
       <style>
-        /* تحسينات خاصة بالتصوير: حدود واضحة ومسافات لا تقطع الأرقام */
-        .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 4px 6px !important; text-align: center !important; vertical-align: middle !important; white-space: normal !important; overflow: visible !important; overflow-wrap: anywhere !important; word-break: normal !important; line-height: 1.35 !important; font-size: clamp(9px, 1.05vw, 13px) !important; }
-        .pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx { color: #000 !important; font-weight: 800 !important; }
+        /* تحسينات خاصة بالتصوير: نص كامل ومتمركز داخل الخلايا دون التصاق بالحدود */
+        .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 6px 8px !important; text-align: center !important; vertical-align: middle !important; white-space: normal !important; overflow: visible !important; overflow-wrap: anywhere !important; word-break: normal !important; line-height: 1.5 !important; height: auto !important; min-height: 30px; font-size: clamp(10px, 1.15vw, 14px) !important; }
+        .pdf-page .pdf-cell-text { display: inline-block !important; width: 100% !important; max-width: 100% !important; text-align: center !important; vertical-align: middle !important; white-space: normal !important; overflow: visible !important; overflow-wrap: anywhere !important; word-break: normal !important; line-height: 1.5 !important; color: #000000 !important; font-weight: 800 !important; }
+        .pdf-page tbody td *, .pdf-page tfoot td *, .pdf-page .num *, .pdf-page .idx * { color: #000000 !important; -webkit-text-fill-color: #000000 !important; text-shadow: none !important; font-weight: 800 !important; }
+        .pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx { color: #000 !important; -webkit-text-fill-color: #000 !important; text-shadow: none !important; font-weight: 800 !important; }
         .pdf-page .num { font-family: 'Cairo', Tahoma, Arial, sans-serif !important; font-weight: 700 !important; letter-spacing: 0.3px; }
         .pdf-page .sub { border-bottom-width: 10px !important; padding-bottom: 6px !important; margin-bottom: 8px !important; }
         .pdf-page .total-row td { border-top: 2px solid #92400e !important; }
@@ -78,6 +131,7 @@ async function htmlToPdf(opts: {
     await new Promise((res) => setTimeout(res, 120));
 
     const page = fdoc.querySelector('.pdf-page') as HTMLElement;
+    forcePdfDataCellTextColor(fdoc);
     const contentH = Math.max(page.scrollHeight, 400);
     frame.style.height = `${contentH + 40}px`;
     await new Promise((res) => setTimeout(res, 80));
@@ -98,7 +152,10 @@ async function htmlToPdf(opts: {
       windowHeight: contentH + 40,
       scrollX: 0,
       scrollY: 0,
+      onclone: (clonedDoc) => forcePdfDataCellTextColor(clonedDoc),
     });
+
+    blackenGreenDataPixels(canvas, page);
 
     const pdf = new JsPDF({ unit: 'mm', format: 'a4', orientation, compress: true });
     const pw = pdf.internal.pageSize.getWidth();
@@ -212,6 +269,9 @@ async function htmlTableToPdfPaginated(opts: {
       </style>
       </head><body><div class="pdf-page">${fullHtml}</div></body></html>`);
     mdoc.close();
+    // تثبيت اللون على صفوف المصدر قبل نسخ outerHTML إلى إطارات الصفحات
+    // حتى لا يعود أي لون موروث من تنسيقات الواجهة أثناء التصوير.
+    forcePdfDataCellTextColor(mdoc);
 
     if ((mdoc as any).fonts?.ready) {
       await Promise.race([(mdoc as any).fonts.ready, new Promise((res) => setTimeout(res, 3000))]);
@@ -316,10 +376,12 @@ async function htmlTableToPdfPaginated(opts: {
           <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
           <style>${css}</style>
           <style>
-            .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 4px 6px !important; text-align: center !important; vertical-align: middle !important; white-space: normal !important; overflow: visible !important; overflow-wrap: anywhere !important; word-break: normal !important; line-height: 1.35 !important; font-size: clamp(9px, 1.05vw, 13px) !important; }
-            .pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx { color: #000 !important; font-weight: 800 !important; }
+            .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 6px 8px !important; text-align: center !important; vertical-align: middle !important; white-space: normal !important; overflow: visible !important; overflow-wrap: anywhere !important; word-break: normal !important; line-height: 1.5 !important; height: auto !important; min-height: 30px; font-size: clamp(10px, 1.15vw, 14px) !important; }
+            .pdf-page .pdf-cell-text { display: inline-block !important; width: 100% !important; max-width: 100% !important; text-align: center !important; vertical-align: middle !important; white-space: normal !important; overflow: visible !important; overflow-wrap: anywhere !important; word-break: normal !important; line-height: 1.5 !important; color: #000000 !important; font-weight: 800 !important; }
+        .pdf-page tbody td *, .pdf-page tfoot td *, .pdf-page .num *, .pdf-page .idx * { color: #000000 !important; -webkit-text-fill-color: #000000 !important; text-shadow: none !important; font-weight: 800 !important; }
+            .pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx { color: #000 !important; -webkit-text-fill-color: #000 !important; text-shadow: none !important; font-weight: 800 !important; }
             .pdf-page > table:not(.info) { font-size: 12px !important; }
-            .pdf-page > table:not(.info) th, .pdf-page > table:not(.info) td { padding: 4px 6px !important; text-align: center !important; vertical-align: middle !important; white-space: normal !important; overflow: visible !important; overflow-wrap: anywhere !important; word-break: normal !important; line-height: 1.35 !important; font-size: clamp(9px, 1.05vw, 13px) !important; }
+            .pdf-page > table:not(.info) th, .pdf-page > table:not(.info) td { padding: 6px 8px !important; text-align: center !important; vertical-align: middle !important; white-space: normal !important; overflow: visible !important; overflow-wrap: anywhere !important; word-break: normal !important; line-height: 1.5 !important; height: auto !important; min-height: 30px; font-size: clamp(10px, 1.15vw, 14px) !important; }
             .pdf-page > table:not(.info) thead th { font-size: 13px !important; }
             .pdf-page .num { font-family: 'Cairo', Tahoma, Arial, sans-serif !important; font-weight: 700 !important; letter-spacing: 0.3px; }
             .pdf-page .sub { border-bottom-width: 2px !important; padding-bottom: 6px !important; margin-bottom: 8px !important; }
@@ -327,6 +389,7 @@ async function htmlTableToPdfPaginated(opts: {
           </style></head>
           <body><div class="pdf-page">${pageHtml}</div></body></html>`);
         fdoc.close();
+        forcePdfDataCellTextColor(fdoc);
 
         if ((fdoc as any).fonts?.ready) {
           await Promise.race([(fdoc as any).fonts.ready, new Promise((res) => setTimeout(res, 2000))]);
@@ -340,7 +403,10 @@ async function htmlTableToPdfPaginated(opts: {
           backgroundColor: '#ffffff',
           width: pageWidthPx,
           windowWidth: pageWidthPx,
+          onclone: (clonedDoc) => forcePdfDataCellTextColor(clonedDoc),
         });
+
+        blackenGreenDataPixels(canvas, pageEl);
 
         if (p > 0) pdf.addPage();
         const imgW = usableWidthMm;

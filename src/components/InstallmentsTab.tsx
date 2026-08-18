@@ -716,7 +716,7 @@ const exportToPDF = (
             const toneClass = c.tone ? ` t-${c.tone}` : "";
             const statusClass =
               c.key === "status" ? (cleanNumber(r.remaining) <= 0 ? " s-ok" : " s-bad") : "";
-            return `<td class="${c.wide ? "wrap" : ""}${toneClass}${statusClass}" style="${fitStyle(v)}">${v}</td>`;
+            return `<td class="${c.wide ? "wrap" : ""}${toneClass}${statusClass}" style="${fitStyle(v)}"><span class="cell-content">${v}</span></td>`;
           })
           .join("");
         return `<tr>${tds}</tr>`;
@@ -726,9 +726,9 @@ const exportToPDF = (
     const totalRow = settings.showTotals
       ? `<tr class="total-row">${cols
           .map((c, idx) => {
-            if (c.key === "idx") return `<td>—</td>`;
-            if (idx === 1) return `<td class="wrap">الإجمالي</td>`;
-            return `<td style="${fitStyle("")}">${c.total ? c.total() : ""}</td>`;
+            if (c.key === "idx") return `<td><span class="cell-content">—</span></td>`;
+            if (idx === 1) return `<td class="wrap"><span class="cell-content">الإجمالي</span></td>`;
+            return `<td style="${fitStyle("")}"><span class="cell-content">${c.total ? c.total() : ""}</span></td>`;
           })
           .join("")}</tr>`
       : "";
@@ -800,29 +800,43 @@ const exportToPDF = (
       }
       th, td {
         border: 0.4pt solid #000;
-        padding: 0 !important;
+        padding: 2px 3px !important;
         text-align: center;
         vertical-align: middle;
         white-space: normal;
-        overflow: hidden;
+        overflow: visible;
         text-overflow: clip;
-        font-size: clamp(7px, 1.05vw, 13px);
+        font-size: clamp(8px, 1.25vw, 14px);
         overflow-wrap: anywhere;
         word-break: break-word;
-        hyphens: auto;
-        line-height: 1.1;
-        max-height: 2.2em;
-        line-height: 1.15;
+        hyphens: none;
+        line-height: 1.3;
+        height: auto;
         font-weight: 700;
         color: #000 !important;
       }
-      td.wrap { white-space: normal; overflow: hidden; text-overflow: clip; overflow-wrap: anywhere; word-break: break-word; hyphens: auto; padding: 0 !important; line-height: 1.1; max-height: 2.2em; font-size: clamp(7px, 1.05vw, 13px); }
+      .cell-content {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 2px 4px;
+        margin: 0;
+        text-align: center;
+        white-space: normal;
+        overflow: visible;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        hyphens: none;
+        line-height: 1.35;
+      }
+      td.wrap, td.wrap .cell-content { white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; word-break: break-word; hyphens: none; line-height: 1.35; height: auto; }
       th {
         background: ${colorTokens.head} !important;
         color: #000 !important;
         font-size: ${headerFontSizePx.toFixed(2)}px;
         font-weight: 800;
-        padding: 0 !important;
+        padding: 4px 5px !important;
       }
       tbody tr:nth-child(even) td { background: ${colorTokens.zebra} !important; }
       td.t-fees { background: ${colorTokens.fees} !important; }
