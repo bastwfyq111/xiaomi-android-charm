@@ -1341,6 +1341,15 @@ const exportToPDF = (
         max-width: none;
         margin: 0;
       }
+      .page-frame {
+        width: 100%;
+        min-height: 260mm;
+        padding: 7mm;
+        border: 1.5pt solid #0f766e;
+        border-radius: 3mm;
+        background: #fff;
+        box-shadow: 0 2mm 8mm rgba(15, 118, 110, 0.14);
+      }
       .print-toolbar {
         display: flex;
         justify-content: flex-end;
@@ -1421,6 +1430,7 @@ const exportToPDF = (
       @media print {
         html, body { width: auto; }
         body { margin: 0; padding: 0; }
+        .page-frame { min-height: auto; border-radius: 0; box-shadow: none; }
         .print-toolbar { display: none !important; }
         .header, .info-box, th, td {
           -webkit-print-color-adjust: exact;
@@ -1434,35 +1444,37 @@ const exportToPDF = (
         <div class="print-toolbar">
           <button type="button" onclick="window.print()">طباعة التقرير</button>
         </div>
-        <div class="header">
-          <h1>المجلس اليمني للاختصاصات الطبية</h1>
-          <p>كشف حساب متدرب - للعام ${year}م</p>
-        </div>
-        <div class="info-grid">
-          ${infoCard("اسم المتدرب", row.name)}
-          ${infoCard("الدفعة", row.batch)}
-          ${infoCard("المساق", row.specialty)}
-          ${infoCard("رقم الهاتف", row.phone)}
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th style="width: 60%">البيان</th>
-              <th style="width: 40%">المبلغ</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="row-fees"><td class="lbl">إجمالي الرسوم المستحقة</td><td class="num">${escapeHtml(fmt(fees))}</td></tr>
-            ${prevRow}
-            <tr class="row-total-due"><td class="lbl">إجمالي المبلغ المطلوب</td><td class="num">${escapeHtml(fmt(dueTotal))}</td></tr>
-            ${paidRows}
-            <tr class="row-total-paid"><td class="lbl">إجمالي المسدد (له)</td><td class="num">${escapeHtml(fmt(totalPaid))}</td></tr>
-            <tr class="row-final"><td class="lbl">${escapeHtml(remainingLabel)}</td><td class="num">${escapeHtml(fmt(Math.abs(remaining)))}</td></tr>
-          </tbody>
-        </table>
-        <div class="foot">
-          <span>تاريخ التقرير: ${escapeHtml(reportDateLabel)}</span>
-          <span>التوقيع: ________________</span>
+        <div class="page-frame">
+          <div class="header">
+            <h1>المجلس اليمني للاختصاصات الطبية</h1>
+            <p>كشف حساب متدرب - للعام ${year}م</p>
+          </div>
+          <div class="info-grid">
+            ${infoCard("اسم المتدرب", row.name)}
+            ${infoCard("الدفعة", row.batch)}
+            ${infoCard("المساق", row.specialty)}
+            ${infoCard("رقم الهاتف", row.phone)}
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 60%">البيان</th>
+                <th style="width: 40%">المبلغ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-fees"><td class="lbl">إجمالي الرسوم المستحقة</td><td class="num">${escapeHtml(fmt(fees))}</td></tr>
+              ${prevRow}
+              <tr class="row-total-due"><td class="lbl">إجمالي المبلغ المطلوب</td><td class="num">${escapeHtml(fmt(dueTotal))}</td></tr>
+              ${paidRows}
+              <tr class="row-total-paid"><td class="lbl">إجمالي المسدد (له)</td><td class="num">${escapeHtml(fmt(totalPaid))}</td></tr>
+              <tr class="row-final"><td class="lbl">${escapeHtml(remainingLabel)}</td><td class="num">${escapeHtml(fmt(Math.abs(remaining)))}</td></tr>
+            </tbody>
+          </table>
+          <div class="foot">
+            <span>تاريخ التقرير: ${escapeHtml(reportDateLabel)}</span>
+            <span>التوقيع: ________________</span>
+          </div>
         </div>
       </div>
     `;
