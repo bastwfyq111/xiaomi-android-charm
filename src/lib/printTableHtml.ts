@@ -76,23 +76,24 @@ export const tablePrintStyles = `
     width: 100%;
     min-width: 0;
     border-collapse: collapse;
-    table-layout: fixed;
-    font-size: clamp(8px, 0.95vw, 11px);
+    table-layout: auto;
+    font-size: clamp(9px, 1.05vw, 13px);
   }
   th, td {
     border: 0.75pt solid #000;
-    padding: 1.5px 2.5px !important;
+    padding: 4px 6px !important;
     text-align: center;
+    vertical-align: middle !important;
     white-space: normal;
     overflow: visible;
     text-overflow: clip;
-    overflow-wrap: break-word;
+    overflow-wrap: anywhere;
     word-break: normal;
     hyphens: none;
     color: #000 !important;
     font-weight: 800 !important;
-    line-height: 1.18;
-    font-size: clamp(8px, 0.95vw, 11px);
+    line-height: 1.35;
+    font-size: clamp(9px, 1.05vw, 13px);
   }
   tbody td,
   tfoot td {
