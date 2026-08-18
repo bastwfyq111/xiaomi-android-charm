@@ -758,6 +758,23 @@ const exportToPDF = (
     const reportCss = `
       html, body { margin: 0 !important; padding: 0 !important; }
       * { box-sizing: border-box; }
+      .print-toolbar {
+        display: flex;
+        justify-content: flex-end;
+        margin: 0 0 6px;
+      }
+      .print-toolbar button {
+        border: 0.6pt solid #0f766e;
+        border-radius: 4px;
+        background: #0f766e;
+        color: #fff;
+        cursor: pointer;
+        font-family: Cairo, Arial, sans-serif;
+        font-size: 10pt;
+        font-weight: 800;
+        padding: 5px 12px;
+      }
+      .print-toolbar button:hover { background: #115e59; }
       .doc-header {
         display: flex;
         align-items: center;
@@ -829,11 +846,15 @@ const exportToPDF = (
         padding-top: 3px;
       }
       @media print {
+        .print-toolbar { display: none !important; }
         tr { page-break-inside: avoid; }
       }
     `;
 
     const body = `
+      <div class="print-toolbar">
+        <button type="button" onclick="window.print()">طباعة التقرير</button>
+      </div>
       ${
         settings.showHeader
           ? `<div class="doc-header">
@@ -866,6 +887,7 @@ const exportToPDF = (
       pageSize: settings.pageSize,
       orientation: settings.orientation,
       margin: marginToCss(settings.margin),
+      autoPrint: false,
     });
 
     if (ok) {
