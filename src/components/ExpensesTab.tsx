@@ -201,7 +201,7 @@ const rowClass = (lv: Row["lv"]) => {
     case "header":
       return "bg-teal-700 text-white font-bold";
     case "bab":
-      return "bg-emerald-100 text-emerald-900 font-bold";
+      return "bg-emerald-100 text-black-900 font-bold";
     case "fasl":
       return "bg-yellow-100 text-amber-900 font-semibold";
     case "band":
@@ -223,7 +223,7 @@ const CUR_H = "bg-amber-300 text-amber-900"; // رأس الشهر الجاري
 const CUR_C = "bg-amber-50"; // خلايا الشهر الجاري
 const PREV_H = "bg-sky-300 text-sky-900"; // رأس الأشهر السابقة
 const PREV_C = "bg-sky-50"; // خلايا الأشهر السابقة
-const TOT_H = "bg-emerald-200 text-emerald-900"; // رأس الجملة
+const TOT_H = "bg-emerald-200 text-black-900"; // رأس الجملة
 const TOT_C = "bg-emerald-50"; // خلايا الجملة
 
 // ===== خلية رأس موحدة =====

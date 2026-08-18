@@ -168,7 +168,7 @@ function AccountDropdownCell({
           ${
             value
               ? isDebit
-                ? "border-emerald-400/70 bg-emerald-50 text-emerald-900"
+                ? "border-emerald-400/70 bg-emerald-50 text-black-900"
                 : "border-rose-400/70 bg-rose-50 text-rose-900"
               : "border-dashed border-slate-300 bg-slate-50 text-slate-400"
           }`}
@@ -226,14 +226,14 @@ function AccountDropdownCell({
                       ${
                         value === acc
                           ? isDebit
-                            ? "bg-emerald-100 font-bold text-emerald-900"
+                            ? "bg-emerald-100 font-bold text-black-900"
                             : "bg-rose-100 font-bold text-rose-900"
                           : "text-slate-700 hover:bg-slate-50 active:bg-slate-100"
                       }`}
                   >
                     <span
                       className={`ml-2 inline-block w-6 text-center text-xs font-bold
-                      ${isDebit ? "text-emerald-400" : "text-rose-400"}`}
+                      ${isDebit ? "text-black-400" : "text-rose-400"}`}
                     >
                       {i + 1}
                     </span>
@@ -409,7 +409,7 @@ export default function JournalTab() {
             className={`min-w-0 w-full rounded-lg border bg-white px-2 py-2.5 text-sm outline-none transition-all sm:px-2.5 sm:py-2 sm:text-[13px]
               ${
                 isDebit
-                  ? "border-emerald-200 text-emerald-900 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+                  ? "border-emerald-200 text-black-900 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
                   : "border-rose-200 text-rose-900 focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10"
               }`}
           />
@@ -425,7 +425,7 @@ export default function JournalTab() {
             className={`min-w-0 w-full rounded-lg border bg-white px-1.5 py-2.5 text-center font-mono text-[13px] font-bold outline-none transition-all sm:px-2 sm:py-2 sm:text-sm
               ${
                 isDebit
-                  ? "border-emerald-200 text-emerald-700 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+                  ? "border-emerald-200 text-black-700 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
                   : "border-rose-200 text-rose-700 focus:border-rose-500 focus:ring-4 focus:ring-rose-500/10"
               }`}
           />
@@ -564,7 +564,7 @@ export default function JournalTab() {
                       <div className="grid grid-cols-2 sm:flex items-center gap-1.5 sm:gap-2">
                         <button
                           onClick={() => addLine("debit")}
-                          className="min-w-0 flex min-h-[32px] items-center justify-center gap-1 rounded-lg border border-dashed border-emerald-300 px-1.5 sm:px-2 text-xs sm:text-xs font-bold text-emerald-700 transition-colors hover:bg-emerald-50 active:bg-emerald-100"
+                          className="min-w-0 flex min-h-[32px] items-center justify-center gap-1 rounded-lg border border-dashed border-emerald-300 px-1.5 sm:px-2 text-xs sm:text-xs font-bold text-black-700 transition-colors hover:bg-emerald-50 active:bg-emerald-100"
                         >
                           <Plus className="h-3.5 w-3.5" /> إضافة حساب مدين
                         </button>
@@ -575,7 +575,7 @@ export default function JournalTab() {
                           <Plus className="h-3.5 w-3.5" /> إضافة حساب دائن
                         </button>
                         <span className="col-span-2 flex items-center justify-center gap-1.5 font-mono text-xs sm:mr-auto sm:col-span-1 sm:justify-start sm:gap-2 sm:text-xs font-bold">
-                            <span className="rounded-full bg-emerald-100 px-1.5 py-0.5 text-emerald-800 sm:px-2.5 sm:py-1">
+                            <span className="rounded-full bg-emerald-100 px-1.5 py-0.5 text-black-800 sm:px-2.5 sm:py-1">
                             مدين {totalDebit.toLocaleString("en-US")}
                           </span>
                             <span className="rounded-full bg-rose-100 px-1.5 py-0.5 text-rose-800 sm:px-2.5 sm:py-1">
@@ -598,7 +598,7 @@ export default function JournalTab() {
             <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 sm:gap-3">
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-sm font-bold">
-                  <span className="text-emerald-700">
+                  <span className="text-black-700">
                     مدين {totalDebit.toLocaleString("en-US")}
                   </span>
                   <span className="text-slate-300">|</span>
@@ -746,7 +746,7 @@ export default function JournalTab() {
                         <span className={journalClampCls}>{j.description || "—"}</span>
                       </td>
                       <td className="min-w-0 max-w-[180px] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
-                        <span className={`${journalClampCls} rounded-full bg-emerald-50 px-2 py-1 text-sm font-bold text-emerald-800`}>
+                        <span className={`${journalClampCls} rounded-full bg-emerald-50 px-2 py-1 text-sm font-bold text-black-800`}>
                           {j.debitAccount || "—"}
                         </span>
                       </td>
@@ -755,7 +755,7 @@ export default function JournalTab() {
                           {j.creditAccount || "—"}
                         </span>
                       </td>
-                      <td className="min-w-0 max-w-[105px] font-mono font-black text-emerald-700 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      <td className="min-w-0 max-w-[105px] font-mono font-black text-black-700 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                         <span className={journalClampCls}>{j.debit ? j.debit.toLocaleString("en-US") : "—"}</span>
                       </td>
                       <td className="min-w-0 max-w-[105px] font-mono font-black text-rose-700 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
@@ -786,7 +786,7 @@ export default function JournalTab() {
                     <td colSpan={6} className="text-right font-bold text-slate-700 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                       الإجمالي
                     </td>
-                    <td className="font-mono font-black text-emerald-800 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                    <td className="font-mono font-black text-black-800 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                       {grandDebit.toLocaleString("en-US")}
                     </td>
                     <td className="font-mono font-black text-rose-800 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
