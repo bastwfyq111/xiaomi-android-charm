@@ -288,8 +288,8 @@ export default function HafizaTab() {
                   </div>
 
                   <FieldDark label="الدفعة" icon={<Sparkles className="w-4 h-4 text-amber-500" />} v={form.batch} on={(v) => setForm({ ...form, batch: v })} />
-                  <FieldDark label="التخصص" icon={<FileText className="w-4 h-4 text-emerald-500" />} v={form.specialty} on={(v) => setForm({ ...form, specialty: v })} />
-                  <FieldDark label="التاريخ" type="date" icon={<Calendar className="w-4 h-4 text-rose-400" />} v={form.date} on={(v) => setForm({ ...form, date: v })} />
+                  <FieldDark label="التخصص" icon={<FileText className="w-4 h-4 text-black -500" />} v={form.specialty} on={(v) => setForm({ ...form, specialty: v })} />
+                  <FieldDark label="التاريخ" type="date" icon={<Calendar className="w-4 h-4 text-black -400" />} v={form.date} on={(v) => setForm({ ...form, date: v })} />
                   <FieldDark label="رقم الحافظة" icon={<Hash className="w-4 h-4 text-violet-400" />} v={form.hafizaNo} on={(v) => setForm({ ...form, hafizaNo: v })} />
                   <FieldDark label="مبلغ الحافظة" type="number" icon={<Banknote className="w-4 h-4 text-teal-400" />} v={form.hafizaAmount} on={(v) => setForm({ ...form, hafizaAmount: v })} />
 

@@ -76,7 +76,7 @@ const Segmented = <T extends string | number>({
         className={`flex-1 min-h-[38px] px-2 rounded-lg text-xs font-bold transition-all ${
           value === o.value
             ? "bg-gradient-to-l from-teal-600 to-emerald-600 text-white shadow"
-            : "text-teal-800 hover:bg-white"
+            : "text-black hover:bg-white"
         }`}
       >
         {o.label}
@@ -99,7 +99,7 @@ const Toggle = ({
     onClick={() => onChange(!checked)}
     className="flex items-center justify-between w-full min-h-[44px] px-3 rounded-xl border border-teal-100 bg-white hover:bg-teal-50/60 transition-colors"
   >
-    <span className="text-xs font-bold text-slate-700">{label}</span>
+    <span className="text-xs font-bold text-black">{label}</span>
     <span
       className={`w-10 h-5 rounded-full relative transition-colors ${
         checked ? "bg-emerald-500" : "bg-slate-300"
@@ -167,7 +167,7 @@ export default function PrintSettingsModal({
 
         <div className="p-4 space-y-4">
           <div className="space-y-1.5">
-            <span className="text-[11px] font-bold text-slate-500">اتجاه الصفحة</span>
+            <span className="text-[11px] font-bold text-black">اتجاه الصفحة</span>
             <Segmented
               value={s.orientation}
               onChange={(v) => setS({ ...s, orientation: v })}
@@ -179,7 +179,7 @@ export default function PrintSettingsModal({
           </div>
 
           <div className="space-y-1.5">
-            <span className="text-[11px] font-bold text-slate-500">حجم الورق</span>
+            <span className="text-[11px] font-bold text-black">حجم الورق</span>
             <Segmented
               value={s.pageSize}
               onChange={(v) => setS({ ...s, pageSize: v })}
@@ -191,7 +191,7 @@ export default function PrintSettingsModal({
           </div>
 
           <div className="space-y-1.5">
-            <span className="text-[11px] font-bold text-slate-500">الهوامش</span>
+            <span className="text-[11px] font-bold text-black">الهوامش</span>
             <Segmented
               value={s.margin}
               onChange={(v) => setS({ ...s, margin: v })}
@@ -204,7 +204,7 @@ export default function PrintSettingsModal({
           </div>
 
           <div className="space-y-1.5">
-            <span className="text-[11px] font-bold text-slate-500">حجم الخط</span>
+            <span className="text-[11px] font-bold text-black">حجم الخط</span>
             <Segmented
               value={s.fontMode}
               onChange={(v) => setS({ ...s, fontMode: v })}
@@ -224,7 +224,7 @@ export default function PrintSettingsModal({
                   onChange={(e) => setS({ ...s, fontSize: Number(e.target.value) })}
                   className="flex-1 accent-emerald-600"
                 />
-                <span className="font-mono text-xs font-bold text-teal-800 w-12 text-center">
+                <span className="font-mono text-xs font-bold text-black w-12 text-center">
                   {s.fontSize}px
                 </span>
               </div>
@@ -252,11 +252,11 @@ export default function PrintSettingsModal({
           {columnOptions.length > 0 && (
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold text-slate-500">الأعمدة المطبوعة</span>
+                <span className="text-[11px] font-bold text-black">الأعمدة المطبوعة</span>
                 <button
                   type="button"
                   onClick={() => setS({ ...s, hiddenColumns: [] })}
-                  className="flex items-center gap-1 text-[11px] font-bold text-teal-700 hover:text-teal-900"
+                  className="flex items-center gap-1 text-[11px] font-bold text-black hover:text-black"
                 >
                   <RotateCcw className="w-3.5 h-3.5" /> تحديد الكل
                 </button>
@@ -271,7 +271,7 @@ export default function PrintSettingsModal({
                       onClick={() => toggleCol(c.key)}
                       className={`min-h-[34px] px-2.5 rounded-lg text-[11px] font-bold border transition-all ${
                         on
-                          ? "bg-emerald-50 border-emerald-300 text-emerald-800"
+                          ? "bg-emerald-50 border-emerald-300 text-black"
                           : "bg-slate-50 border-slate-200 text-slate-400 line-through"
                       }`}
                     >
@@ -288,7 +288,7 @@ export default function PrintSettingsModal({
         <div className="sticky bottom-0 flex gap-2 p-3 bg-white/95 backdrop-blur border-t border-slate-100">
           <button
             onClick={onClose}
-            className="min-h-[48px] px-4 rounded-xl border border-slate-200 text-slate-600 text-sm font-bold hover:bg-slate-50"
+            className="min-h-[48px] px-4 rounded-xl border border-slate-200 text-black text-sm font-bold hover:bg-slate-50"
           >
             إلغاء
           </button>

@@ -58,9 +58,9 @@ async function htmlToPdf(opts: {
       <style>${css}</style>
       <style>
         /* تحسينات خاصة بالتصوير: حدود واضحة ومسافات لا تقطع الأرقام */
-        .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 1.5px 2.5px !important; line-height: 1.18 !important; vertical-align: middle !important; }
+        .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 1.5px 2.5px !important; line-height: 1. !important; vertical-align: middle !important; }
         .pdf-page .num { font-family: 'Cairo', Tahoma, Arial, sans-serif !important; font-weight: 700 !important; letter-spacing: 0.3px; }
-        .pdf-page .sub { border-bottom-width: 2px !important; padding-bottom: 6px !important; margin-bottom: 8px !important; }
+        .pdf-page .sub { border-bottom-width: 10px !important; padding-bottom: 6px !important; margin-bottom: 8px !important; }
         .pdf-page .total-row td { border-top: 2px solid #92400e !important; }
       </style></head>
 
