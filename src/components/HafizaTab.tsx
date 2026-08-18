@@ -469,7 +469,7 @@ export default function HafizaTab() {
                           {fmt(totalHafizaAmount)}
                         </TableCell>
                         <TableCell colSpan={4}></TableCell>
-                        <TableCell className="text-center font-mono font-bolder text-emerald-700 text-xs sm:text-sm">
+                        <TableCell className="text-center font-mono font-bolder text-black-700 text-xs sm:text-sm">
                           {fmt(totalNotifyAmount)}
                         </TableCell>
                         <TableCell></TableCell>
