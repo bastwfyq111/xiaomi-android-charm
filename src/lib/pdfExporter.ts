@@ -59,6 +59,7 @@ async function htmlToPdf(opts: {
       <style>
         /* تحسينات خاصة بالتصوير: حدود واضحة ومسافات لا تقطع الأرقام */
         .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 1.5px 2.5px !important; line-height: 1. !important; vertical-align: middle !important; }
+        .pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx { color: #000 !important; font-weight: 800 !important; }
         .pdf-page .num { font-family: 'Cairo', Tahoma, Arial, sans-serif !important; font-weight: 700 !important; letter-spacing: 0.3px; }
         .pdf-page .sub { border-bottom-width: 10px !important; padding-bottom: 6px !important; margin-bottom: 8px !important; }
         .pdf-page .total-row td { border-top: 2px solid #92400e !important; }
@@ -204,6 +205,7 @@ async function htmlTableToPdfPaginated(opts: {
       <style>${css}</style>
       <style>
         .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 1.5px 2.5px !important; line-height: 1.18 !important; vertical-align: middle !important; }
+        .pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx { color: #000 !important; font-weight: 800 !important; }
         .pdf-page > table:not(.info) { font-size: 12px !important; }
         .pdf-page > table:not(.info) th, .pdf-page > table:not(.info) td { padding: 2.5px 3.5px !important; line-height: 1.28 !important; font-size: 11px !important; }
         .pdf-page > table:not(.info) thead th { font-size: 13px !important; }
@@ -315,6 +317,7 @@ async function htmlTableToPdfPaginated(opts: {
           <style>${css}</style>
           <style>
             .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 1.5px 2.5px !important; line-height: 1.18 !important; vertical-align: middle !important; }
+            .pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx { color: #000 !important; font-weight: 800 !important; }
             .pdf-page > table:not(.info) { font-size: 12px !important; }
             .pdf-page > table:not(.info) th, .pdf-page > table:not(.info) td { padding: 2.5px 3.5px !important; line-height: 1.28 !important; font-size: 11px !important; }
             .pdf-page > table:not(.info) thead th { font-size: 13px !important; }
