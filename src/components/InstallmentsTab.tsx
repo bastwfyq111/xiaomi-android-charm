@@ -1319,6 +1319,24 @@ const exportToPDF = (
         max-width: none;
         margin: 0;
       }
+      .print-toolbar {
+        display: flex;
+        justify-content: flex-end;
+        margin: 0 0 4mm;
+      }
+      .print-toolbar button {
+        border: 0.6pt solid #0f766e;
+        border-radius: 1.5mm;
+        background: #0f766e;
+        color: #fff;
+        cursor: pointer;
+        font-family: Cairo, Arial, sans-serif;
+        font-size: 10pt;
+        font-weight: 800;
+        padding: 2.2mm 5mm;
+      }
+      .print-toolbar button:hover { background: #115e59; }
+
       .header {
         background: #0f766e;
         color: #fff;
@@ -1381,6 +1399,7 @@ const exportToPDF = (
       @media print {
         html, body { width: auto; }
         body { margin: 0; padding: 0; }
+        .print-toolbar { display: none !important; }
         .header, .info-box, th, td {
           -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
@@ -1390,6 +1409,9 @@ const exportToPDF = (
 
     const body = `
       <div class="container">
+        <div class="print-toolbar">
+          <button type="button" onclick="window.print()">طباعة التقرير</button>
+        </div>
         <div class="header">
           <h1>المجلس اليمني للاختصاصات الطبية</h1>
           <p>كشف حساب متدرب - للعام ${year}م</p>
@@ -1442,6 +1464,7 @@ const exportToPDF = (
       pageSize: "A4",
       orientation: "portrait",
       margin: "8mm",
+      autoPrint: false,
     });
     if (ok) {
       toast.success("اختر «حفظ كـ PDF» من نافذة الطباعة للحصول على ملف واضح");

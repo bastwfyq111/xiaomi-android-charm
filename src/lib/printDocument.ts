@@ -21,6 +21,8 @@ export interface PrintDocumentOptions {
   pageSize?: "A4" | "A3";
   /** هامش الصفحة */
   margin?: string;
+  /** تشغيل نافذة الطباعة تلقائياً بعد تحميل التقرير */
+  autoPrint?: boolean;
 }
 
 const baseCss = (
@@ -82,6 +84,7 @@ export function openPrintDocument(options: PrintDocumentOptions): boolean {
     orientation = "portrait",
     pageSize = "A4",
     margin = "8mm",
+    autoPrint = true,
   } = options;
 
   const w = window.open("", "_blank", "width=1280,height=900");
@@ -101,7 +104,7 @@ export function openPrintDocument(options: PrintDocumentOptions): boolean {
   <body>
 ${reportLetterheadHtml()}
 ${body}
-<script>
+${autoPrint ? `<script>
   (function () {
     var done = false;
     function go() {
@@ -119,7 +122,7 @@ ${body}
       setTimeout(go, 1500);
     }
   })();
-</script>
+</script>` : ""}
 
 </body>
 </html>`;
