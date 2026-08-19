@@ -387,13 +387,13 @@ export default function MonthlyStatementTab() {
               <tr>
                 <th
                   rowSpan={2}
-                  className="border border-black text-center bg-slate-100 text-slate-900 font-extrabold break-words !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"
+                  className="border border-black text-center bg-slate-100 text-slate-900 font-extrabold break-words !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-normal"
                 >
                   بيان الحسابات (طبقاً للنظام المحاسبي الموحد)
                 </th>
                 <th
                   colSpan={2}
-                  className="border border-black text-center bg-slate-200/60 font-bold text-slate-800 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"
+                  className="border border-black text-center bg-slate-200/60 font-bold text-slate-800 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-normal"
                 >
                   الرصيد الافتتاحي / السابق في{" "}
                   {startMonth === 1 ? `1/1/${year}` : `${year}/${startMonth}/1`}م
@@ -408,17 +408,17 @@ export default function MonthlyStatementTab() {
                   colSpan={2}
                   className="border border-black text-center bg-slate-200/60 font-bold text-slate-800 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"
                 >
-                  الجملــــــــــــة التراكمية
+ الجملــــــــــــة التراكمية
                 </th>
                 <th
                   colSpan={2}
-                  className="border border-black text-center bg-amber-50 text-amber-900 font-extrabold !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"
+                  className="border border-black text-center bg-amber-50 text-amber-900 font-extrabold !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-normal"
                 >
-                  الرصيد الختامي في {year}/{endMonth}/{lastDayOfMonth(year, endMonth)}م
+   الرصيد الختامي في {year}/{endMonth}/{lastDayOfMonth(year, endMonth)}م
                 </th>
               </tr>
               <tr className="bg-slate-50 text-xs text-slate-600 border-b border-black">
-                <th className="border border-black text-center font-semibold bg-slate-50 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                <th className="border border-black text-center font-semibold bg-slate-50 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   إيرادات / مدين
                 </th>
                 <th className="border border-black text-center font-semibold bg-slate-50 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
@@ -455,7 +455,7 @@ export default function MonthlyStatementTab() {
                     <tr className="bg-slate-100/80 font-bold">
                       <td
                         colSpan={9}
-                        className="border border-black text-center text-slate-900 font-bold bg-slate-200/50 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"
+                        className="border border-black text-center text-slate-900 font-bold bg-slate-200/50 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-normal"
                       >
                         📁 {g.title}
                       </td>
@@ -479,7 +479,7 @@ export default function MonthlyStatementTab() {
 
                       return (
                         <tr key={a} className="hover:bg-slate-50/80 transition-colors">
-                          <td className="border border-black font-medium text-slate-700 text-center min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="border border-black font-medium text-slate-700 text-center min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                             {a}
                           </td>
                           <td className="border border-black numeric-cell font-mono text-center text-slate-600 min-w-[96px] sm:min-w-[120px] whitespace-nowrap overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
