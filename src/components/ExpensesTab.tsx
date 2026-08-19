@@ -478,18 +478,9 @@ export default function ExpensesTab() {
 
     return (
       <div className="space-y-0" dir="rtl">
-        <div className="bg-white rounded-xl border-2 border-black shadow-sm overflow-hidden">
-          <div className="bg-gradient-to-r from-teal-700 to-emerald-700 text-white p-1.5 text-center">
-            <h3 className="text-base sm:text-lg font-bold">{opts.title}</h3>
-            <p className="text-xs opacity-90">{opts.subtitle}</p>
-            <p className="text-[10px] opacity-75 mt-0.5">
-              المجلس اليمني للاختصاصات الطبية فرع - صعدة
-            </p>
-          </div>
-          
+        <div className="w-full max-w-full overflow-hidden rounded-lg border border-black bg-white shadow-sm">
           <div className="overflow-x-auto">
-            {/* تم تغيير w-max w-max إلى w-full min-w-max ليتمدد تلقائياً */}
-            <table className="w-full min-w-max table-auto border-collapse text-sm sm:text-base">
+            <table className="w-full min-w-[720px] table-auto border-collapse text-sm sm:text-base">
               <thead className="sticky top-0 z-10 font-bold text-xs">
                 <tr>
                   {/* تغيير تنسيق الرأس ليكون متوسط النص بدلاً من المحاذاة لليمين فقط */}
