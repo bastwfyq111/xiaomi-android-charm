@@ -201,16 +201,57 @@ table td button {
   font-weight: 700 !important;
 }
 
-/* الأرقام تبقى متصلة، سوداء وغامقة بخط Times New Roman كما في التصدير والطباعة */
-table td.font-mono,
-table th.font-mono,
+/* أعمدة المبالغ والأرقام والتواريخ: خط صغير متناسب مع الخلية ومنع الالتفاف */
+  table td.numeric-cell,
+  table th.numeric-cell,
+  table td.date-cell,
+  table th.date-cell,
+  table td.compact-cell,
+  table th.compact-cell,
+  table td.font-mono,
+  table th.font-mono,
 table .tabular-nums,
 table input[type="number"] {
   font-family: 'Times New Roman', Times, serif !important;
+  font-size: clamp(9px, 1.9vw, 12px) !important;
+  line-height: 1.15 !important;
   color: #000 !important;
   font-weight: 900 !important;
-  word-break: keep-all;
-  overflow-wrap: normal;
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+  hyphens: none !important;
+}
+
+table td.numeric-cell :where(span, div, input, button),
+ table th.numeric-cell :where(span, div, input, button),
+ table td.date-cell :where(span, div, input, button),
+ table th.date-cell :where(span, div, input, button),
+ table td.compact-cell :where(span, div, input, button),
+ table th.compact-cell :where(span, div, input, button),
+ table td.font-mono :where(span, div, input, button),
+table th.font-mono :where(span, div, input, button) {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+}
+
+@media (max-width: 640px) {
+  table td.numeric-cell,
+ table th.numeric-cell,
+ table td.date-cell,
+ table th.date-cell,
+ table td.compact-cell,
+ table th.compact-cell,
+ table td.font-mono,
+ table th.font-mono,
+ table .tabular-nums,
+  table input[type="number"] {
+    font-size: clamp(8px, 2.35vw, 11px) !important;
+  }
 }
 
 /* الحقول والمحتوى داخل الخلايا لا تتجاوز عرض الخلية */

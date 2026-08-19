@@ -402,11 +402,12 @@ export default function HafizaTab() {
                           const isEditing = activeCell?.rowId === row.id && activeCell?.colKey === c.key;
                           const val = (row as any)[c.key];
                           const isMoney = c.key === "hafizaAmount" || c.key === "notifyAmount";
+                          const isDate = /date|تاريخ|اليوم|الشهر|السنة|year|month|day/i.test(`${c.key} ${c.label}`);
 
                           return (
                             <TableCell
                               key={c.key}
-                              className={`whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center align-middle ${isEditing ? "bg-amber-50" : "cursor-pointer"}`}
+                              className={`whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center align-middle ${isMoney ? "numeric-cell" : ""} ${isDate ? "date-cell" : ""} ${isEditing ? "bg-amber-50" : "cursor-pointer"}`}
                               onClick={() => !isEditing && handleCellClick(row.id, c.key, val)}
                             >
                               {isEditing ? (
@@ -419,7 +420,7 @@ export default function HafizaTab() {
                                   className="h-8 sm:h-9 text-xs sm:text-sm bg-white text-slate-900 border-2 border-amber-400 text-center rounded-md"
                                 />
                               ) : (
-                                <span className={`${isMoney ? "font-mono font-bold text-amber-700 px-1.5 py-1 sm:px-2 rounded-md bg-amber-50 inline-block text-xs sm:text-sm" : "text-slate-800 font-medium text-xs sm:text-sm whitespace-nowrap"}`}>
+                                <span className={`${isMoney ? "numeric-cell font-mono font-bold text-amber-700 px-1.5 py-1 sm:px-2 rounded-md bg-amber-50 inline-block text-xs sm:text-sm" : isDate ? "date-cell text-slate-800 font-medium text-xs sm:text-sm whitespace-nowrap" : "text-slate-800 font-medium text-xs sm:text-sm whitespace-nowrap"}`}>
                                   {isMoney ? fmt(Number(val) || 0) : String(val ?? "")}
                                 </span>
                               )}
@@ -465,11 +466,11 @@ export default function HafizaTab() {
                         <TableCell className="text-center font-bold text-slate-600">∑</TableCell>
                         <TableCell className="text-center font-bold text-slate-800">إجمالي الصفحة</TableCell>
                         <TableCell colSpan={5}></TableCell>
-                        <TableCell className="text-center font-mono font-bold text-amber-700 text-xs sm:text-sm">
+                        <TableCell className="text-center numeric-cell font-mono font-bold text-amber-700 text-xs sm:text-sm">
                           {fmt(totalHafizaAmount)}
                         </TableCell>
                         <TableCell colSpan={4}></TableCell>
-                        <TableCell className="text-center font-mono font-bolder text-black-700 text-xs sm:text-sm">
+                        <TableCell className="text-center numeric-cell font-mono font-bolder text-black-700 text-xs sm:text-sm">
                           {fmt(totalNotifyAmount)}
                         </TableCell>
                         <TableCell></TableCell>

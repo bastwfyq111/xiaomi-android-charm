@@ -125,7 +125,9 @@ export const tablePrintStyles = `
     font-size: 14px;
   }
   tbody tr:nth-child(even) td { background: #f8fafc !important; }
-  .num {
+  .num,
+  .numeric-cell,
+  .date-cell {
     font-family: 'Times New Roman', Times, serif !important;
     text-align: center !important;
     direction: ltr;
@@ -133,14 +135,25 @@ export const tablePrintStyles = `
     -webkit-text-fill-color: #000 !important;
     text-shadow: none !important;
     font-weight: 900 !important;
-    white-space: nowrap;
-    overflow-wrap: normal;
-    word-break: normal;
-    font-size: inherit;
+    white-space: nowrap !important;
+    overflow-wrap: normal !important;
+    word-break: keep-all !important;
+    hyphens: none !important;
+    line-height: 1.15 !important;
+    font-size: clamp(9px, 1.9vw, 12px) !important;
+  }
+  .num .pdf-cell-text,
+  .numeric-cell .pdf-cell-text,
+  .date-cell .pdf-cell-text {
+    white-space: nowrap !important;
+    overflow-wrap: normal !important;
+    word-break: keep-all !important;
+    line-height: inherit !important;
+    font-size: inherit !important;
   }
   
   /* تم تعديل العرض قليلاً لتتسع لكلمة الإجمالي */
-  .idx { width: 34px; min-width: 34px; max-width: 48px; text-align: center !important; color: #000 !important; font-weight: 700; }
+  .idx { width: 34px; min-width: 34px; max-width: 48px; text-align: center !important; color: #000 !important; font-weight: 900; font-family: 'Times New Roman', Times, serif !important; font-size: clamp(9px, 1.9vw, 12px) !important; white-space: nowrap !important; overflow-wrap: normal !important; word-break: keep-all !important; }
   
   .total-row td {
     background: #fef3c7 !important;
@@ -207,9 +220,23 @@ export function buildTableHtml(opts: {
   reportDate?: string;
 }) {
   const { title, columns, rows, numericKeys = [], subtitle, reportDate } = opts;
+  const isDateColumn = (c: TableCol) =>
+    /date|تاريخ|اليوم|الشهر|السنة|year|month|day/i.test(`${c.key} ${c.label}`);
+  const isCompactColumn = (c: TableCol) =>
+    /(^|[-_ ])(no|number|code|key|id)([-_ ]|$)|رقم|رمز|كود|الباب|الفصل|البند|النوع|الشهر|السنة/i.test(`${c.key} ${c.label}`);
+  const cellClass = (c: TableCol) => {
+    const isNumeric = numericKeys.includes(c.key);
+    const isDate = isDateColumn(c);
+    const isCompact = isCompactColumn(c);
+    return [
+      isNumeric ? "num numeric-cell" : "",
+      isDate ? "date-cell" : "",
+      isCompact ? "compact-cell numeric-cell" : "",
+    ].filter(Boolean).join(" ");
+  };
 
-  const head = `${reportLetterheadRowHtml(columns.length + 1)}<tr><th class="idx">م</th>${columns
-    .map((c) => `<th>${escapeHtml(c.label)}</th>`)
+  const head = `${reportLetterheadRowHtml(columns.length + 1)}<tr><th class="idx numeric-cell">م</th>${columns
+    .map((c) => `<th class="${cellClass(c)}">${escapeHtml(c.label)}</th>`)
     .join("")}</tr>`;
 
   const totals: Record<string, number> = {};
@@ -220,22 +247,29 @@ export function buildTableHtml(opts: {
   });
 
   // إضافة كلمة "الإجمالي" هنا، وبقاؤها داخل tbody يضمن عدم تكرارها في كل صفحة
-  const totalRow = `<tr class="total-row"><td class="idx" style="font-size:12px;">الإجمالي</td>${columns
+  const totalRow = `<tr class="total-row"><td class="idx numeric-cell" style="font-size:12px;">الإجمالي</td>${columns
     .map((c) =>
       numericKeys.includes(c.key)
-        ? `<td class="num"><span class="pdf-cell-text" style="color:#000000 !important;font-weight:800 !important;">${escapeHtml(fmt(totals[c.key] || 0))}</span></td>`
-        : `<td><span class="pdf-cell-text" style="color:#000000 !important;font-weight:800 !important;"></span></td>`
+        ? `<td class="num numeric-cell"><span class="pdf-cell-text" style="color:#000000 !important;font-weight:800 !important;">${escapeHtml(fmt(totals[c.key] || 0))}</span></td>`
+        : `<td class="${isDateColumn(c) ? "date-cell" : ""}"><span class="pdf-cell-text" style="color:#000000 !important;font-weight:800 !important;"></span></td>`
     )
     .join("")}</tr>`;
 
   const body = rows
     .map(
       (r, i) =>
-        `<tr><td class="idx">${i + 1}</td>${columns
+        `<tr><td class="idx numeric-cell">${i + 1}</td>${columns
           .map((c) => {
             const v = r[c.key];
             const isNum = numericKeys.includes(c.key) || typeof v === "number";
-            return `<td class="${isNum ? "num" : ""}"><span class="pdf-cell-text" style="color:#000000 !important;font-weight:800 !important;">${
+            const isDate = isDateColumn(c);
+            const isCompact = isCompactColumn(c);
+            const classes = [
+              isNum ? "num numeric-cell" : "",
+              isDate ? "date-cell" : "",
+              isCompact ? "compact-cell numeric-cell" : "",
+            ].filter(Boolean).join(" ");
+            return `<td class="${classes}"><span class="pdf-cell-text" style="color:#000000 !important;font-weight:800 !important;">${
               isNum ? escapeHtml(fmt(Number(v) || 0)) : escapeHtml(v)
             }</span></td>`;
           })

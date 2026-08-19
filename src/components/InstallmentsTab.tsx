@@ -107,7 +107,7 @@ const StatsGrid = ({ stats, columns = 3 }: { stats: any[]; columns?: number }) =
             <div className="text-xs leading-tight sm:text-xs font-bold text-slate-500 truncate">
               {stat.label}
             </div>
-            <div className="text-sm sm:text-xl font-mono font-extrabold mt-0.5 text-slate-900 tabular-nums truncate">
+            <div className="text-sm sm:text-xl numeric-cell font-mono font-extrabold mt-0.5 text-slate-900 tabular-nums truncate">
               {stat.value}
             </div>
           </div>
@@ -831,6 +831,22 @@ const exportToPDF = (
         line-height: 1.35;
       }
       td.wrap, td.wrap .cell-content { white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; word-break: break-word; hyphens: none; line-height: 1.35; height: auto; }
+      td.numeric-cell, th.numeric-cell, td.date-cell, th.date-cell, td.compact-cell, th.compact-cell {
+        font-family: 'Times New Roman', Times, serif !important;
+        font-size: clamp(7px, 0.95vw, 11px) !important;
+        line-height: 1.05 !important;
+        white-space: nowrap !important;
+        overflow-wrap: normal !important;
+        word-break: keep-all !important;
+        hyphens: none !important;
+      }
+      td.numeric-cell *, th.numeric-cell *, td.date-cell *, th.date-cell *, td.compact-cell *, th.compact-cell * {
+        font-size: inherit !important;
+        line-height: inherit !important;
+        white-space: nowrap !important;
+        overflow-wrap: normal !important;
+        word-break: keep-all !important;
+      }
       th {
         background: ${colorTokens.head} !important;
         color: #000 !important;
@@ -1746,7 +1762,7 @@ const exportToPDF = (
                           <td className="text-center text-black whitespace-nowrap bg-sky-50/70 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                             {r.specialty || "—"}
                           </td>
-                          <td className="text-center font-mono font-semibold text-black whitespace-nowrap bg-blue-50/70 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="text-center numeric-cell font-mono font-semibold text-black whitespace-nowrap bg-blue-50/70 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                             {fmt(r.fees)}
                           </td>
                           {MONTHS_2025.map((m) => {
@@ -1754,10 +1770,10 @@ const exportToPDF = (
                             return (
                               <td
                                 key={m}
-                                className="text-center bg-slate-50/50 border-l border-slate-200 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
+                                className="numeric-cell text-center bg-slate-50/50 border-l border-slate-200 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
                               >
                                 {paid > 0 ? (
-                                  <span className="text-black font-bold font-mono">
+                                  <span className="text-black font-bold numeric-cell font-mono">
                                     {fmt(paid)}
                                   </span>
                                 ) : (
@@ -1766,10 +1782,10 @@ const exportToPDF = (
                               </td>
                             );
                           })}
-                          <td className="text-center font-mono text-black font-bold bg-emerald-50/30 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="text-center numeric-cell font-mono text-black font-bold bg-emerald-50/30 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                             {fmt(r.totalPaid)}
                           </td>
-                          <td className="text-center font-mono text-black font-bold bg-rose-50/30 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="text-center numeric-cell font-mono text-black font-bold bg-rose-50/30 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                             {fmt(r.remaining)}
                           </td>
                           <td className="text-center whitespace-nowrap flex justify-center gap-1 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
@@ -1805,21 +1821,21 @@ const exportToPDF = (
                       <td className="text-center text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base" colSpan={4}>
                         الإجماليات
                       </td>
-                      <td className="text-center font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                         {fmt(totals2025.fees)}
                       </td>
                       {MONTHS_2025.map((m) => (
                         <td
                           key={m}
-                          className="text-center font-mono text-black border-l border-slate-200 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
+                          className="text-center numeric-cell font-mono text-black border-l border-slate-200 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
                         >
                           {totals2025.months[m] > 0 ? fmt(totals2025.months[m]) : "—"}
                         </td>
                       ))}
-                      <td className="text-center font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                         {fmt(totals2025.paid)}
                       </td>
-                      <td className="text-center font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                         {fmt(totals2025.remaining)}
                       </td>
                       <td className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"></td>
@@ -2096,7 +2112,7 @@ const exportToPDF = (
                               placeholder="—"
                             />
                           </td>
-                          <td className="text-center font-mono text-black font-bold bg-amber-50/20 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="text-center numeric-cell font-mono text-black font-bold bg-amber-50/20 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                             <input
                               type="number"
                               value={r.prevDue || 0}
@@ -2106,7 +2122,7 @@ const exportToPDF = (
                               className="w-full min-w-20 bg-transparent text-center text-black text-xs sm:text-xs outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
                             />
                           </td>
-                          <td className="text-center font-mono text-black font-bold whitespace-nowrap bg-indigo-50/70 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="text-center numeric-cell font-mono text-black font-bold whitespace-nowrap bg-indigo-50/70 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                             <input
                               type="number"
                               value={r.fees || 0}
@@ -2122,7 +2138,7 @@ const exportToPDF = (
                             return (
                               <td
                                 key={m}
-                                className="text-center relative bg-white/40 border-l border-slate-200 hover:bg-slate-100 cursor-pointer group transition-colors whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
+                                className="numeric-cell text-center relative bg-white/40 border-l border-slate-200 hover:bg-slate-100 cursor-pointer group transition-colors whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
                                 onMouseEnter={() => setHoveredCell(cellId)}
                                 onMouseLeave={() => setHoveredCell(null)}
                               >
@@ -2132,7 +2148,7 @@ const exportToPDF = (
                                   onChange={(e) =>
                                     update2026PaymentValue(originalIndex, m, e.target.value)
                                   }
-                                  className="w-20 bg-transparent text-center font-mono text-black font-bold outline-none focus:bg-white focus:ring-1 ring-emerald-300 rounded px-1 py-1"
+                                  className="w-20 bg-transparent text-center numeric-cell font-mono text-black font-bold outline-none focus:bg-white focus:ring-1 ring-emerald-300 rounded px-1 py-1"
                                   placeholder="—"
                                   min="0"
                                   step="0.01"
@@ -2159,7 +2175,7 @@ const exportToPDF = (
                                   ))}
                                 </select>
                               ) : col.type === "formula" ? (
-                                <div className="text-center font-mono text-xs font-bold text-black bg-white/50 py-1.5 rounded">
+                                <div className="text-center numeric-cell font-mono text-xs font-bold text-black bg-white/50 py-1.5 rounded">
                                   {evaluateFormula(col.formula || "", r)}
                                 </div>
                               ) : (
@@ -2176,10 +2192,10 @@ const exportToPDF = (
                             </td>
                           ))}
 
-                          <td className="text-center font-mono text-black font-bold bg-emerald-50/30 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="text-center numeric-cell font-mono text-black font-bold bg-emerald-50/30 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                             {fmt(r.totalPaid)}
                           </td>
-                          <td className="text-center font-mono text-black font-bold bg-rose-50/30 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="text-center numeric-cell font-mono text-black font-bold bg-rose-50/30 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                             {fmt(r.remaining)}
                           </td>
                           <td className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
@@ -2229,17 +2245,17 @@ const exportToPDF = (
                       <td className="text-center text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base" colSpan={4}>
                         الإجماليات
                       </td>
-                      <td className="text-center font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                         {fmt(totals2026.prevDue)}
                       </td>
-                      <td className="text-center font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                         {fmt(totals2026.fees)}
                       </td>
 
                       {MONTHS_2026.map((m) => (
                         <td
                           key={m}
-                          className="text-center font-mono text-black border-l border-slate-200 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
+                          className="text-center numeric-cell font-mono text-black border-l border-slate-200 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
                         >
                           {totals2026.months[m] > 0 ? fmt(totals2026.months[m]) : "—"}
                         </td>
@@ -2252,10 +2268,10 @@ const exportToPDF = (
                           —
                         </td>
                       ))}
-                      <td className="text-center font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                         {fmt(totals2026.paid)}
                       </td>
-                      <td className="text-center font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                         {fmt(totals2026.remaining)}
                       </td>
                       <td className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"></td>

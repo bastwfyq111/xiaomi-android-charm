@@ -285,7 +285,7 @@ const TD = ({
   right?: boolean;
 }) => (
   <td
-    className={`border border-black px-1 sm:px-2 py-1 whitespace-normal break-words align-middle font-mono text-sm sm:text-base ${right ? "text-right" : "text-center"} ${cls}`}
+    className={`border border-black px-1 sm:px-2 py-1 whitespace-nowrap align-middle numeric-cell font-mono text-sm sm:text-base ${right ? "text-right" : "text-center"} ${cls}`}
   >
     {children}
   </td>
@@ -510,7 +510,7 @@ export default function ExpensesTab() {
                   return (
                     <tr key={idx} className={rowClass(r)}>
                       {/* تفعيل التفاف النص (break-words whitespace-normal) والتوسيط (text-center align-middle) */}
-                      <td className="border border-black text-center align-middle whitespace-normal break-words px-2 py-1 text-[10px] sm:text-xs">
+                      <td className="border border-black text-center align-middle numeric-cell whitespace-nowrap px-2 py-1 text-[10px] sm:text-xs">
                         {r.n}
                       </td>
                       <TD>{r.b || ""}</TD>
@@ -519,7 +519,7 @@ export default function ExpensesTab() {
                       <TD>{r.e || ""}</TD>
                       {editable ? (
                         <>
-                          <td className={`border border-black p-0.5 align-middle text-center ${CUR_C}`}>
+                          <td className={`border border-black p-0.5 align-middle text-center numeric-cell whitespace-nowrap ${CUR_C}`}>
                             <input
                               type="number"
                               min={0}
@@ -530,7 +530,7 @@ export default function ExpensesTab() {
                               className="w-14 text-center text-sm sm:text-base px-1 py-0.5 outline-none bg-transparent focus:ring-1 focus:ring-amber-500 rounded mx-auto"
                             />
                           </td>
-                          <td className={`border border-black p-0.5 align-middle text-center ${CUR_C}`}>
+                          <td className={`border border-black p-0.5 align-middle text-center numeric-cell whitespace-nowrap ${CUR_C}`}>
                             <input
                               type="number"
                               min={0}

@@ -730,13 +730,13 @@ export default function JournalTab() {
                       key={j.id}
                       className="border-b border-slate-100 odd:bg-white even:bg-slate-50/70 transition-colors hover:bg-teal-50/60"
                     >
-                      <td className="min-w-0 max-w-[90px] font-mono text-slate-600 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      <td className="min-w-0 max-w-[90px] numeric-cell font-mono text-slate-600 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         <span className={journalClampCls}>{j.formNo || "—"}</span>
                       </td>
                       <td className="min-w-0 max-w-[90px] text-slate-600 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                         <span className={journalClampCls}>{j.settlement || "—"}</span>
                       </td>
-                      <td className="min-w-0 max-w-[105px] font-mono text-slate-600 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      <td className="min-w-0 max-w-[105px] date-cell numeric-cell font-mono text-slate-600 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         <span className={journalClampCls}>{j.date || "—"}</span>
                       </td>
                       <td
@@ -755,10 +755,10 @@ export default function JournalTab() {
                           {j.creditAccount || "—"}
                         </span>
                       </td>
-                      <td className="min-w-0 max-w-[105px] font-mono font-black text-black-700 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      <td className="min-w-0 max-w-[105px] numeric-cell font-mono font-black text-black-700 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         <span className={journalClampCls}>{j.debit ? j.debit.toLocaleString("en-US") : "—"}</span>
                       </td>
-                      <td className="min-w-0 max-w-[105px] font-mono font-black text-rose-700 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      <td className="min-w-0 max-w-[105px] numeric-cell font-mono font-black text-rose-700 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                         <span className={journalClampCls}>{j.credit ? j.credit.toLocaleString("en-US") : "—"}</span>
                       </td>
                       <td className="min-w-0 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
@@ -786,10 +786,10 @@ export default function JournalTab() {
                     <td colSpan={6} className="text-right font-bold text-slate-700 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                       الإجمالي
                     </td>
-                    <td className="font-mono font-black text-black-800 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                    <td className="numeric-cell font-mono font-black text-black-800 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                       {grandDebit.toLocaleString("en-US")}
                     </td>
-                    <td className="font-mono font-black text-rose-800 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                    <td className="numeric-cell font-mono font-black text-rose-800 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
                       {grandCredit.toLocaleString("en-US")}
                     </td>
                     <td />

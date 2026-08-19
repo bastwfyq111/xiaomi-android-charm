@@ -24,6 +24,10 @@ export function exportToPdf(opts: {
   if (!w) return;
   const orient = opts.orientation || (opts.columns.length > 6 ? "landscape" : "portrait");
   const fontSize = opts.columns.length > 12 ? 9 : opts.columns.length > 8 ? 10 : 11;
+  const numericColumnHints = ["رقم", "الباب", "الفصل", "البند", "النوع", "مبلغ", "مدين", "دائن", "الرصيد", "الجملة", "الإجمالي", "المتبقي", "المدفوع", "الأشهر", "الشهر"];
+  const dateColumnHints = ["التاريخ", "تاريخ"];
+  const isNumericColumn = (column: string) => column.trim() === "م" || numericColumnHints.some((hint) => column.includes(hint));
+  const isDateColumn = (column: string) => dateColumnHints.some((hint) => column.includes(hint));
   const head = `<meta charset="utf-8"><title>${opts.title} - ${reportDateLabel}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
@@ -78,11 +82,23 @@ export function exportToPdf(opts: {
       font-weight: 900 !important;
       color: #000 !important;
     }
-    .num {
+    .num, .numeric-cell, .date-cell {
       font-family: 'Times New Roman', Times, serif !important;
+      font-size: clamp(7px, 0.95vw, 11px) !important;
       color: #000 !important;
       font-weight: 900 !important;
       direction: ltr;
+      white-space: nowrap !important;
+      overflow-wrap: normal !important;
+      word-break: keep-all !important;
+      hyphens: none !important;
+      line-height: 1.05 !important;
+    }
+    .num *, .numeric-cell *, .date-cell * {
+      font-size: inherit !important;
+      white-space: nowrap !important;
+      overflow-wrap: normal !important;
+      word-break: keep-all !important;
     }
     th { 
       background: #1f7fb8;
@@ -134,7 +150,14 @@ export function exportToPdf(opts: {
       .map(
         (r) =>
           `<tr>${r
-            .map((c) => `<td${typeof c === "number" ? ' class="num"' : ""}>${c === undefined || c === null ? "" : c}</td>`)
+            .map((c, index) => {
+              const column = opts.columns[index] || "";
+              const classes = [
+                typeof c === "number" || isNumericColumn(column) ? "num numeric-cell" : "",
+                isDateColumn(column) ? "date-cell" : "",
+              ].filter(Boolean).join(" ");
+              return `<td${classes ? ` class="${classes}"` : ""}>${c === undefined || c === null ? "" : c}</td>`;
+            })
             .join("")}</tr>`,
       )
       .join("")}</tbody>
@@ -414,6 +437,15 @@ export function monthlyStatementPdf(opts: {
       padding: 0 !important;
       font-size: 13px;
     }
+    th:not(:first-child), td:not(:first-child) {
+      font-family: 'Times New Roman', Times, serif !important;
+      font-size: clamp(7px, 0.95vw, 11px) !important;
+      white-space: nowrap !important;
+      overflow-wrap: normal !important;
+      word-break: keep-all !important;
+      hyphens: none !important;
+      line-height: 1.05 !important;
+    }
     td.acc { 
       text-align: right; 
       padding-right: 0 !important;
@@ -647,6 +679,15 @@ export function revenuePdf(
       font-weight: 900 !important;
       padding: 0 !important;
       font-size: 12px;
+    }
+    th:not(:first-child), td:not(:first-child) {
+      font-family: 'Times New Roman', Times, serif !important;
+      font-size: clamp(7px, 0.95vw, 11px) !important;
+      white-space: nowrap !important;
+      overflow-wrap: normal !important;
+      word-break: keep-all !important;
+      hyphens: none !important;
+      line-height: 1.05 !important;
     }
     td.acc { 
       text-align: right; 
