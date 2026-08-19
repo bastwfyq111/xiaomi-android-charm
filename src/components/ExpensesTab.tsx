@@ -234,14 +234,14 @@ const TH = ({
   colSpan = 1,
 }: {
   children: React.ReactNode;
-  cls?: string;
-  rowSpan?: number;
-  colSpan?: number;
+  cls ? : string;
+  rowSpan ? : number;
+  colSpan ? : number;
 }) => (
   <th
     rowSpan={rowSpan}
     colSpan={colSpan}
-    className={`border border-black px-1 sm:px-2 py-1 !whitespace-nowrap text-center text-sm sm:text-base font-bold ${cls}`}
+    className={`border border-black px-1 sm:px-2 py-1 whitespace-normal break-words text-center align-middle text-sm sm:text-base font-bold ${cls}`}
   >
     {children}
   </th>
@@ -254,11 +254,11 @@ const TD = ({
   right = false,
 }: {
   children: React.ReactNode;
-  cls?: string;
-  right?: boolean;
+  cls ? : string;
+  right ? : boolean;
 }) => (
   <td
-    className={`border border-black px-1 sm:px-2 py-1 !whitespace-nowrap font-mono text-sm sm:text-base ${right ? "text-right" : "text-center"} ${cls}`}
+    className={`border border-black px-1 sm:px-2 py-1 whitespace-normal break-words align-middle font-mono text-sm sm:text-base ${right ? "text-right" : "text-center"} ${cls}`}
   >
     {children}
   </td>
@@ -429,15 +429,18 @@ export default function ExpensesTab() {
     });
 
     return (
+      
       <div className="space-y-0" dir="rtl">
         <div className="bg-white rounded-xl border-2 border-black shadow-sm overflow-hidden">
-          <div className="bg-gradient-to-r from-teal-700 to-emerald-700 text-white p-3 text-center">
+          <div className="bg-gradient-to-r from-teal-700 to-emerald-700 text-white p-1.5 text-center">
             <h3 className="text-base sm:text-lg font-bold">{opts.title}</h3>
             <p className="text-xs opacity-90">{opts.subtitle}</p>
             <p className="text-[10px] opacity-75 mt-0.5">
               المجلس اليمني للاختصاصات الطبية فرع - صعدة
             </p>
           </div>
+          
+          
           <div className="overflow-x-auto">
             <table className="w-max w-max table-auto border-collapse text-sm sm:text-base">
               <thead className="sticky top-0 z-10 font-bold text-xs">
