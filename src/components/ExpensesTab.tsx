@@ -406,51 +406,51 @@ export default function ExpensesTab() {
   // ========= الغلاف =========
   const renderCover = () => (
     <div
-      className="bg-white rounded-[2rem] border-[3px] border-teal-700 p-8 sm:p-12 text-center shadow-sm max-w-2xl mx-auto my-6"
+      className="mx-4 my-6 w-auto max-w-none rounded-[2rem] border-[3px] border-teal-700 bg-white px-5 py-10 text-center shadow-sm sm:mx-auto sm:max-w-2xl sm:px-12 sm:py-12"
       dir="rtl"
     >
       {/* الترويسة العلوية */}
-      <div className="space-y-2">
-        <h3 className="text-2xl sm:text-3xl font-extrabold text-teal-800 tracking-wide">
+      <div className="space-y-1">
+        <h3 className="text-[2rem] font-extrabold leading-[1.35] tracking-wide text-teal-800 sm:text-3xl">
           الجمهورية اليمنية
         </h3>
-        <h4 className="text-xl sm:text-2xl font-bold text-teal-700">
+        <h4 className="text-[1.65rem] font-bold leading-[1.45] text-teal-700 sm:text-2xl">
           وزارة المالية
         </h4>
       </div>
 
       {/* الخط الفاصل الأول */}
-      <hr className="border-t-[3px] border-teal-700 my-8 mx-auto w-11/12 opacity-90" />
+      <hr className="mx-auto my-8 w-[88%] border-t-[3px] border-teal-700 opacity-90" />
 
       {/* العنوان الرئيسي */}
-      <div className="my-10 space-y-4">
-        <h1 className="text-5xl sm:text-[4rem] font-black text-teal-800 leading-tight tracking-tight">
+      <div className="my-9 space-y-3 sm:my-10 sm:space-y-4">
+        <h1 className="text-[3.15rem] font-black leading-[1.18] tracking-tight text-teal-800 sm:text-[4rem]">
           كشف الحساب
           <br />
           الشهري
         </h1>
-        <p className="text-xl sm:text-2xl text-slate-700 font-semibold mt-6">
-          عن العام المالي <span className="text-teal-700 font-bold">{year}م</span>
+        <p className="mt-5 text-[1.45rem] font-semibold leading-[1.5] text-slate-700 sm:mt-6 sm:text-2xl">
+          عن العام المالي <span className="font-bold text-teal-700">{year}م</span>
         </p>
       </div>
 
       {/* الخط الفاصل الثاني */}
-      <hr className="border-t-[3px] border-teal-700 my-8 mx-auto w-11/12 opacity-90" />
+      <hr className="mx-auto my-8 w-[88%] border-t-[3px] border-teal-700 opacity-90" />
 
       {/* بيانات الجهة */}
       <div className="flex flex-col items-center">
-        <div className="text-right space-y-5 text-lg sm:text-xl text-slate-700 font-medium">
-          <p className="flex items-center gap-4">
-            <span className="w-20 text-slate-600">المحافظة</span>
+        <div className="w-full max-w-md space-y-4 text-right text-[1.25rem] font-medium leading-[1.7] text-slate-700 sm:space-y-5 sm:text-xl">
+          <p className="flex items-center justify-end gap-3">
+            <span className="w-20 shrink-0 text-slate-600">المحافظة</span>
             <span className="font-extrabold text-slate-900">: صعـــدة</span>
           </p>
-          <p className="flex items-center gap-4">
-            <span className="w-20 text-slate-600">المديرية</span>
+          <p className="flex items-center justify-end gap-3">
+            <span className="w-20 shrink-0 text-slate-600">المديرية</span>
             <span className="font-extrabold text-slate-900">: مركز المحافظة</span>
           </p>
-          <p className="flex items-center gap-4">
-            <span className="w-20 text-slate-600">المكتب</span>
-            <span className="font-extrabold text-slate-900 text-base sm:text-xl">: المجلس الطبي فرع صعدة</span>
+          <p className="flex items-center justify-end gap-3">
+            <span className="w-20 shrink-0 text-slate-600">المكتب</span>
+            <span className="font-extrabold text-slate-900 text-[1.1rem] sm:text-xl">: المجلس الطبي فرع صعدة</span>
           </p>
         </div>
       </div>
