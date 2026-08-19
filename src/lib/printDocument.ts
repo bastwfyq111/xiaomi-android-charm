@@ -5,7 +5,10 @@
  * - يضبط عنوان المستند ليصبح اسم ملف PDF الافتراضي
  */
 
-import { reportLetterheadHtml } from "@/lib/printTableHtml";
+import {
+  REPORT_LETTERHEAD_SRC,
+  reportLetterheadHtml,
+} from "@/lib/printTableHtml";
 
 export type PrintOrientation = "portrait" | "landscape";
 
@@ -58,6 +61,26 @@ const baseCss = (
   th { font-weight: 700; }
   img { max-width: 100%; height: auto; display: block; }
 
+  /* ترويسة التقرير داخل thead تتكرر مع رؤوس الأعمدة في كل صفحة */
+  .report-letterhead-row { page-break-after: avoid; break-after: avoid; }
+  .report-letterhead-cell {
+    height: 30mm !important;
+    min-height: 30mm !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: #fff !important;
+  }
+  .report-letterhead-cell img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: 30mm;
+    max-height: 30mm;
+    object-fit: fill;
+    object-position: center;
+    margin: 0;
+  }
+
   /* إخفاء عناصر غير مطبوعة صراحة */
   .no-print { display: none !important; }
 
@@ -90,6 +113,28 @@ export function openPrintDocument(options: PrintDocumentOptions): boolean {
   const w = window.open("", "_blank", "width=1280,height=900");
   if (!w) return false;
 
+  const autoPrintScript = autoPrint
+    ? `<script>
+      (function () {
+        var done = false;
+        function go() {
+          if (done) return;
+          done = true;
+          try { window.focus(); } catch (e) {}
+          setTimeout(function () { window.print(); }, 150);
+        }
+        // انتظار جهوزية الخطوط مع مهلة أمان
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(go).catch(go);
+          setTimeout(go, 2500);
+        } else {
+          window.onload = go;
+          setTimeout(go, 1500);
+        }
+      })();
+    </script>`
+    : "";
+
   const html = `<!DOCTYPE html>
 <html dir="rtl" lang="ar">
 <head>
@@ -104,25 +149,45 @@ export function openPrintDocument(options: PrintDocumentOptions): boolean {
   <body>
 ${reportLetterheadHtml()}
 ${body}
-${autoPrint ? `<script>
+<script>
   (function () {
-    var done = false;
-    function go() {
-      if (done) return;
-      done = true;
-      try { window.focus(); } catch (e) {}
-      setTimeout(function () { window.print(); }, 150);
-    }
-    // انتظار جهوزية الخطوط مع مهلة أمان
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(go).catch(go);
-      setTimeout(go, 2500);
-    } else {
-      window.onload = go;
-      setTimeout(go, 1500);
-    }
+    var tables = document.querySelectorAll("table");
+    if (!tables.length) return;
+
+    var standalone = document.querySelector(".report-letterhead-block");
+    if (standalone) standalone.remove();
+
+    tables.forEach(function (table) {
+      var thead = table.tHead || table.querySelector("thead");
+      if (!thead) {
+        thead = document.createElement("thead");
+        table.insertBefore(thead, table.firstChild);
+      }
+      thead.style.display = "table-header-group";
+      if (thead.querySelector(".report-letterhead-row")) return;
+
+      var firstRow = thead.rows[0];
+      var columnCount = firstRow
+        ? Array.prototype.reduce.call(firstRow.cells, function (sum, cell) {
+            return sum + (cell.colSpan || 1);
+          }, 0)
+        : 1;
+      var row = document.createElement("tr");
+      row.className = "report-letterhead-row";
+      var cell = document.createElement("th");
+      cell.className = "report-letterhead-cell";
+      cell.colSpan = Math.max(1, columnCount);
+      var image = document.createElement("img");
+      image.className = "report-letterhead-image";
+      image.src = ${JSON.stringify(REPORT_LETTERHEAD_SRC)};
+      image.alt = "ترويسة المجلس اليمني للاختصاصات الطبية";
+      cell.appendChild(image);
+      row.appendChild(cell);
+      thead.insertBefore(row, thead.firstChild);
+    });
   })();
-</script>` : ""}
+</script>
+${autoPrintScript}
 
 </body>
 </html>`;

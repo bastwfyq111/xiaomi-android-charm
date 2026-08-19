@@ -196,6 +196,23 @@ export const tablePrintStyles = `
     .report-letterhead-block { height: 34mm; min-height: 34mm; max-height: 34mm; }
   }
   .report-letterhead-row { page-break-after: avoid; break-after: avoid; }
+  .report-letterhead-row .report-letterhead-cell {
+    height: 30mm !important;
+    min-height: 30mm !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: #fff !important;
+  }
+  .report-letterhead-row .report-letterhead-image {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 30mm !important;
+    max-height: 30mm !important;
+    object-fit: fill !important;
+    object-position: center !important;
+    margin: 0 !important;
+  }
   .pdf-page .report-letterhead-cell {
     height: 30mm !important;
     min-height: 30mm !important;

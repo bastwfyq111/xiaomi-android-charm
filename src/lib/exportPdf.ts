@@ -7,6 +7,34 @@ import {
   getReportPeriodLabel,
   type ReportPeriodMode,
 } from "./reportPeriods";
+import { REPORT_LETTERHEAD_SRC } from "@/lib/printTableHtml";
+
+const reportLetterheadRow = (columnCount: number) => `
+  <tr class="report-letterhead-row">
+    <th class="report-letterhead-cell" colspan="${Math.max(1, Math.floor(columnCount))}">
+      <img class="report-letterhead-image" src="${REPORT_LETTERHEAD_SRC}" alt="ترويسة المجلس اليمني للاختصاصات الطبية" />
+    </th>
+  </tr>`;
+
+const reportLetterheadStyles = `
+    thead { display: table-header-group; }
+    .report-letterhead-row { break-inside: avoid; page-break-inside: avoid; }
+    .report-letterhead-cell {
+      border: 0 !important;
+      background: #fff !important;
+      padding: 0 0 2mm !important;
+      height: auto !important;
+    }
+    .report-letterhead-image {
+      display: block;
+      width: 100%;
+      max-height: 18mm;
+      height: auto;
+      object-fit: contain;
+      margin: 0 auto;
+    }
+    tbody tr { break-inside: avoid; page-break-inside: avoid; }
+`;
 
 const norm = (s: string) => (s || "").replace(/\s+/g, " ").trim();
 
@@ -32,6 +60,7 @@ export function exportToPdf(opts: {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+${reportLetterheadStyles}
     @page { size: A4 ${orient}; margin: 10mm; padding: 0; }
     @page :first { margin-top: 10mm; }
     html { margin: 0; padding: 0; }
@@ -145,7 +174,7 @@ export function exportToPdf(opts: {
   const body = `<h1>${opts.title}</h1>
   <div class="meta">المجلس اليمني للاختصاصات الطبية — تاريخ التقرير: ${reportDateLabel}</div>
   <table>
-    <thead><tr>${opts.columns.map((c) => `<th>${c}</th>`).join("")}</tr></thead>
+    <thead>${reportLetterheadRow(opts.columns.length)}<tr>${opts.columns.map((c) => `<th>${c}</th>`).join("")}</tr></thead>
     <tbody>${opts.rows
       .map(
         (r) =>
@@ -312,6 +341,7 @@ export function monthlyStatementPdf(opts: {
   body += `<div class="meta">تاريخ التقرير: ${reportDateLabel}</div>`;
   body += `<div class="meta period">${periodLabel}</div>`;
   body += `<table><thead>
+    ${reportLetterheadRow(9)}
     <tr>
       <th rowspan="2">بيان أنواع الحسابات الوسيطة</th>
       <th colspan="2">الرصيد في ${year}/${startMonth}/1</th>
@@ -364,6 +394,7 @@ export function monthlyStatementPdf(opts: {
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+${reportLetterheadStyles}
     @page { size: A4 landscape; margin: 8mm; padding: 0; }
     @page :first { margin-top: 8mm; }
     html { margin: 0; padding: 0; }
@@ -563,6 +594,7 @@ export function revenuePdf(
   body += `<div class="meta">تاريخ التقرير: ${reportDateLabel}</div>`;
   body += `<div class="meta period">عن شهر ${MONTHS_PDF[month - 1]} من العام المالي ${year}م</div>`;
   body += `<table><thead>
+    ${reportLetterheadRow(8)}
     <tr>
       <th rowspan="2">بيان مفردات الموارد</th>
       <th rowspan="2">الباب</th><th rowspan="2">الفصل</th><th rowspan="2">البند</th><th rowspan="2">النوع</th>
@@ -602,6 +634,7 @@ export function revenuePdf(
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+${reportLetterheadStyles}
     @page { size: A4 landscape; margin: 8mm; padding: 0; }
     @page :first { margin-top: 8mm; }
     html { margin: 0; padding: 0; }
