@@ -168,6 +168,7 @@ function computeBabTotals(cur: Cell[], prev: Cell[]): BabTotal[] {
   const labels: Record<number, string> = {
     1: "جملة الباب الأول : أجور وتعويضات العاملين",
     2: "جملة الباب الثاني : نفقات على السلع والخدمات والممتلكات",
+    // يمكن إضافة مسميات أبواب أخرى هنا إن وجدت
   };
   const result: BabTotal[] = [];
   let gc: Cell = emptyCell,
@@ -195,13 +196,29 @@ function computeBabTotals(cur: Cell[], prev: Cell[]): BabTotal[] {
   return result;
 }
 
-// ===== ألوان الصفوف =====
-const rowClass = (lv: Row["lv"]) => {
-  switch (lv) {
+// ===== ألوان الصفوف (محدثة لدعم ألوان مختلفة لكل باب) =====
+const rowClass = (r: Row) => {
+  if (r.lv === "bab") {
+    // إعطاء كل باب لوناً مميزاً بناءً على رقم الباب
+    switch (r.b) {
+      case 1:
+        return "bg-emerald-200 text-emerald-900 font-bold bab-1";
+      case 2:
+        return "bg-blue-200 text-blue-900 font-bold bab-2";
+      case 3:
+        return "bg-fuchsia-200 text-fuchsia-900 font-bold bab-3";
+      case 4:
+        return "bg-orange-200 text-orange-900 font-bold bab-4";
+      case 5:
+        return "bg-rose-200 text-rose-900 font-bold bab-5";
+      default:
+        return "bg-emerald-100 text-emerald-900 font-bold bab-default";
+    }
+  }
+
+  switch (r.lv) {
     case "header":
       return "bg-teal-700 text-white font-bold";
-    case "bab":
-      return "bg-emerald-100 text-black-900 font-bold";
     case "fasl":
       return "bg-yellow-100 text-amber-900 font-semibold";
     case "band":
@@ -213,18 +230,28 @@ const rowClass = (lv: Row["lv"]) => {
   }
 };
 
+// الدالة المساعدة لملخصات الأبواب لتطبيق نفس الألوان
+const getBabSummaryColor = (bn: number | null) => {
+  if (bn === null) return "bg-teal-700 text-white font-bold";
+  switch (bn) {
+    case 1: return "bg-emerald-200 text-emerald-900 font-semibold bab-1";
+    case 2: return "bg-blue-200 text-blue-900 font-semibold bab-2";
+    case 3: return "bg-fuchsia-200 text-fuchsia-900 font-semibold bab-3";
+    case 4: return "bg-orange-200 text-orange-900 font-semibold bab-4";
+    case 5: return "bg-rose-200 text-rose-900 font-semibold bab-5";
+    default: return "bg-emerald-100 text-emerald-900 font-semibold bab-default";
+  }
+};
+
 const fmt = (n: number) => (n === 0 ? "0" : n.toLocaleString("en-US"));
 
 // ===== ثوابت ألوان الأعمدة =====
-// الشهر الجاري  → أصفر برتقالي
-// الأشهر السابقة → أزرق فاتح
-// الجملة         → أخضر فاتح
-const CUR_H = "bg-amber-300 text-amber-900"; // رأس الشهر الجاري
-const CUR_C = "bg-amber-50"; // خلايا الشهر الجاري
-const PREV_H = "bg-sky-300 text-sky-900"; // رأس الأشهر السابقة
-const PREV_C = "bg-sky-50"; // خلايا الأشهر السابقة
-const TOT_H = "bg-emerald-200 text-black-900"; // رأس الجملة
-const TOT_C = "bg-emerald-50"; // خلايا الجملة
+const CUR_H = "bg-amber-300 text-amber-900"; 
+const CUR_C = "bg-amber-50"; 
+const PREV_H = "bg-sky-300 text-sky-900"; 
+const PREV_C = "bg-sky-50"; 
+const TOT_H = "bg-emerald-200 text-black-900"; 
+const TOT_C = "bg-emerald-50"; 
 
 // ===== خلية رأس موحدة =====
 const TH = ({
@@ -234,9 +261,9 @@ const TH = ({
   colSpan = 1,
 }: {
   children: React.ReactNode;
-  cls ? : string;
-  rowSpan ? : number;
-  colSpan ? : number;
+  cls?: string;
+  rowSpan?: number;
+  colSpan?: number;
 }) => (
   <th
     rowSpan={rowSpan}
@@ -254,8 +281,8 @@ const TD = ({
   right = false,
 }: {
   children: React.ReactNode;
-  cls ? : string;
-  right ? : boolean;
+  cls?: string;
+  right?: boolean;
 }) => (
   <td
     className={`border border-black px-1 sm:px-2 py-1 whitespace-normal break-words align-middle font-mono text-sm sm:text-base ${right ? "text-right" : "text-center"} ${cls}`}
@@ -328,10 +355,10 @@ export default function ExpensesTab() {
           إجمالي الاستخدامات — ملخص حسب الأبواب
         </div>
         <div className="overflow-x-auto">
-          <table className="w-max w-max table-auto border-collapse text-sm sm:text-base">
+          <table className="w-full min-w-max table-auto border-collapse text-sm sm:text-base">
             <thead className="font-bold text-xs">
               <tr>
-                <TH rowSpan={2} cls="bg-slate-200 text-slate-800 min-w-[240px] text-right">
+                <TH rowSpan={2} cls="bg-slate-200 text-slate-800 text-center w-1/4">
                   البيان
                 </TH>
                 <TH colSpan={2} cls={CUR_H}>
@@ -353,14 +380,11 @@ export default function ExpensesTab() {
             <tbody>
               {totals.map((t, i) => {
                 const isGrand = t.babNum === null;
-                const base = isGrand
-                  ? "bg-teal-700 text-white font-bold"
-                  : i % 2 === 0
-                    ? "bg-white font-semibold"
-                    : "bg-slate-50 font-semibold";
+                const baseClass = getBabSummaryColor(t.babNum);
                 return (
-                  <tr key={i} className={base}>
-                    <td className="border border-black text-right !whitespace-nowrap font-semibold !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                  <tr key={i} className={baseClass}>
+                    {/* تم تعديل التنسيق هنا لاحتواء النص تلقائياً والتوسيط */}
+                    <td className="border border-black text-center align-middle whitespace-normal break-words font-semibold px-2 py-1 text-xs sm:text-sm">
                       {t.label}
                     </td>
                     <TD cls={isGrand ? "" : CUR_C}>{fmt(t.cur.f)}</TD>
@@ -429,7 +453,6 @@ export default function ExpensesTab() {
     });
 
     return (
-      
       <div className="space-y-0" dir="rtl">
         <div className="bg-white rounded-xl border-2 border-black shadow-sm overflow-hidden">
           <div className="bg-gradient-to-r from-teal-700 to-emerald-700 text-white p-1.5 text-center">
@@ -440,35 +463,22 @@ export default function ExpensesTab() {
             </p>
           </div>
           
-          
           <div className="overflow-x-auto">
-            <table className="w-max w-max table-auto border-collapse text-sm sm:text-base">
+            {/* تم تغيير w-max w-max إلى w-full min-w-max ليتمدد تلقائياً */}
+            <table className="w-full min-w-max table-auto border-collapse text-sm sm:text-base">
               <thead className="sticky top-0 z-10 font-bold text-xs">
                 <tr>
-                  <TH rowSpan={2} cls="bg-slate-200 text-slate-800 min-w-[240px] text-right">
+                  {/* تغيير تنسيق الرأس ليكون متوسط النص بدلاً من المحاذاة لليمين فقط */}
+                  <TH rowSpan={2} cls="bg-slate-200 text-slate-800 text-center w-1/3">
                     بيان مفردات الاستخدامات
                   </TH>
-                  <TH rowSpan={2} cls="bg-slate-200 text-slate-800">
-                    الباب
-                  </TH>
-                  <TH rowSpan={2} cls="bg-slate-200 text-slate-800">
-                    الفصل
-                  </TH>
-                  <TH rowSpan={2} cls="bg-slate-200 text-slate-800">
-                    البند
-                  </TH>
-                  <TH rowSpan={2} cls="bg-slate-200 text-slate-800">
-                    النوع
-                  </TH>
-                  <TH colSpan={2} cls={CUR_H}>
-                    {opts.currentLabel}
-                  </TH>
-                  <TH colSpan={2} cls={PREV_H}>
-                    {opts.previousLabel}
-                  </TH>
-                  <TH colSpan={2} cls={TOT_H}>
-                    الجملة
-                  </TH>
+                  <TH rowSpan={2} cls="bg-slate-200 text-slate-800">الباب</TH>
+                  <TH rowSpan={2} cls="bg-slate-200 text-slate-800">الفصل</TH>
+                  <TH rowSpan={2} cls="bg-slate-200 text-slate-800">البند</TH>
+                  <TH rowSpan={2} cls="bg-slate-200 text-slate-800">النوع</TH>
+                  <TH colSpan={2} cls={CUR_H}>{opts.currentLabel}</TH>
+                  <TH colSpan={2} cls={PREV_H}>{opts.previousLabel}</TH>
+                  <TH colSpan={2} cls={TOT_H}>الجملة</TH>
                 </tr>
                 <tr className="text-[11px]">
                   <TH cls={CUR_H}>ف</TH> <TH cls={CUR_H}>ريال</TH>
@@ -483,8 +493,9 @@ export default function ExpensesTab() {
                   const tot = totalValues[idx];
                   const editable = opts.editable && isLeaf(r) && opts.editMonthIdx !== undefined;
                   return (
-                    <tr key={idx} className={rowClass(r.lv)}>
-                      <td className="border border-black text-right whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                    <tr key={idx} className={rowClass(r)}>
+                      {/* تفعيل التفاف النص (break-words whitespace-normal) والتوسيط (text-center align-middle) */}
+                      <td className="border border-black text-center align-middle whitespace-normal break-words px-2 py-1 text-[10px] sm:text-xs">
                         {r.n}
                       </td>
                       <TD>{r.b || ""}</TD>
@@ -493,36 +504,26 @@ export default function ExpensesTab() {
                       <TD>{r.e || ""}</TD>
                       {editable ? (
                         <>
-                          <td className={`border border-black p-0.5 ${CUR_C}`}>
+                          <td className={`border border-black p-0.5 align-middle text-center ${CUR_C}`}>
                             <input
                               type="number"
                               min={0}
                               value={cur.f || ""}
                               onChange={(e) =>
-                                updateCell(
-                                  opts.editMonthIdx!,
-                                  idx,
-                                  "f",
-                                  Number(e.target.value) || 0,
-                                )
+                                updateCell(opts.editMonthIdx!, idx, "f", Number(e.target.value) || 0)
                               }
-                              className="w-14 text-center text-sm sm:text-base px-1 py-0.5 outline-none bg-transparent focus:ring-1 focus:ring-amber-500 rounded"
+                              className="w-14 text-center text-sm sm:text-base px-1 py-0.5 outline-none bg-transparent focus:ring-1 focus:ring-amber-500 rounded mx-auto"
                             />
                           </td>
-                          <td className={`border border-black p-0.5 ${CUR_C}`}>
+                          <td className={`border border-black p-0.5 align-middle text-center ${CUR_C}`}>
                             <input
                               type="number"
                               min={0}
                               value={cur.r || ""}
                               onChange={(e) =>
-                                updateCell(
-                                  opts.editMonthIdx!,
-                                  idx,
-                                  "r",
-                                  Number(e.target.value) || 0,
-                                )
+                                updateCell(opts.editMonthIdx!, idx, "r", Number(e.target.value) || 0)
                               }
-                              className="w-24 text-center text-sm sm:text-base px-1 py-0.5 outline-none bg-transparent focus:ring-1 focus:ring-amber-500 rounded"
+                              className="w-24 text-center text-sm sm:text-base px-1 py-0.5 outline-none bg-transparent focus:ring-1 focus:ring-amber-500 rounded mx-auto"
                             />
                           </td>
                         </>
@@ -605,17 +606,16 @@ export default function ExpensesTab() {
 
     return (
       <div className="space-y-4" dir="rtl">
-        {/* جدول تفصيل الأشهر */}
         <div className="rounded-xl border-2 border-black overflow-hidden shadow-sm">
           <div className="bg-gradient-to-r from-indigo-700 to-purple-700 text-white p-3 text-center">
             <h3 className="text-base sm:text-lg font-bold">كشف حساب السنة</h3>
             <p className="text-xs opacity-90">ملخص جميع الأشهر للعام {year}م</p>
           </div>
           <div className="overflow-auto max-h-[65vh]">
-            <table className="w-max w-max table-auto border-collapse text-sm sm:text-base">
+            <table className="w-full min-w-max table-auto border-collapse text-sm sm:text-base">
               <thead className="font-bold text-xs sticky top-0 z-20">
                 <tr>
-                  <TH cls="bg-slate-200 text-slate-800 min-w-[220px] text-right">البيان</TH>
+                  <TH cls="bg-slate-200 text-slate-800 text-center w-1/4">البيان</TH>
                   {MONTHS.map((m) => (
                     <TH key={m} cls="bg-slate-100 text-slate-800">
                       {m}
@@ -626,8 +626,8 @@ export default function ExpensesTab() {
               </thead>
               <tbody>
                 {schema.rows.map((r, idx) => (
-                  <tr key={idx} className={rowClass(r.lv)}>
-                    <td className="border border-black text-right whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                  <tr key={idx} className={rowClass(r)}>
+                    <td className="border border-black text-center align-middle whitespace-normal break-words px-2 py-1 text-[10px] sm:text-xs">
                       {r.n}
                     </td>
                     {MONTHS.map((_, mi) => (
@@ -641,17 +641,16 @@ export default function ExpensesTab() {
           </div>
         </div>
 
-        {/* ملخص الأبواب شهرياً */}
         <div className="rounded-xl border-2 border-black overflow-hidden shadow-sm">
           <div className="bg-teal-800 text-white p-3 text-center">
             <h3 className="text-base font-bold">ملخص إجمالي الاستخدامات حسب الأبواب — شهرياً</h3>
             <p className="text-xs opacity-80">المبالغ بالريال — الشهر الجاري فقط</p>
           </div>
           <div className="overflow-auto">
-            <table className="w-max w-max table-auto border-collapse text-sm sm:text-base">
+            <table className="w-full min-w-max table-auto border-collapse text-sm sm:text-base">
               <thead className="font-bold text-xs sticky top-0 z-10">
                 <tr>
-                  <TH cls="bg-slate-200 text-slate-800 min-w-[260px] text-right">البيان</TH>
+                  <TH cls="bg-slate-200 text-slate-800 text-center w-1/4">البيان</TH>
                   {MONTHS.map((m) => (
                     <TH key={m} cls={CUR_H}>
                       {m}
@@ -663,14 +662,10 @@ export default function ExpensesTab() {
               <tbody>
                 {monthBabTotals[0].map((bt, btIdx) => {
                   const isGrand = bt.babNum === null;
-                  const base = isGrand
-                    ? "bg-teal-700 text-white font-bold"
-                    : btIdx % 2 === 0
-                      ? "bg-white font-semibold"
-                      : "bg-slate-50 font-semibold";
+                  const baseClass = getBabSummaryColor(bt.babNum);
                   return (
-                    <tr key={btIdx} className={base}>
-                      <td className="border border-black text-right whitespace-nowrap !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs">
+                    <tr key={btIdx} className={baseClass}>
+                      <td className="border border-black text-center align-middle whitespace-normal break-words px-2 py-1 text-[10px] sm:text-xs">
                         {bt.label}
                       </td>
                       {MONTHS.map((_, mi) => (
@@ -690,7 +685,6 @@ export default function ExpensesTab() {
     );
   };
 
-  // ====== شريط التبويبات ======
   const subTabs = [
     { key: "cover", label: "الغلاف", group: "intro" },
     ...MONTHS.map((m, i) => ({ key: `m${i}`, label: m, group: "month" })),
@@ -698,6 +692,7 @@ export default function ExpensesTab() {
     { key: "final", label: "الأخيرة", group: "final" },
     { key: "year", label: "كشف السنة", group: "year" },
   ];
+  
   const groupCls = (g: string) =>
     g === "intro"
       ? "bg-slate-700"
@@ -731,6 +726,7 @@ export default function ExpensesTab() {
           </div>
         </div>
         <div className="flex gap-2">
+          {/* زر الطباعة المحدّث مع دعم ألوان الأبواب والاحتواء التلقائي */}
           <button
             onClick={() => {
               const el = document.getElementById("expenses-view-content");
@@ -761,7 +757,6 @@ export default function ExpensesTab() {
                 #expenses-report .bg-gradient-to-r { background: linear-gradient(90deg, #0f766e, #047857) !important; color: #fff !important; padding: 9px !important; text-align: center; }
                 #expenses-report .bg-teal-800 { background: #115e59 !important; color: #fff !important; padding: 8px !important; text-align: center; }
                 #expenses-report .bg-teal-700 { background: #0f766e !important; color: #fff !important; }
-                #expenses-report .bg-emerald-100 { background: #d1fae5 !important; color: #064e3b !important; }
                 #expenses-report .bg-yellow-100 { background: #fef3c7 !important; color: #78350f !important; }
                 #expenses-report .bg-sky-50 { background: #f0f9ff !important; color: #1e293b !important; }
                 #expenses-report .bg-slate-50 { background: #f8fafc !important; color: #000 !important; }
@@ -772,14 +767,23 @@ export default function ExpensesTab() {
                 #expenses-report .bg-sky-300 { background: #7dd3fc !important; color: #0c4a6e !important; }
                 #expenses-report .bg-emerald-200 { background: #a7f3d0 !important; color: #064e3b !important; }
                 #expenses-report .bg-emerald-50 { background: #ecfdf5 !important; color: #000 !important; }
-                #expenses-report table { width: 100%; min-width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 9px; }
-                #expenses-report th, #expenses-report td { border: 1px solid #000 !important; padding: 2.5px 3px !important; text-align: center; vertical-align: middle; white-space: normal; overflow-wrap: anywhere; word-break: normal; line-height: 1.15; color: #000 !important; font-weight: 700 !important; }
+                
+                /* ألوان الأبواب المتعددة للطباعة */
+                #expenses-report .bab-1 { background-color: #a7f3d0 !important; color: #064e3b !important; }
+                #expenses-report .bab-2 { background-color: #bfdbfe !important; color: #1e3a8a !important; }
+                #expenses-report .bab-3 { background-color: #f5d0fe !important; color: #701a75 !important; }
+                #expenses-report .bab-4 { background-color: #fed7aa !important; color: #7c2d12 !important; }
+                #expenses-report .bab-5 { background-color: #fecdd3 !important; color: #881337 !important; }
+                #expenses-report .bab-default { background-color: #d1fae5 !important; color: #064e3b !important; }
+
+                /* إعدادات الجدول ليحتوي النصوص بشكل تلقائي (auto) */
+                #expenses-report table { width: 100%; min-width: 100%; table-layout: auto; border-collapse: collapse; font-size: 9px; }
+                #expenses-report th, #expenses-report td { border: 1px solid #000 !important; padding: 3px !important; text-align: center !important; vertical-align: middle !important; white-space: normal !important; word-wrap: break-word !important; line-height: 1.2; color: #000 !important; font-weight: 700 !important; }
                 #expenses-report thead th { font-size: 9px; font-weight: 900 !important; }
                 #expenses-report tbody td { font-size: 8.5px; }
-                #expenses-report td.text-right, #expenses-report th.text-right { text-align: right; }
                 #expenses-report input { width: 100% !important; min-width: 0 !important; border: 0; background: transparent; color: #000; font: inherit; text-align: center; }
                 #expenses-report .text-white { color: #fff !important; }
-                #expenses-report .text-slate-800, #expenses-report .text-slate-700, #expenses-report .text-slate-600 { color: #000 !important; }
+                
                 @media print {
                   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
                   body { background: #fff; }
@@ -797,6 +801,7 @@ export default function ExpensesTab() {
           >
             🖨️ طباعة
           </button>
+          {/* ... باقي الأزرار دون تغيير ... */}
           <button
             onClick={async () => {
               const el = document.getElementById("expenses-view-content");
