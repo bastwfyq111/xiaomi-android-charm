@@ -307,7 +307,7 @@ export default function InstallmentsTab() {
 
     const matchedRule = condFormatRules.find((rule) => {
       const term = rule.text.trim().toLowerCase();
-      return term && searchableValues.some((value) => value.includes(term));
+              <thead className="bg-white font-bold border-b border-teal-800 text-teal-900 sticky top-0 z-20 shadow-md">
     });
 
     return matchedRule?.color || "hover:bg-slate-50/80";
@@ -737,7 +737,7 @@ const exportToPDF = (
       ? {
           head: "#0f766e",
           headText: "#000000",
-          zebra: "#f0fdfa",
+              <thead className="bg-white font-bold border-b border-teal-800 text-teal-900 sticky top-0 z-20 shadow-md">
           totals: "#ccfbf1",
           fees: "#eff6ff",
           paid: "#ecfdf5",
