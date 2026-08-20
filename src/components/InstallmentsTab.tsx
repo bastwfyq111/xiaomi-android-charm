@@ -20,6 +20,7 @@ import {
   FileSpreadsheet,
   FileText,
   Image as ImageIcon,
+  Download,
 } from "lucide-react";
 import TabActions from "./TabActions";
 import PrintSettingsModal, {
@@ -29,6 +30,7 @@ import PrintSettingsModal, {
 } from "./PrintSettingsModal";
 import { openPrintDocument } from "@/lib/printDocument";
 import { useReportDate } from "@/lib/reportDate";
+import { reportLetterheadHtml } from "@/lib/printTableHtml";
 import {
   addReportHeader,
   appendRows,
@@ -89,6 +91,183 @@ const safePdfFileName = (value: any): string =>
     .replace(/[\\/:*?"<>|]/g, "-")
     .replace(/\s+/g, "_")
     .trim() || "متدرب";
+
+/**
+ * ينشئ ملف PDF من التقرير التفصيلي نفسه بدل تحويله إلى جدول إجمالي.
+ * يستخدم صورة الترويسة المضمّنة محلياً، وعرضاً أكبر ومقياس تصوير مرتفعاً
+ * حتى تبقى الأعمدة العربية والأشهر واضحة عند الطباعة والحفظ.
+ */
+const downloadDetailedHtmlPdf = async ({
+  title,
+  body,
+  css,
+  fileName,
+  pageSize,
+  orientation,
+}: {
+  title: string;
+  body: string;
+  css: string;
+  fileName: string;
+  pageSize: "A4" | "A3";
+  orientation: "portrait" | "landscape";
+}): Promise<void> => {
+  const pageWidthPx = orientation === "landscape" ? 1600 : 1132;
+  const frame = document.createElement("iframe");
+  frame.setAttribute("aria-hidden", "true");
+  frame.style.position = "fixed";
+  frame.style.left = "-10000px";
+  frame.style.top = "0";
+  frame.style.width = `${pageWidthPx}px`;
+  frame.style.height = "800px";
+  frame.style.border = "0";
+  frame.style.opacity = "0";
+  frame.style.pointerEvents = "none";
+  document.body.appendChild(frame);
+
+  try {
+    const fdoc = frame.contentDocument;
+    if (!fdoc) throw new Error("تعذر إنشاء مساحة PDF");
+
+    fdoc.open();
+    fdoc.write(`<!doctype html>
+      <html lang="ar" dir="rtl">
+        <head>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <title>${escapeHtml(title)}</title>
+          <style>
+            ${css}
+            html, body { margin: 0 !important; padding: 0 !important; background: #fff !important; }
+            body { width: ${pageWidthPx}px; font-family: Tahoma, Arial, sans-serif !important; }
+            .pdf-download-root { width: 100%; background: #fff; }
+            .print-toolbar { display: none !important; }
+            @media print { .print-toolbar { display: none !important; } }
+          </style>
+        </head>
+        <body>
+          <div class="pdf-download-root">${reportLetterheadHtml()}${body}</div>
+        </body>
+      </html>`);
+    fdoc.close();
+
+    const images = Array.from(fdoc.images);
+    await Promise.all(
+      images.map(
+        (image) =>
+          image.complete
+            ? Promise.resolve()
+            : new Promise<void>((resolve) => {
+                const done = () => resolve();
+                image.addEventListener("load", done, { once: true });
+                image.addEventListener("error", done, { once: true });
+                window.setTimeout(done, 2500);
+              }),
+      ),
+    );
+    if ((fdoc as any).fonts?.ready) {
+      await Promise.race([
+        (fdoc as any).fonts.ready,
+        new Promise((resolve) => window.setTimeout(resolve, 1200)),
+      ]);
+    }
+    await new Promise((resolve) => window.setTimeout(resolve, 120));
+
+    const page = fdoc.querySelector(".pdf-download-root") as HTMLElement | null;
+    if (!page) throw new Error("تعذر العثور على محتوى التقرير");
+    frame.style.height = `${Math.max(page.scrollHeight + 80, 800)}px`;
+
+    const [{ default: html2canvas }, { default: JsPDF }] = await Promise.all([
+      import("html2canvas"),
+      import("jspdf"),
+    ]);
+    const scale = 3;
+    const pdf = new JsPDF({
+      unit: "mm",
+      format: pageSize.toLowerCase() as "a4" | "a3",
+      orientation,
+      compress: true,
+    });
+    const pageWidthMm = pdf.internal.pageSize.getWidth();
+    const pageHeightMm = pdf.internal.pageSize.getHeight();
+    const marginMm = 4;
+    const imageWidthMm = pageWidthMm - marginMm * 2;
+    const table = page.querySelector("table");
+    const tableBody = table?.tBodies[0];
+    const sourceRows = tableBody ? Array.from(tableBody.rows) : [];
+    const totalRow = sourceRows.find((row) => row.classList.contains("total-row"));
+    const detailRows = sourceRows.filter((row) => row !== totalRow);
+    const rowChunkSize = orientation === "landscape" ? 28 : 18;
+    const chunks: HTMLTableRowElement[][] = [];
+
+    if (detailRows.length) {
+      for (let index = 0; index < detailRows.length; index += rowChunkSize) {
+        chunks.push(detailRows.slice(index, index + rowChunkSize));
+      }
+    } else {
+      chunks.push([]);
+    }
+
+    let firstPage = true;
+    for (let chunkIndex = 0; chunkIndex < chunks.length; chunkIndex += 1) {
+      const pageClone = page.cloneNode(true) as HTMLElement;
+      const cloneBody = pageClone.querySelector("table tbody");
+      if (cloneBody) {
+        cloneBody.replaceChildren();
+        chunks[chunkIndex].forEach((row) => cloneBody.appendChild(row.cloneNode(true)));
+        if (totalRow && chunkIndex === chunks.length - 1) {
+          cloneBody.appendChild(totalRow.cloneNode(true));
+        }
+      }
+
+      const holder = fdoc.createElement("div");
+      holder.style.cssText = `position:absolute;left:0;top:0;width:${pageWidthPx}px;background:#fff;`;
+      holder.appendChild(pageClone);
+      fdoc.body.appendChild(holder);
+      await new Promise((resolve) => window.setTimeout(resolve, 40));
+      const canvas = await html2canvas(pageClone, {
+        scale,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        width: pageWidthPx,
+        height: Math.max(pageClone.scrollHeight, 1),
+        windowWidth: pageWidthPx,
+        windowHeight: Math.max(pageClone.scrollHeight + 80, 800),
+        scrollX: 0,
+        scrollY: 0,
+      });
+      holder.remove();
+
+      const pixelsPerMm = canvas.width / imageWidthMm;
+      const maxImageHeightMm = pageHeightMm - marginMm * 2;
+      const imageHeightMm = Math.min(maxImageHeightMm, canvas.height / pixelsPerMm);
+      if (!firstPage) pdf.addPage(pageSize.toLowerCase() as "a4" | "a3", orientation);
+      firstPage = false;
+      pdf.addImage(
+        canvas.toDataURL("image/png"),
+        "PNG",
+        marginMm,
+        marginMm,
+        imageWidthMm,
+        imageHeightMm,
+        undefined,
+        "FAST",
+      );
+    }
+
+    const blob = pdf.output("blob");
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1500);
+  } finally {
+    frame.remove();
+  }
+};
 
 // شبكة إحصائيات علوية بتصميم عصري
 const StatsGrid = ({ stats, columns = 3 }: { stats: any[]; columns?: number }) => {
@@ -194,6 +373,7 @@ export default function InstallmentsTab() {
   const [, setHoveredCell] = useState<string | null>(null);
   const [importError, setImportError] = useState<string | null>(null);
   const [printSettingsYear, setPrintSettingsYear] = useState<number | null>(null);
+  const [detailedPdfBusy2026, setDetailedPdfBusy2026] = useState(false);
 
   const [search2025, setSearch2025] = useState("");
   const [search2026, setSearch2026] = useState("");
@@ -307,7 +487,7 @@ export default function InstallmentsTab() {
 
     const matchedRule = condFormatRules.find((rule) => {
       const term = rule.text.trim().toLowerCase();
-              <thead className="bg-white font-bold border-b border-teal-800 text-teal-900 sticky top-0 z-20 shadow-md">
+      return term.length > 0 && searchableValues.some((value) => value.includes(term));
     });
 
     return matchedRule?.color || "hover:bg-slate-50/80";
@@ -560,10 +740,11 @@ export default function InstallmentsTab() {
   };
 
 
-const exportToPDF = (
+const exportToPDF = async (
   year: number,
   settings: InstallmentsPrintSettings = DEFAULT_PRINT_SETTINGS,
-) => {
+  options: { download?: boolean } = {},
+): Promise<void> => {
   try {
     const monthsList = year === 2025 ? MONTHS_2025 : MONTHS_2026;
     const rows = year === 2025 ? filteredRows2025 : filteredRows2026;
@@ -736,8 +917,7 @@ const exportToPDF = (
     const colorTokens = settings.colored
       ? {
           head: "#0f766e",
-          headText: "#000000",
-              <thead className="bg-white font-bold border-b border-teal-800 text-teal-900 sticky top-0 z-20 shadow-md">
+          headText: "#ffffff",
           totals: "#ccfbf1",
           fees: "#eff6ff",
           paid: "#ecfdf5",
@@ -746,7 +926,7 @@ const exportToPDF = (
         }
       : {
           head: "#ffffff",
-          headText: "#000000",
+          headText: "#ffffff",
           zebra: "#ffffff",
           totals: "#f2f2f2",
           fees: "#ffffff",
@@ -864,7 +1044,7 @@ const exportToPDF = (
       }
       th {
         background: ${colorTokens.head} !important;
-        color: #000 !important;
+        color: ${colorTokens.headText} !important;
         font-size: ${headerFontSizePx.toFixed(2)}px;
         font-weight: 800;
         padding: 4px 5px !important;
@@ -924,6 +1104,19 @@ const exportToPDF = (
         <span>التوقيع: ________________</span>
       </div>
     `;
+
+    if (options.download) {
+      await downloadDetailedHtmlPdf({
+        title: `تقرير_الأقساط_والمدفوعات_${year}_${reportDate}`,
+        body,
+        css: reportCss,
+        pageSize: settings.pageSize,
+        orientation: settings.orientation,
+        fileName: `${safePdfFileName(`اقساط-${year}-تفصيلي-${reportDate}`)}.pdf`,
+      });
+      toast.success(`تم تنزيل تقرير الأقساط التفصيلي لعام ${year}`);
+      return;
+    }
 
     const ok = openPrintDocument({
       title: `تقرير_الأقساط_والمدفوعات_${year}_${reportDate}`,
@@ -1942,32 +2135,56 @@ const exportToPDF = (
               </button>
             </div>
 
-            <TabActions
-              title="أقساط العام 2026"
-              rows={(installments || []).map((r: any) => {
-                const customValues: any = { ...r.customData };
-                extraCols2026.forEach((col) => {
-                  if (col.type === "formula")
-                    customValues[col.name] = evaluateFormula(col.formula || "", r);
-                });
-                return { ...r, ...customValues };
-              })}
-              columns={[
-                { key: "name", label: "اسم المتدرب" },
-                { key: "batch", label: "الدفعة" },
-                { key: "specialty", label: "المساق" },
-                { key: "prevDue", label: "المتبقي من 2025" },
-                { key: "fees", label: "الرسوم" },
-                { key: "totalPaid", label: "المسدد" },
-                { key: "remaining", label: "المتبقي" },
-                ...extraCols2026.map((c) => ({ key: c.name, label: c.name })),
-              ]}
-              fileName="اقساط-2026"
-              numericKeys={["prevDue", "fees", "totalPaid", "remaining"]}
-              onClear={() => clearInstallments()}
-              printLabel="الأقساط/إجمالي"
-              className="col-span-2 w-full !grid !grid-cols-2 sm:!flex !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-1 [&>button]:py-1 sm:[&>button]:px-2 sm:[&>button]:py-1 [&>button]:text-xs sm:[&>button]:text-xs"
-            />
+            <div className="col-span-2 w-full flex flex-wrap items-center gap-1 sm:gap-2">
+              <TabActions
+                title="أقساط العام 2026"
+                rows={(installments || []).map((r: any) => {
+                  const customValues: any = { ...r.customData };
+                  extraCols2026.forEach((col) => {
+                    if (col.type === "formula")
+                      customValues[col.name] = evaluateFormula(col.formula || "", r);
+                  });
+                  return { ...r, ...customValues };
+                })}
+                columns={[
+                  { key: "name", label: "اسم المتدرب" },
+                  { key: "batch", label: "الدفعة" },
+                  { key: "specialty", label: "المساق" },
+                  { key: "prevDue", label: "المتبقي من 2025" },
+                  { key: "fees", label: "الرسوم" },
+                  { key: "totalPaid", label: "المسدد" },
+                  { key: "remaining", label: "المتبقي" },
+                  ...extraCols2026.map((c) => ({ key: c.name, label: c.name })),
+                ]}
+                fileName="اقساط-2026"
+                numericKeys={["prevDue", "fees", "totalPaid", "remaining"]}
+                onClear={() => clearInstallments()}
+                printLabel="الأقساط/إجمالي"
+                className="!flex-1 min-w-0 !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-1 [&>button]:py-1 sm:[&>button]:px-2 sm:[&>button]:py-1 [&>button]:text-xs sm:[&>button]:text-xs [&>button:nth-child(2)]:hidden"
+              />
+              <button
+                type="button"
+                onClick={async () => {
+                  if (detailedPdfBusy2026) return;
+                  if (!filteredRows2026.length) {
+                    toast.error("لا توجد بيانات للتصدير");
+                    return;
+                  }
+                  setDetailedPdfBusy2026(true);
+                  try {
+                    await exportToPDF(2026, { ...DEFAULT_PRINT_SETTINGS }, { download: true });
+                  } finally {
+                    setDetailedPdfBusy2026(false);
+                  }
+                }}
+                disabled={detailedPdfBusy2026}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-[#10528e] text-white rounded-lg text-xs font-bold shadow-sm hover:bg-[#0d4272] active:scale-95 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-wait"
+                title="تنزيل تقرير الأقساط التفصيلي لعام 2026"
+              >
+                <Download className={`w-4 h-4 ${detailedPdfBusy2026 ? "animate-pulse" : ""}`} />
+                {detailedPdfBusy2026 ? "جارٍ التحضير…" : "تنزيل PDF"}
+              </button>
+            </div>
           </div>
         </div>
 
