@@ -24,6 +24,8 @@ export interface PrintDocumentOptions {
   pageSize?: "A4" | "A3";
   /** هامش الصفحة */
   margin?: string;
+  /** موضع الترويسة: أعلى الصفحة أو داخل رأس الجدول */
+  letterheadPlacement?: "top" | "table";
   /** تشغيل نافذة الطباعة تلقائياً بعد تحميل التقرير */
   autoPrint?: boolean;
 }
@@ -107,6 +109,7 @@ export function openPrintDocument(options: PrintDocumentOptions): boolean {
     orientation = "portrait",
     pageSize = "A4",
     margin = "8mm",
+    letterheadPlacement = "table",
     autoPrint = true,
   } = options;
 
@@ -147,10 +150,11 @@ export function openPrintDocument(options: PrintDocumentOptions): boolean {
   <style>${baseCss(pageSize, orientation, margin)}${css}</style>
 </head>
   <body>
-${reportLetterheadHtml()}
+${letterheadPlacement === "top" ? reportLetterheadHtml() : ""}
 ${body}
 <script>
   (function () {
+    if (${JSON.stringify(letterheadPlacement)} !== "table") return;
     var tables = document.querySelectorAll("table");
     if (!tables.length) return;
 

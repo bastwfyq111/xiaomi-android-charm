@@ -1683,10 +1683,6 @@ const exportToPDF = async (
           <button type="button" onclick="window.print()">طباعة التقرير</button>
         </div>
         <div class="page-frame">
-          <div class="header">
-            <h1>المجلس اليمني للاختصاصات الطبية</h1>
-            <p>كشف حساب متدرب - للعام ${year}م</p>
-          </div>
           <div class="info-grid">
             ${infoCard("اسم المتدرب", row.name)}
             ${infoCard("الدفعة", row.batch)}
@@ -1736,6 +1732,7 @@ const exportToPDF = async (
       pageSize: "A4",
       orientation: "portrait",
       margin: "8mm",
+      letterheadPlacement: "top",
       autoPrint: false,
     });
     if (ok) {
@@ -1877,7 +1874,7 @@ const exportToPDF = async (
         <div className="p-1 sm:p-3">
           <StatsGrid stats={stats2025} columns={3} />
           <div className="overflow-auto max-h-[72vh] rounded-lg border border-slate-200 shadow-sm relative">
-            <table className="min-w-max table-auto text-sm sm:text-base font-semibold">
+            <table className="installments-table min-w-max table-auto text-sm sm:text-base font-semibold">
               <thead className="bg-gradient-to-b from-teal-700 to-teal-800 font-bold border-b-2 border-emerald-900 text-white [&>tr>th]:!text-white sticky top-0 z-20 shadow-md">
                 <tr>
                   <th className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">#</th>
@@ -2191,7 +2188,7 @@ const exportToPDF = async (
         <div className="p-1 sm:p-3">
           <StatsGrid stats={stats2026} columns={3} />
           <div className="overflow-auto max-h-[72vh] rounded-lg border border-slate-200 shadow-sm relative">
-            <table className="min-w-max table-auto text-sm sm:text-base font-semibold">
+            <table className="installments-table min-w-max table-auto text-sm sm:text-base font-semibold">
               <thead className="bg-gradient-to-b from-teal-700 to-teal-800 font-bold border-b-2 border-emerald-900 text-white [&>tr>th]:!text-white sticky top-0 z-20 shadow-md">
                 <tr>
                   <th className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">#</th>

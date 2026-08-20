@@ -132,6 +132,12 @@
     border: 1px solid #000 !important;
   }
 
+  /* حدود خلايا جداول الأقساط بالأسود فقط */
+  .installments-table th,
+  .installments-table td {
+    border: 1px solid #000 !important;
+  }
+
   .font-mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 600; }
   button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
   
