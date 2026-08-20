@@ -84,11 +84,11 @@ export const tablePrintStyles = `
     padding: 6px 8px !important;
     text-align: center !important;
     vertical-align: middle !important;
-    white-space: normal !important;
+    white-space: nowrap !important;
     overflow: visible !important;
     text-overflow: clip;
-    overflow-wrap: anywhere !important;
-    word-break: normal !important;
+    overflow-wrap: normal !important;
+    word-break: keep-all !important;
     hyphens: none;
     color: #000 !important;
     font-weight: 800 !important;
@@ -103,11 +103,18 @@ export const tablePrintStyles = `
     max-width: 100%;
     text-align: center;
     vertical-align: middle;
-    white-space: normal !important;
+    white-space: nowrap !important;
     overflow: visible !important;
-    overflow-wrap: anywhere !important;
-    word-break: normal !important;
+    overflow-wrap: normal !important;
+    word-break: keep-all !important;
     line-height: 1.5 !important;
+  }
+  .long-text-cell,
+  .long-text-cell .pdf-cell-text {
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+    hyphens: none !important;
   }
   tbody td,
   tfoot td,
@@ -241,14 +248,18 @@ export function buildTableHtml(opts: {
     /date|تاريخ|اليوم|الشهر|السنة|year|month|day/i.test(`${c.key} ${c.label}`);
   const isCompactColumn = (c: TableCol) =>
     /(^|[-_ ])(no|number|code|key|id)([-_ ]|$)|رقم|رمز|كود|الباب|الفصل|البند|النوع|الشهر|السنة/i.test(`${c.key} ${c.label}`);
+  const hasMoreThanFourWords = (value: any) =>
+    String(value ?? "").trim().split(/\s+/).filter(Boolean).length > 4;
   const cellClass = (c: TableCol) => {
     const isNumeric = numericKeys.includes(c.key);
     const isDate = isDateColumn(c);
     const isCompact = isCompactColumn(c);
+    const isNoWrap = isNumeric || isDate || isCompact;
     return [
-      isNumeric ? "num numeric-cell" : "",
+      isNoWrap ? "num numeric-cell" : "text-cell",
       isDate ? "date-cell" : "",
       isCompact ? "compact-cell numeric-cell" : "",
+      !isNoWrap && hasMoreThanFourWords(c.label) ? "long-text-cell" : "",
     ].filter(Boolean).join(" ");
   };
 
@@ -281,10 +292,12 @@ export function buildTableHtml(opts: {
             const isNum = numericKeys.includes(c.key) || typeof v === "number";
             const isDate = isDateColumn(c);
             const isCompact = isCompactColumn(c);
+            const isNoWrap = isNum || isDate || isCompact;
             const classes = [
-              isNum ? "num numeric-cell" : "",
+              isNoWrap ? "num numeric-cell" : "text-cell",
               isDate ? "date-cell" : "",
               isCompact ? "compact-cell numeric-cell" : "",
+              !isNoWrap && hasMoreThanFourWords(v) ? "long-text-cell" : "",
             ].filter(Boolean).join(" ");
             return `<td class="${classes}"><span class="pdf-cell-text" style="color:#000000 !important;font-weight:800 !important;">${
               isNum ? escapeHtml(fmt(Number(v) || 0)) : escapeHtml(v)
