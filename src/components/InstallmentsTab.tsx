@@ -803,13 +803,13 @@ const exportToPDF = (
         padding: 2px 3px !important;
         text-align: center;
         vertical-align: middle;
-        white-space: normal;
+        white-space: nowrap !important;
         overflow: visible;
         text-overflow: clip;
         font-size: clamp(8px, 1.25vw, 14px);
-        overflow-wrap: anywhere;
-        word-break: break-word;
-        hyphens: none;
+        overflow-wrap: normal !important;
+        word-break: keep-all !important;
+        hyphens: none !important;
         line-height: 1.3;
         height: auto;
         font-weight: 700;
@@ -823,14 +823,29 @@ const exportToPDF = (
         padding: 2px 4px;
         margin: 0;
         text-align: center;
-        white-space: normal;
+        white-space: nowrap !important;
         overflow: visible;
-        overflow-wrap: anywhere;
-        word-break: break-word;
-        hyphens: none;
+        overflow-wrap: normal !important;
+        word-break: keep-all !important;
+        hyphens: none !important;
         line-height: 1.35;
       }
-      td.wrap, td.wrap .cell-content { white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; word-break: break-word; hyphens: none; line-height: 1.35; height: auto; }
+      td.wrap, td.wrap .cell-content {
+        white-space: nowrap !important;
+        overflow: visible;
+        text-overflow: clip;
+        overflow-wrap: normal !important;
+        word-break: keep-all !important;
+        hyphens: none !important;
+        line-height: 1.35;
+        height: auto;
+      }
+      table th *, table td * {
+        white-space: nowrap !important;
+        overflow-wrap: normal !important;
+        word-break: keep-all !important;
+        hyphens: none !important;
+      }
       td.numeric-cell, th.numeric-cell, td.date-cell, th.date-cell, td.compact-cell, th.compact-cell {
         font-family: 'Times New Roman', Times, serif !important;
         font-size: clamp(7px, 0.95vw, 11px) !important;
