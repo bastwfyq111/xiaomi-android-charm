@@ -490,6 +490,7 @@ const AppTabs: React.FC = () => {
           <div className="flex items-center gap-2">  
             <FileSpreadsheet className="w-5 h-5 text-blue-800" />  
             <h2 className="text-base font-bold text-blue-900">سجل مفردات الاستخدامات والنفقات العامة</h2>  
+            <span className="rounded-full border border-amber-300 bg-amber-100 px-2 py-1 text-[10px] font-bold text-amber-900 whitespace-nowrap">اختبار الربط: main</span>
           </div>  
           <div className="flex flex-wrap items-center gap-2">  
             <select  
