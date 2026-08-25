@@ -53,14 +53,67 @@ const baseCss = (
   }
   h1, h2, h3 { font-weight: 700; margin: 0; }
 
-  /* جداول: محاولة الحفاظ على تنسيق واضح عبر الصفحات */
-  table { width: 100%; min-width: 100%; border-collapse: collapse; table-layout: auto; word-break: break-word; overflow-wrap: anywhere; font-size: clamp(7px, 1.05vw, 12px); }
+  /* جداول: احتواء تلقائي للأعمدة وتعديل المرونة بحسب المحتوى */
+  table { 
+    width: 100%; 
+    max-width: 100%; 
+    border-collapse: collapse; 
+    table-layout: auto !important; 
+    font-size: clamp(8px, 1.05vw, 12px); 
+  }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
   tr { break-inside: avoid; page-break-inside: avoid; page-break-after: auto; }
-  th, td { border: 0.5pt solid #000; text-align: center; vertical-align: middle; word-break: break-word; overflow-wrap: anywhere; white-space: normal; overflow: hidden; text-overflow: clip; padding: 0 !important; line-height: 1.1; max-height: 2.2em; font-size: clamp(7px, 1.05vw, 12px); color: #000 !important; font-weight: 700 !important; }
-  .num { font-family: 'Times New Roman', Times, serif !important; color: #000 !important; font-weight: 900 !important; direction: ltr; }
-  th { font-weight: 700; }
+  
+  th, td { 
+    border: 0.5pt solid #000; 
+    text-align: center !important; 
+    vertical-align: middle !important; 
+    padding: 4px 6px !important; 
+    line-height: 1.3; 
+    font-size: clamp(8px, 1.05vw, 12px); 
+    color: #000 !important; 
+    font-weight: 700 !important; 
+    width: max-content;
+  }
+
+  /* منع التفاف النصوص نهائياً في الخلايا الرقمية والتواريخ والأكواد */
+  .num,
+  .numeric-cell,
+  .date-cell,
+  .compact-cell,
+  .idx { 
+    white-space: nowrap !important; 
+    word-break: keep-all !important; 
+    overflow-wrap: normal !important; 
+    hyphens: none !important;
+    font-family: 'Times New Roman', Times, serif !important; 
+    color: #000 !important; 
+    font-weight: 900 !important; 
+    direction: ltr; 
+    width: 1%; /* إجبار الخلية على أخذ أصغر مساحة تتسع لمحتواها بدون التفاف */
+  }
+
+  .num .pdf-cell-text,
+  .numeric-cell .pdf-cell-text,
+  .date-cell .pdf-cell-text,
+  .compact-cell .pdf-cell-text,
+  .idx .pdf-cell-text {
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+  }
+
+  /* السماح بالالتفاف فقط في النصوص والأسماء الطويلة */
+  .long-text-cell,
+  .text-cell {
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+    width: auto;
+  }
+
+  th { font-weight: 800; white-space: nowrap; }
   img { max-width: 100%; height: auto; display: block; }
 
   /* ترويسة التقرير داخل thead تتكرر مع رؤوس الأعمدة في كل صفحة */
@@ -86,18 +139,24 @@ const baseCss = (
   /* إخفاء عناصر غير مطبوعة صراحة */
   .no-print { display: none !important; }
 
-  /* تحسينات خاصة ��الـ print */
+  /* تحسينات خاصة بالـ print */
   @media print {
     html, body { width: 100%; }
-    body { margin: 0; padding: 0; }
-    /* تأكيد تكرار ترويسة الجدول في كل صفحة */
+    body { margin: 0; padding: 0; font-size: 10px; line-height: 1.3; }
     thead { display: table-header-group; }
     tfoot { display: table-footer-group; }
-    /* فواصل صفحات للاستخدام اليدوي داخل القالب */
     .page-break { page-break-after: always; }
-    /* تقليل الخط لتحسين تناسق الجدول عبر صفحات متعددة */
-    body { font-size: 10px; line-height: 1.3; }
-    th, td { padding: 0 !important; white-space: normal; overflow: hidden; text-overflow: clip; overflow-wrap: anywhere; word-break: break-word; line-height: 1.1; max-height: 2.2em; font-size: clamp(7px, 1.0vw, 10px); color: #000 !important; font-weight: 700 !important; }
+    th, td { 
+      padding: 3px 5px !important; 
+      font-size: clamp(8px, 1.0vw, 11px); 
+      color: #000 !important; 
+      font-weight: 700 !important; 
+    }
+    .num, .numeric-cell, .date-cell, .compact-cell, .idx {
+      white-space: nowrap !important;
+      word-break: keep-all !important;
+      overflow-wrap: normal !important;
+    }
   }
 `;
 
@@ -126,7 +185,6 @@ export function openPrintDocument(options: PrintDocumentOptions): boolean {
           try { window.focus(); } catch (e) {}
           setTimeout(function () { window.print(); }, 150);
         }
-        // انتظار جهوزية الخطوط مع مهلة أمان
         if (document.fonts && document.fonts.ready) {
           document.fonts.ready.then(go).catch(go);
           setTimeout(go, 2500);
