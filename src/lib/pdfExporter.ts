@@ -34,9 +34,7 @@ function forcePdfDataCellTextColor(doc: Document): void {
 }
 
 /**
- * html2canvas قد يحتفظ بلون أخضر موروث للأرقام رغم أن computed style أسود.
- * نعالج بكسلات النص الخضراء داخل خلايا البيانات بعد التصوير فقط، مع ترك
- * الترويسة والصور والخلفيات خارج نطاق المعالجة.
+ * معالجة بكسلات النص الخضراء داخل خلايا البيانات بعد التصوير فقط
  */
 function blackenGreenDataPixels(canvas: HTMLCanvasElement, root: HTMLElement): void {
   const rootRect = root.getBoundingClientRect();
@@ -70,23 +68,18 @@ function blackenGreenDataPixels(canvas: HTMLCanvasElement, root: HTMLElement): v
 }
 
 /**
- * توليد PDF من HTML حقيقي (يعرضه المتصفح) بدل الرسم البرمجي
- * السبب: jsPDF لا يدعم تشكيل الحروف العربية ولا اتجاه الأرقام،
- * فكانت الملفات تخرج بدون نص عربي وبأرقام مقلوبة.
+ * توليد PDF من HTML حقيقي عالي الجودة مع ضبط التفاف الخلايا
  */
 async function htmlToPdf(opts: {
   html: string;
   css: string;
   fileName: string;
   orientation?: 'portrait' | 'landscape';
-  /** عرض ورقة العمل بالبكسل (A4 عرضي ≈ 1123، طولي ≈ 794) */
   pageWidthPx?: number;
 }): Promise<void> {
   const { html, css, fileName, orientation = 'landscape' } = opts;
   const pageWidthPx = opts.pageWidthPx ?? (orientation === 'landscape' ? 1123 : 794);
 
-  // نعرض المحتوى داخل iframe معزول تماماً حتى لا يرث أنماط التطبيق
-  // (أنماط Tailwind تستخدم oklch وهي غير مدعومة في محرك التصوير)
   const frame = document.createElement('iframe');
   frame.setAttribute('aria-hidden', 'true');
   frame.style.position = 'fixed';
@@ -108,26 +101,25 @@ async function htmlToPdf(opts: {
       <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       <style>${css}</style>
       <style>
-        /* تحسينات خاصة بالتصوير: احتواء تلقائي للنص، والتفاف للنصوص فقط دون الأرقام */
-        .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 6px 8px !important; text-align: center !important; vertical-align: middle !important; height: auto !important; min-height: 30px; font-size: clamp(10px, 1.15vw, 14px) !important; width: auto !important; }
+        .pdf-page table { table-layout: auto !important; width: 100% !important; }
+        .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 5px 6px !important; text-align: center !important; vertical-align: middle !important; height: auto !important; min-height: 28px; font-size: clamp(10px, 1.15vw, 14px) !important; width: max-content; }
         /* خلايا النص: التفاف تلقائي واحتواء حسب المحتوى */
-        .pdf-page td:not(.num):not(.idx), .pdf-page th { white-space: normal !important; overflow: visible !important; overflow-wrap: anywhere !important; word-break: normal !important; line-height: 1.5 !important; }
-        /* خلايا الأرقام: بدون التفاف، سطر واحد فقط */
-        .pdf-page td.num, .pdf-page td.idx { white-space: nowrap !important; overflow: visible !important; word-break: keep-all !important; line-height: 1.5 !important; }
-        .pdf-page .pdf-cell-text { display: inline-block !important; width: 100% !important; max-width: 100% !important; text-align: center !important; vertical-align: middle !important; color: #000000 !important; font-weight: 800 !important; }
-        .pdf-page td:not(.num):not(.idx) .pdf-cell-text { white-space: normal !important; overflow-wrap: anywhere !important; word-break: normal !important; }
-        .pdf-page td.num .pdf-cell-text, .pdf-page td.idx .pdf-cell-text { white-space: nowrap !important; width: auto !important; }
+        .pdf-page td:not(.num):not(.idx):not(.numeric-cell):not(.date-cell), .pdf-page th { white-space: normal !important; overflow: visible !important; overflow-wrap: break-word !important; word-break: normal !important; line-height: 1.4 !important; width: auto; }
+        /* خلايا الأرقام والتواريخ: بدون التفاف مطلقاً */
+        .pdf-page td.num, .pdf-page td.idx, .pdf-page td.numeric-cell, .pdf-page td.date-cell { white-space: nowrap !important; overflow: visible !important; word-break: keep-all !important; overflow-wrap: normal !important; hyphens: none !important; line-height: 1.2 !important; width: 1% !important; }
+        .pdf-page .pdf-cell-text { display: inline-block !important; width: 100% !important; text-align: center !important; vertical-align: middle !important; color: #000000 !important; font-weight: 800 !important; }
+        .pdf-page td:not(.num):not(.idx):not(.numeric-cell) .pdf-cell-text { white-space: normal !important; overflow-wrap: break-word !important; word-break: normal !important; }
+        .pdf-page td.num .pdf-cell-text, .pdf-page td.idx .pdf-cell-text, .pdf-page td.numeric-cell .pdf-cell-text { white-space: nowrap !important; word-break: keep-all !important; overflow-wrap: normal !important; width: auto !important; }
         .pdf-page tbody td *, .pdf-page tfoot td *, .pdf-page .num *, .pdf-page .idx * { color: #000000 !important; -webkit-text-fill-color: #000000 !important; text-shadow: none !important; font-weight: 800 !important; }
         .pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx { color: #000 !important; -webkit-text-fill-color: #000 !important; text-shadow: none !important; font-weight: 800 !important; }
-        .pdf-page .num { font-family: 'Cairo', Tahoma, Arial, sans-serif !important; font-weight: 700 !important; letter-spacing: 0.3px; }
-        .pdf-page .sub { border-bottom-width: 10px !important; padding-bottom: 6px !important; margin-bottom: 8px !important; }
-        .pdf-page .total-row td { border-top: 2px solid #92400e !important; }
+        .pdf-page .num { font-family: 'Times New Roman', Times, serif !important; font-weight: 900 !important; }
+        .pdf-page .sub { border-bottom-width: 2px !important; padding-bottom: 6px !important; margin-bottom: 8px !important; }
+        .pdf-page .total-row td { border-top: 2px solid #92400e !important; white-space: nowrap !important; }
       </style></head>
 
       <body><div class="pdf-page">${reportLetterheadHtml()}${html}</div></body></html>`);
     fdoc.close();
 
-    
     if ((fdoc as any).fonts?.ready) {
       await Promise.race([
         (fdoc as any).fonts.ready,
@@ -200,15 +192,10 @@ async function htmlToPdf(opts: {
   } finally {
     frame.remove();
   }
-
 }
 
 /**
- * توليد PDF لجدول طويل مع تكرار رأس الأعمدة فعلياً في كل صفحة.
- * بخلاف htmlToPdf (التي تصوّر المحتوى كصورة طويلة وتقصّه عشوائياً)،
- * هذه الدالة تحسب عدد الصفوف التي تتسع في صفحة واحدة، ثم تبني
- * "صفحة HTML" مستقلة لكل مجموعة صفوف — كل صفحة فيها <thead> خاص بها،
- * فيُصوَّر كل جدول-صفحة على حدة ويُضاف كصفحة PDF منفصلة تحتوي رأساً كاملاً.
+ * توليد PDF لجدول طويل مخصص مع احتواء الأعمدة تلقائياً بدون التفاف للأرقام
  */
 async function htmlTableToPdfPaginated(opts: {
   title: string;
@@ -232,7 +219,6 @@ async function htmlTableToPdfPaginated(opts: {
     reportDate,
   } = opts;
   const pageWidthPx = opts.pageWidthPx ?? (orientation === 'landscape' ? 1123 : 794);
-  // ارتفاع صفحة A4 في نفس مقياس البكسل المستخدم للعرض
   const pageHeightPx = Math.round(
     pageWidthPx * (orientation === 'landscape' ? 210 / 297 : 297 / 210)
   );
@@ -242,8 +228,6 @@ async function htmlTableToPdfPaginated(opts: {
     import('jspdf'),
   ]);
 
-  // إطار قياس مخفي: نستخدمه لمعرفة ارتفاع رأس الجدول وارتفاع صف واحد فعلياً
-  // (يعتمد على طول النص الفعلي والالتفاف، فلا يمكن تخمينه رياضياً بدقة)
   const measureFrame = document.createElement('iframe');
   measureFrame.setAttribute('aria-hidden', 'true');
   measureFrame.style.position = 'fixed';
@@ -267,20 +251,15 @@ async function htmlTableToPdfPaginated(opts: {
       <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       <style>${css}</style>
       <style>
-        .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 4px 6px !important; text-align: center !important; vertical-align: middle !important; line-height: 1.35 !important; font-size: clamp(9px, 1.05vw, 13px) !important; width: auto !important; }
-        .pdf-page td:not(.num):not(.idx), .pdf-page th { white-space: normal !important; overflow: visible !important; overflow-wrap: anywhere !important; word-break: normal !important; }
-        .pdf-page td.num, .pdf-page td.idx { white-space: nowrap !important; overflow: visible !important; word-break: keep-all !important; }
+        .pdf-page table { table-layout: auto !important; width: 100% !important; }
+        .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 4px 6px !important; text-align: center !important; vertical-align: middle !important; line-height: 1.35 !important; font-size: clamp(9px, 1.05vw, 13px) !important; width: max-content; }
+        .pdf-page td:not(.num):not(.idx):not(.numeric-cell):not(.date-cell), .pdf-page th { white-space: normal !important; overflow: visible !important; overflow-wrap: break-word !important; word-break: normal !important; width: auto; }
+        .pdf-page td.num, .pdf-page td.idx, .pdf-page td.numeric-cell, .pdf-page td.date-cell { white-space: nowrap !important; overflow: visible !important; word-break: keep-all !important; overflow-wrap: normal !important; hyphens: none !important; width: 1% !important; }
         .pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx { color: #000 !important; font-weight: 800 !important; }
         .pdf-page > table:not(.info) { font-size: 12px !important; }
-        .pdf-page > table:not(.info) th, .pdf-page > table:not(.info) td { padding: 4px 6px !important; text-align: center !important; vertical-align: middle !important; line-height: 1.35 !important; font-size: clamp(9px, 1.05vw, 13px) !important; }
-        .pdf-page > table:not(.info) td:not(.num):not(.idx), .pdf-page > table:not(.info) th { white-space: normal !important; overflow-wrap: anywhere !important; word-break: normal !important; }
-        .pdf-page > table:not(.info) td.num, .pdf-page > table:not(.info) td.idx { white-space: nowrap !important; word-break: keep-all !important; }
-        .pdf-page > table:not(.info) thead th { font-size: 13px !important; }
       </style>
       </head><body><div class="pdf-page">${fullHtml}</div></body></html>`);
     mdoc.close();
-    // تثبيت اللون على صفوف المصدر قبل نسخ outerHTML إلى إطارات الصفحات
-    // حتى لا يعود أي لون موروث من تنسيقات الواجهة أثناء التصوير.
     forcePdfDataCellTextColor(mdoc);
 
     if ((mdoc as any).fonts?.ready) {
@@ -295,16 +274,11 @@ async function htmlTableToPdfPaginated(opts: {
 
     const topBlockH = (headerEl?.offsetHeight || 0) + (subEl?.offsetHeight || 0) + 16;
     const theadH = theadEl?.offsetHeight || 0;
-    // آخر صف هو صف الإجمالي؛ يجب أن يبقى مرتبطاً بآخر صفحة دائماً
     const totalRowH = bodyRows.length ? bodyRows[bodyRows.length - 1].offsetHeight : 0;
     const dataRows = bodyRows.slice(0, -1);
     const rowHeights = dataRows.map((r) => r.offsetHeight);
 
-    // هامش فعلي واحد صغير (يُستخدم بنفس القيمة في التوزيع والرسم لاحقاً)
-    const margin = 3; // مم
-    // دقة العرض الفعلية (96 نقطة/بوصة قياسي للمتصفح) — نفس الوحدة المستخدمة
-    // لقياس العناصر بالـ iframe (offsetHeight بالبكسل) ولرسم الصورة النهائية،
-    // فيتطابق حساب "كم صف يتسع بصفحة" مع "كم صف نرسمه فعلياً" بدقة
+    const margin = 3; 
     const DPI = 96;
     const pxPerMm = DPI / 25.4;
     const pdf = new JsPDF({ unit: 'mm', format: 'a4', orientation, compress: true });
@@ -313,13 +287,11 @@ async function htmlTableToPdfPaginated(opts: {
     const usableHeightPx = (ph - margin * 2) * pxPerMm;
     const usableWidthMm = pw - margin * 2;
 
-    // توزيع الصفوف على صفحات: الصفحة الأولى تتضمن العنوان، والبقية تبدأ برأس الجدول فقط.
     const pages: number[][] = [];
     let current: number[] = [];
     let currentH = topBlockH + theadH;
     for (let i = 0; i < rowHeights.length; i++) {
       const rh = rowHeights[i];
-      // نحجز مسبقاً مساحة صف الإجمالي في آخر صفحة محتملة فقط عند آخر صف فعلي.
       const isLast = i === rowHeights.length - 1;
       const neededExtra = isLast ? totalRowH : 0;
       if (current.length > 0 && currentH + rh + neededExtra > usableHeightPx) {
@@ -333,7 +305,6 @@ async function htmlTableToPdfPaginated(opts: {
     if (current.length > 0) pages.push(current);
     if (pages.length === 0) pages.push([]);
 
-    // موازنة الصفحات لمنع بقاء الصفحة الأخيرة بعدد قليل من الصفوف مع فراغ أبيض كبير.
     for (let p = 0; p < pages.length - 1; p++) {
       const currentPage = pages[p];
       const nextPage = pages[p + 1];
@@ -386,22 +357,16 @@ async function htmlTableToPdfPaginated(opts: {
           <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
           <style>${css}</style>
           <style>
-            .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 6px 8px !important; text-align: center !important; vertical-align: middle !important; height: auto !important; min-height: 30px; font-size: clamp(10px, 1.15vw, 14px) !important; width: auto !important; }
-            .pdf-page td:not(.num):not(.idx), .pdf-page th { white-space: normal !important; overflow: visible !important; overflow-wrap: anywhere !important; word-break: normal !important; line-height: 1.5 !important; }
-            .pdf-page td.num, .pdf-page td.idx { white-space: nowrap !important; overflow: visible !important; word-break: keep-all !important; line-height: 1.5 !important; }
-            .pdf-page .pdf-cell-text { display: inline-block !important; width: 100% !important; max-width: 100% !important; text-align: center !important; vertical-align: middle !important; color: #000000 !important; font-weight: 800 !important; }
-            .pdf-page td:not(.num):not(.idx) .pdf-cell-text { white-space: normal !important; overflow-wrap: anywhere !important; word-break: normal !important; }
-            .pdf-page td.num .pdf-cell-text, .pdf-page td.idx .pdf-cell-text { white-space: nowrap !important; width: auto !important; }
-        .pdf-page tbody td *, .pdf-page tfoot td *, .pdf-page .num *, .pdf-page .idx * { color: #000000 !important; -webkit-text-fill-color: #000000 !important; text-shadow: none !important; font-weight: 800 !important; }
+            .pdf-page table { table-layout: auto !important; width: 100% !important; }
+            .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 5px 6px !important; text-align: center !important; vertical-align: middle !important; height: auto !important; min-height: 28px; font-size: clamp(10px, 1.15vw, 14px) !important; width: max-content; }
+            .pdf-page td:not(.num):not(.idx):not(.numeric-cell):not(.date-cell), .pdf-page th { white-space: normal !important; overflow: visible !important; overflow-wrap: break-word !important; word-break: normal !important; line-height: 1.4 !important; width: auto; }
+            .pdf-page td.num, .pdf-page td.idx, .pdf-page td.numeric-cell, .pdf-page td.date-cell { white-space: nowrap !important; overflow: visible !important; word-break: keep-all !important; overflow-wrap: normal !important; hyphens: none !important; line-height: 1.2 !important; width: 1% !important; }
+            .pdf-page .pdf-cell-text { display: inline-block !important; width: 100% !important; text-align: center !important; vertical-align: middle !important; color: #000000 !important; font-weight: 800 !important; }
+            .pdf-page td:not(.num):not(.idx):not(.numeric-cell) .pdf-cell-text { white-space: normal !important; overflow-wrap: break-word !important; word-break: normal !important; }
+            .pdf-page td.num .pdf-cell-text, .pdf-page td.idx .pdf-cell-text, .pdf-page td.numeric-cell .pdf-cell-text { white-space: nowrap !important; word-break: keep-all !important; overflow-wrap: normal !important; width: auto !important; }
+            .pdf-page tbody td *, .pdf-page tfoot td *, .pdf-page .num *, .pdf-page .idx * { color: #000000 !important; -webkit-text-fill-color: #000000 !important; text-shadow: none !important; font-weight: 800 !important; }
             .pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx { color: #000 !important; -webkit-text-fill-color: #000 !important; text-shadow: none !important; font-weight: 800 !important; }
-            .pdf-page > table:not(.info) { font-size: 12px !important; }
-            .pdf-page > table:not(.info) th, .pdf-page > table:not(.info) td { padding: 6px 8px !important; text-align: center !important; vertical-align: middle !important; line-height: 1.5 !important; height: auto !important; min-height: 30px; font-size: clamp(10px, 1.15vw, 14px) !important; }
-            .pdf-page > table:not(.info) td:not(.num):not(.idx), .pdf-page > table:not(.info) th { white-space: normal !important; overflow-wrap: anywhere !important; word-break: normal !important; }
-            .pdf-page > table:not(.info) td.num, .pdf-page > table:not(.info) td.idx { white-space: nowrap !important; word-break: keep-all !important; }
-            .pdf-page > table:not(.info) thead th { font-size: 13px !important; }
-            .pdf-page .num { font-family: 'Cairo', Tahoma, Arial, sans-serif !important; font-weight: 700 !important; letter-spacing: 0.3px; }
-            .pdf-page .sub { border-bottom-width: 2px !important; padding-bottom: 6px !important; margin-bottom: 8px !important; }
-            .pdf-page .total-row td { border-top: 2px solid #92400e !important; }
+            .pdf-page .num { font-family: 'Times New Roman', Times, serif !important; font-weight: 900 !important; }
           </style></head>
           <body><div class="pdf-page">${pageHtml}</div></body></html>`);
         fdoc.close();
@@ -414,7 +379,7 @@ async function htmlTableToPdfPaginated(opts: {
 
         const pageEl = fdoc.querySelector('.pdf-page') as HTMLElement;
         const canvas = await html2canvas(pageEl, {
-            scale: rows.length > 500 ? 1.6 : 2,
+          scale: rows.length > 500 ? 1.6 : 2,
           useCORS: true,
           backgroundColor: '#ffffff',
           width: pageWidthPx,
@@ -446,19 +411,15 @@ async function htmlTableToPdfPaginated(opts: {
   }
 }
 
-
 const statementCss = `
   ${tablePrintStyles}
   body, .pdf-page { font-size: 12px; }
-  .info { width: 100%; border-collapse: collapse; margin: 6px 0 10px; }
+  .info { width: 100%; border-collapse: collapse; margin: 6px 0 10px; table-layout: auto !important; }
   .info td { border: 0.75pt solid #000; padding: 6px 8px; text-align: right; font-weight: 700; }
-  .info td.lbl { background: #f1f5f9 !important; width: 22%; }
+  .info td.lbl { background: #f1f5f9 !important; width: 22%; white-space: nowrap !important; }
   .sign { margin-top: 18px; font-weight: 700; font-size: 11px; }
 `;
 
-/**
- * تصدير كشف حساب المتدرب كملف PDF (عربي صحيح، أرقام غير مقلوبة)
- */
 export async function exportStudentStatementPdf(row: any, year: number): Promise<void> {
   const safeName = (row.name || 'متدرب').replace(/[^\u0600-\u06FFa-zA-Z0-9._-]/g, '_');
   const fileName = `كشف_حساب_${safeName}_${year}.pdf`;
@@ -528,13 +489,10 @@ export async function exportStudentStatementPdf(row: any, year: number): Promise
   await htmlToPdf({ html, css: statementCss, fileName, orientation: 'portrait' });
 }
 
-
-// دالة محسّنة للطباعة من HTML
 export function printHtmlContent(htmlContent: string): void {
   const w = window.open('', '_blank');
   if (!w) return;
   
-  // إضافة أنماط CSS محسّنة للطباعة
   const styledContent = `
     <!DOCTYPE html>
     <html lang="ar" dir="rtl">
@@ -564,7 +522,7 @@ export function printHtmlContent(htmlContent: string): void {
           width: 100%;
           min-width: 100%;
           border-collapse: collapse;
-          table-layout: fixed;
+          table-layout: auto !important;
           margin: 10px 0;
         }
         th, td {
@@ -575,22 +533,23 @@ export function printHtmlContent(htmlContent: string): void {
           font-size: clamp(7px, 1.2vw, 12px);
           color: #000 !important;
           font-weight: 900 !important;
-          width: auto !important;
+          width: max-content;
         }
         /* خلايا النص: احتواء تلقائي والتفاف عند الحاجة */
-        th, td:not(.num):not(.idx) {
+        th, td:not(.num):not(.idx):not(.numeric-cell) {
           white-space: normal;
-          overflow-wrap: anywhere;
+          overflow-wrap: break-word;
           word-break: normal;
           overflow: visible;
-          text-overflow: clip;
+          width: auto;
         }
         /* خلايا الأرقام: بدون التفاف، سطر واحد */
-        td.num, td.idx {
-          white-space: nowrap;
-          word-break: keep-all;
-          overflow: visible;
-          text-overflow: clip;
+        td.num, td.idx, td.numeric-cell {
+          white-space: nowrap !important;
+          word-break: keep-all !important;
+          overflow-wrap: normal !important;
+          hyphens: none !important;
+          width: 1% !important;
         }
         .num {
           font-family: 'Times New Roman', Times, serif !important;
@@ -602,6 +561,7 @@ export function printHtmlContent(htmlContent: string): void {
           background: #1f7fb8;
           color: #000 !important;
           font-weight: 900 !important;
+          white-space: nowrap !important;
         }
         tr:nth-child(even) td {
           background: #f8fafc;
@@ -609,7 +569,7 @@ export function printHtmlContent(htmlContent: string): void {
         @media print {
           * { margin: 0; padding: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
           body { background: white; color: #000 !important; font-weight: 900 !important; }
-          th, td { color: #000 !important; font-weight: 900 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+          th, td { color: #000 !important; font-weight: 900 !important; }
           .no-print { display: none !important; }
         }
       </style>
@@ -631,7 +591,6 @@ export function printHtmlContent(htmlContent: string): void {
   w.document.close();
 }
 
-// دالة إضافية لطباعة جدول بتنسيق احترافي
 export function printTable(title: string, columns: string[], rows: (string | number)[][]): void {
   const tableHtml = `
     <h1>${title}</h1>
@@ -645,25 +604,17 @@ export function printTable(title: string, columns: string[], rows: (string | num
         </tr>
       </thead>
       <tbody>
-                  ${rows.map(row => `
+        ${rows.map(row => `
           <tr>
             ${row.map(cell => `<td${typeof cell === 'number' ? ' class="num"' : ''}>${cell === undefined || cell === null ? '' : cell}</td>`).join('')}
           </tr>
         `).join('')}
-
       </tbody>
     </table>
   `;
   
   printHtmlContent(tableHtml);
 }
-
-// ============================================================
-// تصدير أي جدول (كشف/تبويب) إلى PDF مطابق تماماً لتنسيق الطباعة
-// يستخدم التقسيم الفعلي بالصفوف (htmlTableToPdfPaginated) بدل
-// تصوير المحتوى دفعة واحدة وتقطيعه، حتى يظهر رأس الجدول في
-// أعلى كل صفحة فعلياً وليس فقط الصفحة الأولى.
-// ============================================================
 
 export async function exportTablePdf(opts: {
   title: string;
@@ -688,7 +639,6 @@ export async function exportTablePdf(opts: {
   });
 }
 
-
 import revSchema from "@/data/revenueTemplate.json";
 
 type RType = { no: number; title: string };
@@ -710,7 +660,6 @@ const MONTHS_PDF = [
   "نوفمبر",
   "ديسمبر",
 ];
-const ORDER_AR = ["اﻷول", "الثاني", "الثالث", "الرابع", "الخامس"];
 
 export function revenuePdf(revenue: Record<string, number>, year: number, month: number) {
   const get = (m: number, key: string) => revenue[`${year}-${m}-${key}`] || 0;
@@ -807,7 +756,7 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
     @page { size: A4 landscape; margin: 10mm; padding: 0; }
     @page :first { margin-top: 10mm; }
     html { margin: 0; padding: 0; }
-        body { 
+    body { 
       font-family: 'Cairo','Tajawal','Segoe UI',Tahoma,Arial,sans-serif; 
       direction: rtl; 
       color: #000 !important; 
@@ -843,34 +792,34 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       min-width: 100%;
       border-collapse: collapse; 
       font-size: 10px; 
-      table-layout: fixed;
+      table-layout: auto !important;
       margin-top: 8px;
     }
     th, td { 
       border: 1.5px solid #000; 
-      padding: 2px 4px !important;
+      padding: 3px 5px !important;
       text-align: center;
       vertical-align: middle;
       font-size: clamp(7px, 1.2vw, 12px);
       font-weight: 900 !important;
       color: #000 !important;
-      width: auto !important;
+      width: max-content;
     }
     /* خلايا النص: احتواء تلقائي والتفاف عند الحاجة فقط */
     th, td:not(.num):not(.idx) {
       white-space: normal;
-      word-wrap: normal;
-      overflow-wrap: anywhere;
+      overflow-wrap: break-word;
       word-break: normal;
       overflow: visible;
-      text-overflow: clip;
+      width: auto;
     }
     /* خلايا الأرقام: بدون التفاف مطلقاً */
     td.num, td.idx {
-      white-space: nowrap;
-      word-break: keep-all;
-      overflow: visible;
-      text-overflow: clip;
+      white-space: nowrap !important;
+      word-break: keep-all !important;
+      overflow-wrap: normal !important;
+      hyphens: none !important;
+      width: 1% !important;
     }
     .num {
       font-family: 'Times New Roman', Times, serif !important;
@@ -882,6 +831,7 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       background: #1f7fb8;
       color: #000 !important;
       font-weight: 900 !important;
+      white-space: nowrap !important;
     }
     td.acc { 
       text-align: center; 
@@ -903,6 +853,7 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       background: #1f7fb8; 
       color: #000 !important; 
       font-weight: 900 !important; 
+      white-space: nowrap !important;
     }
     @media print { 
       * { margin: 0; padding: 0; } 
