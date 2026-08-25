@@ -1,5 +1,4 @@
 import { fmt } from "./format";
-
 import { formatReportDate } from "@/lib/reportDate";
 import reportLetterheadUrl from "@/assets/report-letterhead.png";
 
@@ -30,10 +29,9 @@ export const escapeHtml = (s: any) =>
 
 /**
  * أنماط موحّدة تُستخدم في الطباعة وفي تنزيل PDF
- * حتى يبقى الشكل مطابقاً 100% بين الخيارين
+ * تضمن الاحتواء التلقائي للنصوص بدون التفاف للأرقام
  */
 export const tablePrintStyles = `
-  /* إضافة إعداد جعل الصفحة أفقية */
   @page {
     size: A4 landscape;
     margin: 6mm;
@@ -47,7 +45,7 @@ export const tablePrintStyles = `
     color: #000 !important;
     direction: rtl;
     margin: 0;
-    width: auto;
+    width: 100%;
     box-sizing: border-box;
     font-weight: 1000;
     font-size: 12px;
@@ -72,50 +70,79 @@ export const tablePrintStyles = `
     border-bottom: 1.5pt solid #b8860b;
     padding-bottom: 4px;
   }
+  
+  /* جعل عرض الجدول يتكيف تلقائياً بحسب محتوى الخلايا */
   table {
     width: 100%;
-    min-width: 0;
+    max-width: 100%;
     border-collapse: collapse;
-    table-layout: auto;
+    table-layout: auto !important;
     font-size: clamp(9px, 1.05vw, 13px);
   }
+  
   th, td {
     border: 0.75pt solid #000;
-    padding: 6px 8px !important;
+    padding: 5px 6px !important;
     text-align: center !important;
     vertical-align: middle !important;
-    white-space: nowrap !important;
-    overflow: visible !important;
-    text-overflow: clip;
-    overflow-wrap: normal !important;
-    word-break: keep-all !important;
-    hyphens: none;
     color: #000 !important;
     font-weight: 800 !important;
-    line-height: 1.5 !important;
+    line-height: 1.4 !important;
     height: auto !important;
-    min-height: 30px;
+    min-height: 28px;
     font-size: clamp(10px, 1.15vw, 14px) !important;
+    width: max-content;
   }
+
+  /* منع التفاف النصوص نهائياً في خلايا الأرقام والتواريخ والأكواد */
+  .num,
+  .numeric-cell,
+  .date-cell,
+  .compact-cell,
+  .idx {
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+    font-family: 'Times New Roman', Times, serif !important;
+    text-align: center !important;
+    direction: ltr;
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    text-shadow: none !important;
+    font-weight: 900 !important;
+    line-height: 1.15 !important;
+    font-size: clamp(9px, 1.9vw, 12px) !important;
+    width: 1%; /* يضمن إعطاء الخلية دائمًا أصغر عرض يتسع للمحتوى بدون التفاف */
+  }
+
   .pdf-cell-text {
     display: inline-block;
     width: 100%;
-    max-width: 100%;
     text-align: center;
     vertical-align: middle;
-    white-space: nowrap !important;
-    overflow: visible !important;
-    overflow-wrap: normal !important;
-    word-break: keep-all !important;
-    line-height: 1.5 !important;
   }
+
+  .num .pdf-cell-text,
+  .numeric-cell .pdf-cell-text,
+  .date-cell .pdf-cell-text,
+  .compact-cell .pdf-cell-text,
+  .idx .pdf-cell-text {
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+  }
+
+  /* السماح بالتفاف النصوص فقط في الأوصاف والأسماء الطويلة */
   .long-text-cell,
   .long-text-cell .pdf-cell-text {
     white-space: normal !important;
     overflow-wrap: break-word !important;
     word-break: normal !important;
-    hyphens: none !important;
+    hyphens: auto !important;
+    width: auto;
   }
+  
   tbody td,
   tfoot td,
   tbody td *,
@@ -130,42 +157,21 @@ export const tablePrintStyles = `
     color: #171412 !important;
     font-weight: 900 !important;
     font-size: 14px;
+    white-space: nowrap !important;
   }
   tbody tr:nth-child(even) td { background: #f8fafc !important; }
-  .num,
-  .numeric-cell,
-  .date-cell {
-    font-family: 'Times New Roman', Times, serif !important;
-    text-align: center !important;
-    direction: ltr;
-    color: #000 !important;
-    -webkit-text-fill-color: #000 !important;
-    text-shadow: none !important;
-    font-weight: 900 !important;
-    white-space: nowrap !important;
-    overflow-wrap: normal !important;
-    word-break: keep-all !important;
-    hyphens: none !important;
-    line-height: 1.15 !important;
-    font-size: clamp(9px, 1.9vw, 12px) !important;
+
+  .idx { 
+    text-align: center !important; 
+    color: #000 !important; 
+    font-weight: 900; 
   }
-  .num .pdf-cell-text,
-  .numeric-cell .pdf-cell-text,
-  .date-cell .pdf-cell-text {
-    white-space: nowrap !important;
-    overflow-wrap: normal !important;
-    word-break: keep-all !important;
-    line-height: inherit !important;
-    font-size: inherit !important;
-  }
-  
-  /* تم تعديل العرض قليلاً لتتسع لكلمة الإجمالي */
-  .idx { width: 34px; min-width: 34px; max-width: 48px; text-align: center !important; color: #000 !important; font-weight: 900; font-family: 'Times New Roman', Times, serif !important; font-size: clamp(9px, 1.9vw, 12px) !important; white-space: nowrap !important; overflow-wrap: normal !important; word-break: keep-all !important; }
   
   .total-row td {
     background: #fef3c7 !important;
     font-weight: 800;
     border-top: 1.5pt solid #92400e;
+    white-space: nowrap !important;
   }
   
   .report-letterhead-block {
@@ -228,7 +234,6 @@ export const tablePrintStyles = `
     background: #fff !important;
   }
 
-  /* هذه الإعدادات تضمن تكرار الترويسة في كل صفحة مطبوعة */
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
   tr { page-break-inside: avoid; }
@@ -244,27 +249,31 @@ export function buildTableHtml(opts: {
   reportDate?: string;
 }) {
   const { title, columns, rows, numericKeys = [], subtitle, reportDate } = opts;
+  
   const isDateColumn = (c: TableCol) =>
     /date|تاريخ|اليوم|الشهر|السنة|year|month|day/i.test(`${c.key} ${c.label}`);
   const isCompactColumn = (c: TableCol) =>
     /(^|[-_ ])(no|number|code|key|id)([-_ ]|$)|رقم|رمز|كود|الباب|الفصل|البند|النوع|الشهر|السنة/i.test(`${c.key} ${c.label}`);
   const hasMoreThanFourWords = (value: any) =>
     String(value ?? "").trim().split(/\s+/).filter(Boolean).length > 4;
-  const cellClass = (c: TableCol) => {
-    const isNumeric = numericKeys.includes(c.key);
+
+  const getCellClass = (c: TableCol, val?: any) => {
+    const isNumeric = numericKeys.includes(c.key) || typeof val === "number";
     const isDate = isDateColumn(c);
     const isCompact = isCompactColumn(c);
     const isNoWrap = isNumeric || isDate || isCompact;
+
+    // الخلية الرقمية أو القصيرة لا تأخذ أبداً long-text-cell لمنع أي التفاف
     return [
       isNoWrap ? "num numeric-cell" : "text-cell",
       isDate ? "date-cell" : "",
-      isCompact ? "compact-cell numeric-cell" : "",
-      !isNoWrap && hasMoreThanFourWords(c.label) ? "long-text-cell" : "",
+      isCompact ? "compact-cell" : "",
+      !isNoWrap && hasMoreThanFourWords(val ?? c.label) ? "long-text-cell" : "",
     ].filter(Boolean).join(" ");
   };
 
   const head = `${reportLetterheadRowHtml(columns.length + 1)}<tr><th class="idx numeric-cell">م</th>${columns
-    .map((c) => `<th class="${cellClass(c)}">${escapeHtml(c.label)}</th>`)
+    .map((c) => `<th class="${getCellClass(c)}">${escapeHtml(c.label)}</th>`)
     .join("")}</tr>`;
 
   const totals: Record<string, number> = {};
@@ -274,7 +283,6 @@ export function buildTableHtml(opts: {
     }
   });
 
-  // إضافة كلمة "الإجمالي" هنا، وبقاؤها داخل tbody يضمن عدم تكرارها في كل صفحة
   const totalRow = `<tr class="total-row"><td class="idx numeric-cell" style="font-size:12px;">الإجمالي</td>${columns
     .map((c) =>
       numericKeys.includes(c.key)
@@ -290,15 +298,8 @@ export function buildTableHtml(opts: {
           .map((c) => {
             const v = r[c.key];
             const isNum = numericKeys.includes(c.key) || typeof v === "number";
-            const isDate = isDateColumn(c);
-            const isCompact = isCompactColumn(c);
-            const isNoWrap = isNum || isDate || isCompact;
-            const classes = [
-              isNoWrap ? "num numeric-cell" : "text-cell",
-              isDate ? "date-cell" : "",
-              isCompact ? "compact-cell numeric-cell" : "",
-              !isNoWrap && hasMoreThanFourWords(v) ? "long-text-cell" : "",
-            ].filter(Boolean).join(" ");
+            const classes = getCellClass(c, v);
+            
             return `<td class="${classes}"><span class="pdf-cell-text" style="color:#000000 !important;font-weight:800 !important;">${
               isNum ? escapeHtml(fmt(Number(v) || 0)) : escapeHtml(v)
             }</span></td>`;

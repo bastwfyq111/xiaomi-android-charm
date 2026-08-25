@@ -54,7 +54,7 @@ const baseCss = (
   h1, h2, h3 { font-weight: 700; margin: 0; }
 
   /* جداول: محاولة الحفاظ على تنسيق واضح عبر الصفحات */
-  table { width: 100%; min-width: 100%; border-collapse: collapse; table-layout: fixed; word-break: break-word; overflow-wrap: anywhere; font-size: clamp(7px, 1.05vw, 12px); }
+  table { width: 100%; min-width: 100%; border-collapse: collapse; table-layout: auto; word-break: break-word; overflow-wrap: anywhere; font-size: clamp(7px, 1.05vw, 12px); }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
   tr { break-inside: avoid; page-break-inside: avoid; page-break-after: auto; }
