@@ -1,420 +1,243 @@
 /**
- * Print and PDF Styles
- * تنسيقات محسّنة لصفحات الطباعة والـ PDF
- * متوافقة مع جميع المتصفحات والأجهزة
+ * Print and PDF Styles - Optimized Version
+ * تنسيقات طباعة وتصدير PDF محسّنة ومستقرة
  */
 
 @media print {
-  /* إعادة تعيين الهوامش والحشوات */
-  * {
+  /* إزالة الهوامش العامة مع الحفاظ على حشوة العناصر */
+  html, body {
+    width: 100%;
+    height: auto;
     margin: 0 !important;
     padding: 0 !important;
-    box-sizing: border-box;
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-family: 'Cairo', 'Tajawal', 'Segoe UI', Tahoma, Arial, sans-serif;
+    direction: rtl;
+    line-height: 1.35;
+    font-size: 11px;
+    font-weight: 700 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   /* إعدادات الصفحة */
   @page {
-    size: A4;
-    margin: 10mm;
+    size: A4 portrait;
+    margin: 8mm;
   }
 
   @page :first {
-    margin-top: 10mm;
-  }
-
-  /* إعدادات الجسم */
-  html {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
-
-  body {
-    width: 100%;
-    background: white !important;
-    color: #000 !important;
-    font-family: 'Cairo', 'Tajawal', 'Segoe UI', Tahoma, Arial, sans-serif;
-    direction: rtl;
-    line-height: 1.4;
-    font-size: 12px;
-    font-weight: 700 !important;
+    margin-top: 8mm;
   }
 
   /* العناوين */
   h1, h2, h3, h4, h5, h6 {
     page-break-after: avoid;
-    page-break-inside: avoid;
-    font-weight: 800;
-    letter-spacing: -0.01em;
-    margin: 8px 0 4px 0 !important;
-    color: #000 !important;
-  }
-
-  h1 {
-    font-size: 18px;
+    break-after: avoid;
+    font-weight: 900;
+    margin: 4px 0 !important;
+    color: #000000 !important;
     text-align: center;
-    color: #000 !important;
   }
 
-  h2 {
-    font-size: 16px;
-    text-align: center;
-    color: #000 !important;
-  }
+  h1 { font-size: 16px; }
+  h2 { font-size: 14px; }
 
-  /* الفقرات والنصوص */
+  /* الفقرات والعناصر الحاوية */
   p, div {
     page-break-inside: avoid;
-    margin: 4px 0 !important;
+    break-inside: avoid;
+    margin: 2px 0;
   }
 
   /* الجداول */
   table {
-    width: 100%;
-    min-width: 100%;
-    border-collapse: collapse;
+    width: 100% !important;
+    min-width: 100% !important;
+    border-collapse: collapse !important;
     table-layout: fixed;
-    page-break-inside: avoid;
-    margin: 6px 0 !important;
-    font-size: clamp(8px, 1.35vw, 11px);
+    margin-top: 6px !important;
+    margin-bottom: 6px !important;
+    page-break-inside: auto;
   }
 
   table thead {
     display: table-header-group;
-    page-break-after: avoid;
+    break-after: avoid;
   }
 
   table tbody {
     display: table-row-group;
   }
 
-  table tfoot {
-    display: table-footer-group;
-    page-break-before: avoid;
+  table tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 
-  /* رؤوس الجداول */
+  /* رؤوس وخلايا الجداول - ضبط الارتفاع والتفاف النص */
+  th, td {
+    border: 1px solid #000000 !important;
+    padding: 3px 4px !important;
+    text-align: center;
+    vertical-align: middle;
+    font-size: clamp(8px, 1.1vw, 12px);
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto;
+    line-height: 1.25;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    color: #000000 !important;
+    font-weight: 700 !important;
+  }
+
   th {
-    background: #1f7fb8 !important;
-    color: #000 !important;
-    font-weight: 700 !important;
-    border: 1.5px solid #000 !important;
-    padding: 0 !important;
-    text-align: center !important;
-    vertical-align: middle !important;
-    white-space: normal !important;
-    overflow: hidden !important;
-    text-overflow: clip !important;
-    font-size: clamp(7px, 1.05vw, 11px);
-    overflow-wrap: anywhere;
-    word-break: break-word;
-    hyphens: auto;
-    line-height: 1.1;
-    max-height: 2.2em;
-    page-break-inside: avoid;
+    background-color: #1f7fb8 !important;
+    color: #000000 !important;
+    font-weight: 900 !important;
+    font-size: clamp(8.5px, 1.15vw, 12px);
   }
 
-  /* خلايا الجداول */
-  td {
-    border: 1.5px solid #000 !important;
-    padding: 0 !important;
-    text-align: center !important;
-    vertical-align: middle !important;
-    white-space: normal !important;
-    overflow: hidden !important;
-    text-overflow: clip !important;
-    font-size: clamp(7px, 1.05vw, 11px);
-    overflow-wrap: anywhere;
-    word-break: break-word;
-    hyphens: auto;
-    line-height: 1.1;
-    max-height: 2.2em;
-    page-break-inside: avoid;
-    color: #000 !important;
-    font-weight: 700 !important;
-  }
-
-  /* صفوف الجداول المتناوبة */
-  tr:nth-child(even) td {
-    background: #f8fafc !important;
-  }
-
-  tr:nth-child(odd) td {
-    background: white !important;
-  }
-
-  /* صفوف الإجمالي والمجموع */
-  .total-row td,
-  tr.total-row td {
-    background: #1f7fb8 !important;
-    color: #000 !important;
-    font-weight: 700 !important;
-  }
-
-  /* صفوف المجموع الجزئي */
-  .subtotal-row td,
-  tr.subtotal-row td {
-    background: #cbd5e1 !important;
-    color: #000 !important;
-    font-weight: 700 !important;
-  }
-
-  /* صفوف المجموعات */
-  .group-row td,
-  tr.group-row td {
-    background: #fef3c7 !important;
-    color: #000 !important;
-    font-weight: 700 !important;
-  }
-
-  /* الأرقام والعملات */
+  /* الأرقام والتواريخ والمبالغ - محاذاة اللاتينية وتفادي انقسام الرقم */
+  .num,
+  .numeric-cell,
+  .date-cell,
   .currency,
-  .number {
-    font-family: 'Courier New', monospace;
-    font-weight: 700;
-    color: #000 !important;
+  .number,
+  .amount {
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: clamp(9px, 1vw, 12px) !important;
+    color: #000000 !important;
+    font-weight: 700 !important;
+    direction: ltr !important;
+    unicode-bidi: embed !important;
+    white-space: nowrap !important;
   }
 
-  /* الروابط */
-  a {
-    text-decoration: none;
-    color: #000 !important;
+  /* صفوف التمييز والإجماليات */
+  tr:nth-child(even) td { background-color: #f8fafc !important; }
+  tr:nth-child(odd) td { background-color: #ffffff !important; }
+
+  .total-row td, tr.total-row td {
+    background-color: #1f7fb8 !important;
+    color: #000000 !important;
+    font-weight: 900 !important;
   }
 
-  a[href]:after {
-    content: none !important;
+  .subtotal-row td, tr.subtotal-row td {
+    background-color: #cbd5e1 !important;
+    color: #000000 !important;
+    font-weight: 800 !important;
   }
 
-  /* الأزرار والعناصر التفاعلية */
-  button,
-  .btn,
-  .button,
-  input[type="button"],
-  input[type="submit"],
-  .no-print {
+  .group-row td, tr.group-row td {
+    background-color: #fef3c7 !important;
+    color: #000000 !important;
+    font-weight: 900 !important;
+  }
+
+  /* الخلايا النصية المحاذاة لليمين */
+  td.acc, td.align-right {
+    text-align: right !important;
+    padding-right: 6px !important;
+    font-weight: 800 !important;
+  }
+
+  /* الروابط والعناصر التفاعلية المخفية */
+  a { text-decoration: none; color: #000000 !important; }
+  a[href]:after { content: none !important; }
+
+  button, .btn, .button, input, select, .no-print,
+  header, footer, nav, aside, .sidebar, .navigation,
+  .comment, .note, .annotation, .hidden, [hidden] {
     display: none !important;
   }
 
-  /* الصور */
+  /* الصور والترويسة الرسمية */
   img {
     max-width: 100%;
     page-break-inside: avoid;
   }
 
-  /* الخطوط الفاصلة */
-  hr {
-    border: none;
-    border-top: 1px solid #000;
-    margin: 8px 0 !important;
+  .report-letterhead-row {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 
-  /* قوائم */
-  ul, ol {
-    margin: 8px 0 !important;
-    padding-right: 20px !important;
+  .report-letterhead-cell {
+    border: 0 !important;
+    background: #ffffff !important;
+    padding: 0 0 2mm !important;
+    height: auto !important;
   }
 
-  li {
-    margin: 4px 0 !important;
+  .report-letterhead-image {
+    display: block;
+    width: 100%;
+    max-height: 20mm;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto;
   }
 
-  /* منع فواصل الصفحات غير المرغوبة */
-  .page-break {
-    page-break-before: always;
-  }
-
-  .avoid-break {
-    page-break-inside: avoid;
-  }
-
-  /* التعليقات والملاحظات */
-  .comment,
-  .note,
-  .annotation {
-    display: none !important;
-  }
-
-  /* الشريط الجانبي والرأس والتذييل */
-  header,
-  footer,
-  nav,
-  aside,
-  .sidebar,
-  .header,
-  .footer,
-  .navigation {
-    display: none !important;
-  }
-
-  /* العناصر المخفية */
-  .hidden,
-  .hide,
-  [hidden] {
-    display: none !important;
-  }
-
-  /* الحد الأدنى من الارتفاع للصفوف */
-  tr {
-    page-break-inside: avoid;
-  }
-
-  /* التأكد من عدم قطع الخلايا */
-  td, th {
-    page-break-inside: avoid;
-  }
-
-  /* تنسيق الخطوط */
-  strong, b {
-    font-weight: 700;
-  }
-
-  em, i {
-    font-style: italic;
-  }
-
-  /* تنسيق خاص للمعلومات */
-  .info-box,
-  .alert,
-  .warning {
-    border: 1px solid #000;
-    padding: 4px 2px !important;
-    margin: 6px 0 !important;
-    page-break-inside: avoid;
-  }
-
-  /* الحد الأدنى من حجم الخط */
-  body {
-    font-size: 11px;
-  }
-
-  /* تحسين وضوح النصوص الصغيرة */
-  small {
-    font-size: 9px;
-    white-space: normal;
-  }
-
-  /* تحسين وضوح الأرقام */
-  .amount,
-  .total {
-    font-weight: 700;
-    font-family: 'Courier New', monospace;
-    color: #000 !important;
-  }
-
-  /* تنسيق التواريخ */
-  .date {
-    font-weight: 700;
-    color: #000 !important;
-  }
-
-  /* الفواصل والمسافات */
-  .spacer {
-    height: 8px;
-  }
-
-  .spacer-lg {
-    height: 16px;
-  }
+  /* أدوات التحكم بالفواصل */
+  .page-break { page-break-before: always; break-before: always; }
+  .avoid-break { page-break-inside: avoid; break-inside: avoid; }
 }
 
-/* تنسيقات إضافية للشاشات قبل الطباعة */
+/* تنسيقات الشاشة قبل الطباعة */
 @media screen {
-  .print-only {
-    display: none;
-  }
-
-  /* زر الطباعة */
+  .print-only { display: none !important; }
   .print-button {
     margin: 10px 0;
     padding: 8px 16px;
     background: #1f7fb8;
-    color: white;
+    color: #ffffff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 14px;
   }
-
   .print-button:hover {
     background: #1a6a94;
   }
 }
 
-/* معاينة الطباعة */
+/* طباعة الملون */
 @media print and (color) {
-  /* الألوان الملونة تطبع بشكل أفضل */
-  th {
-    background: #1f7fb8 !important;
-    color: #000 !important;
-    font-weight: 700 !important;
+  th, .total-row td, tr.total-row td {
+    background-color: #1f7fb8 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
-
-  .total-row td,
-  tr.total-row td {
-    background: #1f7fb8 !important;
-    color: #000 !important;
-    font-weight: 700 !important;
+  .group-row td, tr.group-row td {
+    background-color: #fef3c7 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
-
-  .group-row td,
-  tr.group-row td {
-    background: #fef3c7 !important;
-    color: #000 !important;
-    font-weight: 700 !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  .subtotal-row td,
-  tr.subtotal-row td {
-    background: #cbd5e1 !important;
-    color: #000 !important;
-    font-weight: 700 !important;
+  .subtotal-row td, tr.subtotal-row td {
+    background-color: #cbd5e1 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 }
 
-/* معاينة الطباعة بالأبيض والأسود */
+/* طباعة أحادية اللون (أبيض وأسود) */
 @media print and (monochrome) {
-  th {
-    background: #333 !important;
-    color: #000 !important;
-    font-weight: 700 !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
+  th, .total-row td, tr.total-row td {
+    background-color: #333333 !important;
+    color: #ffffff !important;
   }
-
-  .total-row td,
-  tr.total-row td {
-    background: #333 !important;
-    color: #000 !important;
-    font-weight: 700 !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
+  .group-row td, tr.group-row td {
+    background-color: #cccccc !important;
+    color: #000000 !important;
   }
-
-  .group-row td,
-  tr.group-row td {
-    background: #ccc !important;
-    color: #000 !important;
-    font-weight: 700 !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  .subtotal-row td,
-  tr.subtotal-row td {
-    background: #eee !important;
-    color: #000 !important;
-    font-weight: 700 !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
+  .subtotal-row td, tr.subtotal-row td {
+    background-color: #eeeeee !important;
+    color: #000000 !important;
   }
 }
