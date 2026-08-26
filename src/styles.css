@@ -107,11 +107,16 @@
   }
 
   /*
-    鬲賳爻賷賯 丕賱噩丿丕賵賱 (丕賱賯丕毓丿丞 丕賱毓丕賲丞 賱賰賱 噩丿丕賵賱 丕賱鬲亘賵賷亘丕鬲):
+    تنسيق الجداول (القاعدة العامة لكل جدول في التبويبات):
     table-layout يبقى auto دائماً ليأخذ كل عمود عرضه الفعلي من محتواه.
-    الافتراضي لكل خلية: بدون التفاف + احتواء تلقائي لأصغر عرض ممكن،
-    والسماح بالالتفاف الطبيعي فقط للخلايا المصرَّح لها بذلك (.wrap-cell أو
-    أي خلية نصية طويلة لا تحمل كلاس رقمي/تاريخ/كود).
+
+    ملاحظة مهمة: width: 1% مع white-space: nowrap لا يكفي وحده عندما
+    يكون الجدول width: 100% ومعظم الأعمدة "1%" — المتصفح حينها يوزّع
+    المساحة الفارغة بالتساوي تقريباً على أعمدة الـ 1% نفسها بدل تركيزها
+    في عمود النص المرن، فتظهر أعمدة الأرقام أوسع من محتواها فعلياً.
+    الحل: width: 0 (بدل 1%) للأعمدة غير القابلة للالتفاف — width: 0 مع
+    white-space: nowrap يجبر المتصفح على إعطاء العمود الحد الأدنى المطلق
+    لعرض محتواه فقط، وترك كل المساحة الفائضة لعمود النص (width: auto).
   */
   table {
     width: 100%;
@@ -126,7 +131,7 @@
     text-align: center;
     vertical-align: middle;
     white-space: nowrap;
-    width: 1%;
+    width: 0;
     overflow: visible;
     overflow-wrap: normal;
     word-break: keep-all;
@@ -137,7 +142,7 @@
   }
 
   /* خلايا النص العادي (أوصاف/أسماء) — كل خلية ليست رقمية/تاريخ/كود:
-     التفاف طبيعي عند الحاجة، بدون قطع النص. */
+     التفاف طبيعي عند الحاجة، وتأخذ كل المساحة المتبقية من الجدول. */
   table td:not(.numeric-cell):not(.date-cell):not(.compact-cell):not(.font-mono):not(.num),
   table th {
     white-space: normal !important;
@@ -194,6 +199,8 @@
   ==== أعمدة الأرقام/التواريخ/الأكواد: بدون التفاف مطلقاً، مع احتواء تلقائي ====
   هذه القواعد ذات specificity أعلى (كلاس على العنصر) فتتغلب دائماً على
   القاعدة العامة أعلاه بغض النظر عن ترتيب الظهور.
+  width: 0 هنا أيضاً (بدل 1%) لنفس سبب منع توسّع العمود عن محتواه
+  الفعلي عندما يشارك عرض الجدول مع عمود نصي مرن.
 */
 table td.numeric-cell,
 table th.numeric-cell,
@@ -215,7 +222,7 @@ table input[type="number"] {
   overflow-wrap: normal !important;
   word-break: keep-all !important;
   hyphens: none !important;
-  width: 1% !important;
+  width: 0 !important;
 }
 
 table td.numeric-cell :where(span, div, input, button),
@@ -280,6 +287,7 @@ table td > * {
     padding: 3px 5px !important;
     line-height: 1.3;
     font-size: clamp(7px, 1.05vw, 12px);
+    width: 0;
   }
   table td:not(.numeric-cell):not(.date-cell):not(.compact-cell):not(.font-mono):not(.num),
   table th {
@@ -287,6 +295,7 @@ table td > * {
     overflow: visible !important;
     overflow-wrap: break-word !important;
     word-break: normal !important;
+    width: auto !important;
   }
 }
 
