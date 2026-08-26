@@ -1,10 +1,3 @@
-/**
- * مسار طباعة موحّد وعالي الجودة (يُستخدم أيضاً لحفظ الملف كـ PDF من المتصفح)
- * - يحمّل خط عربي (Cairo) وينتظر جهوزيته قبل فتح نافذة الطباعة
- * - يضبط @page بالحجم والاتجاه المطلوبين
- * - يضبط عنوان المستند ليصبح اسم ملف PDF الافتراضي
- */
-
 import {
   REPORT_LETTERHEAD_SRC,
   reportLetterheadHtml,
@@ -53,7 +46,7 @@ const baseCss = (
   }
   h1, h2, h3 { font-weight: 700; margin: 0; }
 
-  /* جداول: احتواء تلقائي حقيقي للأعمدة بحسب محتواها وبدون أي التفاف للنصوص أو الأرقام. */
+  /* جداول: احتواء تلقائي للأعمدة بحسب محتواها وتوسيط تام */
   table { 
     width: 100%; 
     max-width: 100%; 
@@ -65,13 +58,13 @@ const baseCss = (
   tfoot { display: table-footer-group; }
   tr { break-inside: avoid; page-break-inside: avoid; page-break-after: auto; }
   
-  /* احتواء تلقائي لكل خلية بحسب محتواها تماماً ومنع التفاف النصوص نهائياً */
+  /* احتواء وتوسيط عمودي وأفقي دقيق تماماً داخل الخلايا بدون أي التفاف */
   th, td { 
     border: 0.5pt solid #000; 
     text-align: center !important; 
     vertical-align: middle !important; 
-    padding: 4px 6px !important; 
-    line-height: 1.3; 
+    padding: 6px 8px !important; 
+    line-height: 1.4 !important; 
     font-size: clamp(8px, 1.05vw, 12px); 
     color: #000 !important; 
     font-weight: 700 !important; 
@@ -81,7 +74,21 @@ const baseCss = (
     overflow-wrap: normal !important;
   }
 
-  /* منع التفاف النصوص نهائياً في الخلايا الرقمية والتواريخ والأكواد وترسيخ خط الأرقام الرسمية */
+  /* عنصر داخلي لضمان التوسيط المرن والمثالي أفقياً وعمودياً داخل كل خلية */
+  th .pdf-cell-text,
+  td .pdf-cell-text {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+  }
+
+  /* منع التفاف النصوص نهائياً في الخلايا الرقمية والتواريخ والأكواد وتثبيت خط الأرقام الرسمية */
   .num,
   .numeric-cell,
   .date-cell,
@@ -96,6 +103,8 @@ const baseCss = (
     font-weight: 900 !important; 
     direction: ltr; 
     width: max-content !important;
+    text-align: center !important;
+    vertical-align: middle !important;
   }
 
   .num .pdf-cell-text,
@@ -106,24 +115,21 @@ const baseCss = (
     white-space: nowrap !important;
     word-break: keep-all !important;
     overflow-wrap: normal !important;
+    direction: ltr !important;
   }
 
-  /* إجبار خلايا النصوص الطويلة أيضاً على الامتداد دون التفاف */
+  /* إجبار خلايا النصوص الطويلة أيضاً على الامتداد دون التفاف وتوسيطها */
   .long-text-cell,
   .text-cell {
     white-space: nowrap !important;
     overflow-wrap: normal !important;
     word-break: keep-all !important;
     width: max-content !important;
-  }
-  .long-text-cell .pdf-cell-text,
-  .text-cell .pdf-cell-text {
-    white-space: nowrap !important;
-    overflow-wrap: normal !important;
-    word-break: keep-all !important;
+    text-align: center !important;
+    vertical-align: middle !important;
   }
 
-  th { font-weight: 800; white-space: nowrap !important; }
+  th { font-weight: 800; white-space: nowrap !important; vertical-align: middle !important; }
   img { max-width: 100%; height: auto; display: block; }
 
   /* ترويسة التقرير داخل thead تتكرر مع رؤوس الأعمدة في كل صفحة */
@@ -157,7 +163,7 @@ const baseCss = (
     tfoot { display: table-footer-group; }
     .page-break { page-break-after: always; }
     th, td { 
-      padding: 3px 5px !important; 
+      padding: 5px 6px !important; 
       font-size: clamp(8px, 1.0vw, 11px); 
       color: #000 !important; 
       font-weight: 700 !important; 
@@ -165,18 +171,7 @@ const baseCss = (
       word-break: keep-all !important;
       overflow-wrap: normal !important;
       width: max-content !important;
-    }
-    .num, .numeric-cell, .date-cell, .compact-cell, .idx {
-      white-space: nowrap !important;
-      word-break: keep-all !important;
-      overflow-wrap: normal !important;
-      width: max-content !important;
-    }
-    .long-text-cell, .text-cell {
-      white-space: nowrap !important;
-      overflow-wrap: normal !important;
-      word-break: keep-all !important;
-      width: max-content !important;
+      vertical-align: middle !important;
     }
   }
 `;

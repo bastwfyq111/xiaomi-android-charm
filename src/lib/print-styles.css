@@ -1,6 +1,6 @@
 /**
- * Print and PDF Styles - Optimized Version
- * تنسيقات طباعة وتصدير PDF محسّنة ومستقرة
+ * Print and PDF Styles - Optimized & Centered Version
+ * تنسيقات طباعة وتصدير PDF محسّنة مع التوسيط التام والاحتواء التلقائي
  */
 
 @media print {
@@ -51,8 +51,7 @@
     margin: 2px 0;
   }
 
-  /* الجداول: احتواء تلقائي حقيقي - table-layout: auto إلزامي هنا،
-     fixed كان سيمنع كل عمود من أخذ عرضه الفعلي حسب محتواه */
+  /* الجداول: احتواء تلقائي حقيقي */
   table {
     width: 100% !important;
     min-width: 100% !important;
@@ -77,34 +76,34 @@
     break-inside: avoid !important;
   }
 
-  /* رؤوس وخلايا الجداول - الافتراضي: بدون التفاف + احتواء تلقائي
-     لأصغر عرض ممكن. الخلايا النصية الطويلة تُستثنى أدناه صراحة. */
+  /* رؤوس وخلايا الجداول - التوسيط التام عمودياً وأفقياً ومنع الالتفاف */
   th, td {
     border: 1px solid #000000 !important;
-    padding: 3px 4px !important;
-    text-align: center;
-    vertical-align: middle;
+    padding: 6px 8px !important;
+    text-align: center !important;
+    vertical-align: middle !important;
     font-size: clamp(8px, 1.1vw, 12px);
-    line-height: 1.25;
+    line-height: 1.4 !important;
     height: auto !important;
     max-height: none !important;
     overflow: visible !important;
     color: #000000 !important;
     font-weight: 700 !important;
-    white-space: nowrap;
+    white-space: nowrap !important;
     width: 1%;
     word-wrap: normal;
     overflow-wrap: normal;
   }
 
-  /* خلايا النص العادي (أوصاف/أسماء طويلة): التفاف طبيعي عند الحاجة فقط.
-     أي خلية ليست رقمية/تاريخ/عملة/مبلغ تأخذ هذا السلوك تلقائياً. */
+  /* خلايا النص العادي المستثناة لتسمح بالالتفاف عند الحاجة */
   td:not(.num):not(.numeric-cell):not(.date-cell):not(.currency):not(.number):not(.amount) {
     white-space: normal !important;
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
     hyphens: auto;
     width: auto !important;
+    text-align: center !important;
+    vertical-align: middle !important;
   }
 
   th {
@@ -116,10 +115,11 @@
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
     width: auto !important;
+    text-align: center !important;
+    vertical-align: middle !important;
   }
 
-  /* الأرقام والتواريخ والمبالغ - محاذاة اللاتينية، بدون التفاف مطلقاً،
-     مع width: 1% لإجبار الاحتواء التلقائي لأصغر عرض يتسع للمحتوى */
+  /* الأرقام والتواريخ والمبالغ - محاذاة في المنتصف، بدون التفاف مطلقاً */
   .num,
   .numeric-cell,
   .date-cell,
@@ -137,6 +137,8 @@
     overflow-wrap: normal !important;
     hyphens: none !important;
     width: 1% !important;
+    text-align: center !important;
+    vertical-align: middle !important;
   }
 
   /* صفوف التمييز والإجماليات */
@@ -147,25 +149,29 @@
     background-color: #1f7fb8 !important;
     color: #000000 !important;
     font-weight: 900 !important;
+    vertical-align: middle !important;
   }
 
   .subtotal-row td, tr.subtotal-row td {
     background-color: #cbd5e1 !important;
     color: #000000 !important;
     font-weight: 800 !important;
+    vertical-align: middle !important;
   }
 
   .group-row td, tr.group-row td {
     background-color: #fef3c7 !important;
     color: #000000 !important;
     font-weight: 900 !important;
+    vertical-align: middle !important;
   }
 
-  /* الخلايا النصية المحاذاة لليمين */
+  /* الخلايا النصية المحاذاة */
   td.acc, td.align-right {
     text-align: right !important;
     padding-right: 6px !important;
     font-weight: 800 !important;
+    vertical-align: middle !important;
   }
 
   /* الروابط والعناصر التفاعلية المخفية */

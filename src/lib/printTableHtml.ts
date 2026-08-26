@@ -29,7 +29,7 @@ export const escapeHtml = (s: any) =>
 
 /**
  * أنماط موحّدة تُستخدم في الطباعة وفي تنزيل PDF وفي واجهة التبويبات
- * تضمن الاحتواء التلقائي لجميع الخلايا والنصوص دون التفاف مطلقاً، خاصة خلايا الأرقام.
+ * تضمن الاحتواء التلقائي وعدم التفاف النصوص وتوسيطها بالكامل (أفقياً وعمودياً).
  */
 export const tablePrintStyles = `
   @page {
@@ -71,7 +71,7 @@ export const tablePrintStyles = `
     padding-bottom: 4px;
   }
   
-  /* احتواء تلقائي كامل للجدول بحسب طول المحتوى لكل عمود */
+  /* احتواء تلقائي كامل للجدول وتوسيط تام للمحتوى */
   table {
     width: 100%;
     max-width: 100%;
@@ -82,22 +82,22 @@ export const tablePrintStyles = `
   
   th, td {
     border: 0.75pt solid #000;
-    padding: 5px 6px !important;
+    padding: 6px 8px !important;
     text-align: center !important;
-    vertical-align: middle !important;
+    vertical-align: middle !important; /* التوسيط العمودي تماماً بين الجزئين العلوي والسفلي */
     color: #000 !important;
     font-weight: 800 !important;
     line-height: 1.4 !important;
     height: auto !important;
-    min-height: 28px;
+    min-height: 32px;
     font-size: clamp(10px, 1.15vw, 14px) !important;
-    white-space: nowrap !important;
+    white-space: nowrap !important; /* منع التفاف النصوص نهائياً في كافة الخلايا */
     width: max-content !important;
     word-break: keep-all !important;
     overflow-wrap: normal !important;
   }
 
-  /* منع التفاف النصوص نهائياً في خلايا الأرقام والتواريخ والأكواد وتحديد الخط الرسمي */
+  /* منع التفاف النصوص وتوسيط خلايا الأرقام والتواريخ والأكواد */
   .num,
   .numeric-cell,
   .date-cell,
@@ -109,34 +109,41 @@ export const tablePrintStyles = `
     hyphens: none !important;
     font-family: 'Times New Roman', Times, serif !important;
     text-align: center !important;
+    vertical-align: middle !important;
     direction: ltr;
     color: #000 !important;
     -webkit-text-fill-color: #000 !important;
     text-shadow: none !important;
     font-weight: 900 !important;
     line-height: 1.15 !important;
-    font-size: clamp(9px, 1.9vw, 12px) !important;
+    font-size: clamp(14px, 1.9vw, 14px) !important;
     width: max-content !important;
   }
 
   .pdf-cell-text {
-    display: inline-block;
-    width: 100%;
-    text-align: center;
-    vertical-align: middle;
+    display: flex !important;
+    align-items: center !important;     /* توسيط عمودي للعنصر الداخلي */
+    justify-content: center !important; /* توسيط أفقـي للعنصر الداخلي */
+    width: 100% !important;
+    height: 100% !important;
+    text-align: center !important;
     white-space: nowrap !important;
     word-break: keep-all !important;
     overflow-wrap: normal !important;
   }
 
-  /* ضمان عدم التفاف محتوى جميع الخلايا حتى في حالة long-text-cell */
+  /* ضمان منع التفاف النصوص الطويلة وإبقائها في سطر واحد داخل المساحة المتاحة */
+  .text-cell,
   .long-text-cell {
     white-space: nowrap !important;
     overflow-wrap: normal !important;
     word-break: keep-all !important;
     width: max-content !important;
+    text-align: center !important;
+    vertical-align: middle !important;
   }
-  .long-text-cell .pdf-cell-text {
+  .long-text-cell .pdf-cell-text,
+  .text-cell .pdf-cell-text {
     white-space: nowrap !important;
     overflow-wrap: normal !important;
     word-break: keep-all !important;
@@ -151,6 +158,7 @@ export const tablePrintStyles = `
     text-shadow: none !important;
     font-weight: 800 !important;
     white-space: nowrap !important;
+    vertical-align: middle !important;
   }
   thead th {
     background: #f5deb3 !important;
@@ -158,11 +166,13 @@ export const tablePrintStyles = `
     font-weight: 900 !important;
     font-size: 14px;
     white-space: nowrap !important;
+    vertical-align: middle !important;
   }
   tbody tr:nth-child(even) td { background: #f8fafc !important; }
 
   .idx { 
     text-align: center !important; 
+    vertical-align: middle !important;
     color: #000 !important; 
     font-weight: 900; 
   }
@@ -172,6 +182,7 @@ export const tablePrintStyles = `
     font-weight: 800;
     border-top: 1.5pt solid #92400e;
     white-space: nowrap !important;
+    vertical-align: middle !important;
   }
   
   .report-letterhead-block {
@@ -268,7 +279,7 @@ export function buildTableHtml(opts: {
   };
 
   const head = `${reportLetterheadRowHtml(columns.length + 1)}<tr><th class="idx numeric-cell">م</th>${columns
-    .map((c) => `<th class="${getCellClass(c)}">${escapeHtml(c.label)}</th>`)
+    .map((c) => `<th class="${getCellClass(c)}"><span class="pdf-cell-text">${escapeHtml(c.label)}</span></th>`)
     .join("")}</tr>`;
 
   const totals: Record<string, number> = {};
@@ -278,7 +289,7 @@ export function buildTableHtml(opts: {
     }
   });
 
-  const totalRow = `<tr class="total-row"><td class="idx numeric-cell" style="font-size:12px;">الإجمالي</td>${columns
+  const totalRow = `<tr class="total-row"><td class="idx numeric-cell" style="font-size:12px;"><span class="pdf-cell-text">الإجمالي</span></td>${columns
     .map((c) =>
       numericKeys.includes(c.key)
         ? `<td class="num numeric-cell"><span class="pdf-cell-text" style="color:#000000 !important;font-weight:800 !important;">${escapeHtml(fmt(totals[c.key] || 0))}</span></td>`
@@ -289,7 +300,7 @@ export function buildTableHtml(opts: {
   const body = rows
     .map(
       (r, i) =>
-        `<tr><td class="idx numeric-cell">${i + 1}</td>${columns
+        `<tr><td class="idx numeric-cell"><span class="pdf-cell-text">${i + 1}</span></td>${columns
           .map((c) => {
             const v = r[c.key];
             const isNum = numericKeys.includes(c.key) || typeof v === "number";
