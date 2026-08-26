@@ -37,36 +37,37 @@
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
 }
+
 :root {
   --radius: 0.7rem;
 
-  /* 🌐 الخلفية العامة — ورق دفتري دافئ بدل الأبيض القارس */
-  --background: oklch(0.97 0.008 85);        /* بيج ورقي فاتح جداً، أقرب لصفحة سجل حقيقي */
-  --foreground: oklch(0.16 0.02 240);        /* حبر داكن مائل للأزرق الليلي */
+  /* 🌐 الخلفية العامة — ورق دفتري دافئ */
+  --background: oklch(0.97 0.008 85);
+  --foreground: oklch(0.16 0.02 240);
 
   /* 📦 البطاقات والحاويات */
-  --card: oklch(0.995 0.002 85);             /* أبيض دافئ خفيف، ليس أبيض قارس */
+  --card: oklch(0.995 0.002 85);
   --card-foreground: oklch(0.16 0.02 240);
 
-  /* ⚓ اللون الأساسي — أزرق دفتري مؤسسي عميق (بدل الأزرق الكهربائي اللامع) */
-  --primary: oklch(0.34 0.09 240);           /* كحلي مؤسسي هادئ، لون الأختام الرسمية */
+  /* ⚓ اللون الأساسي — أزرق دفتري مؤسسي عميق */
+  --primary: oklch(0.34 0.09 240);
   --primary-foreground: oklch(0.98 0.01 85);
 
-  /* 🟤 الثانوي — نفس عائلة الكحلي بدرجة فاتحة */
+  /* 🟤 الثانوي */
   --secondary: oklch(0.93 0.015 230);
   --secondary-foreground: oklch(0.30 0.07 240);
 
-  --muted: oklch(0.94 0.012 85);             /* بيج فاتح جداً لصفوف الجدول المتناوبة */
+  --muted: oklch(0.94 0.012 85);
   --muted-foreground: oklch(0.42 0.03 235);
 
-  /* ✨ التمييز — نحاسي/ذهبي دافئ (لون الختم والتوقيع الرسمي) */
-  --accent: oklch(0.68 0.13 75);             /* برونزي ذهبي هادئ */
+  /* ✨ التمييز — نحاسي/ذهبي دافئ */
+  --accent: oklch(0.68 0.13 75);
   --accent-foreground: oklch(0.20 0.03 80);
 
   /* ⚠️ الحالات الخاصة */
   --destructive: oklch(0.52 0.19 25);
   --destructive-foreground: oklch(0.98 0 0);
-  --success: oklch(0.50 0.11 155);           /* أخضر مطفأ متناسق مع الهوية بدل الأخضر الصارخ */
+  --success: oklch(0.50 0.11 155);
   --success-foreground: oklch(0.98 0 0);
 
   /* 🖌️ الحدود */
@@ -74,7 +75,6 @@
   --input: oklch(0.20 0.02 240 / 0.20);
   --ring: oklch(0.34 0.09 240 / 0.35);
 }
- 
 
 @layer base {
   * { border-color: var(--color-border); }
@@ -98,7 +98,6 @@
   }
   h1, h2, h3, h4 { font-family: 'Cairo', 'Tajawal', sans-serif; font-weight: 800; letter-spacing: -0.01em; }
 
-  /* 🖋️ خط فاصل دقيق متقطع — إشارة "دفتر الأستاذ" المُجلّد، تُستخدم بحذر كعنصر توقيع */
   .ledger-seam {
     background-image: repeating-linear-gradient(
       to bottom, oklch(0.68 0.13 75 / 0.55) 0 6px, transparent 6px 12px
@@ -106,33 +105,32 @@
     width: 2px;
   }
   
-  /* تنسيق الجداول: احتواء النص مع السماح بحد أقصى سطرين داخل الخلية */
+  /* 📊 تنسيق الجداول التكيفي: الاحتواء التلقائي للعرض */
   table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
+    width: 100% !important;
+    border-collapse: collapse !important;
+    table-layout: auto !important; /* السماح بتوزيع عرض الأعمدة تلقائياً بحسب محتواها */
     font-feature-settings: "tnum" 1, "lnum" 1;
   }
   th { 
     font-weight: 700; 
   }
+  
+  /* تنسيق عام للخلايا النصية */
   table th, table td {
     text-align: center;
     vertical-align: middle;
-    white-space: normal !important;
-    overflow: hidden !important;
-    text-overflow: clip !important;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-    hyphens: auto;
-    padding: 0 !important;
-    line-height: 1.1;
-    max-height: 2.2em;
-    font-size: clamp(7px, 1.05vw, 13px);
+    padding: 2px 4px !important;
+    line-height: 1.2;
+    font-size: clamp(8px, 1.05vw, 13px);
     border: 1px solid #000 !important;
+    color: #000 !important;
+    font-weight: 700 !important;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
   }
 
-  /* حدود خلايا جداول الأقساط بالأسود فقط */
   .installments-table th,
   .installments-table td {
     border: 1px solid #000 !important;
@@ -141,101 +139,79 @@
   .font-mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 600; }
   button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
   
-  /* Prevent iOS / MIUI auto-zoom on focus by enforcing 16px minimum */
   input, select, textarea {
     font-size: 16px;
   }
-  /* Smooth touch scrolling for horizontally-scrolling tables */
   .overflow-x-auto { -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
 }
 
-/* Mobile-only tweaks (Xiaomi / small Android phones) */
+/* 📱 إعدادات الجوال */
 @media (max-width: 640px) {
   body {
-    /* Lighter background on small screens for performance */
     background:
       radial-gradient(600px 300px at 100% -10%, oklch(0.93 0.05 250 / 0.4), transparent 60%),
       var(--color-background);
   }
-  /* Respect notch / status bar / gesture nav on Xiaomi */
   .safe-pad-x { padding-left: max(0.75rem, env(safe-area-inset-left)); padding-right: max(0.75rem, env(safe-area-inset-right)); }
   .safe-pad-bottom { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
   .safe-pad-top { padding-top: max(0.5rem, env(safe-area-inset-top)); }
   
-  /* تقليص حجم الخط والحشوة في الجوال مع السماح بسطرين للنصوص الطويلة */
-  table { 
-    font-size: 12px; 
-  }
   table th, table td {
-    padding: 0 !important;
-    font-size: clamp(7px, 2.8vw, 12px);
+    padding: 1px 2px !important;
+    font-size: clamp(7px, 2.7vw, 11px);
   }
-  /* Ensure inputs inside table filter rows don't trigger zoom but stay compact visually */
-  table input { font-size: 14px; padding: 3px 4px; }
+  table input { font-size: 14px; padding: 2px 3px; }
 }
 
-/* ==== احتواء النصوص داخل خلايا جداول التبويبات بحد أقصى سطرين ==== */
-table th,
-  table td {
-  white-space: normal !important;
-  overflow: hidden !important;
-  text-overflow: clip !important;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-  hyphens: auto;
-  vertical-align: middle;
-  padding: 0 !important;
-  line-height: 1.1;
-  max-height: 2.2em;
-  font-size: clamp(7px, 1.05vw, 13px);
-  color: #000 !important;
-  font-weight: 700 !important;
-}
-
-/* توحيد نصوص خلايا جميع جداول التبويبات إلى الأسود الغامق */
+/* 🎨 توحيد عناصر الخلايا إلى اللون الأسود الغامق */
 table th :where(span, div, p, label, strong, b, small, a),
 table td :where(span, div, p, label, strong, b, small, a),
-table th input,
-table th select,
-table th textarea,
-table td input,
-table td select,
-table td textarea,
-table th button,
-table td button {
+table th input, table th select, table th textarea,
+table td input, table td select, table td textarea,
+table th button, table td button {
   color: #000 !important;
   font-weight: 700 !important;
 }
 
-/* أعمدة المبالغ والأرقام والتواريخ: خط صغير متناسب مع الخلية ومنع الالتفاف */
-  table td.numeric-cell,
-  table th.numeric-cell,
-  table td.date-cell,
-  table th.date-cell,
-  table td.compact-cell,
-  table th.compact-cell,
-  table td.font-mono,
-  table th.font-mono,
+/* 🔢 خلايا الأرقام والمبالغ والتواريخ: منع التفاف كامل واحتواء تلقائي دقيق */
+table td.numeric-cell,
+table th.numeric-cell,
+table td.date-cell,
+table th.date-cell,
+table td.compact-cell,
+table th.compact-cell,
+table td.font-mono,
+table th.font-mono,
 table .tabular-nums,
+table .num,
+table .amount,
+table .currency,
 table input[type="number"] {
   font-family: 'Times New Roman', Times, serif !important;
   font-size: clamp(9px, 1.9vw, 12px) !important;
   line-height: 1.15 !important;
   color: #000 !important;
   font-weight: 900 !important;
+  direction: ltr !important;
+  unicode-bidi: embed !important;
+  
+  /* منع الكسر والتفاف السطر تماماً */
   white-space: nowrap !important;
   overflow-wrap: normal !important;
   word-break: keep-all !important;
   hyphens: none !important;
+  
+  /* إجبار العمود على انكماش الحد الأدنى بما يتناسب مع الرقم وترك باقي المساحة للنصوص */
+  width: 1% !important;
 }
 
 table td.numeric-cell :where(span, div, input, button),
- table th.numeric-cell :where(span, div, input, button),
- table td.date-cell :where(span, div, input, button),
- table th.date-cell :where(span, div, input, button),
- table td.compact-cell :where(span, div, input, button),
- table th.compact-cell :where(span, div, input, button),
- table td.font-mono :where(span, div, input, button),
+table th.numeric-cell :where(span, div, input, button),
+table td.date-cell :where(span, div, input, button),
+table th.date-cell :where(span, div, input, button),
+table td.compact-cell :where(span, div, input, button),
+table th.compact-cell :where(span, div, input, button),
+table td.font-mono :where(span, div, input, button),
 table th.font-mono :where(span, div, input, button) {
   font-family: inherit !important;
   font-size: inherit !important;
@@ -247,41 +223,63 @@ table th.font-mono :where(span, div, input, button) {
 
 @media (max-width: 640px) {
   table td.numeric-cell,
- table th.numeric-cell,
- table td.date-cell,
- table th.date-cell,
- table td.compact-cell,
- table th.compact-cell,
- table td.font-mono,
- table th.font-mono,
- table .tabular-nums,
+  table th.numeric-cell,
+  table td.date-cell,
+  table th.date-cell,
+  table td.compact-cell,
+  table th.compact-cell,
+  table td.font-mono,
+  table th.font-mono,
+  table .tabular-nums,
+  table .num,
+  table .amount,
   table input[type="number"] {
     font-size: clamp(8px, 2.35vw, 11px) !important;
   }
 }
 
-/* الحقول والمحتوى داخل الخلايا لا تتجاوز عرض الخلية */
 table th > *,
 table td > * {
   max-width: 100%;
 }
 
-@media print {
-  table th,
-  table td {
-    white-space: normal !important;
-    overflow: hidden !important;
-    text-overflow: clip !important;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-    padding: 0 !important;
-    line-height: 1.1;
-    max-height: 2.2em;
-    font-size: clamp(7px, 1.05vw, 12px);
-  }
-}
-
+/* 🖨️ قواعد الطباعة الصارمة والـ PDF */
 @media print {
   .no-print { display: none !important; }
-  body { background: white; }
+  
+  html, body {
+    background: white !important;
+    color: #000000 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  table {
+    table-layout: auto !important;
+    width: 100% !important;
+  }
+
+  table th,
+  table td {
+    padding: 2px 3px !important;
+    font-size: clamp(7px, 1.05vw, 12px) !important;
+    border: 1px solid #000000 !important;
+    color: #000000 !important;
+  }
+
+  /* تأكيد عدم التفاف خلايا الأرقام أثناء الطباعة */
+  table td.numeric-cell,
+  table th.numeric-cell,
+  table td.date-cell,
+  table th.date-cell,
+  table td.compact-cell,
+  table th.compact-cell,
+  table .num,
+  table .amount,
+  table .currency {
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+    direction: ltr !important;
+    width: 1% !important;
+  }
 }
