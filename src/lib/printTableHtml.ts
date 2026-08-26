@@ -28,8 +28,14 @@ export const escapeHtml = (s: any) =>
     .replace(/"/g, "&quot;");
 
 /**
- * أنماط موحّدة تُستخدم في الطباعة وفي تنزيل PDF
- * تضمن الاحتواء التلقائي للنصوص بدون التفاف للأرقام
+ * أنماط موحّدة تُستخدم في الطباعة وفي تنزيل PDF وفي واجهة التبويبات
+ * تضمن الاحتواء التلقائي للنصوص داخل الخلايا بدون التفاف، خاصة خلايا الأرقام
+ *
+ * الباترن المستخدم لضمان "auto-fit":
+ *   table-layout: auto  → كل عمود ياخذ بالظبط العرض اللي يحتاجه محتواه
+ *   white-space: nowrap → يمنع التفاف النص فيمنع المتصفح من تصغير العمود أكتر من عرض أطول كلمة/رقم فيه
+ *   width: 1%           → تلميح للمتصفح إن العمود ده يتقلص لأصغر عرض ممكن (يُستخدم فقط مع أعمدة اللاوراب)
+ * أعمدة النصوص الطويلة (أوصاف/أسماء) وحدها مسموح لها بالالتفاف الطبيعي.
  */
 export const tablePrintStyles = `
   @page {
@@ -71,7 +77,7 @@ export const tablePrintStyles = `
     padding-bottom: 4px;
   }
   
-  /* جعل عرض الجدول يتكيف تلقائياً بحسب محتوى الخلايا */
+  /* جعل عرض الجدول يتكيف تلقائياً بحسب محتوى كل خلية (auto-fit حقيقي) */
   table {
     width: 100%;
     max-width: 100%;
@@ -91,7 +97,13 @@ export const tablePrintStyles = `
     height: auto !important;
     min-height: 28px;
     font-size: clamp(10px, 1.15vw, 14px) !important;
-    width: max-content;
+  }
+
+  /* الافتراضي لأي خلية عادية: تحتوي محتواها بأصغر عرض ممكن بدون التفاف،
+     إلا لو كانت محددة صراحة كـ long-text-cell */
+  th, td {
+    white-space: nowrap;
+    width: 1%;
   }
 
   /* منع التفاف النصوص نهائياً في خلايا الأرقام والتواريخ والأكواد */
@@ -113,7 +125,7 @@ export const tablePrintStyles = `
     font-weight: 900 !important;
     line-height: 1.15 !important;
     font-size: clamp(9px, 1.9vw, 12px) !important;
-    width: 1%; /* يضمن إعطاء الخلية دائمًا أصغر عرض يتسع للمحتوى بدون التفاف */
+    width: 1% !important; /* يضمن إعطاء الخلية دائمًا أصغر عرض يتسع للمحتوى بدون التفاف */
   }
 
   .pdf-cell-text {
@@ -133,14 +145,17 @@ export const tablePrintStyles = `
     overflow-wrap: normal !important;
   }
 
-  /* السماح بالتفاف النصوص فقط في الأوصاف والأسماء الطويلة */
-  .long-text-cell,
-  .long-text-cell .pdf-cell-text {
-    white-space: nowrap !important;
+  /* السماح بالتفاف النصوص فقط في الأوصاف والأسماء الطويلة (عكس كل الخلايا الأخرى) */
+  .long-text-cell {
+    white-space: normal !important;
     overflow-wrap: break-word !important;
     word-break: normal !important;
     hyphens: auto !important;
-    width: auto;
+    width: auto !important;
+  }
+  .long-text-cell .pdf-cell-text {
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
   }
   
   tbody td,
