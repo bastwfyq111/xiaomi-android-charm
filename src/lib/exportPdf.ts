@@ -51,7 +51,7 @@ export function exportToPdf(opts: {
   const w = window.open("", "_blank", "width=900,height=700");
   if (!w) return;
   const orient = opts.orientation || (opts.columns.length > 6 ? "landscape" : "portrait");
-  const fontSize = opts.columns.length > 12 ? 9 : opts.columns.length > 8 ? 10 : 11;
+  const fontSize = opts.columns.length > 12 ? 11 : opts.columns.length > 8 ? 12 : 14;
   const numericColumnHints = ["رقم", "الباب", "الفصل", "البند", "النوع", "مبلغ", "مدين", "دائن", "الرصيد", "الجملة", "الإجمالي", "المتبقي", "المدفوع", "الأشهر", "الشهر"];
   const dateColumnHints = ["التاريخ", "تاريخ"];
   const isNumericColumn = (column: string) => column.trim() === "م" || numericColumnHints.some((hint) => column.includes(hint));
@@ -95,7 +95,7 @@ ${reportLetterheadStyles}
       padding: 2px 4px !important;
       text-align: center; 
       vertical-align: middle;
-      font-size: clamp(8px, 1.05vw, 14px);
+      font-size: clamp(14px, 1.05vw, 14px);
       word-wrap: break-word;
       overflow-wrap: break-word;
       font-weight: 700 !important;
@@ -120,7 +120,7 @@ ${reportLetterheadStyles}
     tr:nth-child(even) td { background: #f8fafc; }
     tr:nth-child(odd) td { background: #ffffff; }
     .meta { 
-      font-size: 11px; 
+      font-size: 14px; 
       color: #000 !important; 
       margin: 2px 0;
       text-align: center;
@@ -282,8 +282,8 @@ ${reportLetterheadStyles}
       font-weight: 700 !important;
     }
     h1 { text-align: center; font-size: 16px; font-weight: 900; margin: 0 0 4px; }
-    .meta { text-align: center; font-size: 12px; font-weight: 700; margin: 2px 0; }
-    table { width: 100%; border-collapse: collapse; font-size: 12px; table-layout: fixed; margin-top: 6px; }
+    .meta { text-align: center; font-size: 14px; font-weight: 700; margin: 2px 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; margin-top: 6px; }
     th:first-child, td:first-child { width: 28%; }
     th:not(:first-child), td:not(:first-child) { width: 9%; }
     th, td { 
@@ -296,7 +296,7 @@ ${reportLetterheadStyles}
     }
     .num {
       font-family: 'Times New Roman', Times, serif !important;
-      font-size: 11px !important;
+      font-size: 14px !important;
       direction: ltr;
       unicode-bidi: embed;
     }
@@ -417,8 +417,8 @@ ${reportLetterheadStyles}
       font-weight: 700 !important;
     }
     h1 { text-align: center; font-size: 16px; font-weight: 900; margin: 0 0 4px; }
-    .meta { text-align: center; font-size: 12px; font-weight: 700; margin: 2px 0; }
-    table { width: 100%; border-collapse: collapse; font-size: 12px; table-layout: auto; margin-top: 6px; }
+    .meta { text-align: center; font-size: 14px; font-weight: 700; margin: 2px 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; table-layout: auto; margin-top: 6px; }
     
     th:nth-child(1), td:nth-child(1) { width: 44%; }
     th:nth-child(2), td:nth-child(2),
