@@ -51,12 +51,13 @@
     margin: 2px 0;
   }
 
-  /* الجداول */
+  /* الجداول: احتواء تلقائي حقيقي - table-layout: auto إلزامي هنا،
+     fixed كان سيمنع كل عمود من أخذ عرضه الفعلي حسب محتواه */
   table {
     width: 100% !important;
     min-width: 100% !important;
     border-collapse: collapse !important;
-    table-layout: auto;
+    table-layout: auto !important;
     margin-top: 6px !important;
     margin-bottom: 6px !important;
     page-break-inside: auto;
@@ -76,22 +77,34 @@
     break-inside: avoid !important;
   }
 
-  /* رؤوس وخلايا الجداول - ضبط الارتفاع والتفاف النص */
+  /* رؤوس وخلايا الجداول - الافتراضي: بدون التفاف + احتواء تلقائي
+     لأصغر عرض ممكن. الخلايا النصية الطويلة تُستثنى أدناه صراحة. */
   th, td {
     border: 1px solid #000000 !important;
     padding: 3px 4px !important;
     text-align: center;
     vertical-align: middle;
     font-size: clamp(8px, 1.1vw, 12px);
-    word-wrap: break-word !important;
-    overflow-wrap: break-word !important;
-    hyphens: auto;
     line-height: 1.25;
     height: auto !important;
     max-height: none !important;
     overflow: visible !important;
     color: #000000 !important;
     font-weight: 700 !important;
+    white-space: nowrap;
+    width: 1%;
+    word-wrap: normal;
+    overflow-wrap: normal;
+  }
+
+  /* خلايا النص العادي (أوصاف/أسماء طويلة): التفاف طبيعي عند الحاجة فقط.
+     أي خلية ليست رقمية/تاريخ/عملة/مبلغ تأخذ هذا السلوك تلقائياً. */
+  td:not(.num):not(.numeric-cell):not(.date-cell):not(.currency):not(.number):not(.amount) {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto;
+    width: auto !important;
   }
 
   th {
@@ -99,9 +112,14 @@
     color: #000000 !important;
     font-weight: 900 !important;
     font-size: clamp(8.5px, 1.15vw, 12px);
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    width: auto !important;
   }
 
-  /* الأرقام والتواريخ والمبالغ - محاذاة اللاتينية وتفادي انقسام الرقم */
+  /* الأرقام والتواريخ والمبالغ - محاذاة اللاتينية، بدون التفاف مطلقاً،
+     مع width: 1% لإجبار الاحتواء التلقائي لأصغر عرض يتسع للمحتوى */
   .num,
   .numeric-cell,
   .date-cell,
@@ -115,6 +133,10 @@
     direction: ltr !important;
     unicode-bidi: embed !important;
     white-space: nowrap !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+    width: 1% !important;
   }
 
   /* صفوف التمييز والإجماليات */
