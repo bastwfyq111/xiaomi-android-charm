@@ -253,7 +253,7 @@ async function htmlTableToPdfPaginated(opts: {
       <style>
         .pdf-page table { table-layout: auto !important; width: 100% !important; }
         .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 4px 6px !important; text-align: center !important; vertical-align: middle !important; line-height: 1.35 !important; font-size: clamp(9px, 1.05vw, 13px) !important; width: max-content; }
-        .pdf-page td:not(.num):not(.idx):not(.numeric-cell):not(.date-cell), .pdf-page th { white-space: normal !important; overflow: visible !important; overflow-wrap: break-word !important; word-break: normal !important; width: auto; }
+        .pdf-page td:not(.num):not(.idx):not(.numeric-cell):not(.date-cell), .pdf-page th { white-space: nowrap !important; overflow: visible !important; overflow-wrap: break-word !important; word-break: normal !important; width: auto; }
         .pdf-page td.num, .pdf-page td.idx, .pdf-page td.numeric-cell, .pdf-page td.date-cell { white-space: nowrap !important; overflow: visible !important; word-break: keep-all !important; overflow-wrap: normal !important; hyphens: none !important; width: 1% !important; }
         .pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx { color: #000 !important; font-weight: 800 !important; }
         .pdf-page > table:not(.info) { font-size: 12px !important; }
@@ -359,10 +359,10 @@ async function htmlTableToPdfPaginated(opts: {
           <style>
             .pdf-page table { table-layout: auto !important; width: 100% !important; }
             .pdf-page th, .pdf-page td { border: 1px solid #000 !important; padding: 5px 6px !important; text-align: center !important; vertical-align: middle !important; height: auto !important; min-height: 28px; font-size: clamp(10px, 1.15vw, 14px) !important; width: max-content; }
-            .pdf-page td:not(.num):not(.idx):not(.numeric-cell):not(.date-cell), .pdf-page th { white-space: normal !important; overflow: visible !important; overflow-wrap: break-word !important; word-break: normal !important; line-height: 1.4 !important; width: auto; }
+            .pdf-page td:not(.num):not(.idx):not(.numeric-cell):not(.date-cell), .pdf-page th { white-space: nowrap !important; overflow: visible !important; overflow-wrap: break-word !important; word-break: normal !important; line-height: 1.4 !important; width: auto; }
             .pdf-page td.num, .pdf-page td.idx, .pdf-page td.numeric-cell, .pdf-page td.date-cell { white-space: nowrap !important; overflow: visible !important; word-break: keep-all !important; overflow-wrap: normal !important; hyphens: none !important; line-height: 1.2 !important; width: 1% !important; }
             .pdf-page .pdf-cell-text { display: inline-block !important; width: 100% !important; text-align: center !important; vertical-align: middle !important; color: #000000 !important; font-weight: 800 !important; }
-            .pdf-page td:not(.num):not(.idx):not(.numeric-cell) .pdf-cell-text { white-space: normal !important; overflow-wrap: break-word !important; word-break: normal !important; }
+            .pdf-page td:not(.num):not(.idx):not(.numeric-cell) .pdf-cell-text { white-space: nowrap !important; overflow-wrap: break-word !important; word-break: normal !important; }
             .pdf-page td.num .pdf-cell-text, .pdf-page td.idx .pdf-cell-text, .pdf-page td.numeric-cell .pdf-cell-text { white-space: nowrap !important; word-break: keep-all !important; overflow-wrap: normal !important; width: auto !important; }
             .pdf-page tbody td *, .pdf-page tfoot td *, .pdf-page .num *, .pdf-page .idx * { color: #000000 !important; -webkit-text-fill-color: #000000 !important; text-shadow: none !important; font-weight: 800 !important; }
             .pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx { color: #000 !important; -webkit-text-fill-color: #000 !important; text-shadow: none !important; font-weight: 800 !important; }
