@@ -117,13 +117,11 @@ const PRINT_STYLES = `
   .accounts-print-area td {
     border: 1px solid #000 !important;
     white-space: normal !important;
-    overflow: hidden !important;
     text-overflow: clip !important;
     overflow-wrap: anywhere !important;
     word-break: break-word !important;
     hyphens: auto !important;
     line-height: 1.1 !important;
-    max-height: 2.2em !important;
     padding: 0 !important;
     line-height: 1.1 !important;
     font-size: clamp(7px, 1.2vw, 12px) !important;

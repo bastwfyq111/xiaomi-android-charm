@@ -1,4 +1,4 @@
-@import "tailwindcss" source(none);
+import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
 
@@ -198,7 +198,6 @@
 table th,
 table td {
   white-space: normal !important;
-  overflow: hidden !important;
   text-overflow: clip !important;
   overflow-wrap: anywhere;
   word-break: break-word;
@@ -307,7 +306,6 @@ table td > * {
   table th,
   table td {
     white-space: normal !important;
-    overflow: hidden !important;
     text-overflow: clip !important;
     overflow-wrap: anywhere;
     word-break: break-word;

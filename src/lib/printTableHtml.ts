@@ -182,7 +182,7 @@ export const tablePrintStyles = `
     height: 34mm;
     min-height: 34mm;
     max-height: 34mm;
-    overflow: hidden;
+
     align-items: stretch;
     justify-content: center;
     margin: 0 auto 5mm;

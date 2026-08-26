@@ -1637,7 +1637,7 @@ const exportToPDF = async (
         font-size: 10.5pt;
         line-height: 1.3;
         white-space: normal;
-        overflow: hidden;
+      
         text-overflow: clip;
         overflow-wrap: anywhere;
         word-break: break-word;
