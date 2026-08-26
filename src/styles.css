@@ -37,44 +37,44 @@
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
 }
+
 :root {
   --radius: 0.7rem;
 
-  /* 馃寪 丕賱禺賱賮賷丞 丕賱毓丕賲丞 鈥� 賵乇賯 丿賮鬲乇賷 丿丕賮卅 亘丿賱 丕賱兀亘賷囟 丕賱賯丕乇爻 */
-  --background: oklch(0.97 0.008 85);        /* 亘賷噩 賵乇賯賷 賮丕鬲丨 噩丿丕賸貙 兀賯乇亘 賱氐賮丨丞 爻噩賱 丨賯賷賯賷 */
-  --foreground: oklch(0.16 0.02 240);        /* 丨亘乇 丿丕賰賳 賲丕卅賱 賱賱兀夭乇賯 丕賱賱賷賱賷 */
+  /* الخلفية العامة */
+  --background: oklch(0.97 0.008 85);
+  --foreground: oklch(0.16 0.02 240);
 
-  /* 馃摝 丕賱亘胤丕賯丕鬲 賵丕賱丨丕賵賷丕鬲 */
-  --card: oklch(0.995 0.002 85);             /* 兀亘賷囟 丿丕賮卅 禺賮賷賮貙 賱賷爻 兀亘賷囟 賯丕乇爻 */
+  /* البطاقات والحاويات */
+  --card: oklch(0.995 0.002 85);
   --card-foreground: oklch(0.16 0.02 240);
 
-  /* 鈿� 丕賱賱賵賳 丕賱兀爻丕爻賷 鈥� 兀夭乇賯 丿賮鬲乇賷 賲丐爻爻賷 毓賲賷賯 (亘丿賱 丕賱兀夭乇賯 丕賱賰賴乇亘丕卅賷 丕賱賱丕賲毓) */
-  --primary: oklch(0.34 0.09 240);           /* 賰丨賱賷 賲丐爻爻賷 賴丕丿卅貙 賱賵賳 丕賱兀禺鬲丕賲 丕賱乇爻賲賷丞 */
+  /* اللون الأساسي */
+  --primary: oklch(0.34 0.09 240);
   --primary-foreground: oklch(0.98 0.01 85);
 
-  /* 馃煠 丕賱孬丕賳賵賷 鈥� 賳賮爻 毓丕卅賱丞 丕賱賰丨賱賷 亘丿乇噩丞 賮丕鬲丨丞 */
+  /* الثانوي */
   --secondary: oklch(0.93 0.015 230);
   --secondary-foreground: oklch(0.30 0.07 240);
 
-  --muted: oklch(0.94 0.012 85);             /* 亘賷噩 賮丕鬲丨 噩丿丕賸 賱氐賮賵賮 丕賱噩丿賵賱 丕賱賲鬲賳丕賵亘丞 */
+  --muted: oklch(0.94 0.012 85);
   --muted-foreground: oklch(0.42 0.03 235);
 
-  /* 鉁� 丕賱鬲賲賷賷夭 鈥� 賳丨丕爻賷/匕賴亘賷 丿丕賮卅 (賱賵賳 丕賱禺鬲賲 賵丕賱鬲賵賯賷毓 丕賱乇爻賲賷) */
-  --accent: oklch(0.68 0.13 75);             /* 亘乇賵賳夭賷 匕賴亘賷 賴丕丿卅 */
+  /* التمييز */
+  --accent: oklch(0.68 0.13 75);
   --accent-foreground: oklch(0.20 0.03 80);
 
-  /* 鈿狅笍 丕賱丨丕賱丕鬲 丕賱禺丕氐丞 */
+  /* الحالات الخاصة */
   --destructive: oklch(0.52 0.19 25);
   --destructive-foreground: oklch(0.98 0 0);
-  --success: oklch(0.50 0.11 155);           /* 兀禺囟乇 賲胤賮兀 賲鬲賳丕爻賯 賲毓 丕賱賴賵賷丞 亘丿賱 丕賱兀禺囟乇 丕賱氐丕乇禺 */
+  --success: oklch(0.50 0.11 155);
   --success-foreground: oklch(0.98 0 0);
 
-  /* 馃枌锔� 丕賱丨丿賵丿 */
+  /* الحدود */
   --border: oklch(0.30 0.02 240 / 0.14);
   --input: oklch(0.20 0.02 240 / 0.20);
   --ring: oklch(0.34 0.09 240 / 0.35);
 }
- 
 
 @layer base {
   * { border-color: var(--color-border); }
@@ -98,7 +98,6 @@
   }
   h1, h2, h3, h4 { font-family: 'Cairo', 'Tajawal', sans-serif; font-weight: 800; letter-spacing: -0.01em; }
 
-  /* 馃枊锔� 禺胤 賮丕氐賱 丿賯賷賯 賲鬲賯胤毓 鈥� 廿卮丕乇丞 "丿賮鬲乇 丕賱兀爻鬲丕匕" 丕賱賲購噩賱賾丿貙 鬲購爻鬲禺丿賲 亘丨匕乇 賰毓賳氐乇 鬲賵賯賷毓 */
   .ledger-seam {
     background-image: repeating-linear-gradient(
       to bottom, oklch(0.68 0.13 75 / 0.55) 0 6px, transparent 6px 12px
@@ -107,53 +106,43 @@
   }
 
   /*
-    تنسيق الجداول (القاعدة العامة لكل جدول في التبويبات):
-    table-layout يبقى auto دائماً ليأخذ كل عمود عرضه الفعلي من محتواه.
-
-    ملاحظة مهمة: width: 1% مع white-space: nowrap لا يكفي وحده عندما
-    يكون الجدول width: 100% ومعظم الأعمدة "1%" — المتصفح حينها يوزّع
-    المساحة الفارغة بالتساوي تقريباً على أعمدة الـ 1% نفسها بدل تركيزها
-    في عمود النص المرن، فتظهر أعمدة الأرقام أوسع من محتواها فعلياً.
-    الحل: width: 0 (بدل 1%) للأعمدة غير القابلة للالتفاف — width: 0 مع
-    white-space: nowrap يجبر المتصفح على إعطاء العمود الحد الأدنى المطلق
-    لعرض محتواه فقط، وترك كل المساحة الفائضة لعمود النص (width: auto).
+    تنسيق الجداول الشامل:
+    تم إلغاء التفاف النصوص والأرقام نهائياً واعتماد الاحتواء التلقائي الممتاز لجميع الخلايا.
   */
   table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: auto;
+    table-layout: auto !important;
     font-feature-settings: "tnum" 1, "lnum" 1;
   }
   th {
     font-weight: 700;
   }
-  table th, table td {
+
+  /* منع التفاف النص في كل الخلايا بدون استثناء وتكييف العرض حسب المحتوى */
+  table th, 
+  table td {
     text-align: center;
     vertical-align: middle;
-    white-space: nowrap;
-    width: 0;
-    overflow: visible;
-    overflow-wrap: normal;
-    word-break: keep-all;
+    white-space: nowrap !important;
+    width: max-content !important;
+    overflow: visible !important;
+    overflow-wrap: normal !important;
+    word-break: keep-all !important;
     padding: 4px 6px !important;
     line-height: 1.3;
     font-size: clamp(7px, 1.05vw, 13px);
     border: 1px solid #000 !important;
   }
 
-  /* خلايا النص العادي (أوصاف/أسماء) — كل خلية ليست رقمية/تاريخ/كود:
-     التفاف طبيعي عند الحاجة، وتأخذ كل المساحة المتبقية من الجدول. */
-  table td:not(.numeric-cell):not(.date-cell):not(.compact-cell):not(.font-mono):not(.num),
-  table th {
-    white-space: normal !important;
-    overflow: visible !important;
-    overflow-wrap: break-word !important;
-    word-break: normal !important;
-    hyphens: auto !important;
-    width: auto !important;
+  /* إجبار العناصر الداخلية على الالتزام بنفس السطر */
+  table th *,
+  table td * {
+    white-space: nowrap !important;
+    word-break: keep-all !important;
   }
 
-  /* 丨丿賵丿 禺賱丕賷丕 噩丿丕賵賱 丕賱兀賯爻丕胤 亘丕賱兀爻賵丿 賮賯胤 */
+  /* حدود خلايا جداول الأقساط */
   .installments-table th,
   .installments-table td {
     border: 1px solid #000 !important;
@@ -162,28 +151,26 @@
   .font-mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 600; }
   button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
   
-  /* Prevent iOS / MIUI auto-zoom on focus by enforcing 16px minimum */
+  /* منع الزوم التلقائي في الشاشات الصغيرة عند التركيز */
   input, select, textarea {
     font-size: 16px;
   }
-  /* Smooth touch scrolling for horizontally-scrolling tables */
+  
+  /* شريط التمرير الأفقي للجداول العريضة */
   .overflow-x-auto { -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
 }
 
-/* Mobile-only tweaks (Xiaomi / small Android phones) */
+/* الشاشات الصغيرة والجوالات */
 @media (max-width: 640px) {
   body {
-    /* Lighter background on small screens for performance */
     background:
       radial-gradient(600px 300px at 100% -10%, oklch(0.93 0.05 250 / 0.4), transparent 60%),
       var(--color-background);
   }
-  /* Respect notch / status bar / gesture nav on Xiaomi */
   .safe-pad-x { padding-left: max(0.75rem, env(safe-area-inset-left)); padding-right: max(0.75rem, env(safe-area-inset-right)); }
   .safe-pad-bottom { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
   .safe-pad-top { padding-top: max(0.5rem, env(safe-area-inset-top)); }
   
-  /* 鬲賯賱賷氐 丨噩賲 丕賱禺胤 賵丕賱丨卮賵丞 賮賷 丕賱噩賵丕賱 賲毓 丕賱爻賲丕丨 亘爻胤乇賷賳 賱賱賳氐賵氐 丕賱胤賵賷賱丞 */
   table { 
     font-size: 12px; 
   }
@@ -191,17 +178,10 @@
     padding: 3px 4px !important;
     font-size: clamp(7px, 2.8vw, 12px);
   }
-  /* Ensure inputs inside table filter rows don't trigger zoom but stay compact visually */
   table input { font-size: 14px; padding: 3px 4px; }
 }
 
-/*
-  ==== أعمدة الأرقام/التواريخ/الأكواد: بدون التفاف مطلقاً، مع احتواء تلقائي ====
-  هذه القواعد ذات specificity أعلى (كلاس على العنصر) فتتغلب دائماً على
-  القاعدة العامة أعلاه بغض النظر عن ترتيب الظهور.
-  width: 0 هنا أيضاً (بدل 1%) لنفس سبب منع توسّع العمود عن محتواه
-  الفعلي عندما يشارك عرض الجدول مع عمود نصي مرن.
-*/
+/* تنسيق أعمدة الأرقام والتواريخ والرموز المنفصلة */
 table td.numeric-cell,
 table th.numeric-cell,
 table td.date-cell,
@@ -222,7 +202,7 @@ table input[type="number"] {
   overflow-wrap: normal !important;
   word-break: keep-all !important;
   hyphens: none !important;
-  width: 0 !important;
+  width: max-content !important;
 }
 
 table td.numeric-cell :where(span, div, input, button),
@@ -256,7 +236,7 @@ table th.font-mono :where(span, div, input, button) {
   }
 }
 
-/* 鬲賵丨賷丿 賳氐賵氐 禺賱丕賷丕 噩賲賷毓 噩丿丕賵賱 丕賱鬲亘賵賷亘丕鬲 廿賱賶 丕賱兀爻賵丿 丕賱睾丕賲賯 */
+/* توحيد نصوص ومحتويات الجداول للون الأسود الداكن */
 table th :where(span, div, p, label, strong, b, small, a),
 table td :where(span, div, p, label, strong, b, small, a),
 table th input,
@@ -271,35 +251,28 @@ table td button {
   font-weight: 700 !important;
 }
 
-/* 丕賱丨賯賵賱 賵丕賱賲丨鬲賵賶 丿丕禺賱 丕賱禺賱丕賷丕 賱丕 鬲鬲噩丕賵夭 毓乇囟 丕賱禺賱賷丞 */
+/* منع الحقول الداخلية من تجاوز عرض الخلية */
 table th > *,
 table td > * {
   max-width: 100%;
 }
 
+/* تنسيقات الطباعة وتصدير الـ PDF */
 @media print {
-  /* الطباعة تتبع نفس منطق الاحتواء: افتراضي بدون التفاف، إلا للنصوص الطويلة */
+  table {
+    table-layout: auto !important;
+    width: 100% !important;
+  }
   table th, table td {
-    white-space: nowrap;
-    overflow: visible;
-    overflow-wrap: normal;
-    word-break: keep-all;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    overflow-wrap: normal !important;
+    word-break: keep-all !important;
     padding: 3px 5px !important;
     line-height: 1.3;
-    font-size: clamp(7px, 1.05vw, 12px);
-    width: 0;
+    font-size: clamp(7px, 1.05vw, 12px) !important;
+    width: max-content !important;
   }
-  table td:not(.numeric-cell):not(.date-cell):not(.compact-cell):not(.font-mono):not(.num),
-  table th {
-    white-space: normal !important;
-    overflow: visible !important;
-    overflow-wrap: break-word !important;
-    word-break: normal !important;
-    width: auto !important;
-  }
-}
-
-@media print {
   .no-print { display: none !important; }
   body { background: white; }
 }
