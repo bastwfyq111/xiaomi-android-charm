@@ -972,8 +972,8 @@ const exportToPDF = async (
 
       table {
         font-size: ${fontSizePx.toFixed(2)}px;
-        table-layout: auto!important;
-      width: 100%!important;
+        table-layout: fixed !important;
+        width: 100% !important;
         min-width: 100% !important;
         border-collapse: collapse;
         border: 0.75pt solid #000;
@@ -997,7 +997,7 @@ const exportToPDF = async (
       }
       .cell-content {
         display: block;
-        width:100%;
+        width: 100%;
         max-width: 100%;
         box-sizing: border-box;
         padding: 2px 4px;
@@ -1028,7 +1028,7 @@ const exportToPDF = async (
       }
       td.numeric-cell, th.numeric-cell, td.date-cell, th.date-cell, td.compact-cell, th.compact-cell {
         font-family: 'Times New Roman', Times, serif !important;
-        font-size: clamp(10px, 0.95vw, 14px) !important;
+        font-size: clamp(7px, 0.95vw, 11px) !important;
         line-height: 1.05 !important;
         white-space: nowrap !important;
         overflow-wrap: normal !important;
@@ -1077,6 +1077,9 @@ const exportToPDF = async (
     `;
 
     const body = `
+      <div class="print-toolbar">
+        <button type="button" onclick="window.print()">طباعة التقرير</button>
+      </div>
       ${
         settings.showHeader
           ? `<div class="doc-header">
@@ -1618,7 +1621,7 @@ const exportToPDF = async (
       .info-lbl { font-size: 9.5pt; line-height: 1.2; font-weight: 700; color: #475569; text-align: center; }
       .info-val { font-size: 11pt; line-height: 1.25; font-weight: 800; margin-top: 1mm; overflow-wrap: anywhere; }
       table {
-        table-layout: auto;
+        table-layout: fixed;
         width: 100%;
         min-width: 100%;
         border-collapse: collapse;
@@ -1633,8 +1636,8 @@ const exportToPDF = async (
         padding: 2.5mm 2mm;
         font-size: 10.5pt;
         line-height: 1.3;
-        white-space: nowrap;
-      
+        white-space: normal;
+        overflow: hidden;
         text-overflow: clip;
         overflow-wrap: anywhere;
         word-break: break-word;
@@ -1663,7 +1666,7 @@ const exportToPDF = async (
       }
       .header, .info-grid { page-break-inside: avoid; break-inside: avoid; }
       @media print {
-        html, body { width: 100%; }
+        html, body { width: auto; }
         body { margin: 0; padding: 0; }
         .page-frame { min-height: auto; border-radius: 0; box-shadow: none; }
         .print-toolbar { display: none !important; }
@@ -1871,7 +1874,7 @@ const exportToPDF = async (
         <div className="p-1 sm:p-3">
           <StatsGrid stats={stats2025} columns={3} />
           <div className="overflow-auto max-h-[72vh] rounded-lg border border-slate-200 shadow-sm relative">
-            <table className="installments-table table-auto text-sm sm:text-base font-extrabold">
+            <table className="installments-table min-w-max table-auto text-sm sm:text-base font-semibold">
               <thead className="bg-gradient-to-b from-teal-700 to-teal-800 font-bold border-b-2 border-emerald-900 text-white [&>tr>th]:!text-white sticky top-0 z-20 shadow-md">
                 <tr>
                   <th className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">#</th>
@@ -2059,10 +2062,10 @@ const exportToPDF = async (
             </h2>
             <p className="text-xs text-teal-100">بيانات المسدد والرصيد المدور لعام 2026</p>
           </div>
-          <div className=" sm:w-auto grid grid-cols-2 sm:flex gap-1.5 sm:gap-2 items-center">
+          <div className="w-full sm:w-auto grid grid-cols-2 sm:flex gap-1.5 sm:gap-2 items-center">
             <button
               onClick={() => setCondFormatModal(true)}
-              className={` px-1.5 sm:px-2 py-1 sm:py-1 rounded-lg text-xs sm:text-xs font-bold shadow transition-colors flex items-center justify-center gap-1 ${
+              className={`w-full px-1.5 sm:px-2 py-1 sm:py-1 rounded-lg text-xs sm:text-xs font-bold shadow transition-colors flex items-center justify-center gap-1 ${
                 condFormatRules.length
                   ? "bg-yellow-400 text-yellow-900 animate-pulse"
                   : "bg-white/20 text-white hover:bg-white/30"
