@@ -106,7 +106,7 @@ ${reportLetterheadStyles}
       font-family: 'Times New Roman', Times, serif !important;
       font-size: clamp(12px, 1vw, 14px) !important;
       color: #000 !important;
-      font-weight: 700 !important;
+      font-weight: 1000 !important;
       direction: ltr;
       unicode-bidi: embed;
     }

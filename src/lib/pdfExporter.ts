@@ -32,88 +32,70 @@ function downloadPdfBlob(pdf: any, fileName: string): void {
  */
 function pdfPageCellCss(opts: { padding?: string; fontSize?: string } = {}): string {
   const padding = opts.padding ?? '5px 6px';
-  const fontSize = opts.fontSize ?? 'clamp(10px, 1.15vw, 14px)';
+  const fontSize = opts.fontSize ?? 'clamp(14px, 1.15vw, 14px)';
   return `
-    .pdf-page table { table-layout: auto !important; width: 100% !important; }
-    .pdf-page th, .pdf-page td {
-      border: 1px solid #000 !important;
-      padding: ${padding} !important;
-      text-align: center !important;
-      vertical-align: middle !important;
-      height: auto !important;
-      min-height: 28px;
-      font-size: ${fontSize} !important;
-    }
-    /* افتراضي: كل خلية تحتوي محتواها بدون التفاف، إلا المصرّح لها بالالتفاف أدناه */
-    .pdf-page th, .pdf-page td { white-space: nowrap; width: 1%; }
-
-    /* خلايا النص العادي (أوصاف/أسماء): التفاف طبيعي عند الحاجة */
-    .pdf-page td:not(.num):not(.idx):not(.numeric-cell):not(.date-cell) {
-      white-space: normal !important;
-      overflow: visible !important;
-      overflow-wrap: break-word !important;
-      word-break: normal !important;
-      line-height: 1.4 !important;
-      width: auto !important;
-    }
-    .pdf-page th {
-      white-space: normal !important;
-      overflow-wrap: break-word !important;
-      word-break: normal !important;
-    }
-
-    /* خلايا الأرقام والتواريخ والأكواد: بدون التفاف مطلقاً */
-    .pdf-page td.num, .pdf-page td.idx, .pdf-page td.numeric-cell, .pdf-page td.date-cell {
-      white-space: nowrap !important;
-      overflow: visible !important;
-      word-break: keep-all !important;
-      overflow-wrap: normal !important;
-      hyphens: none !important;
-      line-height: 1.2 !important;
-      width: 1% !important;
-    }
-
-    .pdf-page .pdf-cell-text {
-      display: inline-block !important;
-      width: 100% !important;
-      text-align: center !important;
-      vertical-align: middle !important;
-      color: #000000 !important;
-      font-weight: 800 !important;
-    }
-    .pdf-page td:not(.num):not(.idx):not(.numeric-cell):not(.date-cell) .pdf-cell-text {
-      white-space: normal !important;
-      overflow-wrap: break-word !important;
-      word-break: normal !important;
-    }
-    .pdf-page td.num .pdf-cell-text,
-    .pdf-page td.idx .pdf-cell-text,
-    .pdf-page td.numeric-cell .pdf-cell-text,
-    .pdf-page td.date-cell .pdf-cell-text {
-      white-space: nowrap !important;
-      word-break: keep-all !important;
-      overflow-wrap: normal !important;
-      width: auto !important;
-    }
-
-    .pdf-page tbody td *, .pdf-page tfoot td *, .pdf-page .num *, .pdf-page .idx * {
-      color: #000000 !important;
-      -webkit-text-fill-color: #000000 !important;
-      text-shadow: none !important;
-      font-weight: 800 !important;
-    }
-    .pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx {
-      color: #000 !important;
-      -webkit-text-fill-color: #000 !important;
-      text-shadow: none !important;
-      font-weight: 800 !important;
-    }
-    .pdf-page .num { font-family: 'Times New Roman', Times, serif !important; font-weight: 900 !important; }
-    .pdf-page .sub { border-bottom-width: 2px !important; padding-bottom: 6px !important; margin-bottom: 8px !important; }
-    .pdf-page .total-row td { border-top: 2px solid #92400e !important; white-space: nowrap !important; }
-  `;
+  .pdf-page table { 
+  table-layout: auto !important; 
+  width: 100% !important; 
+  border-collapse: collapse !important;
 }
 
+/* تنسيق خلايا الجدول بالكامل للتمركز والتمدد التلقائي */
+.pdf-page th, .pdf-page td {
+  border: 1px solid #000 !important;
+  padding: ${padding} !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  font-size: ${fontSize} !important;
+  white-space: nowrap !important; /* منع التفاف النصوص لجميع الخلايا */
+  width: 1% !important; /* يجبر الخلية على احتواء المحتوى تلقائياً فقط */
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+  hyphens: none !important;
+}
+
+/* ضبط العناصر الداخلية للخلية للتمركز الرأسي والأفقي المباشر */
+.pdf-page .pdf-cell-text {
+  display: flex !important;
+  align-items: center !important;     /* التمركز الرأسي */
+  justify-content: center !important; /* التمركز الأفقي */
+  width: 100% !important;
+  height: 100% !important;
+  text-align: center !important;
+  color: #000000 !important;
+  font-weight: 800 !important;
+  white-space: nowrap !important;
+}
+
+/* المحافظة على منع التفاف الأرقام والتواريخ بشكل صارم */
+.pdf-page td.num, .pdf-page td.idx, .pdf-page td.numeric-cell, .pdf-page td.date-cell,
+.pdf-page td.num .pdf-cell-text, .pdf-page td.idx .pdf-cell-text, 
+.pdf-page td.numeric-cell .pdf-cell-text, .pdf-page td.date-cell .pdf-cell-text {
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  overflow-wrap: normal !important;
+  direction: ltr !important; /* أداء أفضل للأرقام */
+}
+
+/* ألوان وسمك النصوص */
+.pdf-page tbody td *, .pdf-page tfoot td *, .pdf-page .num *, .pdf-page .idx * {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+  text-shadow: none !important;
+  font-weight: 800 !important;
+}
+.pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx {
+  color: #000 !important;
+  -webkit-text-fill-color: #000 !important;
+  text-shadow: none !important;
+  font-weight: 800 !important;
+}
+.pdf-page .num { font-family: 'Times New Roman', Times, serif !important; font-weight: 900 !important; }
+.pdf-page .sub { border-bottom-width: 2px !important; padding-bottom: 6px !important; margin-bottom: 8px !important; }
+.pdf-page .total-row td { border-top: 2px solid #92400e !important; white-space: nowrap !important; }
+  `;
+} 
+    
 function forcePdfDataCellTextColor(doc: Document): void {
   doc.querySelectorAll<HTMLElement>('.pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx').forEach((cell) => {
     cell.style.setProperty('color', '#000000', 'important');
