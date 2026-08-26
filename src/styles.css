@@ -105,31 +105,47 @@
     );
     width: 2px;
   }
-  
-  /* 鬲賳爻賷賯 丕賱噩丿丕賵賱: 丕丨鬲賵丕亍 丕賱賳氐 賲毓 丕賱爻賲丕丨 亘丨丿 兀賯氐賶 爻胤乇賷賳 丿丕禺賱 丕賱禺賱賷丞 */
+
+  /*
+    鬲賳爻賷賯 丕賱噩丿丕賵賱 (丕賱賯丕毓丿丞 丕賱毓丕賲丞 賱賰賱 噩丿丕賵賱 丕賱鬲亘賵賷亘丕鬲):
+    table-layout يبقى auto دائماً ليأخذ كل عمود عرضه الفعلي من محتواه.
+    الافتراضي لكل خلية: بدون التفاف + احتواء تلقائي لأصغر عرض ممكن،
+    والسماح بالالتفاف الطبيعي فقط للخلايا المصرَّح لها بذلك (.wrap-cell أو
+    أي خلية نصية طويلة لا تحمل كلاس رقمي/تاريخ/كود).
+  */
   table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;
+    table-layout: auto;
     font-feature-settings: "tnum" 1, "lnum" 1;
   }
-  th { 
-    font-weight: 700; 
+  th {
+    font-weight: 700;
   }
   table th, table td {
     text-align: center;
     vertical-align: middle;
-    white-space: normal !important;
-    overflow: hidden !important;
-    text-overflow: clip !important;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-    hyphens: auto;
-    padding: 0 !important;
-    line-height: 1.1;
-    max-height: 2.2em;
+    white-space: nowrap;
+    width: 1%;
+    overflow: visible;
+    overflow-wrap: normal;
+    word-break: keep-all;
+    padding: 4px 6px !important;
+    line-height: 1.3;
     font-size: clamp(7px, 1.05vw, 13px);
     border: 1px solid #000 !important;
+  }
+
+  /* خلايا النص العادي (أوصاف/أسماء) — كل خلية ليست رقمية/تاريخ/كود:
+     التفاف طبيعي عند الحاجة، بدون قطع النص. */
+  table td:not(.numeric-cell):not(.date-cell):not(.compact-cell):not(.font-mono):not(.num),
+  table th {
+    white-space: normal !important;
+    overflow: visible !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+    hyphens: auto !important;
+    width: auto !important;
   }
 
   /* 丨丿賵丿 禺賱丕賷丕 噩丿丕賵賱 丕賱兀賯爻丕胤 亘丕賱兀爻賵丿 賮賯胤 */
@@ -167,29 +183,70 @@
     font-size: 12px; 
   }
   table th, table td {
-    padding: 0 !important;
+    padding: 3px 4px !important;
     font-size: clamp(7px, 2.8vw, 12px);
   }
   /* Ensure inputs inside table filter rows don't trigger zoom but stay compact visually */
   table input { font-size: 14px; padding: 3px 4px; }
 }
 
-/* ==== 丕丨鬲賵丕亍 丕賱賳氐賵氐 丿丕禺賱 禺賱丕賷丕 噩丿丕賵賱 丕賱鬲亘賵賷亘丕鬲 亘丨丿 兀賯氐賶 爻胤乇賷賳 ==== */
-table th,
-  table td {
-  white-space: normal !important;
-  overflow: hidden !important;
-  text-overflow: clip !important;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-  hyphens: auto;
-  vertical-align: middle;
-  padding: 0 !important;
-  line-height: 1.1;
-  max-height: 2.2em;
-  font-size: clamp(7px, 1.05vw, 13px);
+/*
+  ==== أعمدة الأرقام/التواريخ/الأكواد: بدون التفاف مطلقاً، مع احتواء تلقائي ====
+  هذه القواعد ذات specificity أعلى (كلاس على العنصر) فتتغلب دائماً على
+  القاعدة العامة أعلاه بغض النظر عن ترتيب الظهور.
+*/
+table td.numeric-cell,
+table th.numeric-cell,
+table td.date-cell,
+table th.date-cell,
+table td.compact-cell,
+table th.compact-cell,
+table td.font-mono,
+table th.font-mono,
+table .tabular-nums,
+table input[type="number"] {
+  font-family: 'Times New Roman', Times, serif !important;
+  font-size: clamp(9px, 1.9vw, 12px) !important;
+  line-height: 1.15 !important;
   color: #000 !important;
-  font-weight: 700 !important;
+  font-weight: 900 !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+  hyphens: none !important;
+  width: 1% !important;
+}
+
+table td.numeric-cell :where(span, div, input, button),
+table th.numeric-cell :where(span, div, input, button),
+table td.date-cell :where(span, div, input, button),
+table th.date-cell :where(span, div, input, button),
+table td.compact-cell :where(span, div, input, button),
+table th.compact-cell :where(span, div, input, button),
+table td.font-mono :where(span, div, input, button),
+table th.font-mono :where(span, div, input, button) {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+}
+
+@media (max-width: 640px) {
+  table td.numeric-cell,
+  table th.numeric-cell,
+  table td.date-cell,
+  table th.date-cell,
+  table td.compact-cell,
+  table th.compact-cell,
+  table td.font-mono,
+  table th.font-mono,
+  table .tabular-nums,
+  table input[type="number"] {
+    font-size: clamp(8px, 2.35vw, 11px) !important;
+  }
 }
 
 /* 鬲賵丨賷丿 賳氐賵氐 禺賱丕賷丕 噩賲賷毓 噩丿丕賵賱 丕賱鬲亘賵賷亘丕鬲 廿賱賶 丕賱兀爻賵丿 丕賱睾丕賲賯 */
@@ -207,59 +264,6 @@ table td button {
   font-weight: 700 !important;
 }
 
-/* 兀毓賲丿丞 丕賱賲亘丕賱睾 賵丕賱兀乇賯丕賲 賵丕賱鬲賵丕乇賷禺: 禺胤 氐睾賷乇 賲鬲賳丕爻亘 賲毓 丕賱禺賱賷丞 賵賲賳毓 丕賱丕賱鬲賮丕賮 */
-  table td.numeric-cell,
-  table th.numeric-cell,
-  table td.date-cell,
-  table th.date-cell,
-  table td.compact-cell,
-  table th.compact-cell,
-  table td.font-mono,
-  table th.font-mono,
-table .tabular-nums,
-table input[type="number"] {
-  font-family: 'Times New Roman', Times, serif !important;
-  font-size: clamp(9px, 1.9vw, 12px) !important;
-  line-height: 1.15 !important;
-  color: #000 !important;
-  font-weight: 900 !important;
-  white-space: nowrap !important;
-  overflow-wrap: normal !important;
-  word-break: keep-all !important;
-  hyphens: none !important;
-}
-
-table td.numeric-cell :where(span, div, input, button),
- table th.numeric-cell :where(span, div, input, button),
- table td.date-cell :where(span, div, input, button),
- table th.date-cell :where(span, div, input, button),
- table td.compact-cell :where(span, div, input, button),
- table th.compact-cell :where(span, div, input, button),
- table td.font-mono :where(span, div, input, button),
-table th.font-mono :where(span, div, input, button) {
-  font-family: inherit !important;
-  font-size: inherit !important;
-  line-height: inherit !important;
-  white-space: nowrap !important;
-  overflow-wrap: normal !important;
-  word-break: keep-all !important;
-}
-
-@media (max-width: 640px) {
-  table td.numeric-cell,
- table th.numeric-cell,
- table td.date-cell,
- table th.date-cell,
- table td.compact-cell,
- table th.compact-cell,
- table td.font-mono,
- table th.font-mono,
- table .tabular-nums,
-  table input[type="number"] {
-    font-size: clamp(8px, 2.35vw, 11px) !important;
-  }
-}
-
 /* 丕賱丨賯賵賱 賵丕賱賲丨鬲賵賶 丿丕禺賱 丕賱禺賱丕賷丕 賱丕 鬲鬲噩丕賵夭 毓乇囟 丕賱禺賱賷丞 */
 table th > *,
 table td > * {
@@ -267,17 +271,22 @@ table td > * {
 }
 
 @media print {
-  table th,
-  table td {
-    white-space: normal !important;
-    overflow: hidden !important;
-    text-overflow: clip !important;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-    padding: 0 !important;
-    line-height: 1.1;
-    max-height: 2.2em;
+  /* الطباعة تتبع نفس منطق الاحتواء: افتراضي بدون التفاف، إلا للنصوص الطويلة */
+  table th, table td {
+    white-space: nowrap;
+    overflow: visible;
+    overflow-wrap: normal;
+    word-break: keep-all;
+    padding: 3px 5px !important;
+    line-height: 1.3;
     font-size: clamp(7px, 1.05vw, 12px);
+  }
+  table td:not(.numeric-cell):not(.date-cell):not(.compact-cell):not(.font-mono):not(.num),
+  table th {
+    white-space: normal !important;
+    overflow: visible !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
   }
 }
 
