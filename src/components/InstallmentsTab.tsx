@@ -950,7 +950,7 @@ const exportToPDF = async (
         color: #fff;
         cursor: pointer;
         font-family: Cairo, Arial, sans-serif;
-        font-size: 10pt;
+        font-size: 15pt;
         font-weight: 800;
         padding: 5px 12px;
       }
@@ -982,22 +982,24 @@ const exportToPDF = async (
         border: 0.4pt solid #000;
         padding: 2px 3px !important;
         text-align: center;
-        vertical-align: middle;
+        vertical-align: middle !important; /* ضمان المحاذاة الرأسية لكل الخلايا */
         white-space: nowrap !important;
         overflow: visible;
         text-overflow: clip;
-        font-size: clamp(8px, 1.25vw, 14px);
+        font-size: clamp(14px, 1.25vw, 14px);
         overflow-wrap: normal !important;
         word-break: keep-all !important;
         hyphens: none !important;
         line-height: 1.3;
-        height: auto;
         font-weight: 700;
         color: #000 !important;
       }
       .cell-content {
-        display: block;
+        display: flex !important; /* تحويل العنصر الداخلي إلى Flexbox */
+        align-items: center !important; /* التمركز الرأسي للمحتوى */
+        justify-content: center !important; /* التمركز الأفقي للمحتوى */
         width: 100%;
+        height: 100%;
         max-width: 100%;
         box-sizing: border-box;
         padding: 2px 4px;
@@ -1048,6 +1050,7 @@ const exportToPDF = async (
         font-size: ${headerFontSizePx.toFixed(2)}px;
         font-weight: 800;
         padding: 4px 5px !important;
+        vertical-align: middle !important;
       }
       tbody tr:nth-child(even) td { background: ${colorTokens.zebra} !important; }
       td.t-fees { background: ${colorTokens.fees} !important; }
@@ -1569,7 +1572,7 @@ const exportToPDF = async (
       body {
         font-family: "Times New Roman", "Noto Naskh Arabic", "Cairo", Tahoma, sans-serif;
         color: #111827;
-        font-size: 11pt;
+        font-size: 14pt;
         line-height: 1.35;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
@@ -1600,7 +1603,7 @@ const exportToPDF = async (
         color: #fff;
         cursor: pointer;
         font-family: Cairo, Arial, sans-serif;
-        font-size: 10pt;
+        font-size: 14pt;
         font-weight: 800;
         padding: 2.2mm 5mm;
       }
