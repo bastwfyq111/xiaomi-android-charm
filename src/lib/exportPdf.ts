@@ -95,7 +95,7 @@ ${reportLetterheadStyles}
       padding: 2px 4px !important;
       text-align: center; 
       vertical-align: middle;
-      font-size: clamp(8px, 1.05vw, 12px);
+      font-size: clamp(8px, 1.05vw, 14px);
       word-wrap: break-word;
       overflow-wrap: break-word;
       font-weight: 700 !important;
@@ -104,7 +104,7 @@ ${reportLetterheadStyles}
     }
     .num, .numeric-cell, .date-cell {
       font-family: 'Times New Roman', Times, serif !important;
-      font-size: clamp(9px, 1vw, 12px) !important;
+      font-size: clamp(12px, 1vw, 14px) !important;
       color: #000 !important;
       font-weight: 700 !important;
       direction: ltr;
@@ -418,7 +418,7 @@ ${reportLetterheadStyles}
     }
     h1 { text-align: center; font-size: 16px; font-weight: 900; margin: 0 0 4px; }
     .meta { text-align: center; font-size: 12px; font-weight: 700; margin: 2px 0; }
-    table { width: 100%; border-collapse: collapse; font-size: 12px; table-layout: fixed; margin-top: 6px; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; table-layout: auto; margin-top: 6px; }
     
     th:nth-child(1), td:nth-child(1) { width: 44%; }
     th:nth-child(2), td:nth-child(2),
@@ -441,7 +441,7 @@ ${reportLetterheadStyles}
     }
     .num {
       font-family: 'Times New Roman', Times, serif !important;
-      font-size: 11px !important;
+      font-size: 14px !important;
       direction: ltr;
       unicode-bidi: embed;
     }

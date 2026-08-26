@@ -537,7 +537,7 @@ export function printHtmlContent(htmlContent: string): void {
         }
         /* خلايا النص: احتواء تلقائي والتفاف عند الحاجة */
         th, td:not(.num):not(.idx):not(.numeric-cell) {
-          white-space: normal;
+          white-space: nowrap;
           overflow-wrap: break-word;
           word-break: normal;
           overflow: visible;
@@ -807,7 +807,7 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
     }
     /* خلايا النص: احتواء تلقائي والتفاف عند الحاجة فقط */
     th, td:not(.num):not(.idx) {
-      white-space: normal;
+      white-space: nowrap ;
       overflow-wrap: break-word;
       word-break: normal;
       overflow: visible;

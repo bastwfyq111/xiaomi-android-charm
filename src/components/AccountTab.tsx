@@ -102,7 +102,7 @@ const PRINT_STYLES = `
     border-collapse: collapse !important;
     width: auto !important;
     min-width: 100% !important;
-    table-layout: auto !important;
+    table-layout: auto!important;
   }
   .accounts-print-area thead th {
     color: #171412 !important;
@@ -116,7 +116,7 @@ const PRINT_STYLES = `
   .accounts-print-area th,
   .accounts-print-area td {
     border: 1px solid #000 !important;
-    white-space: normal !important;
+    white-space: nowrap!important;
     text-overflow: clip !important;
     overflow-wrap: anywhere !important;
     word-break: break-word !important;
@@ -137,7 +137,7 @@ const PRINT_STYLES = `
   .accounts-print-area td.font-mono,
   .accounts-print-area th.font-mono {
     font-family: 'Times New Roman', Times, serif !important;
-    font-size: clamp(7px, 0.95vw, 11px) !important;
+    font-size: clamp(10px, 0.95vw, 13px) !important;
     line-height: 1.05 !important;
     white-space: nowrap !important;
     overflow-wrap: normal !important;

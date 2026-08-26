@@ -107,7 +107,7 @@ const baseCss = (
   /* السماح بالالتفاف فقط في النصوص والأسماء الطويلة */
   .long-text-cell,
   .text-cell {
-    white-space: normal !important;
+    white-space: nowrap !important;
     overflow-wrap: break-word !important;
     word-break: normal !important;
     width: auto;

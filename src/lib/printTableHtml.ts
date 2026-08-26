@@ -136,7 +136,7 @@ export const tablePrintStyles = `
   /* السماح بالتفاف النصوص فقط في الأوصاف والأسماء الطويلة */
   .long-text-cell,
   .long-text-cell .pdf-cell-text {
-    white-space: normal !important;
+    white-space: nowrap !important;
     overflow-wrap: break-word !important;
     word-break: normal !important;
     hyphens: auto !important;

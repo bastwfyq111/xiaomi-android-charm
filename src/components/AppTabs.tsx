@@ -452,7 +452,7 @@ const AppTabs: React.FC = () => {
       h2 { text-align:center; color:#000 !important; margin:4px 0 4px; font-weight:800; }
       .report-date { text-align:center; color:#000 !important; margin:0 0 8px; font-size:10px; font-weight:700; }
       table { width:auto; min-width:100%; border-collapse:collapse; table-layout:auto; font-size:clamp(7px,1.05vw,8px); }
-      th, td { border:1px solid #000; padding:0 !important; text-align:center; white-space:normal; overflow:hidden; text-overflow:clip; overflow-wrap:anywhere; word-break:break-word; hyphens:auto; line-height:1.1; max-height:2.2em; font-size:clamp(7px,1.05vw,10px); color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+      th, td { border:1px solid #000; padding:0 !important; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:clip; overflow-wrap:anywhere; word-break:break-word; hyphens:auto; line-height:1.1; max-height:2.2em; font-size:clamp(7px,1.05vw,10px); color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
       thead th { background:#fff; font-weight:700; color:#000 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       thead .c-total { background:${COLORS.TOTAL_ALL}; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       thead .c-bab   { background:${COLORS.BAB_TOTAL}; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
