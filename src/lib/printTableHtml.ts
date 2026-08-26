@@ -29,13 +29,7 @@ export const escapeHtml = (s: any) =>
 
 /**
  * أنماط موحّدة تُستخدم في الطباعة وفي تنزيل PDF وفي واجهة التبويبات
- * تضمن الاحتواء التلقائي للنصوص داخل الخلايا بدون التفاف، خاصة خلايا الأرقام
- *
- * الباترن المستخدم لضمان "auto-fit":
- *   table-layout: auto  → كل عمود ياخذ بالظبط العرض اللي يحتاجه محتواه
- *   white-space: nowrap → يمنع التفاف النص فيمنع المتصفح من تصغير العمود أكتر من عرض أطول كلمة/رقم فيه
- *   width: 1%           → تلميح للمتصفح إن العمود ده يتقلص لأصغر عرض ممكن (يُستخدم فقط مع أعمدة اللاوراب)
- * أعمدة النصوص الطويلة (أوصاف/أسماء) وحدها مسموح لها بالالتفاف الطبيعي.
+ * تضمن الاحتواء التلقائي لجميع الخلايا والنصوص دون التفاف مطلقاً، خاصة خلايا الأرقام.
  */
 export const tablePrintStyles = `
   @page {
@@ -77,7 +71,7 @@ export const tablePrintStyles = `
     padding-bottom: 4px;
   }
   
-  /* جعل عرض الجدول يتكيف تلقائياً بحسب محتوى كل خلية (auto-fit حقيقي) */
+  /* احتواء تلقائي كامل للجدول بحسب طول المحتوى لكل عمود */
   table {
     width: 100%;
     max-width: 100%;
@@ -97,16 +91,13 @@ export const tablePrintStyles = `
     height: auto !important;
     min-height: 28px;
     font-size: clamp(10px, 1.15vw, 14px) !important;
+    white-space: nowrap !important;
+    width: max-content !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
   }
 
-  /* الافتراضي لأي خلية عادية: تحتوي محتواها بأصغر عرض ممكن بدون التفاف،
-     إلا لو كانت محددة صراحة كـ long-text-cell */
-  th, td {
-    white-space: nowrap;
-    width: 1%;
-  }
-
-  /* منع التفاف النصوص نهائياً في خلايا الأرقام والتواريخ والأكواد */
+  /* منع التفاف النصوص نهائياً في خلايا الأرقام والتواريخ والأكواد وتحديد الخط الرسمي */
   .num,
   .numeric-cell,
   .date-cell,
@@ -125,7 +116,7 @@ export const tablePrintStyles = `
     font-weight: 900 !important;
     line-height: 1.15 !important;
     font-size: clamp(9px, 1.9vw, 12px) !important;
-    width: 1% !important; /* يضمن إعطاء الخلية دائمًا أصغر عرض يتسع للمحتوى بدون التفاف */
+    width: max-content !important;
   }
 
   .pdf-cell-text {
@@ -133,29 +124,22 @@ export const tablePrintStyles = `
     width: 100%;
     text-align: center;
     vertical-align: middle;
-  }
-
-  .num .pdf-cell-text,
-  .numeric-cell .pdf-cell-text,
-  .date-cell .pdf-cell-text,
-  .compact-cell .pdf-cell-text,
-  .idx .pdf-cell-text {
     white-space: nowrap !important;
     word-break: keep-all !important;
     overflow-wrap: normal !important;
   }
 
-  /* السماح بالتفاف النصوص فقط في الأوصاف والأسماء الطويلة (عكس كل الخلايا الأخرى) */
+  /* ضمان عدم التفاف محتوى جميع الخلايا حتى في حالة long-text-cell */
   .long-text-cell {
-    white-space: normal !important;
-    overflow-wrap: break-word !important;
-    word-break: normal !important;
-    hyphens: auto !important;
-    width: auto !important;
+    white-space: nowrap !important;
+    overflow-wrap: normal !important;
+    word-break: keep-all !important;
+    width: max-content !important;
   }
   .long-text-cell .pdf-cell-text {
-    white-space: normal !important;
-    overflow-wrap: break-word !important;
+    white-space: nowrap !important;
+    overflow-wrap: normal !important;
+    word-break: keep-all !important;
   }
   
   tbody td,
@@ -166,6 +150,7 @@ export const tablePrintStyles = `
     -webkit-text-fill-color: #000 !important;
     text-shadow: none !important;
     font-weight: 800 !important;
+    white-space: nowrap !important;
   }
   thead th {
     background: #f5deb3 !important;
@@ -197,7 +182,6 @@ export const tablePrintStyles = `
     height: 34mm;
     min-height: 34mm;
     max-height: 34mm;
-
     align-items: stretch;
     justify-content: center;
     margin: 0 auto 5mm;
@@ -269,8 +253,6 @@ export function buildTableHtml(opts: {
     /date|تاريخ|اليوم|الشهر|السنة|year|month|day/i.test(`${c.key} ${c.label}`);
   const isCompactColumn = (c: TableCol) =>
     /(^|[-_ ])(no|number|code|key|id)([-_ ]|$)|رقم|رمز|كود|الباب|الفصل|البند|النوع|الشهر|السنة/i.test(`${c.key} ${c.label}`);
-  const hasMoreThanFourWords = (value: any) =>
-    String(value ?? "").trim().split(/\s+/).filter(Boolean).length > 4;
 
   const getCellClass = (c: TableCol, val?: any) => {
     const isNumeric = numericKeys.includes(c.key) || typeof val === "number";
@@ -278,12 +260,10 @@ export function buildTableHtml(opts: {
     const isCompact = isCompactColumn(c);
     const isNoWrap = isNumeric || isDate || isCompact;
 
-    // الخلية الرقمية أو القصيرة لا تأخذ أبداً long-text-cell لمنع أي التفاف
     return [
       isNoWrap ? "num numeric-cell" : "text-cell",
       isDate ? "date-cell" : "",
       isCompact ? "compact-cell" : "",
-      !isNoWrap && hasMoreThanFourWords(val ?? c.label) ? "long-text-cell" : "",
     ].filter(Boolean).join(" ");
   };
 
