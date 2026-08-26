@@ -20,7 +20,7 @@ export const DEFAULT_PRINT_SETTINGS: InstallmentsPrintSettings = {
   pageSize: "A4",
   margin: "narrow",
   fontMode: "auto",
-  fontSize: 8,
+  fontSize: 10,
   hiddenColumns: [],
   showTotals: true,
   showHeader: true,
@@ -46,7 +46,7 @@ export function savePrintSettings(year: number, s: InstallmentsPrintSettings) {
   try {
     localStorage.setItem(`${STORAGE_PREFIX}-${year}`, JSON.stringify(s));
   } catch {
-    /* تجاهل */
+    /* تجاهل التخزين المؤقت عند الحظر */
   }
 }
 
@@ -153,7 +153,7 @@ export default function PrintSettingsModal({
       >
         <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-3 bg-gradient-to-l from-teal-700 via-teal-600 to-emerald-600 text-white">
           <div className="min-w-0">
-            <h3 className="text-sm sm:text-base font-extrabold truncate">إعدادات الطباعة</h3>
+            <h3 className="text-sm sm:text-base font-extrabold truncate">إعدادات الطباعة والتوسيط التلقائي</h3>
             <p className="text-[11px] text-teal-100">تقرير أقساط العام {year}م</p>
           </div>
           <button
@@ -204,7 +204,7 @@ export default function PrintSettingsModal({
           </div>
 
           <div className="space-y-1.5">
-            <span className="text-[11px] font-bold text-black">حجم الخط</span>
+            <span className="text-[11px] font-bold text-black">حجم الخط والاحتواء</span>
             <Segmented
               value={s.fontMode}
               onChange={(v) => setS({ ...s, fontMode: v })}
@@ -296,7 +296,7 @@ export default function PrintSettingsModal({
             onClick={handlePrint}
             className="flex-1 min-h-[48px] rounded-xl bg-gradient-to-l from-teal-700 to-emerald-600 text-white text-sm font-extrabold shadow-lg hover:brightness-110 active:scale-[0.99] transition-all flex items-center justify-center gap-2"
           >
-            <Printer className="w-4 h-4" /> طباعة الآن
+            <Printer className="w-4 h-4" /> طباعة وتصدير PDF
           </button>
         </div>
       </div>
