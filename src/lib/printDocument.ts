@@ -53,12 +53,14 @@ const baseCss = (
   }
   h1, h2, h3 { font-weight: 700; margin: 0; }
 
-  /* جداول: احتواء تلقائي للأعمدة وتعديل المرونة بحسب المحتوى */
+  /* جداول: احتواء تلقائي حقيقي للأعمدة بحسب محتواها.
+     table-layout: auto إلزامي هنا — fixed كان بيمنع الأعمدة من أخذ
+     عرضها الفعلي ويوزّع المساحة بالتساوي متجاهلاً المحتوى. */
   table { 
     width: auto; 
     max-width: 100%; 
     border-collapse: collapse; 
-    table-layout:fixed !important; 
+    table-layout: auto !important; 
     font-size: clamp(8px, 1.05vw, 12px); 
   }
   thead { display: table-header-group; }
@@ -74,7 +76,13 @@ const baseCss = (
     font-size: clamp(8px, 1.05vw, 12px); 
     color: #000 !important; 
     font-weight: 700 !important; 
-    width: max-content;
+  }
+
+  /* افتراضي لكل خلية عادية: تحتوي محتواها بأصغر عرض ممكن بدون التفاف،
+     إلا لو حُدّدت صراحة كـ long-text-cell / text-cell */
+  th, td {
+    white-space: nowrap;
+    width: 1%;
   }
 
   /* منع التفاف النصوص نهائياً في الخلايا الرقمية والتواريخ والأكواد */
@@ -91,7 +99,7 @@ const baseCss = (
     color: #000 !important; 
     font-weight: 900 !important; 
     direction: ltr; 
-    width: 1%; /* إجبار الخلية على أخذ أصغر مساحة تتسع لمحتواها بدون التفاف */
+    width: 1% !important; /* إجبار الخلية على أخذ أصغر مساحة تتسع لمحتواها بدون التفاف */
   }
 
   .num .pdf-cell-text,
@@ -104,13 +112,18 @@ const baseCss = (
     overflow-wrap: normal !important;
   }
 
-  /* السماح بالالتفاف فقط في النصوص والأسماء الطويلة */
+  /* السماح بالالتفاف فقط في النصوص والأسماء الطويلة (عكس كل الخلايا الأخرى) */
   .long-text-cell,
   .text-cell {
-    white-space: nowrap !important;
+    white-space: normal !important;
     overflow-wrap: break-word !important;
     word-break: normal !important;
-    width: auto;
+    width: auto !important;
+  }
+  .long-text-cell .pdf-cell-text,
+  .text-cell .pdf-cell-text {
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
   }
 
   th { font-weight: 800; white-space: nowrap; }
@@ -156,6 +169,10 @@ const baseCss = (
       white-space: nowrap !important;
       word-break: keep-all !important;
       overflow-wrap: normal !important;
+    }
+    .long-text-cell, .text-cell {
+      white-space: normal !important;
+      overflow-wrap: break-word !important;
     }
   }
 `;
