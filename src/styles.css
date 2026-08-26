@@ -2,6 +2,12 @@
 @source "../src";
 @import "tw-animate-css";
 
+/* تحديد مقاس وإتجاه الصفحة ليكون A4 أفقي (Landscape) عند المعاينة والطباعة */
+@page {
+  size: A4 landscape;
+  margin: 8mm;
+}
+
 @font-face {
   font-family: "Cairo";
   src: url("/Cairo-Regular.ttf") format("truetype");
@@ -98,6 +104,18 @@
   }
   h1, h2, h3, h4 { font-family: 'Cairo', 'Tajawal', sans-serif; font-weight: 800; letter-spacing: -0.01em; }
 
+  /* حاوية التقرير التي تشبه صفحة A4 أفقية داخل المتصفح */
+  .a4-landscape-page {
+    width: 297mm;
+    max-width: 100%;
+    min-height: 210mm;
+    margin: 15px auto;
+    padding: 10mm;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+  }
+
   .ledger-seam {
     background-image: repeating-linear-gradient(
       to bottom, oklch(0.68 0.13 75 / 0.55) 0 6px, transparent 6px 12px
@@ -107,10 +125,10 @@
 
   /*
     تنسيق الجداول الشامل:
-    تم إلغاء التفاف النصوص والأرقام نهائياً واعتماد الاحتواء التلقائي الممتاز لجميع الخلايا.
+    تنسيق مرن يتكيف مع حجم A4 الأفقي ويسمح باحتواء النصف التلقائي للنصوص.
   */
   table {
-    width: 100%;
+    width: 100% !important;
     border-collapse: collapse;
     table-layout: auto !important;
     font-feature-settings: "tnum" 1, "lnum" 1;
@@ -119,27 +137,24 @@
     font-weight: 1000;
   }
 
-  /* منع التفاف النص في كل الخلايا بدون استثناء وتكييف العرض حسب المحتوى */
+  /* احتواء تلقائي للنصوص والكلمات لجميع الخلايا مع السماح بالالتفاف المرن */
   table th, 
   table td {
     text-align: center;
     vertical-align: middle;
-    white-space: nowrap !important;
-    width: max-content !important;
-    overflow: visible !important;
-    overflow-wrap: normal !important;
-    word-break: keep-all !important;
-    padding: 4px 6px !important;
+    white-space: normal; /* السماح بالتفاف النصوص الطويلة تلقائياً */
+    overflow-wrap: break-word !important; /* كسر الكلمات الطويلة عند الحاجة لمنع التمدد الزائد */
+    word-break: normal !important;
+    padding: 5px 6px !important;
     line-height: 1.3;
-    font-size: clamp(14px, 1.05vw, 14px);
+    font-size: clamp(12px, 1vw, 14px);
     border: 1px solid #000 !important;
   }
 
-  /* إجبار العناصر الداخلية على الالتزام بنفس السطر */
+  /* إجبار العناصر الداخلية على الالتزام بعرض الخلية */
   table th *,
   table td * {
-    white-space: nowrap !important;
-    word-break: keep-all !important;
+    overflow-wrap: break-word !important;
   }
 
   /* حدود خلايا جداول الأقساط */
@@ -171,17 +186,23 @@
   .safe-pad-bottom { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
   .safe-pad-top { padding-top: max(0.5rem, env(safe-area-inset-top)); }
   
+  .a4-landscape-page {
+    width: 100%;
+    padding: 5px;
+    margin: 0;
+  }
+
   table { 
     font-size: 12px; 
   }
   table th, table td {
     padding: 3px 4px !important;
-    font-size: clamp(14px, 2.8vw, 14px);
+    font-size: clamp(11px, 2.8vw, 13px);
   }
   table input { font-size: 14px; padding: 3px 4px; }
 }
 
-/* تنسيق أعمدة الأرقام والتواريخ والرموز المنفصلة */
+/* تنسيق أعمدة الأرقام والتواريخ والرموز المنفصلة (يمنع التفاف الأرقام والتواريخ للحفاظ على شكلها) */
 table td.numeric-cell,
 table th.numeric-cell,
 table td.date-cell,
@@ -193,16 +214,15 @@ table th.font-mono,
 table .tabular-nums,
 table input[type="number"] {
   font-family: 'Times New Roman', Times, serif !important;
-  font-size: clamp(14px, 1.9vw, 14px) !important;
+  font-size: clamp(13px, 1.2vw, 14px) !important;
   line-height: 1.15 !important;
   color: #000 !important;
   font-weight: 900 !important;
-  white-space: nowrap !important;
+  white-space: nowrap !important; /* حماية الأرقام والتواريخ من الانقسام */
   overflow: visible !important;
   overflow-wrap: normal !important;
   word-break: keep-all !important;
   hyphens: none !important;
-  width: max-content !important;
 }
 
 table td.numeric-cell :where(span, div, input, button),
@@ -232,7 +252,7 @@ table th.font-mono :where(span, div, input, button) {
   table th.font-mono,
   table .tabular-nums,
   table input[type="number"] {
-    font-size: clamp(14px, 2.35vw, 14px) !important;
+    font-size: clamp(11px, 2.35vw, 13px) !important;
   }
 }
 
@@ -257,22 +277,42 @@ table td > * {
   max-width: 100%;
 }
 
-/* تنسيقات الطباعة وتصدير الـ PDF */
+/* تنسيقات الطباعة وتصدير الـ PDF لصفحات A4 الأفقية */
 @media print {
+  @page {
+    size: A4 landscape;
+    margin: 5mm;
+  }
+
+  body { 
+    background: white !important; 
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .a4-landscape-page {
+    width: 100% !important;
+    min-height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+
   table {
     table-layout: auto !important;
     width: 100% !important;
+    page-break-inside: auto;
   }
+
+  tr {
+    page-break-inside: avoid; /* منع انقسام الصف عبر أكثر من صفحة عند الطباعة */
+  }
+
   table th, table td {
-    white-space: nowrap !important;
-    overflow: visible !important;
-    overflow-wrap: normal !important;
-    word-break: keep-all !important;
-    padding: 3px 5px !important;
-    line-height: 1.3;
-    font-size: clamp(14px, 1.05vw, 14px) !important;
-    width: max-content !important;
+    padding: 3px 4px !important;
+    line-height: 1.2;
+    font-size: 12px !important;
   }
+
   .no-print { display: none !important; }
-  body { background: white; }
 }
