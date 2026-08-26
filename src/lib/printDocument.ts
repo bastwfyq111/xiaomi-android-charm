@@ -55,7 +55,7 @@ const baseCss = (
 
   /* جداول: احتواء تلقائي للأعمدة وتعديل المرونة بحسب المحتوى */
   table { 
-    width: 100%; 
+    width: auto; 
     max-width: 100%; 
     border-collapse: collapse; 
     table-layout: auto !important; 

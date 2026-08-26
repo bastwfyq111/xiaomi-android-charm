@@ -973,7 +973,7 @@ const exportToPDF = async (
       table {
         font-size: ${fontSizePx.toFixed(2)}px;
         table-layout: auto !important;
-        width: auto !important;
+      width: auto!important;
         min-width: 100% !important;
         border-collapse: collapse;
         border: 0.75pt solid #000;
@@ -997,7 +997,7 @@ const exportToPDF = async (
       }
       .cell-content {
         display: block;
-        width: 100%;
+        width: auto;
         max-width: 100%;
         box-sizing: border-box;
         padding: 2px 4px;
@@ -1028,7 +1028,7 @@ const exportToPDF = async (
       }
       td.numeric-cell, th.numeric-cell, td.date-cell, th.date-cell, td.compact-cell, th.compact-cell {
         font-family: 'Times New Roman', Times, serif !important;
-        font-size: clamp(7px, 0.95vw, 11px) !important;
+        font-size: clamp(7px, 0.95vw, 14px) !important;
         line-height: 1.05 !important;
         white-space: nowrap !important;
         overflow-wrap: normal !important;
