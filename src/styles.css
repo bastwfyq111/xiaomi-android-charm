@@ -37,44 +37,44 @@
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
 }
-
 :root {
   --radius: 0.7rem;
 
-  /* 🌐 الخلفية العامة — ورق دفتري دافئ */
-  --background: oklch(0.97 0.008 85);
-  --foreground: oklch(0.16 0.02 240);
+  /* 馃寪 丕賱禺賱賮賷丞 丕賱毓丕賲丞 鈥� 賵乇賯 丿賮鬲乇賷 丿丕賮卅 亘丿賱 丕賱兀亘賷囟 丕賱賯丕乇爻 */
+  --background: oklch(0.97 0.008 85);        /* 亘賷噩 賵乇賯賷 賮丕鬲丨 噩丿丕賸貙 兀賯乇亘 賱氐賮丨丞 爻噩賱 丨賯賷賯賷 */
+  --foreground: oklch(0.16 0.02 240);        /* 丨亘乇 丿丕賰賳 賲丕卅賱 賱賱兀夭乇賯 丕賱賱賷賱賷 */
 
-  /* 📦 البطاقات والحاويات */
-  --card: oklch(0.995 0.002 85);
+  /* 馃摝 丕賱亘胤丕賯丕鬲 賵丕賱丨丕賵賷丕鬲 */
+  --card: oklch(0.995 0.002 85);             /* 兀亘賷囟 丿丕賮卅 禺賮賷賮貙 賱賷爻 兀亘賷囟 賯丕乇爻 */
   --card-foreground: oklch(0.16 0.02 240);
 
-  /* ⚓ اللون الأساسي — أزرق دفتري مؤسسي عميق */
-  --primary: oklch(0.34 0.09 240);
+  /* 鈿� 丕賱賱賵賳 丕賱兀爻丕爻賷 鈥� 兀夭乇賯 丿賮鬲乇賷 賲丐爻爻賷 毓賲賷賯 (亘丿賱 丕賱兀夭乇賯 丕賱賰賴乇亘丕卅賷 丕賱賱丕賲毓) */
+  --primary: oklch(0.34 0.09 240);           /* 賰丨賱賷 賲丐爻爻賷 賴丕丿卅貙 賱賵賳 丕賱兀禺鬲丕賲 丕賱乇爻賲賷丞 */
   --primary-foreground: oklch(0.98 0.01 85);
 
-  /* 🟤 الثانوي */
+  /* 馃煠 丕賱孬丕賳賵賷 鈥� 賳賮爻 毓丕卅賱丞 丕賱賰丨賱賷 亘丿乇噩丞 賮丕鬲丨丞 */
   --secondary: oklch(0.93 0.015 230);
   --secondary-foreground: oklch(0.30 0.07 240);
 
-  --muted: oklch(0.94 0.012 85);
+  --muted: oklch(0.94 0.012 85);             /* 亘賷噩 賮丕鬲丨 噩丿丕賸 賱氐賮賵賮 丕賱噩丿賵賱 丕賱賲鬲賳丕賵亘丞 */
   --muted-foreground: oklch(0.42 0.03 235);
 
-  /* ✨ التمييز — نحاسي/ذهبي دافئ */
-  --accent: oklch(0.68 0.13 75);
+  /* 鉁� 丕賱鬲賲賷賷夭 鈥� 賳丨丕爻賷/匕賴亘賷 丿丕賮卅 (賱賵賳 丕賱禺鬲賲 賵丕賱鬲賵賯賷毓 丕賱乇爻賲賷) */
+  --accent: oklch(0.68 0.13 75);             /* 亘乇賵賳夭賷 匕賴亘賷 賴丕丿卅 */
   --accent-foreground: oklch(0.20 0.03 80);
 
-  /* ⚠️ الحالات الخاصة */
+  /* 鈿狅笍 丕賱丨丕賱丕鬲 丕賱禺丕氐丞 */
   --destructive: oklch(0.52 0.19 25);
   --destructive-foreground: oklch(0.98 0 0);
-  --success: oklch(0.50 0.11 155);
+  --success: oklch(0.50 0.11 155);           /* 兀禺囟乇 賲胤賮兀 賲鬲賳丕爻賯 賲毓 丕賱賴賵賷丞 亘丿賱 丕賱兀禺囟乇 丕賱氐丕乇禺 */
   --success-foreground: oklch(0.98 0 0);
 
-  /* 🖌️ الحدود */
+  /* 馃枌锔� 丕賱丨丿賵丿 */
   --border: oklch(0.30 0.02 240 / 0.14);
   --input: oklch(0.20 0.02 240 / 0.20);
   --ring: oklch(0.34 0.09 240 / 0.35);
 }
+ 
 
 @layer base {
   * { border-color: var(--color-border); }
@@ -98,6 +98,7 @@
   }
   h1, h2, h3, h4 { font-family: 'Cairo', 'Tajawal', sans-serif; font-weight: 800; letter-spacing: -0.01em; }
 
+  /* 馃枊锔� 禺胤 賮丕氐賱 丿賯賷賯 賲鬲賯胤毓 鈥� 廿卮丕乇丞 "丿賮鬲乇 丕賱兀爻鬲丕匕" 丕賱賲購噩賱賾丿貙 鬲購爻鬲禺丿賲 亘丨匕乇 賰毓賳氐乇 鬲賵賯賷毓 */
   .ledger-seam {
     background-image: repeating-linear-gradient(
       to bottom, oklch(0.68 0.13 75 / 0.55) 0 6px, transparent 6px 12px
@@ -105,43 +106,33 @@
     width: 2px;
   }
   
-  /* 📊 تنسيق الجداول: 100% لعرض الحاوية مع احتواء تلقائي للأعمدة */
+  /* 鬲賳爻賷賯 丕賱噩丿丕賵賱: 丕丨鬲賵丕亍 丕賱賳氐 賲毓 丕賱爻賲丕丨 亘丨丿 兀賯氐賶 爻胤乇賷賳 丿丕禺賱 丕賱禺賱賷丞 */
   table {
-    width: 100% !important;
-    border-collapse: collapse !important;
-    table-layout: auto !important;
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
     font-feature-settings: "tnum" 1, "lnum" 1;
   }
   th { 
     font-weight: 700; 
   }
-  
-  /* تنسيق عام للخلايا النصية */
   table th, table td {
     text-align: center;
     vertical-align: middle;
-    padding: 2px 4px !important;
-    line-height: 1.2;
-    font-size: clamp(8px, 1.05vw, 13px);
+    white-space: normal !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
+    padding: 0 !important;
+    line-height: 1.1;
+    max-height: 2.2em;
+    font-size: clamp(7px, 1.05vw, 13px);
     border: 1px solid #000 !important;
-    color: #000 !important;
-    font-weight: 700 !important;
-    white-space: nowrap;
-    overflow-wrap: break-word;
-    word-break: normal;
   }
 
-  /* 📌 تثبيت عمود الترقيم والتسلسل الأول (#) لمنع التمدد نهائياً */
-  table th.col-index,
-  table td.col-index,
-  table th:first-child,
-  table td:first-child {
-    width: 1% !important;
-    white-space: nowrap !important;
-    padding-left: 6px !important;
-    padding-right: 6px !important;
-  }
-
+  /* 丨丿賵丿 禺賱丕賷丕 噩丿丕賵賱 丕賱兀賯爻丕胤 亘丕賱兀爻賵丿 賮賯胤 */
   .installments-table th,
   .installments-table td {
     border: 1px solid #000 !important;
@@ -150,75 +141,101 @@
   .font-mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 600; }
   button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
   
+  /* Prevent iOS / MIUI auto-zoom on focus by enforcing 16px minimum */
   input, select, textarea {
     font-size: 16px;
   }
+  /* Smooth touch scrolling for horizontally-scrolling tables */
   .overflow-x-auto { -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
 }
 
-/* 📱 إعدادات الجوال */
+/* Mobile-only tweaks (Xiaomi / small Android phones) */
 @media (max-width: 640px) {
   body {
+    /* Lighter background on small screens for performance */
     background:
       radial-gradient(600px 300px at 100% -10%, oklch(0.93 0.05 250 / 0.4), transparent 60%),
       var(--color-background);
   }
+  /* Respect notch / status bar / gesture nav on Xiaomi */
   .safe-pad-x { padding-left: max(0.75rem, env(safe-area-inset-left)); padding-right: max(0.75rem, env(safe-area-inset-right)); }
   .safe-pad-bottom { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
   .safe-pad-top { padding-top: max(0.5rem, env(safe-area-inset-top)); }
   
-  table th, table td {
-    padding: 1px 2px !important;
-    font-size: clamp(7px, 2.7vw, 12px);
+  /* 鬲賯賱賷氐 丨噩賲 丕賱禺胤 賵丕賱丨卮賵丞 賮賷 丕賱噩賵丕賱 賲毓 丕賱爻賲丕丨 亘爻胤乇賷賳 賱賱賳氐賵氐 丕賱胤賵賷賱丞 */
+  table { 
+    font-size: 12px; 
   }
-  table input { font-size: 14px; padding: 2px 3px; }
+  table th, table td {
+    padding: 0 !important;
+    font-size: clamp(7px, 2.8vw, 12px);
+  }
+  /* Ensure inputs inside table filter rows don't trigger zoom but stay compact visually */
+  table input { font-size: 14px; padding: 3px 4px; }
 }
 
-/* 🎨 توحيد عناصر الخلايا إلى اللون الأسود الغامق */
-table th :where(span, div, p, label, strong, b, small, a),
-table td :where(span, div, p, label, strong, b, small, a),
-table th input, table th select, table th textarea,
-table td input, table td select, table td textarea,
-table th button, table td button {
+/* ==== 丕丨鬲賵丕亍 丕賱賳氐賵氐 丿丕禺賱 禺賱丕賷丕 噩丿丕賵賱 丕賱鬲亘賵賷亘丕鬲 亘丨丿 兀賯氐賶 爻胤乇賷賳 ==== */
+table th,
+  table td {
+  white-space: normal !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+  vertical-align: middle;
+  padding: 0 !important;
+  line-height: 1.1;
+  max-height: 2.2em;
+  font-size: clamp(7px, 1.05vw, 13px);
   color: #000 !important;
   font-weight: 700 !important;
 }
 
-/* 🔢 خلايا الأرقام والمبالغ والتواريخ: منع التفاف وانكماش تلقائي بحجم الرقم */
-table td.numeric-cell,
-table th.numeric-cell,
-table td.date-cell,
-table th.date-cell,
-table td.compact-cell,
-table th.compact-cell,
-table td.font-mono,
-table th.font-mono,
+/* 鬲賵丨賷丿 賳氐賵氐 禺賱丕賷丕 噩賲賷毓 噩丿丕賵賱 丕賱鬲亘賵賷亘丕鬲 廿賱賶 丕賱兀爻賵丿 丕賱睾丕賲賯 */
+table th :where(span, div, p, label, strong, b, small, a),
+table td :where(span, div, p, label, strong, b, small, a),
+table th input,
+table th select,
+table th textarea,
+table td input,
+table td select,
+table td textarea,
+table th button,
+table td button {
+  color: #000 !important;
+  font-weight: 700 !important;
+}
+
+/* 兀毓賲丿丞 丕賱賲亘丕賱睾 賵丕賱兀乇賯丕賲 賵丕賱鬲賵丕乇賷禺: 禺胤 氐睾賷乇 賲鬲賳丕爻亘 賲毓 丕賱禺賱賷丞 賵賲賳毓 丕賱丕賱鬲賮丕賮 */
+  table td.numeric-cell,
+  table th.numeric-cell,
+  table td.date-cell,
+  table th.date-cell,
+  table td.compact-cell,
+  table th.compact-cell,
+  table td.font-mono,
+  table th.font-mono,
 table .tabular-nums,
-table .num,
-table .amount,
-table .currency,
 table input[type="number"] {
   font-family: 'Times New Roman', Times, serif !important;
-  font-size: clamp(14px, 1.9vw, 13px) !important;
+  font-size: clamp(9px, 1.9vw, 12px) !important;
   line-height: 1.15 !important;
   color: #000 !important;
   font-weight: 900 !important;
-  direction: ltr !important;
-  unicode-bidi: embed !important;
   white-space: nowrap !important;
   overflow-wrap: normal !important;
   word-break: keep-all !important;
   hyphens: none !important;
-  width: 1% !important;
 }
 
 table td.numeric-cell :where(span, div, input, button),
-table th.numeric-cell :where(span, div, input, button),
-table td.date-cell :where(span, div, input, button),
-table th.date-cell :where(span, div, input, button),
-table td.compact-cell :where(span, div, input, button),
-table th.compact-cell :where(span, div, input, button),
-table td.font-mono :where(span, div, input, button),
+ table th.numeric-cell :where(span, div, input, button),
+ table td.date-cell :where(span, div, input, button),
+ table th.date-cell :where(span, div, input, button),
+ table td.compact-cell :where(span, div, input, button),
+ table th.compact-cell :where(span, div, input, button),
+ table td.font-mono :where(span, div, input, button),
 table th.font-mono :where(span, div, input, button) {
   font-family: inherit !important;
   font-size: inherit !important;
@@ -230,66 +247,41 @@ table th.font-mono :where(span, div, input, button) {
 
 @media (max-width: 640px) {
   table td.numeric-cell,
-  table th.numeric-cell,
-  table td.date-cell,
-  table th.date-cell,
-  table td.compact-cell,
-  table th.compact-cell,
-  table td.font-mono,
-  table th.font-mono,
-  table .tabular-nums,
-  table .num,
-  table .amount,
+ table th.numeric-cell,
+ table td.date-cell,
+ table th.date-cell,
+ table td.compact-cell,
+ table th.compact-cell,
+ table td.font-mono,
+ table th.font-mono,
+ table .tabular-nums,
   table input[type="number"] {
-    font-size: clamp(8px, 2.35vw, 14px) !important;
+    font-size: clamp(8px, 2.35vw, 11px) !important;
   }
 }
 
+/* 丕賱丨賯賵賱 賵丕賱賲丨鬲賵賶 丿丕禺賱 丕賱禺賱丕賷丕 賱丕 鬲鬲噩丕賵夭 毓乇囟 丕賱禺賱賷丞 */
 table th > *,
 table td > * {
   max-width: 100%;
 }
 
-/* 🖨️ قواعد الطباعة والـ PDF */
 @media print {
-  .no-print { display: none !important; }
-  
-  html, body {
-    background: white !important;
-    color: #000000 !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  table {
-    table-layout: auto !important;
-    width: 100% !important;
-  }
-
   table th,
   table td {
-    padding: 2px 3px !important;
-    font-size: clamp(14px, 1.05vw, 14px) !important;
-    border: 1px solid #000000 !important;
-    color: #000000 !important;
+    white-space: normal !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    padding: 0 !important;
+    line-height: 1.1;
+    max-height: 2.2em;
+    font-size: clamp(7px, 1.05vw, 12px);
   }
+}
 
-  table th.col-index,
-  table td.col-index,
-  table th:first-child,
-  table td:first-child,
-  table td.numeric-cell,
-  table th.numeric-cell,
-  table td.date-cell,
-  table th.date-cell,
-  table td.compact-cell,
-  table th.compact-cell,
-  table .num,
-  table .amount,
-  table .currency {
-    white-space: nowrap !important;
-    word-break: keep-all !important;
-    direction: ltr !important;
-    width: 1% !important;
-  }
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; }
 }
