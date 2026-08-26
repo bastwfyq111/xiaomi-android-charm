@@ -972,7 +972,7 @@ const exportToPDF = async (
 
       table {
         font-size: ${fontSizePx.toFixed(2)}px;
-        table-layout: fixed !important;
+        table-layout: auto!important;
         width: 100% !important;
         min-width: 100% !important;
         border-collapse: collapse;
@@ -1621,7 +1621,7 @@ const exportToPDF = async (
       .info-lbl { font-size: 9.5pt; line-height: 1.2; font-weight: 700; color: #475569; text-align: center; }
       .info-val { font-size: 11pt; line-height: 1.25; font-weight: 800; margin-top: 1mm; overflow-wrap: anywhere; }
       table {
-        table-layout: fixed;
+        table-layout: auto;
         width: 100%;
         min-width: 100%;
         border-collapse: collapse;
@@ -2054,18 +2054,18 @@ const exportToPDF = async (
       </div>
 
       {/* ========== واجهة جدول 2026 ========== */}
-      <div className="w-full bg-gradient-to-b from-teal-50/60 to-white shadow-lg border border-teal-100 rounded-2xl overflow-hidden">
+     <div className="w-full bg-gradient-to-b from-teal-50/60 to-white shadow-lg border border-teal-100 rounded-2xl overflow-hidden">
         <div className="bg-gradient-to-l from-teal-800 via-teal-600 to-emerald-600 px-2 sm:px-6 py-2.5 sm:py-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center flex-wrap gap-2">
           <div className="min-w-0">
-            <h2 className="text-base sm:text-lg font-bold text-white">
+            <h2 className="text-lg sm:text-xl font-extrabold text-white">
               📊 سجل أقساط العام الحالي 2026
             </h2>
-            <p className="text-xs text-teal-100">بيانات المسدد والرصيد المدور لعام 2026</p>
+            <p className="text-sm font-bold text-white">بيانات المسدد والرصيد المدور لعام 2026</p>
           </div>
           <div className="w-full sm:w-auto grid grid-cols-2 sm:flex gap-1.5 sm:gap-2 items-center">
             <button
               onClick={() => setCondFormatModal(true)}
-              className={`w-full px-1.5 sm:px-2 py-1 sm:py-1 rounded-lg text-xs sm:text-xs font-bold shadow transition-colors flex items-center justify-center gap-1 ${
+              className={`w-full px-1.5 sm:px-2 py-1.5 rounded-lg text-sm font-extrabold shadow transition-colors flex items-center justify-center gap-1 ${
                 condFormatRules.length
                   ? "bg-yellow-400 text-yellow-900 animate-pulse"
                   : "bg-white/20 text-white hover:bg-white/30"
@@ -2077,15 +2077,19 @@ const exportToPDF = async (
             </button>
 
             <div className="relative">
-              <Search className="w-4 h-4 absolute right-2.5 top-2 text-teal-500" />
+              <Search className="w-4 h-4 absolute right-2.5 top-2.5 text-teal-500" />
               <input
                 type="text"
                 placeholder="بحث (الاسم، الدفعة، المساق)..."
                 value={search2026}
                 onChange={(e) => setSearch2026(e.target.value)}
-                className="pl-3 pr-8 py-2 rounded-lg text-sm border border-teal-300 outline-none focus:ring-2 focus:ring-teal-300 w-full sm:w-48 text-slate-800 shadow-sm"
+                className="pl-3 pr-8 py-2 rounded-lg text-base font-extrabold border border-teal-300 outline-none focus:ring-2 focus:ring-teal-300 w-full sm:w-48 text-black shadow-sm"
               />
             </div>
+      
+
+     
+    
 
             <button
               onClick={() => setNewRowModal2026(true)}
@@ -2184,80 +2188,85 @@ const exportToPDF = async (
             </div>
           </div>
         </div>
+<div className="p-1 sm:p-3">
+  <StatsGrid stats={stats2026} columns={3} />
+  <div className="overflow-auto max-h-[72vh] rounded-lg border border-slate-200 shadow-sm relative">
+    {/* تم إضافة خط أسود غامق، تكبير الخط، ومنع التفاف النص للجدول بالكامل */}
+    <table className="installments-table min-w-max table-auto text-base sm:text-lg font-bold text-black whitespace-nowrap">
+      {/* ترويسة الجدول بخط أبيض غامق جداً مع الحفاظ على لون الخلفية */}
+      <thead className="bg-gradient-to-b from-teal-700 to-teal-800 font-extrabold border-b-2 border-emerald-900 text-white [&>tr>th]:!text-white sticky top-0 z-20 shadow-md">
+        <tr>
+          <th className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg">#</th>
+          <th
+            className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
+            onClick={() => handleSort2026("name")}
+          >
+            <div className="flex items-center justify-center gap-1">
+              اسم المتدرب <SortIcon sortConfig={sortConfig2026} columnKey="name" />
+            </div>
+          </th>
+          <th
+            className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
+            onClick={() => handleSort2026("batch")}
+          >
+            <div className="flex items-center justify-center gap-1">
+              دفعة <SortIcon sortConfig={sortConfig2026} columnKey="batch" />
+            </div>
+          </th>
+          <th
+            className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
+            onClick={() => handleSort2026("specialty")}
+          >
+            <div className="flex items-center justify-center gap-1">
+              المساق <SortIcon sortConfig={sortConfig2026} columnKey="specialty" />
+            </div>
+          </th>
+          <th
+            className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors border-x border-white/25 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
+            onClick={() => handleSort2026("prevDue")}
+          >
+            <div className="flex items-center justify-center gap-1">
+              المتبقي من 2025 <SortIcon sortConfig={sortConfig2026} columnKey="prevDue" />
+            </div>
+          </th>
+          <th
+            className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
+            onClick={() => handleSort2026("fees")}
+          >
+            <div className="flex items-center justify-center gap-1">
+              الرسوم <SortIcon sortConfig={sortConfig2026} columnKey="fees" />
+            </div>
+          </th>
+          {MONTHS_2026.map((m) => (
+            <th
+              key={m}
+              className="text-center border-l border-white/25 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
+            >
+              {m.trim()}
+            </th>
+          ))}
+          {extraCols2026.map((col) => (
+            <th
+              key={col.name}
+              className="text-center border-l border-white/25 whitespace-nowrap !text-white !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
+            >
+              <div className="flex items-center justify-center gap-1">
+                {col.name}
+                <button
+                  onClick={() =>
+                    setEditColModal({
+                      oldName: col.name,
+                      name: col.name,
+                      type: col.type,
+                      options: col.options?.join(",") || "",
+                      formula: col.formula || "",
+                    })
+                  }
 
-        <div className="p-1 sm:p-3">
-          <StatsGrid stats={stats2026} columns={3} />
-          <div className="overflow-auto max-h-[72vh] rounded-lg border border-slate-200 shadow-sm relative">
-            <table className="installments-table min-w-max table-auto text-sm sm:text-base font-semibold">
-              <thead className="bg-gradient-to-b from-teal-700 to-teal-800 font-bold border-b-2 border-emerald-900 text-white [&>tr>th]:!text-white sticky top-0 z-20 shadow-md">
-                <tr>
-                  <th className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">#</th>
-                  <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
-                    onClick={() => handleSort2026("name")}
-                  >
-                    <div className="flex items-center justify-center gap-1">
-                      اسم المتدرب <SortIcon sortConfig={sortConfig2026} columnKey="name" />
-                    </div>
-                  </th>
-                  <th
-                    className="text-center cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"
-                    onClick={() => handleSort2026("batch")}
-                  >
-                    <div className="flex items-center justify-center gap-1">
-                      دفعة <SortIcon sortConfig={sortConfig2026} columnKey="batch" />
-                    </div>
-                  </th>
-                  <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
-                    onClick={() => handleSort2026("specialty")}
-                  >
-                    <div className="flex items-center justify-center gap-1">
-                      المساق <SortIcon sortConfig={sortConfig2026} columnKey="specialty" />
-                    </div>
-                  </th>
-                  <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors border-x border-white/25 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
-                    onClick={() => handleSort2026("prevDue")}
-                  >
-                    <div className="flex items-center justify-center gap-1">
-                      المتبقي من 2025 <SortIcon sortConfig={sortConfig2026} columnKey="prevDue" />
-                    </div>
-                  </th>
-                  <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
-                    onClick={() => handleSort2026("fees")}
-                  >
-                    <div className="flex items-center justify-center gap-1">
-                      الرسوم <SortIcon sortConfig={sortConfig2026} columnKey="fees" />
-                    </div>
-                  </th>
-                  {MONTHS_2026.map((m) => (
-                    <th
-                      key={m}
-                      className="text-center border-l border-white/25 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
-                    >
-                      {m.trim()}
-                    </th>
-                  ))}
-                  {extraCols2026.map((col) => (
-                    <th
-                      key={col.name}
-                      className="text-center border-l border-white/25 !whitespace-nowrap text-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
-                    >
-                      <div className="flex items-center justify-center gap-1">
-                        {col.name}
-                        <button
-                          onClick={() =>
-                            setEditColModal({
-                              oldName: col.name,
-                              name: col.name,
-                              type: col.type,
-                              options: col.options?.join(",") || "",
-                              formula: col.formula || "",
-                            })
-                          }
-                          className="p-0.5 bg-black/10 hover:bg-black/20 rounded transition-all"
+
+
+
+        className="p-0.5 bg-black/10 hover:bg-black/20 rounded transition-all"
                           title="تعديل أو حذف العمود"
                         >
                           <Settings className="w-3 h-3" />
