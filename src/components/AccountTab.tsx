@@ -102,7 +102,7 @@ const PRINT_STYLES = `
     border-collapse: collapse !important;
     width: 100% !important;
     min-width: 100% !important;
-    table-layout: fixed !important;
+    table-layout: auto !important;
   }
   .accounts-print-area thead th {
     color: #171412 !important;

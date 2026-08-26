@@ -87,7 +87,7 @@ ${reportLetterheadStyles}
       width: 100%;
       border-collapse: collapse; 
       font-size: ${fontSize}px; 
-      table-layout: fixed;
+      table-layout: auto;
       margin-top: 6px;
     }
     th, td { 

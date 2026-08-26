@@ -56,7 +56,7 @@
     width: 100% !important;
     min-width: 100% !important;
     border-collapse: collapse !important;
-    table-layout: fixed;
+    table-layout: auto;
     margin-top: 6px !important;
     margin-bottom: 6px !important;
     page-break-inside: auto;

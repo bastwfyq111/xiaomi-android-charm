@@ -116,7 +116,7 @@
   table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;
+    table-layout: auto;
     font-feature-settings: "tnum" 1, "lnum" 1;
   }
   th { 
