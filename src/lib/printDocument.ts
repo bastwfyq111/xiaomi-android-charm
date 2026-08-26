@@ -53,11 +53,9 @@ const baseCss = (
   }
   h1, h2, h3 { font-weight: 700; margin: 0; }
 
-  /* جداول: احتواء تلقائي حقيقي للأعمدة بحسب محتواها.
-     table-layout: auto إلزامي هنا — fixed كان بيمنع الأعمدة من أخذ
-     عرضها الفعلي ويوزّع المساحة بالتساوي متجاهلاً المحتوى. */
+  /* جداول: احتواء تلقائي حقيقي للأعمدة بحسب محتواها وبدون أي التفاف للنصوص أو الأرقام. */
   table { 
-    width: auto; 
+    width: 100%; 
     max-width: 100%; 
     border-collapse: collapse; 
     table-layout: auto !important; 
@@ -67,6 +65,7 @@ const baseCss = (
   tfoot { display: table-footer-group; }
   tr { break-inside: avoid; page-break-inside: avoid; page-break-after: auto; }
   
+  /* احتواء تلقائي لكل خلية بحسب محتواها تماماً ومنع التفاف النصوص نهائياً */
   th, td { 
     border: 0.5pt solid #000; 
     text-align: center !important; 
@@ -76,16 +75,13 @@ const baseCss = (
     font-size: clamp(8px, 1.05vw, 12px); 
     color: #000 !important; 
     font-weight: 700 !important; 
+    white-space: nowrap !important;
+    width: max-content !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
   }
 
-  /* افتراضي لكل خلية عادية: تحتوي محتواها بأصغر عرض ممكن بدون التفاف،
-     إلا لو حُدّدت صراحة كـ long-text-cell / text-cell */
-  th, td {
-    white-space: nowrap;
-    width: 1%;
-  }
-
-  /* منع التفاف النصوص نهائياً في الخلايا الرقمية والتواريخ والأكواد */
+  /* منع التفاف النصوص نهائياً في الخلايا الرقمية والتواريخ والأكواد وترسيخ خط الأرقام الرسمية */
   .num,
   .numeric-cell,
   .date-cell,
@@ -99,7 +95,7 @@ const baseCss = (
     color: #000 !important; 
     font-weight: 900 !important; 
     direction: ltr; 
-    width: 1% !important; /* إجبار الخلية على أخذ أصغر مساحة تتسع لمحتواها بدون التفاف */
+    width: max-content !important;
   }
 
   .num .pdf-cell-text,
@@ -112,21 +108,22 @@ const baseCss = (
     overflow-wrap: normal !important;
   }
 
-  /* السماح بالالتفاف فقط في النصوص والأسماء الطويلة (عكس كل الخلايا الأخرى) */
+  /* إجبار خلايا النصوص الطويلة أيضاً على الامتداد دون التفاف */
   .long-text-cell,
   .text-cell {
-    white-space: normal !important;
-    overflow-wrap: break-word !important;
-    word-break: normal !important;
-    width: auto !important;
+    white-space: nowrap !important;
+    overflow-wrap: normal !important;
+    word-break: keep-all !important;
+    width: max-content !important;
   }
   .long-text-cell .pdf-cell-text,
   .text-cell .pdf-cell-text {
-    white-space: normal !important;
-    overflow-wrap: break-word !important;
+    white-space: nowrap !important;
+    overflow-wrap: normal !important;
+    word-break: keep-all !important;
   }
 
-  th { font-weight: 800; white-space: nowrap; }
+  th { font-weight: 800; white-space: nowrap !important; }
   img { max-width: 100%; height: auto; display: block; }
 
   /* ترويسة التقرير داخل thead تتكرر مع رؤوس الأعمدة في كل صفحة */
@@ -152,7 +149,7 @@ const baseCss = (
   /* إخفاء عناصر غير مطبوعة صراحة */
   .no-print { display: none !important; }
 
-  /* تحسينات خاصة بالـ print */
+  /* تحسينات خاصة بالـ print / PDF */
   @media print {
     html, body { width: 100%; }
     body { margin: 0; padding: 0; font-size: 10px; line-height: 1.3; }
@@ -164,15 +161,22 @@ const baseCss = (
       font-size: clamp(8px, 1.0vw, 11px); 
       color: #000 !important; 
       font-weight: 700 !important; 
+      white-space: nowrap !important;
+      word-break: keep-all !important;
+      overflow-wrap: normal !important;
+      width: max-content !important;
     }
     .num, .numeric-cell, .date-cell, .compact-cell, .idx {
       white-space: nowrap !important;
       word-break: keep-all !important;
       overflow-wrap: normal !important;
+      width: max-content !important;
     }
     .long-text-cell, .text-cell {
-      white-space: normal !important;
-      overflow-wrap: break-word !important;
+      white-space: nowrap !important;
+      overflow-wrap: normal !important;
+      word-break: keep-all !important;
+      width: max-content !important;
     }
   }
 `;
