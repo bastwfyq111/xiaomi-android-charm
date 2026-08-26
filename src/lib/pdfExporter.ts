@@ -20,79 +20,68 @@ function downloadPdfBlob(pdf: any, fileName: string): void {
 
 /**
  * مصدر وحيد وموحّد لقواعد احتواء/التفاف الخلايا داخل ".pdf-page".
- * يُستخدم في كل مسارات توليد PDF بدلاً من تكرار نفس القواعد يدوياً
- * في كل دالة (وهو ما كان يسبب تناقضات مثل white-space: nowrap مع
- * overflow-wrap: break-word في نفس القاعدة).
- *
- * القاعدة الثابتة:
- *  - خلايا الأرقام/التواريخ/الأكواد (.num, .idx, .numeric-cell, .date-cell):
- *    بدون التفاف مطلقاً + width: 1% لإجبار الاحتواء التلقائي.
- *  - كل خلية أخرى (نص، وصف، اسم):
- *    التفاف طبيعي عند الحاجة (white-space: normal) + width: auto.
  */
 function pdfPageCellCss(opts: { padding?: string; fontSize?: string } = {}): string {
-  const padding = opts.padding ?? '5px 6px';
+  const padding = opts.padding ?? '4px 5px';
   const fontSize = opts.fontSize ?? 'clamp(14px, 1.15vw, 14px)';
   return `
   .pdf-page table { 
-  table-layout: auto !important; 
-  width: 100% !important; 
-  border-collapse: collapse !important;
-}
+    table-layout: auto !important; 
+    width: 100% !important; 
+    max-width: 100% !important;
+    border-collapse: collapse !important;
+  }
 
-/* تنسيق خلايا الجدول بالكامل للتمركز والتمدد التلقائي */
-.pdf-page th, .pdf-page td {
-  border: 1px solid #000 !important;
-  padding: ${padding} !important;
-  text-align: center !important;
-  vertical-align: middle !important;
-  font-size: ${fontSize} !important;
-  white-space: nowrap !important; /* منع التفاف النصوص لجميع الخلايا */
-  width: 1% !important; /* يجبر الخلية على احتواء المحتوى تلقائياً فقط */
-  word-break: keep-all !important;
-  overflow-wrap: normal !important;
-  hyphens: none !important;
-}
+  /* تنسيق خلايا الجدول بالكامل للتمركز والتمدد التلقائي */
+  .pdf-page th, .pdf-page td {
+    border: 1px solid #000 !important;
+    padding: ${padding} !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    font-size: ${fontSize} !important;
+    white-space: nowrap !important; 
+    width: 1% !important; 
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+  }
 
-/* ضبط العناصر الداخلية للخلية للتمركز الرأسي والأفقي المباشر */
-.pdf-page .pdf-cell-text {
-  display: flex !important;
-  align-items: center !important;     /* التمركز الرأسي */
-  justify-content: center !important; /* التمركز الأفقي */
-  width: 100% !important;
-  height: 100% !important;
-  text-align: center !important;
-  color: #000000 !important;
-  font-weight: 800 !important;
-  white-space: nowrap !important;
-}
+  .pdf-page .pdf-cell-text {
+    display: flex !important;
+    align-items: center !important;     
+    justify-content: center !important; 
+    width: 100% !important;
+    height: 100% !important;
+    text-align: center !important;
+    color: #000000 !important;
+    font-weight: 800 !important;
+    white-space: nowrap !important;
+  }
 
-/* المحافظة على منع التفاف الأرقام والتواريخ بشكل صارم */
-.pdf-page td.num, .pdf-page td.idx, .pdf-page td.numeric-cell, .pdf-page td.date-cell,
-.pdf-page td.num .pdf-cell-text, .pdf-page td.idx .pdf-cell-text, 
-.pdf-page td.numeric-cell .pdf-cell-text, .pdf-page td.date-cell .pdf-cell-text {
-  white-space: nowrap !important;
-  word-break: keep-all !important;
-  overflow-wrap: normal !important;
-  direction: ltr !important; /* أداء أفضل للأرقام */
-}
+  .pdf-page td.num, .pdf-page td.idx, .pdf-page td.numeric-cell, .pdf-page td.date-cell,
+  .pdf-page td.num .pdf-cell-text, .pdf-page td.idx .pdf-cell-text, 
+  .pdf-page td.numeric-cell .pdf-cell-text, .pdf-page td.date-cell .pdf-cell-text {
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    direction: ltr !important; 
+  }
 
-/* ألوان وسمك النصوص */
-.pdf-page tbody td *, .pdf-page tfoot td *, .pdf-page .num *, .pdf-page .idx * {
-  color: #000000 !important;
-  -webkit-text-fill-color: #000000 !important;
-  text-shadow: none !important;
-  font-weight: 800 !important;
-}
-.pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx {
-  color: #000 !important;
-  -webkit-text-fill-color: #000 !important;
-  text-shadow: none !important;
-  font-weight: 800 !important;
-}
-.pdf-page .num { font-family: 'Times New Roman', Times, serif !important; font-weight: 900 !important; }
-.pdf-page .sub { border-bottom-width: 2px !important; padding-bottom: 6px !important; margin-bottom: 8px !important; }
-.pdf-page .total-row td { border-top: 2px solid #92400e !important; white-space: nowrap !important; }
+  .pdf-page tbody td *, .pdf-page tfoot td *, .pdf-page .num *, .pdf-page .idx * {
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+    text-shadow: none !important;
+    font-weight: 800 !important;
+  }
+  .pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx {
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    text-shadow: none !important;
+    font-weight: 800 !important;
+  }
+  .pdf-page .num { font-family: 'Times New Roman', Times, serif !important; font-weight: 900 !important; }
+  .pdf-page .sub { border-bottom-width: 2px !important; padding-bottom: 6px !important; margin-bottom: 8px !important; }
+  .pdf-page .total-row td { border-top: 2px solid #92400e !important; white-space: nowrap !important; }
   `;
 } 
     
@@ -111,9 +100,6 @@ function forcePdfDataCellTextColor(doc: Document): void {
   });
 }
 
-/**
- * معالجة بكسلات النص الخضراء داخل خلايا البيانات بعد التصوير فقط
- */
 function blackenGreenDataPixels(canvas: HTMLCanvasElement, root: HTMLElement): void {
   const rootRect = root.getBoundingClientRect();
   const scaleX = canvas.width / Math.max(rootRect.width, 1);
@@ -145,9 +131,6 @@ function blackenGreenDataPixels(canvas: HTMLCanvasElement, root: HTMLElement): v
   });
 }
 
-/**
- * توليد PDF من HTML حقيقي عالي الجودة مع ضبط التفاف الخلايا
- */
 async function htmlToPdf(opts: {
   html: string;
   css: string;
@@ -179,8 +162,7 @@ async function htmlToPdf(opts: {
       <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       <style>${css}</style>
       <style>${pdfPageCellCss()}</style></head>
-
-      <body><div class="pdf-page">${reportLetterheadHtml()}${html}</div></body></html>`);
+      <body style="margin:0; padding:0;"><div class="pdf-page">${reportLetterheadHtml()}${html}</div></body></html>`);
     fdoc.close();
 
     if ((fdoc as any).fonts?.ready) {
@@ -221,7 +203,7 @@ async function htmlToPdf(opts: {
     const pdf = new JsPDF({ unit: 'mm', format: 'a4', orientation, compress: true });
     const pw = pdf.internal.pageSize.getWidth();
     const ph = pdf.internal.pageSize.getHeight();
-    const margin = 5;
+    const margin = 3; // تصغير الهوامش لأقصى درجة
     const imgW = pw - margin * 2;
     const pxPerMm = canvas.width / imgW;
     const pageContentPx = Math.floor((ph - margin * 2) * pxPerMm);
@@ -257,9 +239,6 @@ async function htmlToPdf(opts: {
   }
 }
 
-/**
- * توليد PDF لجدول طويل مخصص مع احتواء الأعمدة تلقائياً بدون التفاف للأرقام
- */
 async function htmlTableToPdfPaginated(opts: {
   title: string;
   columns: { key: string; label: string }[];
@@ -313,8 +292,8 @@ async function htmlTableToPdfPaginated(opts: {
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
       <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       <style>${css}</style>
-      <style>${pdfPageCellCss({ padding: '4px 6px', fontSize: 'clamp(9px, 1.05vw, 13px)' })}</style>
-      </head><body><div class="pdf-page">${fullHtml}</div></body></html>`);
+      <style>${pdfPageCellCss({ padding: '3px 4px', fontSize: 'clamp(9px, 1.05vw, 13px)' })}</style>
+      </head><body style="margin:0; padding:0;"><div class="pdf-page">${fullHtml}</div></body></html>`);
     mdoc.close();
     forcePdfDataCellTextColor(mdoc);
 
@@ -334,7 +313,7 @@ async function htmlTableToPdfPaginated(opts: {
     const dataRows = bodyRows.slice(0, -1);
     const rowHeights = dataRows.map((r) => r.offsetHeight);
 
-    const margin = 3; 
+    const margin = 3; // تصغير الهوامش لأقصى درجة
     const DPI = 96;
     const pxPerMm = DPI / 25.4;
     const pdf = new JsPDF({ unit: 'mm', format: 'a4', orientation, compress: true });
@@ -412,8 +391,8 @@ async function htmlTableToPdfPaginated(opts: {
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
           <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
           <style>${css}</style>
-          <style>${pdfPageCellCss()}</style></head>
-          <body><div class="pdf-page">${pageHtml}</div></body></html>`);
+          <style>${pdfPageCellCss({ padding: '3px 4px', fontSize: 'clamp(9px, 1.05vw, 13px)' })}</style></head>
+          <body style="margin:0; padding:0;"><div class="pdf-page">${pageHtml}</div></body></html>`);
         fdoc.close();
         forcePdfDataCellTextColor(fdoc);
 
@@ -458,7 +437,8 @@ async function htmlTableToPdfPaginated(opts: {
 
 const statementCss = `
   ${tablePrintStyles}
-  body, .pdf-page { font-size: 12px; }
+  body, .pdf-page { font-size: 12px; margin: 0; padding: 0; }
+  table { width: 100% !important; max-width: 100%; table-layout: auto !important; }
   .info { width: 100%; border-collapse: collapse; margin: 6px 0 10px; table-layout: auto !important; }
   .info td { border: 0.75pt solid #000; padding: 6px 8px; text-align: right; font-weight: 700; }
   .info td.lbl { background: #f1f5f9 !important; width: 22%; white-space: nowrap !important; }
@@ -547,7 +527,8 @@ export function printHtmlContent(htmlContent: string): void {
       <title>طباعة</title>
       <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        @page { size: A4; margin: 10mm; }
+        /* تصغير الهوامش لأقصى درجة في صفحة الطباعة المباشرة */
+        @page { size: A4; margin: 5mm; }
         body {
           font-family: 'Cairo', 'Tajawal', 'Segoe UI', Tahoma, Arial, sans-serif;
           direction: rtl;
@@ -556,6 +537,9 @@ export function printHtmlContent(htmlContent: string): void {
           line-height: 1.5;
           font-size: 12px;
           font-weight: 900 !important;
+          width: 100%;
+          margin: 0;
+          padding: 0;
         }
         h1, h2, h3, h4, h5, h6 {
           font-weight: 800;
@@ -564,27 +548,25 @@ export function printHtmlContent(htmlContent: string): void {
           color: #000 !important;
         }
         table {
-          width: 100%;
-          min-width: 100%;
+          width: 100% !important;
+          max-width: 100% !important;
           border-collapse: collapse;
           table-layout: auto !important;
           margin: 10px 0;
         }
         th, td {
           border: 1px solid #000;
-          padding: 4px 6px !important;
+          padding: 3px 5px !important;
           text-align: center;
           vertical-align: middle;
           font-size: clamp(7px, 1.2vw, 12px);
           color: #000 !important;
           font-weight: 900 !important;
         }
-        /* افتراضي: بدون التفاف واحتواء تلقائي لكل خلية */
         th, td {
           white-space: nowrap;
           width: 1%;
         }
-        /* خلايا النص العادي: التفاف طبيعي عند الحاجة فقط */
         td:not(.num):not(.idx):not(.numeric-cell) {
           white-space: normal !important;
           overflow-wrap: break-word !important;
@@ -592,7 +574,6 @@ export function printHtmlContent(htmlContent: string): void {
           overflow: visible;
           width: auto !important;
         }
-        /* خلايا الأرقام: بدون التفاف، سطر واحد */
         td.num, td.idx, td.numeric-cell {
           white-space: nowrap !important;
           word-break: keep-all !important;
@@ -617,7 +598,8 @@ export function printHtmlContent(htmlContent: string): void {
         }
         @media print {
           * { margin: 0; padding: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-          body { background: white; color: #000 !important; font-weight: 900 !important; }
+          body { background: white; color: #000 !important; font-weight: 900 !important; width: 100%; margin: 0; padding: 0; }
+          table { width: 100% !important; max-width: 100% !important; }
           th, td { color: #000 !important; font-weight: 900 !important; }
           .no-print { display: none !important; }
         }
@@ -802,15 +784,16 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    @page { size: A4 landscape; margin: 10mm; padding: 0; }
-    @page :first { margin-top: 10mm; }
+    /* تصغير الهوامش لأقصى درجة في صفحة التقرير المالي الأفقي */
+    @page { size: A4 landscape; margin: 5mm; padding: 0; }
+    @page :first { margin-top: 5mm; }
     html { margin: 0; padding: 0; }
     body { 
       font-family: 'Cairo','Tajawal','Segoe UI',Tahoma,Arial,sans-serif; 
       direction: rtl; 
       color: #000 !important; 
       margin: 0; 
-      padding: 8px; 
+      padding: 0; 
       width: 100%; 
       background: white;
       line-height: 1.3;
@@ -820,7 +803,7 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       text-align: center; 
       font-size: 18px; 
       font-weight: 900;
-      margin: 0 0 4px; 
+      margin: 4px 0; 
       color: #000 !important;
       letter-spacing: -0.01em;
     }
@@ -833,12 +816,12 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
     .period { 
       font-weight: 900 !important; 
       color: #000 !important; 
-      margin: 1px 0 1px;
+      margin: 2px 0;
       font-size: 13px;
     }
     table { 
-      width: 100%;
-      min-width: 100%;
+      width: 100% !important;
+      max-width: 100% !important;
       border-collapse: collapse; 
       font-size: 10px; 
       table-layout: auto !important;
@@ -853,12 +836,10 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       font-weight: 900 !important;
       color: #000 !important;
     }
-    /* افتراضي: بدون التفاف واحتواء تلقائي لكل خلية */
     th, td {
       white-space: nowrap;
       width: 1%;
     }
-    /* خلايا النص العادي: التفاف طبيعي عند الحاجة فقط */
     td:not(.num):not(.idx) {
       white-space: normal !important;
       overflow-wrap: break-word !important;
@@ -866,7 +847,6 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       overflow: visible;
       width: auto !important;
     }
-    /* خلايا الأرقام: بدون التفاف مطلقاً */
     td.num, td.idx {
       white-space: nowrap !important;
       word-break: keep-all !important;
@@ -910,8 +890,9 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
     }
     @media print { 
       * { margin: 0; padding: 0; } 
-      body { margin: 0; padding: 8px; background: white; }
-      @page { margin: 10mm; }
+      body { margin: 0; padding: 0; width: 100%; background: white; }
+      table { width: 100% !important; max-width: 100% !important; }
+      @page { margin: 5mm; }
     }
   </style>`;
   w.document.write(
