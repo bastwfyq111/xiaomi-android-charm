@@ -105,11 +105,11 @@
     width: 2px;
   }
   
-  /* 📊 تنسيق الجداول التكيفي: الاحتواء التلقائي للعرض */
+  /* 📊 تنسيق الجداول: 100% لعرض الحاوية مع احتواء تلقائي للأعمدة */
   table {
-    width: auto !important;
+    width: 100% !important;
     border-collapse: collapse !important;
-    table-layout: auto !important; /* السماح بتوزيع عرض الأعمدة تلقائياً بحسب محتواها */
+    table-layout: auto !important;
     font-feature-settings: "tnum" 1, "lnum" 1;
   }
   th { 
@@ -129,6 +129,17 @@
     white-space: normal;
     overflow-wrap: break-word;
     word-break: normal;
+  }
+
+  /* 📌 تثبيت عمود الترقيم والتسلسل الأول (#) لمنع التمدد نهائياً */
+  table th.col-index,
+  table td.col-index,
+  table th:first-child,
+  table td:first-child {
+    width: 1% !important;
+    white-space: nowrap !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
   }
 
   .installments-table th,
@@ -158,7 +169,7 @@
   
   table th, table td {
     padding: 1px 2px !important;
-    font-size: clamp(7px, 2.7vw, 14px);
+    font-size: clamp(7px, 2.7vw, 12px);
   }
   table input { font-size: 14px; padding: 2px 3px; }
 }
@@ -173,7 +184,7 @@ table th button, table td button {
   font-weight: 700 !important;
 }
 
-/* 🔢 خلايا الأرقام والمبالغ والتواريخ: منع التفاف كامل واحتواء تلقائي دقيق */
+/* 🔢 خلايا الأرقام والمبالغ والتواريخ: منع التفاف وانكماش تلقائي بحجم الرقم */
 table td.numeric-cell,
 table th.numeric-cell,
 table td.date-cell,
@@ -188,20 +199,16 @@ table .amount,
 table .currency,
 table input[type="number"] {
   font-family: 'Times New Roman', Times, serif !important;
-  font-size: clamp(9px, 1.9vw, 14px) !important;
+  font-size: clamp(9px, 1.9vw, 13px) !important;
   line-height: 1.15 !important;
   color: #000 !important;
   font-weight: 900 !important;
   direction: ltr !important;
   unicode-bidi: embed !important;
-  
-  /* منع الكسر والتفاف السطر تماماً */
   white-space: nowrap !important;
   overflow-wrap: normal !important;
   word-break: keep-all !important;
   hyphens: none !important;
-  
-  /* إجبار العمود على انكماش الحد الأدنى بما يتناسب مع الرقم وترك باقي المساحة للنصوص */
   width: 1% !important;
 }
 
@@ -234,7 +241,7 @@ table th.font-mono :where(span, div, input, button) {
   table .num,
   table .amount,
   table input[type="number"] {
-    font-size: clamp(8px, 2.35vw, 14px) !important;
+    font-size: clamp(8px, 2.35vw, 12px) !important;
   }
 }
 
@@ -243,7 +250,7 @@ table td > * {
   max-width: 100%;
 }
 
-/* 🖨️ قواعد الطباعة الصارمة والـ PDF */
+/* 🖨️ قواعد الطباعة والـ PDF */
 @media print {
   .no-print { display: none !important; }
   
@@ -255,8 +262,8 @@ table td > * {
   }
 
   table {
-    table-layout:auto !important;
-    width: auto !important;
+    table-layout: auto !important;
+    width: 100% !important;
   }
 
   table th,
@@ -267,7 +274,10 @@ table td > * {
     color: #000000 !important;
   }
 
-  /* تأكيد عدم التفاف خلايا الأرقام أثناء الطباعة */
+  table th.col-index,
+  table td.col-index,
+  table th:first-child,
+  table td:first-child,
   table td.numeric-cell,
   table th.numeric-cell,
   table td.date-cell,
