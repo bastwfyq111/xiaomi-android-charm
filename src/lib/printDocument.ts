@@ -58,7 +58,7 @@ const baseCss = (
     width: auto; 
     max-width: 100%; 
     border-collapse: collapse; 
-    table-layout: auto !important; 
+    table-layout:fixed !important; 
     font-size: clamp(8px, 1.05vw, 12px); 
   }
   thead { display: table-header-group; }

@@ -100,7 +100,7 @@ const PRINT_STYLES = `
   .accounts-print-hide { display: none !important; }
   .accounts-print-area table {
     border-collapse: collapse !important;
-    width: 100% !important;
+    width: auto !important;
     min-width: 100% !important;
     table-layout: auto !important;
   }

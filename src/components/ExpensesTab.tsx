@@ -792,7 +792,7 @@ export default function ExpensesTab() {
                 #expenses-report .bab-default { background-color: #d1fae5 !important; color: #064e3b !important; }
 
                 /* إعدادات الجدول ليحتوي النصوص بشكل تلقائي (auto) */
-                #expenses-report table { width: 100%; min-width: 100%; table-layout: auto; border-collapse: collapse; font-size: 9px; }
+                #expenses-report table { width: auto; min-width: 100%; table-layout: auto; border-collapse: collapse; font-size: 9px; }
                 #expenses-report th, #expenses-report td { border: 1px solid #000 !important; padding: 3px !important; text-align: center !important; vertical-align: middle !important; white-space: normal !important; word-wrap: break-word !important; line-height: 1.2; color: #000 !important; font-weight: 700 !important; }
                 #expenses-report thead th { font-size: 9px; font-weight: 900 !important; }
                 #expenses-report tbody td { font-size: 8.5px; }

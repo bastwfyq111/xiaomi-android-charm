@@ -972,7 +972,7 @@ const exportToPDF = async (
 
       table {
         font-size: ${fontSizePx.toFixed(2)}px;
-        table-layout: auto !important;
+        table-layout: fixed !important;
       width: auto!important;
         min-width: 100% !important;
         border-collapse: collapse;
@@ -1621,7 +1621,7 @@ const exportToPDF = async (
       .info-lbl { font-size: 9.5pt; line-height: 1.2; font-weight: 700; color: #475569; text-align: center; }
       .info-val { font-size: 11pt; line-height: 1.25; font-weight: 800; margin-top: 1mm; overflow-wrap: anywhere; }
       table {
-        table-layout: auto;
+        table-layout: fixed;
         width: auto;
         min-width: 100%;
         border-collapse: collapse;

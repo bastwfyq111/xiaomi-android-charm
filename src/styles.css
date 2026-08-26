@@ -107,7 +107,7 @@
   
   /* 📊 تنسيق الجداول التكيفي: الاحتواء التلقائي للعرض */
   table {
-    width: 100% !important;
+    width: auto !important;
     border-collapse: collapse !important;
     table-layout: auto !important; /* السماح بتوزيع عرض الأعمدة تلقائياً بحسب محتواها */
     font-feature-settings: "tnum" 1, "lnum" 1;
@@ -158,7 +158,7 @@
   
   table th, table td {
     padding: 1px 2px !important;
-    font-size: clamp(7px, 2.7vw, 11px);
+    font-size: clamp(7px, 2.7vw, 14px);
   }
   table input { font-size: 14px; padding: 2px 3px; }
 }
@@ -188,7 +188,7 @@ table .amount,
 table .currency,
 table input[type="number"] {
   font-family: 'Times New Roman', Times, serif !important;
-  font-size: clamp(9px, 1.9vw, 12px) !important;
+  font-size: clamp(9px, 1.9vw, 14px) !important;
   line-height: 1.15 !important;
   color: #000 !important;
   font-weight: 900 !important;
@@ -234,7 +234,7 @@ table th.font-mono :where(span, div, input, button) {
   table .num,
   table .amount,
   table input[type="number"] {
-    font-size: clamp(8px, 2.35vw, 11px) !important;
+    font-size: clamp(8px, 2.35vw, 14px) !important;
   }
 }
 
