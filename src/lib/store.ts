@@ -617,7 +617,24 @@ export const useStore = create<State>()(
         return get()[key][index];
       },
     }),
-    { name: "majlis-yemen-v1", version: 2 },
+    {
+      name: "majlis-yemen-v1",
+      version: 2,
+      partialize: (state) => ({
+        trainees: state.trainees,
+        hafiza: state.hafiza,
+        hafizas: state.hafizas,
+        accounts: state.accounts,
+        journal: state.journal,
+        installments: state.installments,
+        installments2025: state.installments2025,
+        openingBalance: state.openingBalance,
+        revenue: state.revenue,
+        customTabs: state.customTabs,
+        installmentCustomColumns2026: state.installmentCustomColumns2026,
+        installmentConditionalRules2026: state.installmentConditionalRules2026,
+      }),
+    },
   ),
 );
 

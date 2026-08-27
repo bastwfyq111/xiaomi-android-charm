@@ -9,11 +9,49 @@
 }
 
 @font-face {
+  font-family: "Noto Sans Arabic";
+  src: url("/NotoSansArabic-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Sans Arabic";
+  src: url("/NotoSansArabic-SemiBold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 600 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Kufi Arabic";
+  src: url("/NotoKufiArabic-Medium.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Kufi Arabic";
+  src: url("/NotoKufiArabic-ExtraBold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 800 900;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Cairo";
   src: url("/Cairo-Regular.ttf") format("truetype");
   font-style: normal;
   font-weight: 400 900;
   font-display: swap;
+}
+
+:root {
+  --font-ui: "Noto Sans Arabic", "Cairo", "Segoe UI", Tahoma, sans-serif;
+  --font-display: "Noto Kufi Arabic", "Noto Sans Arabic", "Cairo", sans-serif;
+  --font-data: "Times New Roman", "Noto Sans Arabic", "Segoe UI", sans-serif;
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -95,14 +133,34 @@
       radial-gradient(800px 450px at -10% 108%, oklch(0.85 0.05 75 / 0.18), transparent 60%),
       var(--color-background);
     color: var(--color-foreground);
-    font-family: 'Tajawal', 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+    font-family: var(--font-ui);
     font-weight: 500;
     letter-spacing: 0;
     min-height: 100dvh;
     overscroll-behavior-y: none;
     -webkit-tap-highlight-color: transparent;
   }
-  h1, h2, h3, h4 { font-family: 'Cairo', 'Tajawal', sans-serif; font-weight: 800; letter-spacing: -0.01em; }
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.022em; }
+
+  /* نظام الخطوط المرئي: نص عربي واضح وعناوين قوية وأرقام سهلة القراءة */
+  .font-tajawal,
+  .font-cairo {
+    font-family: var(--font-ui) !important;
+  }
+
+  table th,
+  table td {
+    font-family: var(--font-ui);
+  }
+
+  table .num,
+  table .numeric-cell,
+  table .date-cell,
+  table input[type="number"],
+  table input[type="date"] {
+    font-family: var(--font-data);
+    font-variant-numeric: tabular-nums;
+  }
 
   /* حاوية التقرير التي تشبه صفحة A4 أفقية داخل المتصفح */
   .a4-landscape-page {
@@ -163,7 +221,7 @@
     border: 1px solid #000 !important;
   }
 
-  .font-mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 600; }
+  .font-mono { font-family: var(--font-data); font-weight: 600; font-variant-numeric: tabular-nums; }
   button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
   
   /* منع الزوم التلقائي في الشاشات الصغيرة عند التركيز */
@@ -213,7 +271,7 @@ table td.font-mono,
 table th.font-mono,
 table .tabular-nums,
 table input[type="number"] {
-  font-family: 'Times New Roman', Times, serif !important;
+  font-family: var(--font-data) !important;
   font-size: clamp(13px, 1.2vw, 14px) !important;
   line-height: 1.15 !important;
   color: #000 !important;

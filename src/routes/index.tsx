@@ -12,6 +12,7 @@ import {
   TrendingUp,
   ReceiptText,
   DownloadCloud,
+  ArrowRight,
 } from "lucide-react";
 
 // استيراد ملفات التبويبات الفرعية المكونة للنظام
@@ -126,9 +127,28 @@ const tabs: TabItem[] = [
   },
 ];
 
+const isTabValue = (value: string | null): value is Tab =>
+  value !== null && tabs.some((tab) => tab.value === value);
+
+const getInitialTab = (): Tab => {
+  if (typeof window === "undefined") return "installments";
+  const tab = new URLSearchParams(window.location.search).get("tab");
+  return isTabValue(tab) ? tab : "installments";
+};
+
 function Index() {
-  const [activeTab, setActiveTab] = useState<Tab>("installments");
+  const [activeTab, setActiveTab] = useState<Tab>(() => getInitialTab());
   const [pwaInstallable, setPwaInstallable] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const tab = new URLSearchParams(window.location.search).get("tab");
+      setActiveTab(isTabValue(tab) ? tab : "installments");
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
 
   useEffect(() => {
     setPwaInstallable(canInstall());
@@ -137,6 +157,27 @@ function Index() {
     });
     return () => unsubscribe();
   }, []);
+
+  const handleTabChange = (tab: Tab) => {
+    if (tab === activeTab) return;
+
+    setActiveTab(tab);
+    const url = new URL(window.location.href);
+    if (tab === "installments") url.searchParams.delete("tab");
+    else url.searchParams.set("tab", tab);
+
+    window.history.pushState({ tab }, "", `${url.pathname}${url.search}${url.hash}`);
+  };
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+
+    setActiveTab("installments");
+    window.history.replaceState({}, "", window.location.pathname);
+  };
 
   const handlePWAInstall = async () => {
     const success = await promptInstall();
@@ -169,13 +210,24 @@ function Index() {
             </h1>
             <p className="text-[clamp(0.6rem,2vw,0.875rem)] text-[#cfe0ec] font-medium flex items-center gap-1.5 leading-snug">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#e3c281] shrink-0"></span>
-              <span className="truncate sm:whitespace-normal">نظام الإدارة المالية وحوافظ التوريد — صعدة، 2026م</span>
+              <span className="truncate sm:whitespace-normal">
+                نظام الإدارة المالية وحوافظ التوريد — صعدة، 2026م
+              </span>
             </p>
           </div>
         </div>
 
-        {/* الجزء الأيسر: زر التثبيت PWA */}
+        {/* الجزء الأيسر: زر الرجوع والتثبيت PWA */}
         <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={handleBack}
+            className="inline-flex items-center gap-1.5 rounded-md border border-white/25 bg-white/[0.08] px-2.5 py-1.5 text-[10px] font-bold text-white transition-colors hover:bg-white/[0.16] focus:outline-none focus:ring-2 focus:ring-[#e3c281] sm:px-3 sm:py-2 sm:text-xs"
+            aria-label="الرجوع إلى الصفحة السابقة"
+          >
+            <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>رجوع</span>
+          </button>
           {pwaInstallable && (
             <button
               onClick={handlePWAInstall}
@@ -213,7 +265,7 @@ function Index() {
               <button
                 key={tab.value}
                 type="button"
-                onClick={() => setActiveTab(tab.value)}
+                onClick={() => handleTabChange(tab.value)}
                 aria-current={isActive ? "page" : undefined}
                 className={`flex min-w-[74px] shrink-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-lg px-1.5 py-1.5 text-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#e3c281] sm:min-w-[92px] sm:gap-1 sm:px-2 sm:py-2 ${
                   isActive
