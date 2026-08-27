@@ -249,6 +249,7 @@ async function htmlTableToPdfPaginated(opts: {
   orientation?: 'portrait' | 'landscape';
   pageWidthPx?: number;
   reportDate?: string;
+  pdfLayout?: 'default' | 'wide-centered';
 }): Promise<void> {
   const {
     title,
@@ -259,8 +260,16 @@ async function htmlTableToPdfPaginated(opts: {
     fileName,
     orientation = 'landscape',
     reportDate,
+    pdfLayout = 'default',
   } = opts;
-  const pageWidthPx = opts.pageWidthPx ?? (orientation === 'landscape' ? 1123 : 794);
+  const isWideCentered = pdfLayout === 'wide-centered';
+  const pageWidthPx = opts.pageWidthPx ?? (isWideCentered ? 1600 : (orientation === 'landscape' ? 1123 : 794));
+  const cellPadding = isWideCentered ? '3px 4px' : '3px 4px';
+  const cellFontSize = isWideCentered ? 'clamp(10px, 0.9vw, 14px)' : 'clamp(9px, 1.05vw, 13px)';
+  const layoutCss = isWideCentered ? `
+    .pdf-page { width: 100% !important; max-width: none !important; margin: 0 !important; padding: 0 !important; }
+    .pdf-page table { width: 100% !important; max-width: none !important; margin-left: 0 !important; margin-right: 0 !important; }
+  ` : '';
   const pageHeightPx = Math.round(
     pageWidthPx * (orientation === 'landscape' ? 210 / 297 : 297 / 210)
   );
@@ -292,7 +301,8 @@ async function htmlTableToPdfPaginated(opts: {
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
       <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       <style>${css}</style>
-      <style>${pdfPageCellCss({ padding: '3px 4px', fontSize: 'clamp(9px, 1.05vw, 13px)' })}</style>
+      <style>${pdfPageCellCss({ padding: cellPadding, fontSize: cellFontSize })}</style>
+      <style>${layoutCss}</style>
       </head><body style="margin:0; padding:0;"><div class="pdf-page">${fullHtml}</div></body></html>`);
     mdoc.close();
     forcePdfDataCellTextColor(mdoc);
@@ -391,7 +401,8 @@ async function htmlTableToPdfPaginated(opts: {
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
           <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
           <style>${css}</style>
-          <style>${pdfPageCellCss({ padding: '3px 4px', fontSize: 'clamp(9px, 1.05vw, 13px)' })}</style></head>
+          <style>${pdfPageCellCss({ padding: cellPadding, fontSize: cellFontSize })}</style>
+          <style>${layoutCss}</style></head>
           <body style="margin:0; padding:0;"><div class="pdf-page">${pageHtml}</div></body></html>`);
         fdoc.close();
         forcePdfDataCellTextColor(fdoc);
@@ -403,7 +414,7 @@ async function htmlTableToPdfPaginated(opts: {
 
         const pageEl = fdoc.querySelector('.pdf-page') as HTMLElement;
         const canvas = await html2canvas(pageEl, {
-          scale: rows.length > 500 ? 1.6 : 2,
+          scale: isWideCentered ? 3 : (rows.length > 500 ? 1.6 : 2),
           useCORS: true,
           backgroundColor: '#ffffff',
           width: pageWidthPx,
@@ -654,8 +665,9 @@ export async function exportTablePdf(opts: {
   numericKeys?: string[];
   fileName: string;
   reportDate?: string;
+  pdfLayout?: 'default' | 'wide-centered';
 }): Promise<void> {
-  const { title, columns, rows, numericKeys = [], fileName, reportDate } = opts;
+  const { title, columns, rows, numericKeys = [], fileName, reportDate, pdfLayout = 'default' } = opts;
   const safeDate = reportDate || new Date().toISOString().slice(0, 10);
 
   await htmlTableToPdfPaginated({
@@ -667,6 +679,7 @@ export async function exportTablePdf(opts: {
     fileName: `${fileName}-${safeDate}.pdf`,
     orientation: 'landscape',
     reportDate,
+    pdfLayout,
   });
 }
 

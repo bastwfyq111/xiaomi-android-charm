@@ -25,6 +25,7 @@ type Props = {
   numericKeys?: string[];
   className?: string;
   printLabel?: string;
+  pdfLayout?: "default" | "wide-centered";
 };
 
 export default function TabActions({
@@ -36,6 +37,7 @@ export default function TabActions({
   numericKeys = [],
   className = "",
   printLabel = "طباعة",
+  pdfLayout = "default",
 }: Props) {
   const [pdfBusy, setPdfBusy] = useState(false);
   const { reportDate, reportDateLabel } = useReportDate();
@@ -91,7 +93,7 @@ export default function TabActions({
     if (pdfBusy) return;
     setPdfBusy(true);
     try {
-      await exportTablePdf({ title, columns, rows, numericKeys, fileName, reportDate });
+      await exportTablePdf({ title, columns, rows, numericKeys, fileName, reportDate, pdfLayout });
       toast.success("تم تنزيل الملف بنجاح");
     } catch (err) {
       console.error("PDF export error:", err);

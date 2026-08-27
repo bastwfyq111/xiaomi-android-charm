@@ -460,6 +460,7 @@ export default function JournalTab() {
       ]}
       fileName="قيود-اليومية"
       numericKeys={["debit", "credit"]}
+      pdfLayout="wide-centered"
       onClear={clearJournal}
       className="w-full !grid !grid-cols-2 sm:!flex !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-1 [&>button]:py-1 sm:[&>button]:px-2 sm:[&>button]:py-1 [&>button]:text-xs sm:[&>button]:text-xs"
     />

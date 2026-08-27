@@ -733,6 +733,7 @@ export default function AccountsTab() {
               columns={COLS.filter((c) => c.key !== "revenueKey")}
               fileName={`الحساب-الجاري-${accountReportYear}`}
               numericKeys={["hafizaAmount", "income", "expense", "balance"]}
+              pdfLayout="wide-centered"
             />
           </div>
         </div>
@@ -936,6 +937,7 @@ export default function AccountsTab() {
               columns={COLS.filter((c) => c.key !== "revenueKey")}
               fileName="الحساب-الجاري"
               numericKeys={["hafizaAmount", "income", "expense", "balance"]}
+              pdfLayout="wide-centered"
               onClear={clearAccounts}
               className="col-span-2 w-full !grid !grid-cols-2 sm:!flex !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-1 [&>button]:py-1 sm:[&>button]:px-2 sm:[&>button]:py-1 [&>button]:text-xs sm:[&>button]:text-xs"
             />
