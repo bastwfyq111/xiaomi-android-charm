@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { useReportDate } from "@/lib/reportDate";
 import { exportTablePdf } from "@/lib/pdfExporter";
 import { buildTableHtml, escapeHtml, tablePrintStyles } from "@/lib/printTableHtml";
+import { registerReportWindow } from "@/lib/capacitorNavigation";
 
 export type TabCol = { key: string; label: string };
 
@@ -52,7 +53,7 @@ export default function TabActions({
       toast.error("لا توجد بيانات للطباعة");
       return;
     }
-    const w = window.open("", "_blank", "width=1200,height=800");
+    const w = registerReportWindow(window.open("", "_blank", "width=1200,height=800"));
     if (!w) return;
 
     const head = `

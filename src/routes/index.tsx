@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Toaster, toast } from "sonner";
 
@@ -15,18 +15,19 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-// استيراد ملفات التبويبات الفرعية المكونة للنظام
-import HafizaTab from "@/components/HafizaTab";
-import AccountTab from "@/components/AccountTab";
-import JournalTab from "@/components/JournalTab";
-import InstallmentsTab from "@/components/InstallmentsTab";
-import MonthlyStatementTab from "@/components/MonthlyStatementTab";
-import RevenueTab from "@/components/RevenueTab";
-import ExpensesTab from "@/components/ExpensesTab";
-import AppTabs from "@/components/AppTabs";
+// تحميل ملفات التبويبات عند فتحها فقط لتقليل حجم التشغيل الأول.
+const HafizaTab = lazy(() => import("@/components/HafizaTab"));
+const AccountTab = lazy(() => import("@/components/AccountTab"));
+const JournalTab = lazy(() => import("@/components/JournalTab"));
+const InstallmentsTab = lazy(() => import("@/components/InstallmentsTab"));
+const MonthlyStatementTab = lazy(() => import("@/components/MonthlyStatementTab"));
+const RevenueTab = lazy(() => import("@/components/RevenueTab"));
+const ExpensesTab = lazy(() => import("@/components/ExpensesTab"));
+const AppTabs = lazy(() => import("@/components/AppTabs"));
 
 // استيراد وظائف الـ PWA
 import { canInstall, onInstallAvailability, promptInstall } from "@/lib/pwa";
+import { installAndroidBackButton } from "@/lib/capacitorNavigation";
 
 // إعداد مسار التوجيه والبيانات التعريفية للمتصفح
 export const Route = createFileRoute("/")({
@@ -138,17 +139,61 @@ const getInitialTab = (): Tab => {
 
 function Index() {
   const [activeTab, setActiveTab] = useState<Tab>(() => getInitialTab());
+  const activeTabRef = useRef(activeTab);
+  const tabHistoryRef = useRef<Tab[]>([getInitialTab()]);
   const [pwaInstallable, setPwaInstallable] = useState<boolean>(false);
 
   useEffect(() => {
+    activeTabRef.current = activeTab;
+  }, [activeTab]);
+
+  useEffect(() => {
     const handlePopState = () => {
-      const tab = new URLSearchParams(window.location.search).get("tab");
-      setActiveTab(isTabValue(tab) ? tab : "installments");
+      const nextTab = new URLSearchParams(window.location.search).get("tab");
+      const tab = isTabValue(nextTab) ? nextTab : "installments";
+      const historyStack = tabHistoryRef.current;
+
+      if (historyStack.length > 1 && historyStack[historyStack.length - 2] === tab) {
+        tabHistoryRef.current = historyStack.slice(0, -1);
+      } else {
+        tabHistoryRef.current = [tab];
+      }
+      activeTabRef.current = tab;
+      setActiveTab(tab);
     };
 
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
+
+  const goBackWithinApp = useCallback(() => {
+    if (activeTabRef.current === "installments") return false;
+
+    const historyStack = tabHistoryRef.current;
+    if (historyStack.length > 1) {
+      tabHistoryRef.current = historyStack.slice(0, -1);
+      window.history.back();
+      return true;
+    }
+
+    // عند فتح رابط مباشر على تبويب داخلي لا توجد حالة سابقة في history؛
+    // نعيده إلى التبويب الأساسي داخل نفس الصفحة بدلاً من مغادرة التطبيق.
+    activeTabRef.current = "installments";
+    tabHistoryRef.current = ["installments"];
+    setActiveTab("installments");
+    const url = new URL(window.location.href);
+    url.searchParams.delete("tab");
+    window.history.replaceState(
+      { tab: "installments" },
+      "",
+      `${url.pathname}${url.search}${url.hash}`,
+    );
+    return true;
+  }, []);
+
+  useEffect(() => {
+    return installAndroidBackButton(() => goBackWithinApp());
+  }, [goBackWithinApp]);
 
   useEffect(() => {
     setPwaInstallable(canInstall());
@@ -159,8 +204,10 @@ function Index() {
   }, []);
 
   const handleTabChange = (tab: Tab) => {
-    if (tab === activeTab) return;
+    if (tab === activeTabRef.current) return;
 
+    activeTabRef.current = tab;
+    tabHistoryRef.current = [...tabHistoryRef.current, tab];
     setActiveTab(tab);
     const url = new URL(window.location.href);
     if (tab === "installments") url.searchParams.delete("tab");
@@ -170,13 +217,17 @@ function Index() {
   };
 
   const handleBack = () => {
+    if (goBackWithinApp()) return;
+
     if (window.history.length > 1) {
       window.history.back();
       return;
     }
 
+    activeTabRef.current = "installments";
+    tabHistoryRef.current = ["installments"];
     setActiveTab("installments");
-    window.history.replaceState({}, "", window.location.pathname);
+    window.history.replaceState({ tab: "installments" }, "", window.location.pathname);
   };
 
   const handlePWAInstall = async () => {
@@ -242,14 +293,26 @@ function Index() {
 
       {/* محتوى التبويب النشط */}
       <div className="w-full bg-[#faf8f3] p-2 pb-24 sm:p-4 sm:pb-20 md:p-6 min-h-[calc(100vh-140px)]">
-        {activeTab === "installments" && <InstallmentsTab />}
-        {activeTab === "hafiza" && <HafizaTab />}
-        {activeTab === "account" && <AccountTab />}
-        {activeTab === "journal" && <JournalTab />}
-        {activeTab === "monthly" && <MonthlyStatementTab />}
-        {activeTab === "revenue" && <RevenueTab />}
-        {activeTab === "expenses-table" && <ExpensesTab />}
-        {activeTab === "general-expenses-ledger" && <AppTabs />}
+        <Suspense
+          fallback={
+            <div
+              className="flex min-h-[35vh] items-center justify-center rounded-2xl border border-[#c99a4e]/30 bg-white/70 p-6 text-sm font-semibold text-[#153a54]"
+              role="status"
+              aria-live="polite"
+            >
+              جارٍ فتح التبويب…
+            </div>
+          }
+        >
+          {activeTab === "installments" && <InstallmentsTab />}
+          {activeTab === "hafiza" && <HafizaTab />}
+          {activeTab === "account" && <AccountTab />}
+          {activeTab === "journal" && <JournalTab />}
+          {activeTab === "monthly" && <MonthlyStatementTab />}
+          {activeTab === "revenue" && <RevenueTab />}
+          {activeTab === "expenses-table" && <ExpensesTab />}
+          {activeTab === "general-expenses-ledger" && <AppTabs />}
+        </Suspense>
       </div>
 
       {/* شريط التبويبات السفلي */}

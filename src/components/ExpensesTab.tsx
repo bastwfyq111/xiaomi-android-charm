@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import schemaJson from "@/lib/expensesSchema.json";
 import { useReportDate } from "@/lib/reportDate";
 import { escapeHtml, reportLetterheadHtml } from "@/lib/printTableHtml";
+import { registerReportWindow } from "@/lib/capacitorNavigation";
 
 // ====== نوع الصف ======
 type Row = {
@@ -746,7 +747,7 @@ export default function ExpensesTab() {
             onClick={() => {
               const el = document.getElementById("expenses-view-content");
               if (!el) return;
-              const w = window.open("", "_blank", "width=1200,height=800");
+              const w = registerReportWindow(window.open("", "_blank", "width=1200,height=800"));
               if (!w) return;
               w.document
                 .write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${escapeHtml(`المصروفات - ${view} - ${reportDateLabel}`)}</title>

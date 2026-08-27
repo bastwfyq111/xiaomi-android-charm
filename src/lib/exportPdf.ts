@@ -9,6 +9,7 @@ import {
 } from "./reportPeriods";
 import { REPORT_LETTERHEAD_SRC } from "@/lib/printTableHtml";
 import revSchema from "@/data/revenueTemplate.json";
+import { registerReportWindow } from "./capacitorNavigation";
 
 const reportLetterheadRow = (columnCount: number) => `
   <tr class="report-letterhead-row">
@@ -70,7 +71,7 @@ export function exportToPdf(opts: {
 }) {
   const reportDateLabel =
     formatReportDate(opts.reportDate) || new Date().toLocaleDateString("ar-EG-u-nu-latn");
-  const w = window.open("", "_blank", "width=900,height=700");
+  const w = registerReportWindow(window.open("", "_blank", "width=900,height=700"));
   if (!w) return;
   const orient = opts.orientation || (opts.columns.length > 6 ? "landscape" : "portrait");
   const fontSize = opts.columns.length > 12 ? 11 : opts.columns.length > 8 ? 12 : 14;
@@ -247,7 +248,7 @@ export function monthlyStatementPdf(opts: {
   const periodLabel = getReportPeriodLabel(periodSelection);
   const colCurLabel = getReportMovementLabel(periodSelection);
 
-  const w = window.open("", "_blank", "width=1100,height=800");
+  const w = registerReportWindow(window.open("", "_blank", "width=1100,height=800"));
   if (!w) return;
 
   const fmtCell = (n: number) => (n ? fmt(n) : "-");
@@ -417,7 +418,7 @@ export function revenuePdf(
     gCur += cCur; gPrev += cPrev;
   });
 
-  const w = window.open("", "_blank", "width=1100,height=800");
+  const w = registerReportWindow(window.open("", "_blank", "width=1100,height=800"));
   if (!w) return;
   const fc = (n: number) => (n ? fmt(n) : "-");
 

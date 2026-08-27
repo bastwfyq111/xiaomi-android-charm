@@ -2,6 +2,7 @@ import {
   REPORT_LETTERHEAD_SRC,
   reportLetterheadHtml,
 } from "@/lib/printTableHtml";
+import { registerReportWindow } from "@/lib/capacitorNavigation";
 
 export type PrintOrientation = "portrait" | "landscape";
 
@@ -188,7 +189,7 @@ export function openPrintDocument(options: PrintDocumentOptions): boolean {
     autoPrint = true,
   } = options;
 
-  const w = window.open("", "_blank", "width=1280,height=900");
+  const w = registerReportWindow(window.open("", "_blank", "width=1280,height=900"));
   if (!w) return false;
 
   const autoPrintScript = autoPrint

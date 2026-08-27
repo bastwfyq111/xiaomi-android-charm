@@ -5,6 +5,7 @@ import {
   reportLetterheadHtml,
   tablePrintStyles,
 } from './printTableHtml';
+import { registerReportWindow } from "./capacitorNavigation";
 
 function downloadPdfBlob(pdf: any, fileName: string): void {
   const blob = pdf.output('blob') as Blob;
@@ -526,7 +527,7 @@ export async function exportStudentStatementPdf(row: any, year: number): Promise
 }
 
 export function printHtmlContent(htmlContent: string): void {
-  const w = window.open('', '_blank');
+  const w = registerReportWindow(window.open('', '_blank'));
   if (!w) return;
   
   const styledContent = `
@@ -749,7 +750,7 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
     gPrev += cPrev;
   });
 
-  const w = window.open("", "_blank", "width=1100,height=800");
+  const w = registerReportWindow(window.open("", "_blank", "width=1100,height=800"));
   if (!w) return;
   const fc = (n: number) =>
     `<span class="num">${escapeHtml(n ? fmt(n) : "-")}</span>`;

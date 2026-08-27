@@ -5,6 +5,7 @@ import {
 import * as XLSX from "xlsx";
 import { useReportDate } from "@/lib/reportDate";
 import { reportLetterheadHtml } from "@/lib/printTableHtml";
+import { registerReportWindow } from "@/lib/capacitorNavigation";
   
 const mainHeaders = ["رقم الاستمارة", "كشف التسوية", "التاريخ", "البيان"];  
 const STORAGE_KEY = "app-tabs-usages-v1";  
@@ -579,7 +580,7 @@ const AppTabs: React.FC = () => {
   };  
   
   const handlePrint = () => {  
-    const w = window.open("", "_blank", "width=1200,height=800");  
+    const w = registerReportWindow(window.open("", "_blank", "width=1200,height=800"));
     if (!w) return;  
     w.document.write(buildAllMonthsHtml());  
     w.document.close();  
