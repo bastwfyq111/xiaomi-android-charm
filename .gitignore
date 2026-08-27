@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 dist
+.capacitor-web
 dist-ssr
 .output
 .vinxi

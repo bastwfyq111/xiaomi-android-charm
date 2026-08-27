@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "build:android:web": "vite build && node scripts/prepare-capacitor.mjs",
+    "build:android:web": "vite build --config vite.config.capacitor.ts && node scripts/prepare-capacitor.mjs",
     "build:android": "pnpm run build:android:web && cap sync android && cd android && ./gradlew assembleRelease",
     "build:dev": "vite build --mode development",
     "preview": "nitro preview",

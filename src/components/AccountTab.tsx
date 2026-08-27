@@ -3,7 +3,7 @@ import { useStore } from "@/lib/store";
 import { fmt, today } from "@/lib/format";
 import { DESCRIPTIONS } from "@/lib/accounts";
 import { toast } from "sonner";
-import * as XLSX from "xlsx";
+import { importExcelInWorker } from "@/lib/excelImportWorkerClient";
 import { useTableControls, sortIndicator } from "@/hooks/useTableControls";
 import {
   X,
@@ -583,59 +583,20 @@ export default function AccountsTab() {
     setEditingRow(null);
   };
 
-  const handleImportExcel = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImportExcel = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (evt) => {
-      try {
-        const data = new Uint8Array(evt.target?.result as ArrayBuffer);
-        const workbook = XLSX.read(data, { type: "array" });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        const json = XLSX.utils.sheet_to_json(worksheet, { raw: false, defval: "" });
-        if (json.length === 0) throw new Error("الملف فارغ");
-
-        const importedAccounts = json
-          .map((row: any) => {
-            const cleanRow: any = {};
-            for (const key in row) {
-              cleanRow[key.trim()] = row[key];
-            }
-            return cleanRow;
-          })
-          .filter((row: any) => row["الاسم"] || row["البيان"] || row["name"] || row["description"])
-          .map((row: any) => ({
-            date: row["التاريخ"] || row["date"] || today(),
-            hafizaNo: String(row["رقم الحافظة"] || row["hafizaNo"] || ""),
-            notifyNo: String(row["رقم الإشعار"] || row["رقم الاشعار"] || row["notifyNo"] || ""),
-            notifyDate: row["تاريخ التوريد"] || row["notifyDate"] || "",
-            checkNo: String(row["رقم الشيك"] || row["checkNo"] || ""),
-            checkDate: row["تاريخ الشيك"] || row["checkDate"] || "",
-            description: row["البيان"] || row["description"] || "",
-            specialty: row["التخصص"] || row["specialty"] || "",
-            name: row["الاسم"] || row["name"] || "",
-            hafizaAmount: parseAmount(row["مبلغ الحافظة"] || row["hafizaAmount"]),
-            income: parseAmount(row["الإيرادات"] || row["الايرادات"] || row["income"]),
-            expense: parseAmount(
-              row["المصروفات"] ||
-                row["المصروف"] ||
-                row["مصروفات"] ||
-                row["مصروف"] ||
-                row["expense"] ||
-                row["expenses"],
-            ),
-            revenueKey: String(row["رمز الإيراد"] || row["revenueKey"] || ""),
-          }));
-
-        useStore.getState().importData({ accounts: importedAccounts });
-        toast.success(`تم استيراد ${importedAccounts.length} سجل مالي بنجاح`);
-      } catch (err) {
-        toast.error("فشل استيراد ملف الإكسل");
-      }
-    };
-    reader.readAsArrayBuffer(file);
     e.target.value = "";
+    try {
+      const data = await importExcelInWorker(file, "account");
+      const importedAccounts = data.accounts;
+      if (importedAccounts.length === 0) throw new Error("الملف فارغ");
+      useStore.getState().importData({ accounts: importedAccounts });
+      toast.success(`تم استيراد ${importedAccounts.length} سجل مالي بنجاح`);
+    } catch (error) {
+      console.error("[Excel] Account import failed", error);
+      toast.error("فشل استيراد ملف الإكسل");
+    }
   };
 
   return (

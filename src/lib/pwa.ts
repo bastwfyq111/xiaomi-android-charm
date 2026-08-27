@@ -1,4 +1,6 @@
 // تسجيل service worker للعمل بدون إنترنت + التقاط حدث التثبيت
+import { Capacitor } from "@capacitor/core";
+
 // وحدة التسجيل الوحيدة في المشروع: لا تُسجّل أبداً في وضع التطوير أو داخل معاينة Lovable.
 let deferredPrompt: any = null;
 const listeners = new Set<(canInstall: boolean) => void>();
@@ -189,6 +191,13 @@ async function registerAppServiceWorker() {
 
 export function initPwa() {
   if (typeof window === "undefined") return;
+
+  // داخل APK تُحمّل الأصول من حزمة Capacitor المحلية، لذا لا نسجّل Service Worker.
+  // إبقاء هذا المسار خارج PWA يمنع تعارض controller أو انتظار ready أثناء الإقلاع.
+  if (Capacitor.isNativePlatform()) {
+    console.info("[PWA] Skipped inside Capacitor native runtime");
+    return;
+  }
 
   // متابعة إمكانية التثبيت تعمل في كل السياقات
   window.addEventListener("beforeinstallprompt", (e: any) => {

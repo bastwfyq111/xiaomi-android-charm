@@ -1,7 +1,8 @@
 import { useRef } from "react";
 import { toast } from "sonner";
 import { useStore } from "@/lib/store";
-import { importFromExcel, type ImportKind } from "@/lib/exportImport";
+import type { ImportKind } from "@/lib/exportImport";
+import { importExcelInWorker } from "@/lib/excelImportWorkerClient";
 
 const LABELS: Record<ImportKind, string> = {
   hafiza: "حافظة",
@@ -20,7 +21,7 @@ export default function ImportButton({ kind }: { kind: ImportKind }) {
     const f = e.target.files?.[0];
     if (!f) return;
     try {
-      const data = await importFromExcel(f, kind);
+      const data = await importExcelInWorker(f, kind);
       let count = 0;
       if (kind === "account") count = data.accounts.length;
       else if (kind === "revenue") count = Object.keys(data.revenue).length;

@@ -6,6 +6,7 @@ import * as XLSX from "xlsx";
 import { useReportDate } from "@/lib/reportDate";
 import { reportLetterheadHtml } from "@/lib/printTableHtml";
 import { registerReportWindow } from "@/lib/capacitorNavigation";
+import { importUsageInWorker } from "@/lib/excelImportWorkerClient";
   
 const mainHeaders = ["رقم الاستمارة", "كشف التسوية", "التاريخ", "البيان"];  
 const STORAGE_KEY = "app-tabs-usages-v1";  
@@ -75,7 +76,7 @@ const parseMonthId = (value: any): number | null => {
     if (month >= 1 && month <= 12) return month;
   }
 
-  const yearFirst = text.match(/(?:^|[^0-9])20[0-9]{2}[\\/\\-.]([0-9]{1,2})(?:[\\/\\-.][0-9]{1,2})?(?:$|[^0-9])/);
+  const yearFirst = text.match(/(?:^|[^0-9])20[0-9]{2}[\/\\.-]([0-9]{1,2})(?:[\/\\.-][0-9]{1,2})?(?:$|[^0-9])/);
   if (yearFirst) {
     const month = Number(yearFirst[1]);
     if (month >= 1 && month <= 12) return month;
@@ -215,9 +216,41 @@ const AppTabs: React.FC = () => {
   const [importMonthId, setImportMonthId] = useState<number>(1);  
   const fileInputRef = useRef<HTMLInputElement>(null);  
   
-  useEffect(() => {  
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(dataRows));  
-  }, [dataRows]);  
+  const latestDataRows = useRef(dataRows);
+  const storageTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    latestDataRows.current = dataRows;
+    if (storageTimer.current) clearTimeout(storageTimer.current);
+    storageTimer.current = setTimeout(() => {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(latestDataRows.current));
+      } catch (error) {
+        console.error("[Storage] Failed to persist usage rows", error);
+      }
+      storageTimer.current = null;
+    }, 80);
+    return () => {
+      if (storageTimer.current) clearTimeout(storageTimer.current);
+    };
+  }, [dataRows]);
+
+  useEffect(() => {
+    const flush = () => {
+      if (storageTimer.current) clearTimeout(storageTimer.current);
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(latestDataRows.current));
+      } catch (error) {
+        console.error("[Storage] Failed to flush usage rows", error);
+      }
+      storageTimer.current = null;
+    };
+    window.addEventListener("pagehide", flush);
+    return () => {
+      window.removeEventListener("pagehide", flush);
+      flush();
+    };
+  }, []);
   
   const rowsOfMonth = useCallback(  
     (id: number) => dataRows.filter((r) => r.monthId === id),  
@@ -277,83 +310,22 @@ const AppTabs: React.FC = () => {
   
   const handleImportClick = () => fileInputRef.current?.click();  
   
-  const handleImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImportFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      try {
-        const data = new Uint8Array(ev.target?.result as ArrayBuffer);
-        const wb = XLSX.read(data, { type: "array", cellDates: true });
-        const wsName = wb.SheetNames.includes("بيانات") ? "بيانات" : wb.SheetNames[0];
-        const ws = wb.Sheets[wsName];
-        const matrix: any[][] = XLSX.utils.sheet_to_json(ws, { header: 1, defval: "", blankrows: false });
-        const headerRowIndex = matrix.findIndex((cells) => {
-          const normalizedCells = cells.map((cell) => norm(cell).toLowerCase());
-          const knownHeaders = normalizedCells.filter((cell) =>
-            cell === "monthid" || allCols.some((column) => norm(column).toLowerCase() === cell)
-          );
-          return knownHeaders.length >= 2;
-        });
-        const json: any[] = headerRowIndex >= 0
-          ? XLSX.utils.sheet_to_json(ws, { defval: "", blankrows: false, range: headerRowIndex })
-          : XLSX.utils.sheet_to_json(ws, { defval: "", blankrows: false });
-        let activeMonthId = importMonthId;
-        const imported: any[] = [];
-
-        json.forEach((record) => {
-          const lookup: Record<string, any> = {};
-          Object.keys(record).forEach((key) => {
-            lookup[norm(key).toLowerCase()] = record[key];
-          });
-
-          const values = Object.values(lookup).filter((value) => norm(value) !== "");
-          const firstValue = values[0];
-          const firstText = norm(firstValue).toLowerCase();
-          const namedMonthValues = values.filter((value) => hasNamedMonth(value));
-          const sectionMonthId = values.length <= 2 && namedMonthValues.length > 0 && namedMonthValues.length === values.length
-            ? parseMonthId(namedMonthValues[0])
-            : null;
-          if (sectionMonthId) {
-            activeMonthId = sectionMonthId;
-            return;
-          }
-
-          const isSummaryRow = firstText.startsWith("إجمالي") || firstText.startsWith("الاجمالي") || firstText.startsWith("total");
-          const headerMatches = values.filter((value) => allCols.some((column) => norm(column) === norm(value))).length;
-          if (isSummaryRow || headerMatches >= 2) return;
-
-          const hasData = allCols.some((column) => norm(lookup[norm(column).toLowerCase()]) !== "");
-          if (!hasData) return;
-
-          const rowMonthId = monthIdFromLookup(lookup) ?? activeMonthId;
-          const row: any = {
-            id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-            monthId: rowMonthId,
-          };
-          allCols.forEach((column) => {
-            const value = lookup[norm(column).toLowerCase()];
-            row[column] = value === "" || value === undefined || value === null
-              ? ""
-              : isNaN(Number(value)) ? value : Number(value);
-          });
-          imported.push(recomputeRow(row));
-        });
-
-        const importedMonths = new Set(imported.map((row) => row.monthId));
-        setDataRows((prev) => [
-          ...prev.filter((row) => !importedMonths.has(row.monthId)),
-          ...imported,
-        ]);
-      } catch (err) {
-        console.error(err);
-        window.alert("تعذّر قراءة الملف. تأكد أنه ملف Excel صادر من هذا الجدول.");
-      } finally {
-        if (fileInputRef.current) fileInputRef.current.value = "";
-      }
-    };
-    reader.readAsArrayBuffer(file);
-  };  
+    e.target.value = "";
+    try {
+      const imported = await importUsageInWorker(file, importMonthId);
+      const importedMonths = new Set(imported.map((row: any) => row.monthId));
+      setDataRows((prev) => [
+        ...prev.filter((row) => !importedMonths.has(row.monthId)),
+        ...imported,
+      ]);
+    } catch (error) {
+      console.error("[Excel] Usage import failed", error);
+      window.alert("تعذّر قراءة الملف. تأكد أنه ملف Excel صادر من هذا الجدول.");
+    }
+  };
   
   const border = {  
     top: { style: "thin" as const, color: { argb: "FF000000" } },
@@ -379,7 +351,6 @@ const AppTabs: React.FC = () => {
         verticalDpi: 300,
         margins: { left: 0.25, right: 0.25, top: 0.35, bottom: 0.35, header: 0.15, footer: 0.15 },
       },
-      printOptions: { horizontalCentered: true, verticalCentered: false },
     });
   
     disp.mergeCells(1, 1, 1, allCols.length);  

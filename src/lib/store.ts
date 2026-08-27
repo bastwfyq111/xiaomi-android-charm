@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist, type StateStorage } from "zustand/middleware";
 import seedTrainees from "@/data/trainees.json";
 import seedInstallments from "@/data/installments.json";
 
@@ -184,6 +184,46 @@ type State = {
 // ==========================================
 const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
 const getToday = () => new Date().toISOString().split("T")[0];
+
+let pendingStorageWrite: { name: string; value: string } | null = null;
+let storageWriteTimer: ReturnType<typeof setTimeout> | null = null;
+
+const flushStorageWrite = () => {
+  if (!pendingStorageWrite || typeof window === "undefined") return;
+  const pending = pendingStorageWrite;
+  pendingStorageWrite = null;
+  storageWriteTimer = null;
+  try {
+    window.localStorage.setItem(pending.name, pending.value);
+  } catch (error) {
+    console.error("[Storage] Failed to persist application data", error);
+  }
+};
+
+const deferredStorage: StateStorage = {
+  getItem: (name) =>
+    typeof window === "undefined" ? null : window.localStorage.getItem(name),
+  setItem: (name, value) => {
+    pendingStorageWrite = { name, value };
+    if (storageWriteTimer) clearTimeout(storageWriteTimer);
+    storageWriteTimer = setTimeout(flushStorageWrite, 80);
+  },
+  removeItem: (name) => {
+    if (pendingStorageWrite?.name === name) pendingStorageWrite = null;
+    if (storageWriteTimer) {
+      clearTimeout(storageWriteTimer);
+      storageWriteTimer = null;
+    }
+    if (typeof window !== "undefined") window.localStorage.removeItem(name);
+  },
+};
+
+if (typeof window !== "undefined") {
+  window.addEventListener("pagehide", flushStorageWrite);
+  window.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") flushStorageWrite();
+  });
+}
 
 const recalcInstallment = (i: Installment): Installment => {
   const totalPaid = Object.values(i.payments || {}).reduce((s, v) => s + (Number(v) || 0), 0);
@@ -620,6 +660,7 @@ export const useStore = create<State>()(
     {
       name: "majlis-yemen-v1",
       version: 2,
+      storage: createJSONStorage(() => deferredStorage),
       partialize: (state) => ({
         trainees: state.trainees,
         hafiza: state.hafiza,

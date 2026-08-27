@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useStore, type InstallmentCustomColumn } from "@/lib/store";
 import { fmt } from "@/lib/format";
-import * as XLSX from "xlsx";
+import { importInstallmentsInWorker } from "@/lib/excelImportWorkerClient";
 import { toast } from "sonner";
 import { useTableControls } from "@/hooks/useTableControls";
 import {
@@ -1460,69 +1460,25 @@ const exportToPDF = async (
     if (editPaymentModal) setEditPaymentModal(null);
   };
 
-  const importFile = (e: React.ChangeEvent<HTMLInputElement>, year: 2025 | 2026) => {
+  const importFile = async (e: React.ChangeEvent<HTMLInputElement>, year: 2025 | 2026) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (evt) => {
-      try {
-        const data = new Uint8Array(evt.target?.result as ArrayBuffer);
-        const workbook = XLSX.read(data, { type: "array" });
-        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-        const json = XLSX.utils.sheet_to_json(worksheet) as any[];
-
-        const formattedData = json.map((row: any) => {
-          const monthsList = year === 2025 ? MONTHS_2025 : MONTHS_2026;
-          const payments: any = {};
-          let totalPaid = 0;
-
-          monthsList.forEach((m) => {
-            const cleanTarget = m.trim();
-            const foundKey = Object.keys(row).find((k) => k.trim() === cleanTarget || k === m);
-            const amount = foundKey ? cleanNumber(row[foundKey]) : 0;
-            payments[m] = amount;
-            totalPaid += amount;
-          });
-
-          const nameKey = Object.keys(row).find((k) => k.includes("اسم المتدرب")) || "name";
-          const batchKey = Object.keys(row).find((k) => k.includes("رقم الدفعة")) || "batch";
-          const specialtyKey = Object.keys(row).find((k) => k.includes("المساق")) || "specialty";
-          const feesKey = Object.keys(row).find((k) => k.includes("مبلغ الرسوم")) || "fees";
-          const prevDueKey =
-            Object.keys(row).find((k) => k.includes("المتبقي عليهم من العام 2025")) || "prevDue";
-          const remainingKey = Object.keys(row).find((k) => k.trim() === "المتبقي") || "remaining";
-          const notesKey = Object.keys(row).find((k) => k.includes("ملاحظات")) || "notes";
-          const phoneKey = Object.keys(row).find((k) => k.includes("رقم الهاتف")) || "phone";
-
-          return {
-            name: row[nameKey] || "بدون اسم",
-            batch: row[batchKey] || "",
-            specialty: row[specialtyKey] || "",
-            fees: cleanNumber(row[feesKey]),
-            prevDue: cleanNumber(row[prevDueKey]),
-            totalPaid: row["الإجمالي"] ? cleanNumber(row["الإجمالي"]) : totalPaid,
-            remaining: cleanNumber(row[remainingKey]),
-            notes: row[notesKey] || "",
-            phone: row[phoneKey] || "",
-            payments,
-            customData: {},
-          };
-        });
-
-        if (year === 2025) {
-          useStore.setState({ installments2025: formattedData });
-        } else {
-          useStore.setState({ installments: formattedData });
-        }
-
-        toast.success(`تم استيراد بيانات العام ${year} بنجاح!`);
-        setImportError(null);
-      } catch (error) {
-        setImportError("حدث خطأ في قراءة الملف.");
-        toast.error("فشل استيراد الملف");
+    e.target.value = "";
+    try {
+      const formattedData = await importInstallmentsInWorker(file, year);
+      if (year === 2025) {
+        useStore.setState({ installments2025: formattedData });
+      } else {
+        useStore.setState({ installments: formattedData });
       }
-    };
-    reader.readAsArrayBuffer(file);
+
+      toast.success(`تم استيراد بيانات العام ${year} بنجاح!`);
+      setImportError(null);
+    } catch (error) {
+      console.error(`[Excel] Installments ${year} import failed`, error);
+      setImportError("حدث خطأ في قراءة الملف.");
+      toast.error("فشل استيراد الملف");
+    }
   };
 
   const getStatusText = (rem: number) =>
