@@ -4,6 +4,7 @@ import {
 } from "lucide-react";  
 import * as XLSX from "xlsx";
 import { useReportDate } from "@/lib/reportDate";
+import { reportLetterheadHtml } from "@/lib/printTableHtml";
   
 const mainHeaders = ["رقم الاستمارة", "كشف التسوية", "التاريخ", "البيان"];  
 const STORAGE_KEY = "app-tabs-usages-v1";  
@@ -424,17 +425,20 @@ const AppTabs: React.FC = () => {
       body += `<tr class="month"><td colspan="${TOTAL_COLS}">شهر ${m.name}</td></tr>`;  
       rows.forEach((row) => {  
         body += "<tr>";  
-        mainHeaders.forEach((h) => (body += `<td>${row[h] ?? ""}</td>`));  
-        dataColumnsOrder.forEach((c) => {  
-          const cls = isFormulaCol(c) ? "formula" : "";  
-          body += `<td class="${cls}">${row[c] === "" || row[c] === undefined ? "" : formatNumberEn(row[c])}</td>`;  
-        });  
-        body += `<td></td></tr>`;  
+        mainHeaders.forEach((h) => {
+          const cls = h === "التاريخ" ? "date-cell" : h === "رقم الاستمارة" ? "num numeric-cell" : "text-cell";
+          body += `<td class="${cls}">${row[h] ?? ""}</td>`;
+        });
+        dataColumnsOrder.forEach((c) => {
+          const cls = `num numeric-cell${isFormulaCol(c) ? " formula" : ""}`;
+          body += `<td class="${cls}">${row[c] === "" || row[c] === undefined ? "" : formatNumberEn(row[c])}</td>`;
+        });
+        body += `<td class="text-cell"></td></tr>`;
       });  
       const totalRow = (label: string, cls: string, getter: (c: string) => number) => {  
-        let tr = `<tr class="${cls}"><td colspan="4">${label}</td>`;  
-        dataColumnsOrder.forEach((c) => (tr += `<td>${numCell(getter(c))}</td>`));  
-        tr += `<td></td></tr>`;  
+        let tr = `<tr class="${cls}"><td class="text-cell" colspan="4">${label}</td>`;
+        dataColumnsOrder.forEach((c) => (tr += `<td class="num numeric-cell">${numCell(getter(c))}</td>`));
+        tr += `<td class="text-cell"></td></tr>`;
         return tr;  
       };  
       body += totalRow(`إجمالي شهر ${m.name}`, "t-cur", t.current);  
@@ -447,12 +451,19 @@ const AppTabs: React.FC = () => {
     <link rel="preconnect" href="https://fonts.googleapis.com">  
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap">  
     <style>  
-      @page { size: A4 landscape; margin: 6mm; }  
-      body { font-family:'Cairo','Tajawal','Segoe UI',Tahoma,Arial,sans-serif; direction:rtl; color:#000 !important; margin:0; padding:6px; font-weight:700 !important; }  
-      h2 { text-align:center; color:#000 !important; margin:4px 0 4px; font-weight:800; }
-      .report-date { text-align:center; color:#000 !important; margin:0 0 8px; font-size:10px; font-weight:700; }
-      table { width:auto; min-width:100%; border-collapse:collapse; table-layout:auto; font-size:clamp(7px,1.05vw,8px); }
-      th, td { border:1px solid #000; padding:0 !important; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:clip; overflow-wrap:anywhere; word-break:break-word; hyphens:auto; line-height:1.1; max-height:2.2em; font-size:clamp(7px,1.05vw,10px); color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+      @page { size: A4 landscape; margin: 3mm; }
+      * { box-sizing: border-box; }
+      html, body { margin:0; padding:0; }
+      body { font-family:'Cairo','Tajawal','Segoe UI',Tahoma,Arial,sans-serif; direction:rtl; color:#000 !important; padding:0 1px; width:100%; font-weight:700 !important; }
+      .report-letterhead-block { display:flex; width:100%; max-width:none; height:30mm; min-height:30mm; max-height:30mm; overflow:hidden; align-items:stretch; justify-content:center; margin:0 0 3mm; page-break-before:avoid; page-break-after:avoid; }
+      .report-letterhead-image { display:block; width:100% !important; max-width:none !important; height:100% !important; max-height:100% !important; object-fit:fill !important; object-position:center; margin:0 !important; }
+      h2 { text-align:center; color:#000 !important; margin:0 0 3mm; font-weight:800; }
+      .report-date { text-align:center; color:#000 !important; margin:0 0 5px; font-size:10px; font-weight:700; }
+      table { width:100%; max-width:100%; min-width:0; border-collapse:collapse; table-layout:auto !important; font-size:clamp(7px,1.05vw,9px); }
+      th, td { border:1px solid #000; padding:2px 3px !important; text-align:center; vertical-align:middle; white-space:normal; overflow:visible; overflow-wrap:break-word; word-break:normal; hyphens:none; line-height:1.15; font-size:clamp(7px,1.05vw,9px); color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+      .num, .numeric-cell, .date-cell { width:1%; min-width:0; white-space:nowrap !important; overflow:visible; overflow-wrap:normal; word-break:keep-all; hyphens:none; font-family:'Times New Roman',Times,serif !important; font-size:clamp(7px,1vw,10px) !important; font-variant-numeric:tabular-nums; direction:ltr; }
+      .text-cell { width:auto; white-space:normal; overflow-wrap:break-word; word-break:normal; }
+      .report-letterhead-cell { padding:0 !important; border:0 !important; width:100%; }
       thead th { background:#fff; font-weight:700; color:#000 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       thead .c-total { background:${COLORS.TOTAL_ALL}; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       thead .c-bab   { background:${COLORS.BAB_TOTAL}; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
@@ -463,8 +474,10 @@ const AppTabs: React.FC = () => {
       tr.t-cur td  { background:#dbeafe; color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       tr.t-prev td { background:#e2e8f0; color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       tr.t-cum td  { background:#0b3d6d; color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
-      tr.t-cur td:first-child, tr.t-prev td:first-child, tr.t-cum td:first-child { text-align:right; padding-right:8px; }  
+      tr.t-cur td:first-child, tr.t-prev td:first-child, tr.t-cum td:first-child { text-align:right; padding-right:4px; }
+      @media print { @page { size:A4 landscape; margin:3mm; } body { padding:0; } }
     </style></head><body>  
+    ${reportLetterheadHtml()}
     <h2>سجل مفردات الاستخدامات والنفقات العامة</h2>
     <div class="report-date">تاريخ التقرير: ${reportDateLabel}</div>
     <table><thead>${THEAD_HTML}</thead><tbody>${body}</tbody></table>  

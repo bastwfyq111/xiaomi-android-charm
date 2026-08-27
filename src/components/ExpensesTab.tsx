@@ -751,13 +751,13 @@ export default function ExpensesTab() {
               w.document
                 .write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${escapeHtml(`المصروفات - ${view} - ${reportDateLabel}`)}</title>
                 <style>
-                @page { size: A4 landscape; margin: 6mm; }
+                @page { size: A4 landscape; margin: 3mm; }
                 * { box-sizing: border-box; }
                 html, body { margin: 0; padding: 0; }
                 body { direction: rtl; background: #f1f5f9; color: #000; font-family: Cairo, Tajawal, Tahoma, Arial, sans-serif; font-weight: 700; }
-                .print-page { min-height: 186mm; margin: 0 auto; padding: 5mm; border: 1.5px solid #0f766e; background: #fff; }
-                .report-letterhead-block { display: flex; width: 100%; height: 30mm; min-height: 30mm; max-height: 30mm; align-items: stretch; justify-content: center; margin: 0 auto 4mm; page-break-before: avoid; page-break-after: avoid; }
-                .report-letterhead-image { display: block; width: 100%; height: 100%; object-fit: fill; object-position: center; }
+                .print-page { min-height: auto; width: 100%; margin: 0; padding: 0; border: 0; background: #fff; }
+                .report-letterhead-block { display: flex; width: 100%; max-width: none; height: 30mm; min-height: 30mm; max-height: 30mm; align-items: stretch; justify-content: center; margin: 0 0 3mm; page-break-before: avoid; page-break-after: avoid; }
+                .report-letterhead-image { display: block; width: 100%; max-width: none; height: 100%; max-height: 100%; object-fit: fill; object-position: center; margin: 0; }
                 .report-heading { margin: 0 0 4mm; padding: 3mm 4mm; border: 2px solid #000; border-radius: 9px; background: linear-gradient(90deg, #0f766e, #047857); color: #fff; text-align: center; }
                 .report-heading h1 { margin: 0; font-size: 17px; font-weight: 800; }
                 .report-heading p { margin: 1mm 0 0; font-size: 10px; font-weight: 700; }
@@ -792,21 +792,24 @@ export default function ExpensesTab() {
                 #expenses-report .bab-default { background-color: #d1fae5 !important; color: #064e3b !important; }
 
                 /* إعدادات الجدول ليحتوي النصوص بشكل تلقائي (auto) */
-                #expenses-report table { width: 100%; min-width: 100%; table-layout: auto; border-collapse: collapse; font-size: 9px; }
-                #expenses-report th, #expenses-report td { border: 1px solid #000 !important; padding: 3px !important; text-align: center !important; vertical-align: middle !important; white-space: nowrap !important; word-wrap: break-word !important; line-height: 1.2; color: #000 !important; font-weight: 700 !important; }
+                #expenses-report table { width: 100%; max-width: 100%; min-width: 0; table-layout: auto; border-collapse: collapse; font-size: 9px; }
+                #expenses-report th, #expenses-report td { border: 1px solid #000 !important; padding: 2px 3px !important; text-align: center !important; vertical-align: middle !important; white-space: normal !important; overflow: visible !important; overflow-wrap: break-word !important; word-break: normal !important; line-height: 1.2; color: #000 !important; font-weight: 700 !important; }
                 #expenses-report thead th { font-size: 9px; font-weight: 900 !important; }
                 #expenses-report tbody td { font-size: 8.5px; }
+                #expenses-report .numeric-cell, #expenses-report .date-cell, #expenses-report .font-mono, #expenses-report input[type="number"], #expenses-report input[type="date"] { width: 1% !important; min-width: 0 !important; white-space: nowrap !important; overflow: visible !important; overflow-wrap: normal !important; word-break: keep-all !important; font-family: 'Times New Roman', Times, serif !important; font-size: clamp(8px, 1vw, 11px) !important; font-variant-numeric: tabular-nums; direction: ltr; }
                 #expenses-report input { width: 100% !important; min-width: 0 !important; border: 0; background: transparent; color: #000; font: inherit; text-align: center; }
                 #expenses-report .text-white { color: #fff !important; }
                 
                 @media print {
                   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
                   body { background: #fff; }
-                  .print-page { min-height: auto; border-color: #0f766e; }
+                  .print-page { min-height: auto; width: 100%; padding: 0; border: 0; }
                   #expenses-report { page-break-before: avoid; }
                   #expenses-report table { page-break-inside: auto; }
                   #expenses-report thead { display: table-header-group; }
                   #expenses-report tr { page-break-inside: avoid; }
+                  #expenses-report th, #expenses-report td { white-space: normal !important; }
+                  #expenses-report .numeric-cell, #expenses-report .date-cell, #expenses-report .font-mono { white-space: nowrap !important; }
                 }
                 </style></head><body><div class="print-page">${reportLetterheadHtml()}<div class="report-heading"><h1>جدول المصروفات - ${escapeHtml(view)} - ${year}م</h1><p>المجلس اليمني للاختصاصات الطبية فرع - صعدة</p><p class="date">تاريخ التقرير: ${escapeHtml(reportDateLabel)}</p></div><div id="expenses-report">${el.innerHTML}</div></div>
                 <script>window.onload=()=>setTimeout(()=>window.print(),300)</script></body></html>`);

@@ -37,6 +37,28 @@ const reportLetterheadStyles = `
     tbody tr { break-inside: avoid; page-break-inside: avoid; }
 `;
 
+const targetedReportLetterheadStyles = `
+    thead { display: table-header-group; }
+    .report-letterhead-row { break-inside: avoid; page-break-inside: avoid; }
+    .report-letterhead-cell {
+      border: 0 !important;
+      background: #fff !important;
+      padding: 0 !important;
+      height: 30mm !important;
+    }
+    .report-letterhead-image {
+      display: block;
+      width: 100% !important;
+      max-width: none !important;
+      height: 30mm !important;
+      max-height: 30mm !important;
+      object-fit: fill !important;
+      object-position: center;
+      margin: 0 !important;
+    }
+    tbody tr { break-inside: avoid; page-break-inside: avoid; }
+  `;
+
 const norm = (s: string) => (s || "").replace(/\s+/g, " ").trim();
 
 export function exportToPdf(opts: {
@@ -271,7 +293,7 @@ export function monthlyStatementPdf(opts: {
   const head = `<meta charset="utf-8"><title>${title} - ${periodLabel}</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-${reportLetterheadStyles}
+${targetedReportLetterheadStyles}
     @page { size: A4 landscape; margin: 8mm; padding: 0; }
     body { 
       font-family: 'Cairo','Tajawal',sans-serif; 
@@ -305,7 +327,41 @@ ${reportLetterheadStyles}
     tr.group-row td { background: #fef3c7 !important; font-weight: 900 !important; }
     tr.subtotal-row td { background: #cbd5e1 !important; font-weight: 800 !important; }
     tr.total-row td { background: #1f7fb8 !important; font-weight: 900 !important; }
-    @media print { body { padding: 4px; } @page { margin: 8mm; } }
+    /* تحسينات محصورة بتقريري كشف الحساب الشهري والإيرادات */
+    @page { size: A4 landscape; margin: 3mm; padding: 0; }
+    body { padding: 0 1px; width: 100%; }
+    .report-letterhead-row { width: 100%; }
+    .report-letterhead-cell { padding: 0 !important; width: 100%; }
+    .report-letterhead-image { width: 100% !important; max-width: none !important; height: 30mm !important; object-fit: fill !important; margin: 0 !important; }
+    table { width: 100%; max-width: 100%; table-layout: auto !important; margin-top: 4px; }
+    th:first-child, td:first-child,
+    th:not(:first-child), td:not(:first-child) { width: auto !important; }
+    th, td {
+      padding: 2px 3px !important;
+      white-space: normal !important;
+      overflow: visible !important;
+      overflow-wrap: break-word !important;
+      word-break: normal !important;
+      line-height: 1.2;
+    }
+    .num, .numeric-cell, .date-cell {
+      width: 1% !important;
+      min-width: 0 !important;
+      white-space: nowrap !important;
+      overflow: visible !important;
+      overflow-wrap: normal !important;
+      word-break: keep-all !important;
+      hyphens: none !important;
+      font-family: 'Times New Roman', Times, serif !important;
+      font-size: clamp(9px, 1vw, 12px) !important;
+      font-variant-numeric: tabular-nums;
+      direction: ltr;
+    }
+    td.acc { width: auto !important; white-space: normal !important; overflow-wrap: break-word !important; word-break: normal !important; }
+    @media print {
+      body { padding: 0; }
+      @page { size: A4 landscape; margin: 3mm; }
+    }
   </style>`;
 
   w.document.write(`<!doctype html><html lang="ar" dir="rtl"><head>${head}</head><body>${body}<script>window.onload=()=>{setTimeout(()=>window.print(),400)}</script></body></html>`);
@@ -406,7 +462,7 @@ export function revenuePdf(
   const head = `<meta charset="utf-8"><title>${REV_SCHEMA.title} - ${MONTHS_PDF[month - 1]} ${year}م</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-${reportLetterheadStyles}
+${targetedReportLetterheadStyles}
     @page { size: A4 landscape; margin: 8mm; padding: 0; }
     body { 
       font-family: 'Cairo','Tajawal',sans-serif; 
@@ -450,7 +506,41 @@ ${reportLetterheadStyles}
     tr.group-row td { background: #fef3c7 !important; font-weight: 900 !important; }
     tr.subtotal-row td { background: #cbd5e1 !important; font-weight: 800 !important; }
     tr.total-row td { background: #1f7fb8 !important; font-weight: 900 !important; }
-    @media print { body { padding: 4px; } @page { margin: 8mm; } }
+    /* تحسينات محصورة بتقريري كشف الحساب الشهري والإيرادات */
+    @page { size: A4 landscape; margin: 3mm; padding: 0; }
+    body { padding: 0 1px; width: 100%; }
+    .report-letterhead-row { width: 100%; }
+    .report-letterhead-cell { padding: 0 !important; width: 100%; }
+    .report-letterhead-image { width: 100% !important; max-width: none !important; height: 30mm !important; object-fit: fill !important; margin: 0 !important; }
+    table { width: 100%; max-width: 100%; table-layout: auto !important; margin-top: 4px; }
+    th:first-child, td:first-child,
+    th:not(:first-child), td:not(:first-child) { width: auto !important; }
+    th, td {
+      padding: 2px 3px !important;
+      white-space: normal !important;
+      overflow: visible !important;
+      overflow-wrap: break-word !important;
+      word-break: normal !important;
+      line-height: 1.2;
+    }
+    .num, .numeric-cell, .date-cell {
+      width: 1% !important;
+      min-width: 0 !important;
+      white-space: nowrap !important;
+      overflow: visible !important;
+      overflow-wrap: normal !important;
+      word-break: keep-all !important;
+      hyphens: none !important;
+      font-family: 'Times New Roman', Times, serif !important;
+      font-size: clamp(9px, 1vw, 12px) !important;
+      font-variant-numeric: tabular-nums;
+      direction: ltr;
+    }
+    td.acc { width: auto !important; white-space: normal !important; overflow-wrap: break-word !important; word-break: normal !important; }
+    @media print {
+      body { padding: 0; }
+      @page { size: A4 landscape; margin: 3mm; }
+    }
   </style>`;
 
   w.document.write(`<!doctype html><html lang="ar" dir="rtl"><head>${head}</head><body>${body}<script>window.onload=()=>{setTimeout(()=>window.print(),400)}</script></body></html>`);
