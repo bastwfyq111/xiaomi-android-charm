@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import schemaJson from "@/lib/expensesSchema.json";
 import { useReportDate } from "@/lib/reportDate";
 import { escapeHtml, reportLetterheadHtml } from "@/lib/printTableHtml";
-import { registerReportWindow } from "@/lib/capacitorNavigation";
+import { printReportHtml } from "@/lib/nativePrinter";
 
 // ====== نوع الصف ======
 type Row = {
@@ -747,10 +747,7 @@ export default function ExpensesTab() {
             onClick={() => {
               const el = document.getElementById("expenses-view-content");
               if (!el) return;
-              const w = registerReportWindow(window.open("", "_blank", "width=1200,height=800"));
-              if (!w) return;
-              w.document
-                .write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${escapeHtml(`المصروفات - ${view} - ${reportDateLabel}`)}</title>
+              const html = `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${escapeHtml(`المصروفات - ${view} - ${reportDateLabel}`)}</title>
                 <style>
                 @page { size: A4 landscape; margin: 3mm; }
                 * { box-sizing: border-box; }
@@ -783,16 +780,12 @@ export default function ExpensesTab() {
                 #expenses-report .bg-sky-300 { background: #7dd3fc !important; color: #0c4a6e !important; }
                 #expenses-report .bg-emerald-200 { background: #a7f3d0 !important; color: #064e3b !important; }
                 #expenses-report .bg-emerald-50 { background: #ecfdf5 !important; color: #000 !important; }
-                
-                /* ألوان الأبواب المتعددة للطباعة */
                 #expenses-report .bab-1 { background-color: #a7f3d0 !important; color: #064e3b !important; }
                 #expenses-report .bab-2 { background-color: #bfdbfe !important; color: #1e3a8a !important; }
                 #expenses-report .bab-3 { background-color: #f5d0fe !important; color: #701a75 !important; }
                 #expenses-report .bab-4 { background-color: #fed7aa !important; color: #7c2d12 !important; }
                 #expenses-report .bab-5 { background-color: #fecdd3 !important; color: #881337 !important; }
                 #expenses-report .bab-default { background-color: #d1fae5 !important; color: #064e3b !important; }
-
-                /* إعدادات الجدول ليحتوي النصوص بشكل تلقائي (auto) */
                 #expenses-report table { width: 100%; max-width: 100%; min-width: 0; table-layout: auto; border-collapse: collapse; font-size: 9px; }
                 #expenses-report th, #expenses-report td { border: 1px solid #000 !important; padding: 2px 3px !important; text-align: center !important; vertical-align: middle !important; white-space: normal !important; overflow: visible !important; overflow-wrap: break-word !important; word-break: normal !important; line-height: 1.2; color: #000 !important; font-weight: 700 !important; }
                 #expenses-report thead th { font-size: 9px; font-weight: 900 !important; }
@@ -800,7 +793,6 @@ export default function ExpensesTab() {
                 #expenses-report .numeric-cell, #expenses-report .date-cell, #expenses-report .font-mono, #expenses-report input[type="number"], #expenses-report input[type="date"] { width: 1% !important; min-width: 0 !important; white-space: nowrap !important; overflow: visible !important; overflow-wrap: normal !important; word-break: keep-all !important; font-family: 'Times New Roman', Times, serif !important; font-size: clamp(8px, 1vw, 11px) !important; font-variant-numeric: tabular-nums; direction: ltr; }
                 #expenses-report input { width: 100% !important; min-width: 0 !important; border: 0; background: transparent; color: #000; font: inherit; text-align: center; }
                 #expenses-report .text-white { color: #fff !important; }
-                
                 @media print {
                   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
                   body { background: #fff; }
@@ -813,8 +805,9 @@ export default function ExpensesTab() {
                   #expenses-report .numeric-cell, #expenses-report .date-cell, #expenses-report .font-mono { white-space: nowrap !important; }
                 }
                 </style></head><body><div class="print-page">${reportLetterheadHtml()}<div class="report-heading"><h1>جدول المصروفات - ${escapeHtml(view)} - ${year}م</h1><p>المجلس اليمني للاختصاصات الطبية فرع - صعدة</p><p class="date">تاريخ التقرير: ${escapeHtml(reportDateLabel)}</p></div><div id="expenses-report">${el.innerHTML}</div></div>
-                <script>window.onload=()=>setTimeout(()=>window.print(),300)</script></body></html>`);
-              w.document.close();
+                <script>window.onload=()=>setTimeout(()=>window.print(),300)</script></body></html>`;
+              const opened = printReportHtml(html, `المصروفات - ${view} - ${reportDateLabel}`);
+              if (!opened) toast.error("تم منع فتح نافذة الطباعة، يرجى السماح بالنوافذ المنبثقة");
             }}
             className="px-3 py-1.5 bg-white text-[#10528e] border border-[#10528e]/30 rounded-lg text-xs font-bold shadow-sm hover:bg-blue-50"
           >

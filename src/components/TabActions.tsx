@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { useReportDate } from "@/lib/reportDate";
 import { exportTablePdf } from "@/lib/pdfExporter";
 import { buildTableHtml, escapeHtml, tablePrintStyles } from "@/lib/printTableHtml";
-import { registerReportWindow } from "@/lib/capacitorNavigation";
+import { printReportHtml } from "@/lib/nativePrinter";
 
 export type TabCol = { key: string; label: string };
 
@@ -53,8 +53,6 @@ export default function TabActions({
       toast.error("لا توجد بيانات للطباعة");
       return;
     }
-    const w = registerReportWindow(window.open("", "_blank", "width=1200,height=800"));
-    if (!w) return;
 
     const head = `
       <meta charset="utf-8" />
@@ -73,7 +71,7 @@ export default function TabActions({
       </style>
     `;
 
-    w.document.write(`<!doctype html><html lang="ar" dir="rtl"><head>${head}</head><body>
+    const html = `<!doctype html><html lang="ar" dir="rtl"><head>${head}</head><body>
       ${tableHtml()}
       <script>
         window.onload = () => {
@@ -82,8 +80,9 @@ export default function TabActions({
           }, 300);
         };
       </script>
-    </body></html>`);
-    w.document.close();
+    </body></html>`;
+    const opened = printReportHtml(html, `${title} - ${reportDateLabel}`);
+    if (!opened) toast.error("تم منع فتح نافذة الطباعة، يرجى السماح بالنوافذ المنبثقة");
   };
 
   const handleDownloadPdf = async () => {

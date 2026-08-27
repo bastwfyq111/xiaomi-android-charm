@@ -5,10 +5,14 @@ import {
   reportLetterheadHtml,
   tablePrintStyles,
 } from './printTableHtml';
-import { registerReportWindow } from "./capacitorNavigation";
+import { saveBlobToInternalStorage } from "@/lib/nativeFileStorage";
+import { printReportHtml } from "@/lib/nativePrinter";
 
-function downloadPdfBlob(pdf: any, fileName: string): void {
+async function downloadPdfBlob(pdf: any, fileName: string): Promise<void> {
   const blob = pdf.output('blob') as Blob;
+  const internalUri = await saveBlobToInternalStorage(blob, fileName);
+  if (internalUri) return;
+
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
@@ -234,7 +238,7 @@ async function htmlToPdf(opts: {
       offset += sliceH;
     }
 
-    downloadPdfBlob(pdf, fileName);
+    await downloadPdfBlob(pdf, fileName);
   } finally {
     frame.remove();
   }
@@ -441,7 +445,7 @@ async function htmlTableToPdfPaginated(opts: {
       }
     }
 
-    downloadPdfBlob(pdf, fileName);
+    await downloadPdfBlob(pdf, fileName);
   } finally {
     measureFrame.remove();
   }
@@ -527,9 +531,6 @@ export async function exportStudentStatementPdf(row: any, year: number): Promise
 }
 
 export function printHtmlContent(htmlContent: string): void {
-  const w = registerReportWindow(window.open('', '_blank'));
-  if (!w) return;
-  
   const styledContent = `
     <!DOCTYPE html>
     <html lang="ar" dir="rtl">
@@ -630,8 +631,7 @@ export function printHtmlContent(htmlContent: string): void {
     </html>
   `;
   
-  w.document.write(styledContent);
-  w.document.close();
+  printReportHtml(styledContent, "تقرير للطباعة");
 }
 
 export function printTable(title: string, columns: string[], rows: (string | number)[][]): void {
@@ -750,8 +750,6 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
     gPrev += cPrev;
   });
 
-  const w = registerReportWindow(window.open("", "_blank", "width=1100,height=800"));
-  if (!w) return;
   const fc = (n: number) =>
     `<span class="num">${escapeHtml(n ? fmt(n) : "-")}</span>`;
 
@@ -909,8 +907,8 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       @page { margin: 5mm; }
     }
   </style>`;
-  w.document.write(
+  printReportHtml(
     `<!doctype html><html lang="ar" dir="rtl"><head>${head}</head><body>${body}<script>window.onload=()=>{setTimeout(()=>window.print(),500)}</script></body></html>`,
+    `${REV_SCHEMA.title} - ${MONTHS_PDF[month - 1]} ${year}م`,
   );
-  w.document.close();
 }

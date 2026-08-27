@@ -1,5 +1,7 @@
 import * as XLSX from "xlsx";
 
+import { saveBlobToInternalStorage } from "@/lib/nativeFileStorage";
+
 export type ExcelPalette = {
   header: string;
   alternate: string;
@@ -323,6 +325,10 @@ export async function downloadWorkbook(workbook: ExcelWorkbook, fileName: string
   const blob = new Blob([buffer], {
     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   });
+
+  const internalUri = await saveBlobToInternalStorage(blob, fileName);
+  if (internalUri) return;
+
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
   anchor.href = url;

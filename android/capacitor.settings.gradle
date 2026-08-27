@@ -4,3 +4,9 @@ project(':capacitor-android').projectDir = new File('../node_modules/.pnpm/@capa
 
 include ':capacitor-app'
 project(':capacitor-app').projectDir = new File('../node_modules/.pnpm/@capacitor+app@8.0.0_@capacitor+core@8.5.0/node_modules/@capacitor/app/android')
+
+include ':capacitor-filesystem'
+project(':capacitor-filesystem').projectDir = new File('../node_modules/.pnpm/@capacitor+filesystem@8.0.0_@capacitor+core@8.5.0/node_modules/@capacitor/filesystem/android')
+
+include ':capgo-capacitor-printer'
+project(':capgo-capacitor-printer').projectDir = new File('../node_modules/.pnpm/@capgo+capacitor-printer@8.1.2_@capacitor+core@8.5.0/node_modules/@capgo/capacitor-printer/android')

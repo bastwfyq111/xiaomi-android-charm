@@ -241,7 +241,7 @@ function Index() {
   return (
     // الحاوية الرئيسية مع قائمة تبويبات جانبية تظهر فوق المحتوى عند فتحها
     <div
-      className="w-full min-h-screen bg-[#f5f2ea] font-tajawal selection:bg-[#1a3a52]/20 text-sm sm:text-base"
+      className="apk-tabs-ui w-full min-h-screen bg-[#f5f2ea] font-tajawal selection:bg-[#1a3a52]/20 text-sm sm:text-base"
       dir="rtl"
     >
       {/* قسم الهيدر العلوي — هوية كحلية مؤسسية بلمسة ختم برونزي */}

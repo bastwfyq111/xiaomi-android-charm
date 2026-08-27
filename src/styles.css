@@ -377,120 +377,124 @@ table td > * {
 
 /* نمط APK مدمج: يطبق على شاشة الهاتف داخل Capacitor فقط. */
 @media screen and (max-width: 640px) {
-  html.apk-compact {
-    font-size: 14px;
+  .apk-tabs-ui {
+    font-size: 13px;
   }
 
-  html.apk-compact body {
-    font-size: 0.875rem;
+  .apk-tabs-ui h1 {
+    font-size: 1.3rem !important;
   }
 
-  html.apk-compact h1 {
-    font-size: 1.45rem !important;
+  .apk-tabs-ui h2 {
+    font-size: 1.12rem !important;
   }
 
-  html.apk-compact h2 {
-    font-size: 1.25rem !important;
-  }
-
-  html.apk-compact h3 {
-    font-size: 1.1rem !important;
-  }
-
-  html.apk-compact h4 {
+  .apk-tabs-ui h3 {
     font-size: 1rem !important;
   }
 
-  html.apk-compact :where(button, [role="button"]) {
-    min-height: 2rem;
-    padding: 0.35rem 0.55rem !important;
-    gap: 0.35rem !important;
-    font-size: 0.75rem !important;
-    line-height: 1.2 !important;
+  .apk-tabs-ui h4 {
+    font-size: 0.9rem !important;
   }
 
-  html.apk-compact :where(button, [role="button"]) svg {
-    width: 0.9rem !important;
-    height: 0.9rem !important;
+  .apk-tabs-ui :where(button, [role="button"]) {
+    min-height: 1.75rem;
+    padding: 0.25rem 0.4rem !important;
+    gap: 0.25rem !important;
+    font-size: 0.6875rem !important;
+    line-height: 1.1 !important;
+  }
+
+  .apk-tabs-ui :where(button, [role="button"]) svg {
+    width: 0.78rem !important;
+    height: 0.78rem !important;
     flex: 0 0 auto;
   }
 
-  html.apk-compact svg {
-    max-width: 1.15rem;
-    max-height: 1.15rem;
+  .apk-tabs-ui svg {
+    max-width: 1rem;
+    max-height: 1rem;
   }
 
-  html.apk-compact :where(input, select, textarea) {
-    min-height: 2rem;
-    padding: 0.35rem 0.5rem !important;
-    font-size: 0.875rem !important;
-    line-height: 1.2;
+  .apk-tabs-ui :where(input, select, textarea) {
+    min-height: 1.75rem;
+    padding: 0.25rem 0.4rem !important;
+    font-size: 0.75rem !important;
+    line-height: 1.1;
   }
 
-  html.apk-compact :where(.text-5xl, .text-4xl) {
+  .apk-tabs-ui :where(.text-5xl, .text-4xl) {
     font-size: 1.65rem !important;
   }
 
-  html.apk-compact .text-3xl {
+  .apk-tabs-ui .text-3xl {
     font-size: 1.35rem !important;
   }
 
-  html.apk-compact .text-2xl {
+  .apk-tabs-ui .text-2xl {
     font-size: 1.2rem !important;
   }
 
-  html.apk-compact .text-xl {
+  .apk-tabs-ui .text-xl {
     font-size: 1.05rem !important;
   }
 
-  html.apk-compact .text-lg {
+  .apk-tabs-ui .text-lg {
     font-size: 0.95rem !important;
   }
 
-  html.apk-compact .text-base {
+  .apk-tabs-ui .text-base {
     font-size: 0.875rem !important;
   }
 
   /* تقليل حشو كروت المعلومات والحاويات المتكررة دون تغيير ألوانها أو منطقها. */
-  html.apk-compact .p-8 { padding: 1rem !important; }
-  html.apk-compact .p-6 { padding: 0.8rem !important; }
-  html.apk-compact .p-5 { padding: 0.7rem !important; }
-  html.apk-compact .p-4 { padding: 0.65rem !important; }
-  html.apk-compact .p-3 { padding: 0.5rem !important; }
-  html.apk-compact .p-2 { padding: 0.4rem !important; }
-  html.apk-compact .p-1\.5 { padding: 0.3rem !important; }
+  .apk-tabs-ui .p-8 { padding: 1rem !important; }
+  .apk-tabs-ui .p-6 { padding: 0.8rem !important; }
+  .apk-tabs-ui .p-5 { padding: 0.7rem !important; }
+  .apk-tabs-ui .p-4 { padding: 0.65rem !important; }
+  .apk-tabs-ui .p-3 { padding: 0.5rem !important; }
+  .apk-tabs-ui .p-2 { padding: 0.4rem !important; }
+  .apk-tabs-ui .p-1\.5 { padding: 0.3rem !important; }
 
-  html.apk-compact .px-8 { padding-left: 1rem !important; padding-right: 1rem !important; }
-  html.apk-compact .px-6 { padding-left: 0.8rem !important; padding-right: 0.8rem !important; }
-  html.apk-compact .px-5 { padding-left: 0.7rem !important; padding-right: 0.7rem !important; }
-  html.apk-compact .px-4 { padding-left: 0.65rem !important; padding-right: 0.65rem !important; }
-  html.apk-compact .px-3 { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
-  html.apk-compact .px-2 { padding-left: 0.4rem !important; padding-right: 0.4rem !important; }
+  .apk-tabs-ui .px-8 { padding-left: 1rem !important; padding-right: 1rem !important; }
+  .apk-tabs-ui .px-6 { padding-left: 0.8rem !important; padding-right: 0.8rem !important; }
+  .apk-tabs-ui .px-5 { padding-left: 0.7rem !important; padding-right: 0.7rem !important; }
+  .apk-tabs-ui .px-4 { padding-left: 0.65rem !important; padding-right: 0.65rem !important; }
+  .apk-tabs-ui .px-3 { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
+  .apk-tabs-ui .px-2 { padding-left: 0.4rem !important; padding-right: 0.4rem !important; }
 
-  html.apk-compact .py-8 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
-  html.apk-compact .py-6 { padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; }
-  html.apk-compact .py-5 { padding-top: 0.7rem !important; padding-bottom: 0.7rem !important; }
-  html.apk-compact .py-4 { padding-top: 0.65rem !important; padding-bottom: 0.65rem !important; }
-  html.apk-compact .py-3 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
-  html.apk-compact .py-2 { padding-top: 0.4rem !important; padding-bottom: 0.4rem !important; }
+  .apk-tabs-ui .py-8 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+  .apk-tabs-ui .py-6 { padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; }
+  .apk-tabs-ui .py-5 { padding-top: 0.7rem !important; padding-bottom: 0.7rem !important; }
+  .apk-tabs-ui .py-4 { padding-top: 0.65rem !important; padding-bottom: 0.65rem !important; }
+  .apk-tabs-ui .py-3 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+  .apk-tabs-ui .py-2 { padding-top: 0.4rem !important; padding-bottom: 0.4rem !important; }
 
-  html.apk-compact .gap-8 { gap: 1rem !important; }
-  html.apk-compact .gap-6 { gap: 0.75rem !important; }
-  html.apk-compact .gap-4 { gap: 0.6rem !important; }
-  html.apk-compact .gap-3 { gap: 0.5rem !important; }
-  html.apk-compact .gap-2 { gap: 0.4rem !important; }
+  .apk-tabs-ui .gap-8 { gap: 1rem !important; }
+  .apk-tabs-ui .gap-6 { gap: 0.75rem !important; }
+  .apk-tabs-ui .gap-4 { gap: 0.6rem !important; }
+  .apk-tabs-ui .gap-3 { gap: 0.5rem !important; }
+  .apk-tabs-ui .gap-2 { gap: 0.4rem !important; }
 
-  html.apk-compact table th,
-  html.apk-compact table td {
-    padding: 2px 3px !important;
-    font-size: clamp(10px, 2.45vw, 12px) !important;
-    line-height: 1.15 !important;
+  .apk-tabs-ui table th,
+  .apk-tabs-ui table td {
+    padding: 1px 2px !important;
+    font-size: clamp(9px, 2.1vw, 11px) !important;
+    line-height: 1.1 !important;
   }
 
-  html.apk-compact table input,
-  html.apk-compact table select {
-    min-height: 1.8rem;
-    padding: 2px 3px !important;
-    font-size: 0.75rem !important;
+  .apk-tabs-ui table input,
+  .apk-tabs-ui table select {
+    min-height: 1.55rem;
+    padding: 1px 2px !important;
+    font-size: 0.6875rem !important;
+  }
+
+  .apk-tabs-ui :where(.rounded-xl, .rounded-2xl, .rounded-3xl) {
+    border-radius: 0.5rem !important;
+  }
+
+  .apk-tabs-ui :where(.shadow, .shadow-sm, .shadow-md, .shadow-lg) {
+    box-shadow: 0 1px 2px rgb(15 23 42 / 0.08) !important;
   }
 }

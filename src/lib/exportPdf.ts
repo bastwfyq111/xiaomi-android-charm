@@ -9,7 +9,7 @@ import {
 } from "./reportPeriods";
 import { REPORT_LETTERHEAD_SRC } from "@/lib/printTableHtml";
 import revSchema from "@/data/revenueTemplate.json";
-import { registerReportWindow } from "./capacitorNavigation";
+import { printReportHtmlAsync } from "@/lib/nativePrinter";
 
 const reportLetterheadRow = (columnCount: number) => `
   <tr class="report-letterhead-row">
@@ -62,7 +62,7 @@ const targetedReportLetterheadStyles = `
 
 const norm = (s: string) => (s || "").replace(/\s+/g, " ").trim();
 
-export function exportToPdf(opts: {
+export async function exportToPdf(opts: {
   title: string;
   columns: string[];
   rows: (string | number)[][];
@@ -71,8 +71,6 @@ export function exportToPdf(opts: {
 }) {
   const reportDateLabel =
     formatReportDate(opts.reportDate) || new Date().toLocaleDateString("ar-EG-u-nu-latn");
-  const w = registerReportWindow(window.open("", "_blank", "width=900,height=700"));
-  if (!w) return;
   const orient = opts.orientation || (opts.columns.length > 6 ? "landscape" : "portrait");
   const fontSize = opts.columns.length > 12 ? 11 : opts.columns.length > 8 ? 12 : 14;
   const numericColumnHints = ["رقم", "الباب", "الفصل", "البند", "النوع", "مبلغ", "مدين", "دائن", "الرصيد", "الجملة", "الإجمالي", "المتبقي", "المدفوع", "الأشهر", "الشهر"];
@@ -180,8 +178,10 @@ ${reportLetterheadStyles}
   </table>
   <script>window.onload=()=>{setTimeout(()=>window.print(),400)}</script>`;
 
-  w.document.write(`<!doctype html><html lang="ar" dir="rtl"><head>${head}</head><body>${body}</body></html>`);
-  w.document.close();
+  await printReportHtmlAsync(
+    `<!doctype html><html lang="ar" dir="rtl"><head>${head}</head><body>${body}</body></html>`,
+    `${opts.title} - ${reportDateLabel}`,
+  );
 }
 
 export const hafizaPdf = (h: Hafiza[], reportDate?: string) =>
@@ -229,7 +229,7 @@ export const journalPdf = (j: Journal[], reportDate?: string) =>
     reportDate,
   });
 
-export function monthlyStatementPdf(opts: {
+export async function monthlyStatementPdf(opts: {
   journal: Journal[];
   year: number;
   startMonth: number;
@@ -247,9 +247,6 @@ export function monthlyStatementPdf(opts: {
   const periodSelection = { mode, year, month, quarter, halfYear };
   const periodLabel = getReportPeriodLabel(periodSelection);
   const colCurLabel = getReportMovementLabel(periodSelection);
-
-  const w = registerReportWindow(window.open("", "_blank", "width=1100,height=800"));
-  if (!w) return;
 
   const fmtCell = (n: number) => (n ? fmt(n) : "-");
 
@@ -365,8 +362,10 @@ ${targetedReportLetterheadStyles}
     }
   </style>`;
 
-  w.document.write(`<!doctype html><html lang="ar" dir="rtl"><head>${head}</head><body>${body}<script>window.onload=()=>{setTimeout(()=>window.print(),400)}</script></body></html>`);
-  w.document.close();
+  await printReportHtmlAsync(
+    `<!doctype html><html lang="ar" dir="rtl"><head>${head}</head><body>${body}<script>window.onload=()=>{setTimeout(()=>window.print(),400)}</script></body></html>`,
+    `${title} - ${periodLabel}`,
+  );
 }
 
 type RType = { no: number; title: string };
@@ -376,7 +375,7 @@ type RChapter = { no: number; title: string; longTitle?: string; sections: RSect
 const REV_SCHEMA = revSchema as { title: string; office: string; chapters: RChapter[] };
 const MONTHS_PDF = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
 
-export function revenuePdf(
+export async function revenuePdf(
   revenue: Record<string, number>,
   year: number,
   month: number,
@@ -418,8 +417,6 @@ export function revenuePdf(
     gCur += cCur; gPrev += cPrev;
   });
 
-  const w = registerReportWindow(window.open("", "_blank", "width=1100,height=800"));
-  if (!w) return;
   const fc = (n: number) => (n ? fmt(n) : "-");
 
   let body = `<h1>${REV_SCHEMA.title}</h1>`;
@@ -544,6 +541,8 @@ ${targetedReportLetterheadStyles}
     }
   </style>`;
 
-  w.document.write(`<!doctype html><html lang="ar" dir="rtl"><head>${head}</head><body>${body}<script>window.onload=()=>{setTimeout(()=>window.print(),400)}</script></body></html>`);
-  w.document.close();
+  await printReportHtmlAsync(
+    `<!doctype html><html lang="ar" dir="rtl"><head>${head}</head><body>${body}<script>window.onload=()=>{setTimeout(()=>window.print(),400)}</script></body></html>`,
+    `${REV_SCHEMA.title} - ${MONTHS_PDF[month - 1]} ${year}م`,
+  );
 }

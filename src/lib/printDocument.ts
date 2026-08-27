@@ -2,7 +2,7 @@ import {
   REPORT_LETTERHEAD_SRC,
   reportLetterheadHtml,
 } from "@/lib/printTableHtml";
-import { registerReportWindow } from "@/lib/capacitorNavigation";
+import { printReportHtmlAsync } from "@/lib/nativePrinter";
 
 export type PrintOrientation = "portrait" | "landscape";
 
@@ -177,7 +177,7 @@ const baseCss = (
   }
 `;
 
-export function openPrintDocument(options: PrintDocumentOptions): boolean {
+export async function openPrintDocument(options: PrintDocumentOptions): Promise<boolean> {
   const {
     title,
     body,
@@ -188,9 +188,6 @@ export function openPrintDocument(options: PrintDocumentOptions): boolean {
     letterheadPlacement = "table",
     autoPrint = true,
   } = options;
-
-  const w = registerReportWindow(window.open("", "_blank", "width=1280,height=900"));
-  if (!w) return false;
 
   const autoPrintScript = autoPrint
     ? `<script>
@@ -224,7 +221,7 @@ export function openPrintDocument(options: PrintDocumentOptions): boolean {
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>${baseCss(pageSize, orientation, margin)}${css}</style>
 </head>
-  <body>
+<body>
 ${letterheadPlacement === "top" ? reportLetterheadHtml() : ""}
 ${body}
 <script>
@@ -267,12 +264,9 @@ ${body}
   })();
 </script>
 ${autoPrintScript}
-
 </body>
 </html>`;
 
-  w.document.open();
-  w.document.write(html);
-  w.document.close();
-  return true;
+  const nativeOrPopupResult = await printReportHtmlAsync(html, title);
+  return nativeOrPopupResult;
 }

@@ -4,9 +4,11 @@ import {
 } from "lucide-react";  
 import * as XLSX from "xlsx";
 import { useReportDate } from "@/lib/reportDate";
+import { toast } from "sonner";
 import { reportLetterheadHtml } from "@/lib/printTableHtml";
-import { registerReportWindow } from "@/lib/capacitorNavigation";
+import { printReportHtml } from "@/lib/nativePrinter";
 import { importUsageInWorker } from "@/lib/excelImportWorkerClient";
+import { saveBlobToInternalStorage } from "@/lib/nativeFileStorage";
   
 const mainHeaders = ["رقم الاستمارة", "كشف التسوية", "التاريخ", "البيان"];  
 const STORAGE_KEY = "app-tabs-usages-v1";  
@@ -472,13 +474,19 @@ const AppTabs: React.FC = () => {
     flat.headerFooter = {
       oddFooter: '&L&"Arial"المجلس اليمني للاختصاصات الطبية&C&"Arial"صفحة &P من &N&R&"Arial"فرع صعدة',
     };
-    const buf = await wb.xlsx.writeBuffer();  
-    const blob = new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });  
-    const url = URL.createObjectURL(blob);  
-    const a = document.createElement("a");  
-    a.href = url;  
-    a.download = `الاستخدامات-${reportDate}.xlsx`;
-    a.click();  
+    const buf = await wb.xlsx.writeBuffer();
+    const blob = new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    const fileName = `الاستخدامات-${reportDate}.xlsx`;
+    const internalUri = await saveBlobToInternalStorage(blob, fileName);
+    if (internalUri) {
+      toast.success("تم حفظ ملف Excel داخل تخزين التطبيق");
+      return;
+    }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName;
+    a.click();
     URL.revokeObjectURL(url);  
   };  
   
@@ -550,12 +558,12 @@ const AppTabs: React.FC = () => {
     </body></html>`;  
   };  
   
-  const handlePrint = () => {  
-    const w = registerReportWindow(window.open("", "_blank", "width=1200,height=800"));
-    if (!w) return;  
-    w.document.write(buildAllMonthsHtml());  
-    w.document.close();  
-    w.onload = () => setTimeout(() => w.print(), 400);  
+  const handlePrint = () => {
+    const opened = printReportHtml(
+      buildAllMonthsHtml(),
+      `سجل مفردات الاستخدامات والنفقات العامة - ${reportDateLabel}`,
+    );
+    if (!opened) toast.error("تم منع فتح نافذة الطباعة، يرجى السماح بالنوافذ المنبثقة");
   };  
   
   const handlePdf = () => {  

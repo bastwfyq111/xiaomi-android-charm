@@ -31,6 +31,7 @@ import PrintSettingsModal, {
 import { openPrintDocument } from "@/lib/printDocument";
 import { useReportDate } from "@/lib/reportDate";
 import { reportLetterheadHtml } from "@/lib/printTableHtml";
+import { saveBlobToInternalStorage } from "@/lib/nativeFileStorage";
 import {
   addReportHeader,
   appendRows,
@@ -285,6 +286,11 @@ const downloadDetailedHtmlPdf = async ({
     }
 
     const blob = pdf.output("blob");
+    const internalUri = await saveBlobToInternalStorage(blob, fileName);
+    if (internalUri) {
+      toast.success("تم حفظ تقرير الأقساط داخل تخزين التطبيق");
+      return;
+    }
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
@@ -1147,7 +1153,7 @@ const exportToPDF = async (
       return;
     }
 
-    const ok = openPrintDocument({
+    const ok = await openPrintDocument({
       title: `تقرير_الأقساط_والمدفوعات_${year}_${reportDate}`,
       body,
       css: reportCss,
@@ -1707,7 +1713,7 @@ const exportToPDF = async (
   // فتح كشف الحساب في نافذة طباعة عالية الجودة (يمكن حفظه كـ PDF)
   const handleExportPdf = async (row: any, year: number) => {
     const { title, body, css } = generateAccountStatement(row, year);
-    const ok = openPrintDocument({
+    const ok = await openPrintDocument({
       title,
       body,
       css,
