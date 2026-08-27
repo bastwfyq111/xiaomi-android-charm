@@ -48,8 +48,8 @@ export const tablePrintStyles = `
     width: 100%;
     box-sizing: border-box;
     font-weight: 1000;
-    font-size: 12px;
-    line-height: 1.3;
+    font-size: 16px;
+    line-height: 1.5;
     background: #fff;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
@@ -58,15 +58,15 @@ export const tablePrintStyles = `
     text-align: center;
     color: #000 !important;
     margin: 0 0 3px;
-    font-size: 15px;
-    font-weight: 800;
+    font-size: 19px;
+    font-weight: 1000;
   }
   .sub {
     text-align: center;
     color: #000 !important;
     margin-bottom: 5px;
-    font-size: 13.5px;
-    font-weight: 1000;
+    font-size: 14.5px;
+    font-weight: 800;
     border-bottom: 1.5pt solid #b8860b;
     padding-bottom: 4px;
   }
@@ -77,20 +77,20 @@ export const tablePrintStyles = `
     max-width: 100%;
     border-collapse: collapse;
     table-layout: auto !important;
-    font-size: clamp(9px, 1.05vw, 13px);
+    font-size: clamp(13px, 1.05vw, 13px);
   }
   
   th, td {
-    border: 0.75pt solid #000;
+    border: 1px solid #000;
     padding: 6px 8px !important;
     text-align: center !important;
     vertical-align: middle !important; /* التوسيط العمودي تماماً بين الجزئين العلوي والسفلي */
     color: #000 !important;
     font-weight: 800 !important;
-    line-height: 1.4 !important;
+  line-height: 1.5!important;
     height: auto !important;
-    min-height: 32px;
-    font-size: clamp(10px, 1.15vw, 14px) !important;
+    min-height: 50px;
+    font-size: clamp(14px, 1.15vw, 14px) !important;
     white-space: nowrap !important; /* منع التفاف النصوص نهائياً في كافة الخلايا */
     width: max-content !important;
     word-break: keep-all !important;
@@ -122,12 +122,12 @@ export const tablePrintStyles = `
 
   .pdf-cell-text {
     display: flex !important;
-    align-items: center !important;     /* توسيط عمودي للعنصر الداخلي */
+align-items: center !important;     /* توسيط عمودي للعنصر الداخلي */
     justify-content: center !important; /* توسيط أفقـي للعنصر الداخلي */
     width: 100% !important;
     height: 100% !important;
     text-align: center !important;
-    white-space: nowrap !important;
+    white-space: normal!important;
     word-break: keep-all !important;
     overflow-wrap: normal !important;
   }
@@ -135,7 +135,7 @@ export const tablePrintStyles = `
   /* ضمان منع التفاف النصوص الطويلة وإبقائها في سطر واحد داخل المساحة المتاحة */
   .text-cell,
   .long-text-cell {
-    white-space: nowrap !important;
+    white-space: normal!important;
     overflow-wrap: normal !important;
     word-break: keep-all !important;
     width: max-content !important;
@@ -144,7 +144,7 @@ export const tablePrintStyles = `
   }
   .long-text-cell .pdf-cell-text,
   .text-cell .pdf-cell-text {
-    white-space: nowrap !important;
+    white-space: normal!important;
     overflow-wrap: normal !important;
     word-break: keep-all !important;
   }
