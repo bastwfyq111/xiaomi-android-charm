@@ -318,14 +318,19 @@ const AppTabs: React.FC = () => {
     e.target.value = "";
     try {
       const imported = await importUsageInWorker(file, importMonthId);
+      if (!imported.length) {
+        toast.error("لم يتم العثور على صفوف استخدامات صالحة في ملف Excel");
+        return;
+      }
       const importedMonths = new Set(imported.map((row: any) => row.monthId));
       setDataRows((prev) => [
         ...prev.filter((row) => !importedMonths.has(row.monthId)),
         ...imported,
       ]);
+      toast.success(`تم استيراد ${imported.length} صف إلى ${importedMonths.size} شهر`);
     } catch (error) {
       console.error("[Excel] Usage import failed", error);
-      window.alert("تعذّر قراءة الملف. تأكد أنه ملف Excel صادر من هذا الجدول.");
+      toast.error("تعذّر قراءة الملف. تأكد أنه ملف Excel صالح أو صادر من هذا الجدول.");
     }
   };
   
@@ -603,7 +608,7 @@ const AppTabs: React.FC = () => {
             <button onClick={handleClearAll} className="flex items-center gap-1 bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-2 rounded shadow-sm">  
               <Eraser className="w-4 h-4" /> مسح الكل  
             </button>  
-            <input ref={fileInputRef} type="file" accept=".xlsx,.xls" onChange={handleImportFile} className="hidden" />  
+            <input ref={fileInputRef} type="file" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" onChange={handleImportFile} className="hidden" />
           </div>  
         </div>  
       </div>  

@@ -46,6 +46,8 @@ const dataColumnsOrder = [
   "الامانات",
 ];
 const allCols = [...mainHeaders, ...dataColumnsOrder];
+const numericColumns = new Set(dataColumnsOrder);
+
 const MONTH_ALIASES = [
   ["يناير", "jan", "january"],
   ["فبراير", "فبر", "feb", "february"],
@@ -74,9 +76,94 @@ const IMPORT_MONTH_KEYS = [
 ];
 const IMPORT_DATE_KEYS = ["التاريخ", "date", "تاريخ"];
 
-const norm = (value: unknown) => String(value ?? "").replace(/\s+/g, " ").trim();
+const norm = (value: unknown) =>
+  String(value ?? "")
+    .replace(/\s+/g, " ")
+    .trim();
 const normalizeDigits = (value: string) =>
-  value.replace(/[٠-٩]/g, (digit) => String("٠١٢٣٤٥٦٧٨٩".indexOf(digit)));
+  value
+    .replace(/[٠-٩]/g, (digit) => String("٠١٢٣٤٥٦٧٨٩".indexOf(digit)))
+    .replace(/[۰-۹]/g, (digit) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(digit)));
+
+/**
+ * Excel files produced by different versions of the application may contain
+ * harmless differences in Arabic hamzas, separators, or hidden characters.
+ * Keeping one canonical form lets the importer accept those files without
+ * changing the names used by the table itself.
+ */
+const headerKey = (value: unknown) =>
+  normalizeDigits(norm(value))
+    .toLowerCase()
+    .replace(/[\u064B-\u065F\u0670]/g, "")
+    .replace(/[إأآٱ]/g, "ا")
+    .replace(/[ى]/g, "ي")
+    .replace(/[\u200B-\u200D\uFEFF]/g, "")
+    .replace(/[\s_\-./\\:()]+/g, "");
+
+const emptyCell = (value: unknown) => {
+  const text = norm(value);
+  return !text || ["-", "—", "–"].includes(text);
+};
+
+const parseNumber = (value: unknown): number | null => {
+  if (typeof value === "number") return Number.isFinite(value) ? value : null;
+  if (typeof value !== "string") return null;
+
+  let text = normalizeDigits(value).trim();
+  if (!text || ["-", "—", "–"].includes(text)) return null;
+  const isNegative = text.startsWith("(") && text.endsWith(")");
+  text = text
+    .replace(/[٬،,\s]/g, "")
+    .replace(/٫/g, ".")
+    .replace(/^\((.*)\)$/, "$1");
+  if (!/^[+-]?\d+(?:\.\d+)?$/.test(text)) return null;
+  const number = Number(text);
+  return Number.isFinite(number) ? (isNegative ? -number : number) : null;
+};
+
+const isoDate = (year: number, month: number, day: number) => {
+  if (year < 1 || month < 1 || month > 12 || day < 1 || day > 31) return null;
+  const date = new Date(Date.UTC(year, month - 1, day));
+  if (
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() !== month - 1 ||
+    date.getUTCDate() !== day
+  ) {
+    return null;
+  }
+  return `${year.toString().padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day
+    .toString()
+    .padStart(2, "0")}`;
+};
+
+const dateToInputValue = (value: unknown): string => {
+  if (value instanceof Date && !Number.isNaN(value.getTime())) {
+    return isoDate(value.getFullYear(), value.getMonth() + 1, value.getDate()) || "";
+  }
+
+  if (typeof value === "number" && Number.isFinite(value)) {
+    const parsed = XLSX.SSF.parse_date_code(value);
+    if (parsed) return isoDate(parsed.y, parsed.m, parsed.d) || "";
+  }
+
+  const text = normalizeDigits(norm(value));
+  if (!text) return "";
+
+  const normalized = text.replace(/[/.]/g, "-");
+  let match = normalized.match(/^(\d{4})-(\d{1,2})-(\d{1,2})(?:[T\s].*)?$/);
+  if (match) return isoDate(Number(match[1]), Number(match[2]), Number(match[3])) || text;
+
+  match = normalized.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
+  if (match) {
+    const first = Number(match[1]);
+    const second = Number(match[2]);
+    const year = Number(match[3]);
+    // Prefer day/month, while still accepting the unambiguous US month/day form.
+    return isoDate(year, second, first) || isoDate(year, first, second) || text;
+  }
+
+  return text;
+};
 
 const parseMonthId = (value: unknown): number | null => {
   if (value instanceof Date && !Number.isNaN(value.getTime())) return value.getMonth() + 1;
@@ -101,11 +188,19 @@ const parseMonthId = (value: unknown): number | null => {
   }
 
   const yearFirst = text.match(
-    /(?:^|[^0-9])20[0-9]{2}[\/\-.]([0-9]{1,2})(?:[\/\-.][0-9]{1,2})?(?:$|[^0-9])/,
+    /(?:^|[^0-9])20[0-9]{2}[-./]([0-9]{1,2})(?:[-./][0-9]{1,2})?(?:$|[^0-9])/,
   );
   if (yearFirst) {
     const month = Number(yearFirst[1]);
     if (month >= 1 && month <= 12) return month;
+  }
+
+  const dayFirst = text.match(/^(\d{1,2})[-./](\d{1,2})[-./]20\d{2}(?:\s|$)/);
+  if (dayFirst) {
+    const first = Number(dayFirst[1]);
+    const second = Number(dayFirst[2]);
+    if (second >= 1 && second <= 12) return second;
+    if (first >= 1 && first <= 12) return first;
   }
 
   const numeric = Number(text.replace(/,/g, ""));
@@ -127,17 +222,14 @@ const hasNamedMonth = (value: unknown) => {
 
 const monthIdFromLookup = (lookup: Record<string, unknown>) => {
   for (const key of [...IMPORT_MONTH_KEYS, ...IMPORT_DATE_KEYS]) {
-    const monthId = parseMonthId(lookup[norm(key).toLowerCase()]);
+    const monthId = parseMonthId(lookup[headerKey(key)]);
     if (monthId) return monthId;
   }
   return null;
 };
 
 const sumColumns = (row: Record<string, unknown>, columns: string[]) =>
-  columns.reduce((total, column) => {
-    const number = Number(row[column]);
-    return total + (Number.isNaN(number) ? 0 : number);
-  }, 0);
+  columns.reduce((total, column) => total + (parseNumber(row[column]) || 0), 0);
 
 const recomputeRow = (row: Record<string, unknown>) => {
   const nextRow = { ...row };
@@ -196,11 +288,44 @@ const recomputeRow = (row: Record<string, unknown>) => {
   return nextRow;
 };
 
+const headerTargets = new Map<string, string>();
+allCols.forEach((column) => headerTargets.set(headerKey(column), column));
+[
+  ["formno", "رقم الاستمارة"],
+  ["formnumber", "رقم الاستمارة"],
+  ["settlement", "كشف التسوية"],
+  ["description", "البيان"],
+  ["statement", "البيان"],
+  ["date", "التاريخ"],
+  ["monthid", "monthId"],
+  ["monthname", "monthId"],
+  ["month", "monthId"],
+  ["الشهر", "monthId"],
+  ["شهر", "monthId"],
+  ["اسم الشهر", "monthId"],
+  ["رقم الشهر", "monthId"],
+  ["الفترة", "monthId"],
+].forEach(([alias, target]) => headerTargets.set(headerKey(alias), target));
+
+const rowLookup = (record: Record<string, unknown>) => {
+  const lookup: Record<string, unknown> = {};
+  Object.entries(record).forEach(([key, value]) => {
+    const target = headerTargets.get(headerKey(key));
+    lookup[headerKey(target || key)] = value;
+  });
+  return lookup;
+};
+
+const importedValue = (column: string, value: unknown) => {
+  if (emptyCell(value)) return "";
+  if (column === "التاريخ") return dateToInputValue(value);
+  if (numericColumns.has(column)) return parseNumber(value) ?? norm(value);
+  return typeof value === "string" ? norm(value) : value;
+};
+
 export function parseUsageExcel(buffer: ArrayBuffer, importMonthId: number) {
   const workbook = XLSX.read(new Uint8Array(buffer), { type: "array", cellDates: true });
-  const sheetName = workbook.SheetNames.includes("بيانات")
-    ? "بيانات"
-    : workbook.SheetNames[0];
+  const sheetName = workbook.SheetNames.includes("بيانات") ? "بيانات" : workbook.SheetNames[0];
   const worksheet = workbook.Sheets[sheetName];
   if (!worksheet) return [];
 
@@ -210,10 +335,7 @@ export function parseUsageExcel(buffer: ArrayBuffer, importMonthId: number) {
     blankrows: false,
   });
   const headerRowIndex = matrix.findIndex((cells) => {
-    const normalizedCells = cells.map((cell) => norm(cell).toLowerCase());
-    const knownHeaders = normalizedCells.filter(
-      (cell) => cell === "monthid" || allCols.some((column) => norm(column).toLowerCase() === cell),
-    );
+    const knownHeaders = cells.filter((cell) => headerTargets.has(headerKey(cell)));
     return knownHeaders.length >= 2;
   });
   const json = XLSX.utils.sheet_to_json<Record<string, unknown>>(worksheet, {
@@ -221,16 +343,15 @@ export function parseUsageExcel(buffer: ArrayBuffer, importMonthId: number) {
     blankrows: false,
     ...(headerRowIndex >= 0 ? { range: headerRowIndex } : {}),
   });
-  let activeMonthId = importMonthId;
+  let activeMonthId =
+    Number.isInteger(importMonthId) && importMonthId >= 1 && importMonthId <= 12
+      ? importMonthId
+      : 1;
   const imported: Record<string, unknown>[] = [];
 
   json.forEach((record) => {
-    const lookup: Record<string, unknown> = {};
-    Object.keys(record).forEach((key) => {
-      lookup[norm(key).toLowerCase()] = record[key];
-    });
-
-    const values = Object.values(lookup).filter((value) => norm(value) !== "");
+    const lookup = rowLookup(record);
+    const values = Object.values(lookup).filter((value) => !emptyCell(value));
     const firstText = norm(values[0]).toLowerCase();
     const namedMonthValues = values.filter(hasNamedMonth);
     const sectionMonthId =
@@ -242,30 +363,24 @@ export function parseUsageExcel(buffer: ArrayBuffer, importMonthId: number) {
       return;
     }
 
+    const normalizedFirstText = headerKey(firstText);
     const isSummaryRow =
-      firstText.startsWith("إجمالي") ||
-      firstText.startsWith("الاجمالي") ||
-      firstText.startsWith("total");
-    const headerMatches = values.filter((value) =>
-      allCols.some((column) => norm(column) === norm(value)),
-    ).length;
+      normalizedFirstText.startsWith("اجمالي") ||
+      normalizedFirstText.startsWith("الاجمالي") ||
+      normalizedFirstText.startsWith("total");
+    const headerMatches = values.filter((value) => headerTargets.has(headerKey(value))).length;
     if (isSummaryRow || headerMatches >= 2) return;
 
-    const hasData = allCols.some((column) => norm(lookup[norm(column).toLowerCase()]) !== "");
+    const hasData = allCols.some((column) => !emptyCell(lookup[headerKey(column)]));
     if (!hasData) return;
 
+    const rowMonthId = monthIdFromLookup(lookup) ?? activeMonthId;
     const row: Record<string, unknown> = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      monthId: monthIdFromLookup(lookup) ?? activeMonthId,
+      monthId: rowMonthId,
     };
     allCols.forEach((column) => {
-      const value = lookup[norm(column).toLowerCase()];
-      row[column] =
-        value === "" || value === undefined || value === null
-          ? ""
-          : Number.isNaN(Number(value))
-            ? value
-            : Number(value);
+      row[column] = importedValue(column, lookup[headerKey(column)]);
     });
     imported.push(recomputeRow(row));
   });
