@@ -608,7 +608,7 @@ const AppTabs: React.FC = () => {
             <button onClick={handleClearAll} className="flex items-center gap-1 bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-2 rounded shadow-sm">  
               <Eraser className="w-4 h-4" /> مسح الكل  
             </button>  
-            <input ref={fileInputRef} type="file" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" onChange={handleImportFile} className="hidden" />
+            <input ref={fileInputRef} type="file" accept=".xlsx,.xls" onChange={handleImportFile} className="hidden" />
           </div>  
         </div>  
       </div>  
