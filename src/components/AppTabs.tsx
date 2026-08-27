@@ -45,7 +45,66 @@ const MONTHS = [
   { id: 9, name: "سبتمبر" }, { id: 10, name: "أكتوبر" }, { id: 11, name: "نوفمبر" }, { id: 12, name: "ديسمبر" },  
 ];  
   
-const norm = (s: any) => String(s ?? "").replace(/\s+/g, " ").trim();  
+const norm = (s: any) => String(s ?? "").replace(/\s+/g, " ").trim();
+
+const normalizeDigits = (value: string) => value.replace(/[٠-٩]/g, (digit) =>
+  String("٠١٢٣٤٥٦٧٨٩".indexOf(digit))
+);
+
+const MONTH_ALIASES = [
+  ["يناير", "jan", "january"], ["فبراير", "فبر", "feb", "february"], ["مارس", "mar", "march"],
+  ["أبريل", "ابريل", "apr", "april"], ["مايو", "may"], ["يونيو", "يونية", "jun", "june"],
+  ["يوليو", "july", "jul"], ["أغسطس", "اغسطس", "aug", "august"], ["سبتمبر", "sep", "september"],
+  ["أكتوبر", "اكتوبر", "oct", "october"], ["نوفمبر", "nov", "november"], ["ديسمبر", "dec", "december"],
+];
+
+const parseMonthId = (value: any): number | null => {
+  if (value instanceof Date && !Number.isNaN(value.getTime())) return value.getMonth() + 1;
+  const text = normalizeDigits(norm(value)).toLowerCase();
+  if (!text) return null;
+
+  const aliasIndex = MONTH_ALIASES.findIndex((aliases) => aliases.some((alias) =>
+    text === alias || text.startsWith(`${alias} `) || text.includes(`شهر ${alias}`) || text.includes(`month ${alias}`)
+  ));
+  if (aliasIndex >= 0) return aliasIndex + 1;
+
+  const monthLabel = text.match(/(?:شهر|month)\s*([0-9]{1,2})/);
+  if (monthLabel) {
+    const month = Number(monthLabel[1]);
+    if (month >= 1 && month <= 12) return month;
+  }
+
+  const yearFirst = text.match(/(?:^|[^0-9])20[0-9]{2}[\\/\\-.]([0-9]{1,2})(?:[\\/\\-.][0-9]{1,2})?(?:$|[^0-9])/);
+  if (yearFirst) {
+    const month = Number(yearFirst[1]);
+    if (month >= 1 && month <= 12) return month;
+  }
+
+  const numeric = Number(text.replace(/,/g, ""));
+  return Number.isInteger(numeric) && numeric >= 1 && numeric <= 12 ? numeric : null;
+};
+
+const IMPORT_MONTH_KEYS = ["monthid", "month id", "month_id", "month", "monthname", "الشهر", "شهر", "اسم الشهر", "رقم الشهر", "الفترة"];
+const IMPORT_DATE_KEYS = ["التاريخ", "date", "تاريخ"];
+
+const hasNamedMonth = (value: any) => {
+  const text = normalizeDigits(norm(value)).toLowerCase();
+  return MONTH_ALIASES.some((aliases) => aliases.some((alias) =>
+    text === alias || text.startsWith(`${alias} `) || text.includes(`شهر ${alias}`) || text.includes(`month ${alias}`)
+  ));
+};
+
+const monthIdFromLookup = (lookup: Record<string, any>) => {
+  for (const key of IMPORT_MONTH_KEYS) {
+    const monthId = parseMonthId(lookup[norm(key).toLowerCase()]);
+    if (monthId) return monthId;
+  }
+  for (const key of IMPORT_DATE_KEYS) {
+    const monthId = parseMonthId(lookup[norm(key).toLowerCase()]);
+    if (monthId) return monthId;
+  }
+  return null;
+};
   
 const formatNumberEn = (val: any) => {  
   if (val === "" || val === null || val === undefined) return "";  
@@ -217,47 +276,82 @@ const AppTabs: React.FC = () => {
   
   const handleImportClick = () => fileInputRef.current?.click();  
   
-  const handleImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {  
-    const file = e.target.files?.[0];  
-    if (!file) return;  
-    const reader = new FileReader();  
-    reader.onload = (ev) => {  
-      try {  
-        const data = new Uint8Array(ev.target?.result as ArrayBuffer);  
-        const wb = XLSX.read(data, { type: "array" });  
-        const wsName = wb.SheetNames.includes("بيانات") ? "بيانات" : wb.SheetNames[0];  
-        const ws = wb.Sheets[wsName];  
-        const json: any[] = XLSX.utils.sheet_to_json(ws, { defval: "" });  
-  
-        const imported = json.map((r) => {  
-          const lookup: Record<string, any> = {};  
-          Object.keys(r).forEach((k) => (lookup[norm(k)] = r[k]));  
-          const row: any = {  
-            id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,  
-            monthId: Number(lookup[norm("monthId")]) || importMonthId,  
-          };  
-          allCols.forEach((c) => {  
-            const v = lookup[norm(c)];  
-            row[c] = v === "" || v === undefined || v === null  
-              ? ""  
-              : isNaN(Number(v)) ? v : Number(v);  
-          });  
-          return recomputeRow(row);  
-        });  
-  
-        const importedMonths = new Set(imported.map((r) => r.monthId));  
-        setDataRows((prev) => [  
-          ...prev.filter((r) => !importedMonths.has(r.monthId)),  
-          ...imported,  
-        ]);  
-      } catch (err) {  
-        console.error(err);  
-        window.alert("تعذّر قراءة الملف. تأكد أنه ملف Excel صادر من هذا الجدول.");  
-      } finally {  
-        if (fileInputRef.current) fileInputRef.current.value = "";  
-      }  
-    };  
-    reader.readAsArrayBuffer(file);  
+  const handleImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const data = new Uint8Array(ev.target?.result as ArrayBuffer);
+        const wb = XLSX.read(data, { type: "array", cellDates: true });
+        const wsName = wb.SheetNames.includes("بيانات") ? "بيانات" : wb.SheetNames[0];
+        const ws = wb.Sheets[wsName];
+        const matrix: any[][] = XLSX.utils.sheet_to_json(ws, { header: 1, defval: "", blankrows: false });
+        const headerRowIndex = matrix.findIndex((cells) => {
+          const normalizedCells = cells.map((cell) => norm(cell).toLowerCase());
+          const knownHeaders = normalizedCells.filter((cell) =>
+            cell === "monthid" || allCols.some((column) => norm(column).toLowerCase() === cell)
+          );
+          return knownHeaders.length >= 2;
+        });
+        const json: any[] = headerRowIndex >= 0
+          ? XLSX.utils.sheet_to_json(ws, { defval: "", blankrows: false, range: headerRowIndex })
+          : XLSX.utils.sheet_to_json(ws, { defval: "", blankrows: false });
+        let activeMonthId = importMonthId;
+        const imported: any[] = [];
+
+        json.forEach((record) => {
+          const lookup: Record<string, any> = {};
+          Object.keys(record).forEach((key) => {
+            lookup[norm(key).toLowerCase()] = record[key];
+          });
+
+          const values = Object.values(lookup).filter((value) => norm(value) !== "");
+          const firstValue = values[0];
+          const firstText = norm(firstValue).toLowerCase();
+          const namedMonthValues = values.filter((value) => hasNamedMonth(value));
+          const sectionMonthId = values.length <= 2 && namedMonthValues.length > 0 && namedMonthValues.length === values.length
+            ? parseMonthId(namedMonthValues[0])
+            : null;
+          if (sectionMonthId) {
+            activeMonthId = sectionMonthId;
+            return;
+          }
+
+          const isSummaryRow = firstText.startsWith("إجمالي") || firstText.startsWith("الاجمالي") || firstText.startsWith("total");
+          const headerMatches = values.filter((value) => allCols.some((column) => norm(column) === norm(value))).length;
+          if (isSummaryRow || headerMatches >= 2) return;
+
+          const hasData = allCols.some((column) => norm(lookup[norm(column).toLowerCase()]) !== "");
+          if (!hasData) return;
+
+          const rowMonthId = monthIdFromLookup(lookup) ?? activeMonthId;
+          const row: any = {
+            id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+            monthId: rowMonthId,
+          };
+          allCols.forEach((column) => {
+            const value = lookup[norm(column).toLowerCase()];
+            row[column] = value === "" || value === undefined || value === null
+              ? ""
+              : isNaN(Number(value)) ? value : Number(value);
+          });
+          imported.push(recomputeRow(row));
+        });
+
+        const importedMonths = new Set(imported.map((row) => row.monthId));
+        setDataRows((prev) => [
+          ...prev.filter((row) => !importedMonths.has(row.monthId)),
+          ...imported,
+        ]);
+      } catch (err) {
+        console.error(err);
+        window.alert("تعذّر قراءة الملف. تأكد أنه ملف Excel صادر من هذا الجدول.");
+      } finally {
+        if (fileInputRef.current) fileInputRef.current.value = "";
+      }
+    };
+    reader.readAsArrayBuffer(file);
   };  
   
   const border = {  
