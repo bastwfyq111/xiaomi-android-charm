@@ -1109,9 +1109,6 @@ const exportToPDF = async (
     `;
 
     const body = `
-      <div class="print-toolbar">
-        <button type="button" onclick="window.print()">طباعة التقرير</button>
-      </div>
       ${
         settings.showHeader
           ? `<div class="doc-header">
@@ -1711,9 +1708,6 @@ const exportToPDF = async (
 
     const body = `
       <div class="container">
-        <div class="print-toolbar">
-          <button type="button" onclick="window.print()">طباعة التقرير</button>
-        </div>
         <div class="page-frame">
           <div class="info-grid">
             ${infoCard("اسم المتدرب", row.name)}
