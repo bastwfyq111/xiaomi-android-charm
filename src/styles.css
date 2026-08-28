@@ -17,16 +17,16 @@ src: url("/MohammadBoldArt-Regular.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Noto Sans Arabic";
-  src: url("/NotoSansArabic-SemiBold.ttf") format("truetype");
+  font-family: "Mohammad Bold Art";
+  src: url("/MohammadBoldArt-Regular.ttf") format("truetype");
   font-style: normal;
   font-weight: 600 700;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Noto Kufi Arabic";
-  src: url("/NotoKufiArabic-Medium.ttf") format("truetype");
+  font-family: "Mohammad Bold Art";
+  src: url("/MohammadBoldArt-Regular.ttf") format("truetype");
   font-style: normal;
   font-weight: 500;
   font-display: swap;
@@ -67,7 +67,7 @@ src: url("/MohammadBoldArt-Regular.ttf") format("truetype");
 }
 
 :root {
-  --font-ui: "Mohammad Bold Art", "Noto Sans Arabic", "Cairo", "Segoe UI", Tahoma, sans-serif;
+  --font-ui: "Mohammad Bold Art", Tahoma, sans-serif;
   --font-display: "Al Qabas Bold", "Noto Kufi Arabic", "Noto Sans Arabic", "Cairo", sans-serif;
   --font-heading: "Al Qabas Bold", "Noto Kufi Arabic", "Noto Sans Arabic", "Cairo", sans-serif;
   --font-data: "Times New Roman", "Noto Sans Arabic", "Segoe UI", sans-serif;
@@ -184,7 +184,9 @@ src: url("/MohammadBoldArt-Regular.ttf") format("truetype");
     font-variant-numeric: tabular-nums;
   }
 
-  /* حاوية التقرير التي تشبه صفحة A4 أفقية داخل المتصفح */
+  
+  /* حاوية التقرير 
+  التي تشبه صفحة A4أفقية داخل المتصفح */
   .a4-landscape-page {
     width: 297mm;
     max-width: 100%;
