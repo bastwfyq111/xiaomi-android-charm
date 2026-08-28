@@ -48,9 +48,28 @@
   font-display: swap;
 }
 
+/* خط التطبيق العام (المهند) */
+@font-face {
+  font-family: "Mohammad Bold Art";
+  src: url("/MohammadBoldArt-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+}
+
+/* خط العناوين ورؤوس الأعمدة (غامق) */
+@font-face {
+  font-family: "Al Qabas Bold";
+  src: url("/AlQabas-Bold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700 900;
+  font-display: swap;
+}
+
 :root {
-  --font-ui: "Noto Sans Arabic", "Cairo", "Segoe UI", Tahoma, sans-serif;
-  --font-display: "Noto Kufi Arabic", "Noto Sans Arabic", "Cairo", sans-serif;
+  --font-ui: "Mohammad Bold Art", "Noto Sans Arabic", "Cairo", "Segoe UI", Tahoma, sans-serif;
+  --font-display: "Al Qabas Bold", "Noto Kufi Arabic", "Noto Sans Arabic", "Cairo", sans-serif;
+  --font-heading: "Al Qabas Bold", "Noto Kufi Arabic", "Noto Sans Arabic", "Cairo", sans-serif;
   --font-data: "Times New Roman", "Noto Sans Arabic", "Segoe UI", sans-serif;
 }
 
@@ -140,7 +159,7 @@
     overscroll-behavior-y: none;
     -webkit-tap-highlight-color: transparent;
   }
-  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.022em; }
+  h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 800; letter-spacing: -0.022em; }
 
   /* نظام الخطوط المرئي: نص عربي واضح وعناوين قوية وأرقام سهلة القراءة */
   .font-tajawal,
@@ -148,7 +167,10 @@
     font-family: var(--font-ui) !important;
   }
 
-  table th,
+  table th {
+    font-family: var(--font-heading);
+  }
+
   table td {
     font-family: var(--font-ui);
   }
