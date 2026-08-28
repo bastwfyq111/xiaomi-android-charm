@@ -38,7 +38,7 @@ const baseCss = (
     direction: rtl;
     color: #000;
     font-weight: 500;
-    font-size: 12px;
+    font-size: 16px;
     line-height: 1.45;
     -webkit-font-smoothing: antialiased;
     text-rendering: geometricPrecision;
@@ -53,7 +53,7 @@ const baseCss = (
     max-width: 100%; 
     border-collapse: collapse; 
     table-layout: auto !important; 
-    font-size: clamp(8px, 1.05vw, 12px); 
+    font-size: clamp(14px, 1.05vw, 16px); 
   }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
@@ -66,7 +66,7 @@ const baseCss = (
     vertical-align: middle !important; 
     padding: 6px 8px !important; 
     line-height: 1.4 !important; 
-    font-size: clamp(8px, 1.05vw, 12px); 
+    font-size: clamp(14px, 1.05vw, 16px); 
     color: #000 !important; 
     font-weight: 700 !important; 
     white-space: nowrap !important;
@@ -165,7 +165,7 @@ const baseCss = (
     .page-break { page-break-after: always; }
     th, td { 
       padding: 5px 6px !important; 
-      font-size: clamp(8px, 1.0vw, 11px); 
+      font-size: clamp(14px, 1.0vw, 16px); 
       color: #000 !important; 
       font-weight: 700 !important; 
       white-space: nowrap !important;
