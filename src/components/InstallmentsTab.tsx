@@ -972,12 +972,17 @@ const exportToPDF = async (
         };
 
  const reportCss = `
-      html, body { margin: 0 !important; padding: 0 !important; }
-      * { box-sizing: border-box; }
-      .print-toolbar {
-        display: flex;
-        justify-content: flex-end;
-        margin: 0 0 6px;
+      html, body { 
+      margin: 0 !important;
+     padding: 0!important; 
+      }
+      * { 
+    box-sizing:border-box; 
+      }
+.print-toolbar {
+display: flex;
+justify-content: flex-end;
+ margin: 0 0 6px;
       }
       .print-toolbar button {
         border: 0.6pt solid #0f766e;
@@ -986,11 +991,13 @@ const exportToPDF = async (
         color: #fff;
         cursor: pointer;
         font-family: Cairo, Arial, sans-serif;
-        font-size: 15pt;
+        font-size: 15px;
         font-weight: 800;
         padding: 5px 12px;
       }
-      .print-toolbar button:hover { background: #115e59; }
+      .print-toolbar button:hover { 
+  background: #115e59; 
+      }
       .doc-header {
         display: flex;
         align-items: center;
@@ -1000,48 +1007,62 @@ const exportToPDF = async (
         padding-bottom: 4px;
         margin-bottom: 5px;
       }
-      .doc-header .title { text-align: right; }
-      .doc-header h1 { font-size: 20px; font-weight: 800; letter-spacing: -0.2px; }
-      .doc-header h2 { font-size: 15px; font-weight: 700; margin-top: 1px; color: ${colorTokens.accent}; }
-      .doc-header .meta { font-size: 12px; font-weight: 700; text-align: left; line-height: 1.6; }
-      .doc-header .meta span { display: block; }
+      .doc-header .title { text-align:center; }
+      .doc-header h1 { 
+  font-size: 20px; 
+font-weight: 800; 
+letter-spacing: -0.2px;
+}
+.doc-header h2 { 
+font-size: 13px; 
+font-weight: 700;
+margin-top: 1px; 
+color: ${colorTokens.accent}; }
+  .doc-header .meta { 
+font-size: 14px; 
+font-weight: 700; 
+text-align: center; 
+line-height: 1.6; 
+  }
+   .doc-header .meta span { display: block; 
+   }
 
       table {
-        font-size: ${fontSizePx.toFixed(2)}px;
-        table-layout: fixed !important; /* عرض ثابت لكل عمود حتى لا يتمدد الجدول بلا حدود */
-        width: 100% !important;
-        min-width: 100% !important;
-        border-collapse: collapse;
-        border: 0.75pt solid #000;
+  font-size:14px;
+  table-layout: auto!important;
+  width: 100% !important;
+min-width: 100% !important;
+ border-collapse: collapse;
+border: 0.75pt solid #000;
       }
       th, td {
-        border: 0.4pt solid #000;
-        padding: 5px 6px !important;
-        text-align: center !important;
-        vertical-align: middle !important; /* ضمان المحاذاة الرأسية لكل الخلايا */
-        white-space: nowrap !important; /* الأعمدة العادية (أرقام/أشهر) تبقى بسطر واحد */
+ border: 0.4pt solid #000;
+padding: 5px 6px !important;
+text-align: center !important;
+vertical-align: middle !important; /* ضمان المحاذاة الرأسية لكل الخلايا */
+white-space: nowrap !important; /* الأعمدة العادية (أرقام/أشهر) تبقى بسطر واحد */
         overflow: hidden;
         text-overflow: ellipsis;
-        font-size: clamp(13px, 1.5vw, 18px);
+        font-size: clamp(15px, 1.5vw, 18px);
         overflow-wrap: normal !important;
         word-break: keep-all !important;
         hyphens: none !important;
-        line-height: 1.35;
+     line-height: 1.5;
         font-weight: 700;
-        color: #000 !important;
+    color: #000 !important;
       }
       /* أعمدة الاسم والمساق (wide): السماح بالتفاف النص بدل خط واحد ممدود */
       th.wrap, td.wrap {
-        white-space: normal !important;
+      white-space: normal !important;
         overflow: visible !important;
         text-overflow: clip !important;
         overflow-wrap: break-word !important;
         word-break: normal !important;
       }
       .cell-content {
-        display: flex !important; /* تحويل العنصر الداخلي إلى Flexbox */
-        align-items: center !important; /* التمركز الرأسي للمحتوى */
-        justify-content: center !important; /* التمركز الأفقي للمحتوى */
+  display: flex !important; /* تحويل العنصر الداخلي إلى Flexbox */
+  align-items: center !important; /* التمركز الرأسي للمحتوى */
+justify-content: center !important; /* التمركز الأفقي للمحتوى */
         width: 100%;
         height: 100%;
         max-width: 100%;
@@ -1076,7 +1097,7 @@ const exportToPDF = async (
       }
       td.numeric-cell, th.numeric-cell, td.date-cell, th.date-cell, td.compact-cell, th.compact-cell {
         font-family: 'Times New Roman', Times, serif !important;
-        font-size: clamp(11px, 1.2vw, 15px) !important;
+        font-size: clamp(14px, 1.2vw, 15px) !important;
         line-height: 1.15 !important;
         white-space: nowrap !important;
         overflow-wrap: normal !important;
@@ -1085,7 +1106,7 @@ const exportToPDF = async (
         text-align: center !important;
       }
       td.numeric-cell *, th.numeric-cell *, td.date-cell *, th.date-cell *, td.compact-cell *, th.compact-cell * {
-        font-size: inherit !important;
+        font-size: 14px !important;
         line-height: inherit !important;
         white-space: nowrap !important;
         overflow-wrap: normal !important;
@@ -1572,11 +1593,11 @@ const exportToPDF = async (
     const statementCss = `
       @page { size: A4 portrait; margin: 10mm; }
       * { box-sizing: border-box; }
-      html, body { width: 100%; min-height: 0; margin: 0; padding: 0; }
+      html, body { width: 100%; min-height: auto; margin: 0; padding: 0; }
       body {
         font-family: "Times New Roman", "Noto Naskh Arabic", "Cairo", Tahoma, sans-serif;
         color: #111827;
-        font-size: 14pt;
+        font-size: 14px;
         line-height: 1.35;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
@@ -1754,7 +1775,8 @@ const exportToPDF = async (
 
   const stats2025 = [
     {
-      label: "إجمالي الرسوم التقديرية",
+label: 
+"إجمالي الرسوم التقديرية",
       value: fmt(totals2025.fees),
       bgClass: "bg-white",
       borderClass: "border-teal-100",
@@ -1768,7 +1790,8 @@ const exportToPDF = async (
       accentClass: "bg-emerald-500",
     },
     {
-      label: "إجمالي المتبقي والأرشيف",
+      label: 
+"إجمالي المتبقي",
       value: fmt(totals2025.remaining),
       bgClass: "bg-orange-50/70",
       borderClass: "border-orange-100",
@@ -1792,7 +1815,8 @@ const exportToPDF = async (
       accentClass: "bg-emerald-500",
     },
     {
-      label: "صافي رصيد المتبقي",
+      label: 
+  "صافي الرصيد المتبقي",
       value: fmt(totals2026.remaining),
       bgClass: "bg-orange-50/70",
       borderClass: "border-orange-100",
@@ -1870,12 +1894,15 @@ const exportToPDF = async (
 
   return (
     <div className="w-full space-y-4 sm:space-y-6 p-0" dir="rtl">
-      {/* ========== واجهة جدول 2025 ========== */}
+      
+{/* ========== واجهة جدول 2025 ========== */}
       <div className="w-full bg-gradient-to-b from-teal-50/60 to-white shadow-lg border border-teal-100 rounded-2xl overflow-hidden">
         <div className="bg-gradient-to-l from-teal-800 via-teal-600 to-emerald-600 px-2 sm:px-6 py-2.5 sm:py-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center flex-wrap gap-2">
           <div className="min-w-0">
             <h2 className="text-base sm:text-lg font-bold text-white">
-              📊 أقساط ومستندات العام 2025
+
+ 📊 أقساط ومستندات 
+ العام 2025
             </h2>
             <p className="text-xs text-teal-100">يشمل جميع الدفعات لعامي 2024 و 2025</p>
           </div>
@@ -2268,7 +2295,9 @@ const exportToPDF = async (
             </div>
           </th>
           <th
-            className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
+            className="text-center whitespace-nowrap
+            !text-white
+            cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
             onClick={() => handleSort2026("batch")}
           >
             <div className="flex items-center justify-center gap-1">
@@ -2276,7 +2305,9 @@ const exportToPDF = async (
             </div>
           </th>
           <th
-            className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
+            className="text-center whitespace-nowrap
+            !text-white
+            cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
             onClick={() => handleSort2026("specialty")}
           >
             <div className="flex items-center justify-center gap-1">
@@ -2284,7 +2315,9 @@ const exportToPDF = async (
             </div>
           </th>
           <th
-            className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors border-x border-white/25 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
+            className="text-center whitespace-nowrap 
+            !text-white
+            cursor-pointer hover:bg-white/10 transition-colors border-x border-white/25 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
             onClick={() => handleSort2026("prevDue")}
           >
             <div className="flex items-center justify-center gap-1">
@@ -2302,7 +2335,9 @@ const exportToPDF = async (
           {MONTHS_2026.map((m) => (
             <th
               key={m}
-              className="text-center border-l border-white/25 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
+              className="text-center border-l border-white/25 whitespace-nowrap 
+              !text-white
+              !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
             >
               {m.trim()}
             </th>
@@ -2345,15 +2380,21 @@ const exportToPDF = async (
                     </div>
                   </th>
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
+                    className="text-center whitespace-nowrap 
+              !text-white
+            cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
                     onClick={() => handleSort2026("remaining")}
                   >
                     <div className="flex items-center justify-center gap-1">
                       الرصيد المتبقي <SortIcon sortConfig={sortConfig2026} columnKey="remaining" />
                     </div>
                   </th>
-                  <th className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">حالة</th>
-                  <th className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">إجراءات</th>
+                  <th className="text-center whitespace-nowrap
+            !text-white
+            !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">حالة</th>
+                  <th className="text-center whitespace-nowrap 
+        !text-white
+        !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">إجراءات</th>
                 </tr>
               </thead>
               <tbody>
@@ -2380,25 +2421,26 @@ const exportToPDF = async (
                           key={i}
                           className={`border-t border-slate-200 transition-colors ${rowBgClass}`}
                         >
-                          <td className="text-center text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="text-center text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg sm:!text-base">
                             {i + 1}
                           </td>
-                          <td className="text-center font-bold text-black whitespace-nowrap bg-fuchsia-50/70 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="text-center font-bold text-black whitespace-nowrap bg-fuchsia-50/70 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg:!text-base">
                             <input
                               value={r.name || ""}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "name", e.target.value)
                               }
-                              className="w-full min-w-32 bg-transparent text-center text-black text-xs sm:text-xs outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
+    className=
+    "w-full min-w-20 bg-transparent text-center text-black text-lg:text-xs outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
                             />
                           </td>
-                          <td className="text-center text-black whitespace-nowrap bg-violet-50/70 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="text-center text-black whitespace-nowrap bg-violet-50/70 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg:!text-base">
                             <input
                               value={r.batch || ""}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "batch", e.target.value)
                               }
-                              className="w-full min-w-20 bg-transparent text-center text-black text-xs sm:text-xs outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
+                              className="w-full min-w-20 bg-transparent text-center text-black :text-lg outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
                               placeholder="—"
                             />
                           </td>
@@ -2408,28 +2450,28 @@ const exportToPDF = async (
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "specialty", e.target.value)
                               }
-                              className="w-full min-w-24 bg-transparent text-center text-black text-xs sm:text-xs outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
+                              className="w-full min-w-20 bg-transparent text-center text-black text-lg outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
                               placeholder="—"
                             />
                           </td>
-                          <td className="text-center numeric-cell font-mono text-black font-bold bg-amber-50/20 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="text-center numeric-cell font-mono text-black font-bold bg-amber-50/20 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg :!text-base">
                             <input
                               type="number"
                               value={r.prevDue || 0}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "prevDue", e.target.value)
                               }
-                              className="w-full min-w-20 bg-transparent text-center text-black text-xs sm:text-xs outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
+                              className="w-full min-w-20 bg-transparent text-center text-black text-lg outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
                             />
                           </td>
-                          <td className="text-center numeric-cell font-mono text-black font-bold whitespace-nowrap bg-indigo-50/70 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="text-center numeric-cell font-mono text-black font-bold whitespace-nowrap bg-indigo-50/70 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg:!text-base">
                             <input
                               type="number"
                               value={r.fees || 0}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "fees", e.target.value)
                               }
-                              className="w-full min-w-20 bg-transparent text-center text-black text-xs sm:text-xs outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
+                              className="w-full min-w-20 bg-transparent text-center text-black text-lg outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
                             />
                           </td>
                           {MONTHS_2026.map((m) => {
@@ -2438,7 +2480,7 @@ const exportToPDF = async (
                             return (
                               <td
                                 key={m}
-                                className="numeric-cell text-center relative bg-white/40 border-l border-slate-200 hover:bg-slate-100 cursor-pointer group transition-colors whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
+                                className="numeric-cell text-center relative bg-white/40 border-l border-slate-200 hover:bg-slate-100 cursor-pointer group transition-colors whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg:!text-base"
                                 onMouseEnter={() => setHoveredCell(cellId)}
                                 onMouseLeave={() => setHoveredCell(null)}
                               >
@@ -2492,7 +2534,7 @@ const exportToPDF = async (
                             </td>
                           ))}
 
-                          <td className="text-center numeric-cell font-mono text-black font-bold bg-emerald-50/30 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="text-center numeric-cell font-mono text-black font-bold bg-emerald-50/30 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg:!text-base">
                             {fmt(r.totalPaid)}
                           </td>
                           <td className="text-center numeric-cell font-mono text-black font-bold bg-rose-50/30 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
@@ -2542,20 +2584,21 @@ const exportToPDF = async (
                       );
                     })}
                     <tr className="border-t-2 border-teal-800 bg-teal-100/80 font-extrabold">
-                      <td className="text-center text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base" colSpan={4}>
+                      <td className="text-center text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg
+            :!text-base" colSpan={4}>
                         الإجماليات
                       </td>
-                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg :!text-base">
                         {fmt(totals2026.prevDue)}
                       </td>
-                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg :!text-base">
                         {fmt(totals2026.fees)}
                       </td>
 
                       {MONTHS_2026.map((m) => (
                         <td
                           key={m}
-                          className="text-center numeric-cell font-mono text-black border-l border-slate-200 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
+                          className="text-center numeric-cell font-cairo text-black border-l border-slate-200 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg :!text-base"
                         >
                           {totals2026.months[m] > 0 ? fmt(totals2026.months[m]) : "—"}
                         </td>
@@ -2563,19 +2606,19 @@ const exportToPDF = async (
                       {extraCols2026.map((col) => (
                         <td
                           key={col.name}
-                          className="text-center text-black border-l border-slate-200 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
+                          className="text-center text-black border-l border-slate-200 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg :!text-base"
                         >
                           —
                         </td>
                       ))}
-                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg :!text-base">
                         {fmt(totals2026.paid)}
                       </td>
-                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg :!text-base">
                         {fmt(totals2026.remaining)}
                       </td>
-                      <td className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"></td>
-                      <td className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"></td>
+                      <td className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg :!text-base"></td>
+                      <td className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg :!text-base"></td>
                     </tr>
                   </>
                 )}
