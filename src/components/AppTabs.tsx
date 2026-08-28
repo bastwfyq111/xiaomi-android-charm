@@ -132,7 +132,15 @@ const recomputeRow = (row: any) => {
   newRow["الفصل الثاني_باب1"] = fasl2Bab1;  
   newRow["اجمالي الباب الاول"] = fasl1Bab1 + fasl2Bab1;  
   
-  const fasl1Bab2 = sumColumns(newRow, ["مياه", "انارة", "ادوات كتابية", "نشر واعلان", "اتصالات", "مؤتمرات واحتفالات", "نفقات النظافة", "اخرى", "نقل مهام", "انتقالات داخلية", "ايجار مباني", "ادوية ومستلزمات طبية", "اغذية وملبوسات", "اخرى_2"]);  
+  const fasl1Bab2 = sumColumns(newRow,
+  ["مياه", 
+  "انارة"
+  , "ادوات كتابية"
+  , "نشر واعلان"
+  , "اتصالات",
+  "مؤتمرات واحتفالات", 
+  "نفقات النظافة", "اخرى",
+  "نقل مهام", "انتقالات داخلية", "ايجار مباني", "ادوية ومستلزمات طبية", "اغذية وملبوسات", "اخرى_2"]);  
   const fasl2Bab2 = sumColumns(newRow, ["صيانة مباني", "وقود وزيوت", "قطع غيار وصيانة وسائل النقل", "قطع غيار وصيانة الالات والمعدات والاثاث"]);  
   newRow["الفصل الاول_باب2"] = fasl1Bab2;  
   newRow["الفصل الثاني_باب2"] = fasl2Bab2;  
@@ -539,9 +547,9 @@ const AppTabs: React.FC = () => {
       .report-letterhead-image { display:block; width:100% !important; max-width:none !important; height:100% !important; max-height:100% !important; object-fit:fill !important; object-position:center; margin:0 !important; }
       h2 { text-align:center; color:#000 !important; margin:0 0 3mm; font-weight:800; }
       .report-date { text-align:center; color:#000 !important; margin:0 0 5px; font-size:10px; font-weight:700; }
-      table { width:100%; max-width:100%; min-width:0; border-collapse:collapse; table-layout:auto !important; font-size:clamp(7px,1.05vw,9px); }
-      th, td { border:1px solid #000; padding:2px 3px !important; text-align:center; vertical-align:middle; white-space:normal; overflow:visible; overflow-wrap:break-word; word-break:normal; hyphens:none; line-height:1.15; font-size:clamp(7px,1.05vw,9px); color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
-      .num, .numeric-cell, .date-cell { width:1%; min-width:0; white-space:nowrap !important; overflow:visible; overflow-wrap:normal; word-break:keep-all; hyphens:none; font-family:'Times New Roman',Times,serif !important; font-size:clamp(7px,1vw,10px) !important; font-variant-numeric:tabular-nums; direction:ltr; }
+      table { width:100%; max-width:100%; min-width:0; border-collapse:collapse; table-layout:auto !important; font-size:clamp(14px,1.05vw,16px); }
+      th, td { border:1px solid #000; padding:2px 3px !important; text-align:center; vertical-align:middle; white-space:normal; overflow:visible; overflow-wrap:break-word; word-break:normal; hyphens:none; line-height:1.15; font-size:clamp(14px,1.05vw,16px); color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+      .num, .numeric-cell, .date-cell { width:1%; min-width:0; white-space:nowrap !important; overflow:visible; overflow-wrap:normal; word-break:keep-all; hyphens:none; font-family:'Times New Roman',Times,serif !important; font-size:clamp(14px,1vw,16px) !important; font-variant-numeric:tabular-nums; direction:ltr; }
       .text-cell { width:auto; white-space:normal; overflow-wrap:break-word; word-break:normal; }
       .report-letterhead-cell { padding:0 !important; border:0 !important; width:100%; }
       thead th { background:#fff; font-weight:700; color:#000 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
@@ -550,11 +558,11 @@ const AppTabs: React.FC = () => {
       thead .c-fasl  { background:${COLORS.FASL}; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       thead .c-band  { background:${COLORS.BAND}; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       td.formula { background:#f8fafc; font-weight:700; color:#000 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
-      tr.month td { background:#0b3d6d; color:#000 !important; font-weight:700 !important; text-align:right; padding:0 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+      tr.month td { background:#0b3d6d; color:#000 !important; font-weight:700 !important; text-align:center; padding:0 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
       tr.t-cur td  { background:#dbeafe; color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       tr.t-prev td { background:#e2e8f0; color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       tr.t-cum td  { background:#0b3d6d; color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
-      tr.t-cur td:first-child, tr.t-prev td:first-child, tr.t-cum td:first-child { text-align:right; padding-right:4px; }
+      tr.t-cur td:first-child, tr.t-prev td:first-child, tr.t-cum td:first-child { text-align:center; padding-right:4px; }
       @media print { @page { size:A4 landscape; margin:3mm; } body { padding:0; } }
     </style></head><body>  
     ${reportLetterheadHtml()}

@@ -34,12 +34,12 @@ const baseCss = (
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; background: #fff; }
   body {
-    font-family: 'Cairo', 'Tajawal', 'Segoe UI', Tahoma, Arial, sans-serif;
+    font-family: 'Cairo';
     direction: rtl;
     color: #000;
     font-weight: 500;
     font-size: 16px;
-    line-height: 1.45;
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     text-rendering: geometricPrecision;
     -webkit-print-color-adjust: exact;
@@ -51,7 +51,7 @@ const baseCss = (
   table { 
     width: 100%; 
     max-width: 100%; 
-    border-collapse: collapse; 
+    border: solid 1px black; 
     table-layout: auto !important; 
     font-size: clamp(14px, 1.05vw, 16px); 
   }
@@ -61,12 +61,12 @@ const baseCss = (
   
   /* احتواء وتوسيط عمودي وأفقي دقيق تماماً داخل الخلايا بدون أي التفاف */
   th, td { 
-    border: 0.5pt solid #000; 
+    border: 1px solid #000; 
     text-align: center !important; 
     vertical-align: middle !important; 
     padding: 6px 8px !important; 
-    line-height: 1.4 !important; 
-    font-size: clamp(14px, 1.05vw, 16px); 
+    line-height: 1.5 !important; 
+    font-size: clamp(14px, 1vw, 16px); 
     color: #000 !important; 
     font-weight: 700 !important; 
     white-space: nowrap !important;
@@ -82,7 +82,7 @@ const baseCss = (
     align-items: center !important;
     justify-content: center !important;
     width: 100% !important;
-    height: 100% !important;
+    height: auto !important;
     text-align: center !important;
     white-space: nowrap !important;
     word-break: keep-all !important;
@@ -135,12 +135,15 @@ const baseCss = (
 
   /* ترويسة التقرير داخل thead تتكرر مع رؤوس الأعمدة في كل صفحة */
   .report-letterhead-row { page-break-after: avoid; break-after: avoid; }
-  .report-letterhead-cell {
-    height: 30mm !important;
-    min-height: 30mm !important;
-    padding: 0 !important;
-    border: 0 !important;
-    background: #fff !important;
+  
+  .report-letterhead-cell
+  {
+    height: 30 mm!important;
+min - height: 30 mm!important;
+padding: 0!important;
+border: 0!important;
+background: #fff!important;
+vertical - align: top;
   }
   .report-letterhead-cell img {
     display: block;
@@ -159,13 +162,13 @@ const baseCss = (
   /* تحسينات خاصة بالـ print / PDF */
   @media print {
     html, body { width: 100%; }
-    body { margin: 0; padding: 0; font-size: 10px; line-height: 1.3; }
+    body { margin: 0; padding: 0; font-size: 14px; line-height: 1.3; }
     thead { display: table-header-group; }
     tfoot { display: table-footer-group; }
     .page-break { page-break-after: always; }
     th, td { 
       padding: 5px 6px !important; 
-      font-size: clamp(14px, 1.0vw, 16px); 
+      font-size: clamp(14px, 1vw, 16px); 
       color: #000 !important; 
       font-weight: 700 !important; 
       white-space: nowrap !important;
