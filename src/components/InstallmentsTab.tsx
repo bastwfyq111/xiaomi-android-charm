@@ -99,7 +99,7 @@ const safePdfFileName = (value: any): string =>
  * يستخدم صورة الترويسة المضمّنة محلياً، وعرضاً أكبر ومقياس تصوير مرتفعاً
  * حتى تبقى الأعمدة العربية والأشهر واضحة عند الطباعة والحفظ.
  */
- const downloadDetailedHtmlPdf = async ({
+const downloadDetailedHtmlPdf = async ({
   title,
   body,
   css,
@@ -304,7 +304,6 @@ const safePdfFileName = (value: any): string =>
     frame.remove();
   }
 };
-
 
 // شبكة إحصائيات علوية بتصميم عصري
 const StatsGrid = ({ stats, columns = 3 }: { stats: any[]; columns?: number }) => {
@@ -892,13 +891,6 @@ const exportToPDF = async (
     const cols = allCols.filter((c) => !hidden.has(c.key));
 
     // ملاءمة تلقائية لعرض الصفحة حسب الحجم والاتجاه
-// ==========================================================================
-// الجزء المعدّل من دالة exportToPDF — فقط قسم حساب الخط وبناء reportCss
-// التعديلات: تكبير حجم الخط + تثبيت محاذاة النصوص لمنتصف الخلايا (أفقيًا ورأسيًا)
-// انسخ هذا القسم وضعه بدلاً من نفس القسم في ملفك الأصلي داخل دالة exportToPDF
-// ==========================================================================
-
-    // ملاءمة تلقائية لعرض الصفحة حسب الحجم والاتجاه
     const pageWidthMm =
       settings.pageSize === "A3"
         ? settings.orientation === "landscape"
@@ -911,17 +903,15 @@ const exportToPDF = async (
     const usableWidthMm = pageWidthMm - marginMm;
     const widthUnits = cols.reduce((s, c) => s + (c.wide ? 2.4 : 1), 0);
     const unitMm = usableWidthMm / Math.max(1, widthUnits);
-    // تم رفع الحد الأدنى والأقصى لحجم الخط التلقائي (كان 5 إلى 11)
-    const autoFont = Math.max(8, Math.min(15, unitMm * 1.25));
+    const autoFont = Math.max(5, Math.min(11, unitMm * 1.25));
     const fontSizePx = settings.fontMode === "manual" ? settings.fontSize : autoFont;
-    const headerFontSizePx = fontSizePx + 0.6;
+    const headerFontSizePx = fontSizePx + 0.4;
 
     const fitStyle = (text: any, base = fontSizePx) => {
       const len = String(text ?? "").replace(/<[^>]*>/g, "").length;
       const steps = Math.max(0, Math.ceil(Math.max(0, len - 16) / 10));
-      // تم رفع الحد الأدنى لحجم الخط داخل الخلايا الطويلة (كان 5)
-      const final = Math.max(8, base - Math.min(3.5, steps * 0.7));
-      return `font-size:${final.toFixed(2)}px; text-align:center;`;
+      const final = Math.max(5, base - Math.min(3.5, steps * 0.7));
+      return `font-size:${final.toFixed(2)}px`;
     };
 
     const colGroup = `<colgroup>${cols
@@ -980,7 +970,8 @@ const exportToPDF = async (
           due: "#ffffff",
           accent: "#000000",
         };
-const reportCss = `
+
+    const reportCss = `
       html, body { margin: 0 !important; padding: 0 !important; }
       * { box-sizing: border-box; }
       .print-toolbar {
@@ -1010,14 +1001,14 @@ const reportCss = `
         margin-bottom: 5px;
       }
       .doc-header .title { text-align: right; }
-      .doc-header h1 { font-size: 20px; font-weight: 800; letter-spacing: -0.2px; }
-      .doc-header h2 { font-size: 15px; font-weight: 700; margin-top: 1px; color: ${colorTokens.accent}; }
-      .doc-header .meta { font-size: 12px; font-weight: 700; text-align: left; line-height: 1.6; }
+      .doc-header h1 { font-size: 14px; font-weight: 800; letter-spacing: -0.2px; }
+      .doc-header h2 { font-size: 10.5px; font-weight: 700; margin-top: 1px; color: ${colorTokens.accent}; }
+      .doc-header .meta { font-size: 8.5px; font-weight: 700; text-align: left; line-height: 1.6; }
       .doc-header .meta span { display: block; }
 
       table {
         font-size: ${fontSizePx.toFixed(2)}px;
-        table-layout: fixed !important; /* عرض ثابت لكل عمود حتى لا يتمدد الجدول بلا حدود */
+        table-layout: auto!important;
         width: 100% !important;
         min-width: 100% !important;
         border-collapse: collapse;
@@ -1025,27 +1016,19 @@ const reportCss = `
       }
       th, td {
         border: 0.4pt solid #000;
-        padding: 5px 6px !important;
-        text-align: center !important;
+        padding: 2px 3px !important;
+        text-align: center;
         vertical-align: middle !important; /* ضمان المحاذاة الرأسية لكل الخلايا */
-        white-space: nowrap !important; /* الأعمدة العادية (أرقام/أشهر) تبقى بسطر واحد */
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-size: clamp(13px, 1.5vw, 18px);
+        white-space: nowrap !important;
+        overflow: visible;
+        text-overflow: clip;
+        font-size: clamp(14px, 1.25vw, 14px);
         overflow-wrap: normal !important;
         word-break: keep-all !important;
         hyphens: none !important;
-        line-height: 1.35;
+        line-height: 1.3;
         font-weight: 700;
         color: #000 !important;
-      }
-      /* أعمدة الاسم والمساق (wide): السماح بالتفاف النص بدل خط واحد ممدود */
-      th.wrap, td.wrap {
-        white-space: normal !important;
-        overflow: visible !important;
-        text-overflow: clip !important;
-        overflow-wrap: break-word !important;
-        word-break: normal !important;
       }
       .cell-content {
         display: flex !important; /* تحويل العنصر الداخلي إلى Flexbox */
@@ -1055,43 +1038,40 @@ const reportCss = `
         height: 100%;
         max-width: 100%;
         box-sizing: border-box;
-        padding: 3px 5px;
+        padding: 2px 4px;
         margin: 0;
-        text-align: center !important;
+        text-align: center;
         white-space: nowrap !important;
-        overflow: hidden;
+        overflow: visible;
         overflow-wrap: normal !important;
         word-break: keep-all !important;
         hyphens: none !important;
         line-height: 1.35;
       }
-      td.wrap .cell-content, th.wrap .cell-content {
-        white-space: normal !important;
-        overflow: visible !important;
-        overflow-wrap: break-word !important;
-        word-break: normal !important;
-        line-height: 1.3;
-      }
       td.wrap, td.wrap .cell-content {
+        white-space: nowrap !important;
+        overflow: visible;
+        text-overflow: clip;
+        overflow-wrap: normal !important;
+        word-break: keep-all !important;
+        hyphens: none !important;
+        line-height: 1.35;
         height: auto;
       }
       table th *, table td * {
-        text-align: center !important;
-      }
-      table th.wrap *, table td.wrap * {
-        white-space: normal !important;
-        overflow-wrap: break-word !important;
-        word-break: normal !important;
-      }
-      td.numeric-cell, th.numeric-cell, td.date-cell, th.date-cell, td.compact-cell, th.compact-cell {
-        font-family: 'Times New Roman', Times, serif !important;
-        font-size: clamp(11px, 1.2vw, 15px) !important;
-        line-height: 1.15 !important;
         white-space: nowrap !important;
         overflow-wrap: normal !important;
         word-break: keep-all !important;
         hyphens: none !important;
-        text-align: center !important;
+      }
+      td.numeric-cell, th.numeric-cell, td.date-cell, th.date-cell, td.compact-cell, th.compact-cell {
+        font-family: 'Times New Roman', Times, serif !important;
+        font-size: clamp(7px, 0.95vw, 11px) !important;
+        line-height: 1.05 !important;
+        white-space: nowrap !important;
+        overflow-wrap: normal !important;
+        word-break: keep-all !important;
+        hyphens: none !important;
       }
       td.numeric-cell *, th.numeric-cell *, td.date-cell *, th.date-cell *, td.compact-cell *, th.compact-cell * {
         font-size: inherit !important;
@@ -1099,16 +1079,13 @@ const reportCss = `
         white-space: nowrap !important;
         overflow-wrap: normal !important;
         word-break: keep-all !important;
-        text-align: center !important;
       }
       th {
         background: ${colorTokens.head} !important;
         color: ${colorTokens.headText} !important;
-        font-family: Cairo, Arial, sans-serif !important;
         font-size: ${headerFontSizePx.toFixed(2)}px;
         font-weight: 800;
-        padding: 6px 7px !important;
-        text-align: center !important;
+        padding: 4px 5px !important;
         vertical-align: middle !important;
       }
       tbody tr:nth-child(even) td { background: ${colorTokens.zebra} !important; }
@@ -1122,13 +1099,12 @@ const reportCss = `
         background: ${colorTokens.totals} !important;
         font-weight: 900;
         border-top: 1pt solid #111;
-        text-align: center !important;
       }
       .doc-foot {
         margin-top: 5px;
         display: flex;
         justify-content: space-between;
-        font-size: 12px;
+        font-size: 8.5px;
         font-weight: 700;
         border-top: 0.75pt solid ${colorTokens.accent};
         padding-top: 3px;
@@ -1139,7 +1115,6 @@ const reportCss = `
       }
     `;
 
-    
     const body = `
       ${
         settings.showHeader
