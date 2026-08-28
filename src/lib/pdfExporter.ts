@@ -27,8 +27,10 @@ async function downloadPdfBlob(pdf: any, fileName: string): Promise<void> {
  * مصدر وحيد وموحّد لقواعد احتواء/التفاف الخلايا داخل ".pdf-page".
  */
 function pdfPageCellCss(opts: { padding?: string; fontSize?: string } = {}): string {
-  const padding = opts.padding ?? '4px 5px';
-  const fontSize = opts.fontSize ?? 'clamp(14px, 1.15vw, 14px)';
+  // تم تكبير حجم الخط الافتراضي وتصغير الحشوة لإتاحة مساحة أكبر للنص
+  const padding = opts.padding ?? '2px 3px';
+  const fontSize = opts.fontSize ?? '13px'; // تم الرفع من 9-10px إلى 13px ثابتة أو أكبر
+
   return `
   .pdf-page table { 
     table-layout: auto !important; 
@@ -37,58 +39,47 @@ function pdfPageCellCss(opts: { padding?: string; fontSize?: string } = {}): str
     border-collapse: collapse !important;
   }
 
-  /* تنسيق خلايا الجدول بالكامل للتمركز والتمدد التلقائي */
-  .pdf-page th, .pdf-page td {
+  /* تكبير الخط وتمركز النصوص أفقياً وشاقولياً */
+  .pdf-page th, 
+  .pdf-page td, 
+  .pdf-page td.acc, 
+  .pdf-page td.num, 
+  .pdf-page td.idx {
     border: 1px solid #000 !important;
     padding: ${padding} !important;
     text-align: center !important;
     vertical-align: middle !important;
-    font-size: ${fontSize} !important;
+    font-size: ${fontSize} !important;     /* تطبيق حجم الخط الكبيرة */
+    line-height: 1.15 !important;          /* ضبط ارتفاع السطر لتوسيط الخط تماماً */
     white-space: nowrap !important; 
-    width: 1% !important; 
     word-break: keep-all !important;
-    overflow-wrap: normal !important;
-    hyphens: none !important;
+  }
+
+  /* تكبير خط العناوين في رأس الجدول */
+  .pdf-page th {
+    font-size: 14px !important;
+    font-weight: 900 !important;
+  }
+
+  /* تكبير الأرقام مع الحفاظ على خط Times New Roman */
+  .pdf-page .num { 
+    font-family: 'Times New Roman', Times, serif !important; 
+    font-size: 13.5px !important; 
+    font-weight: 900 !important; 
   }
 
   .pdf-page .pdf-cell-text {
-    display: flex !important;
-    align-items: center !important;     
-    justify-content: center !important; 
+    display: block !important;
     width: 100% !important;
-    height: 100% !important;
     text-align: center !important;
     color: #000000 !important;
     font-weight: 800 !important;
-    white-space: nowrap !important;
+    margin: 0 auto !important;
   }
-
-  .pdf-page td.num, .pdf-page td.idx, .pdf-page td.numeric-cell, .pdf-page td.date-cell,
-  .pdf-page td.num .pdf-cell-text, .pdf-page td.idx .pdf-cell-text, 
-  .pdf-page td.numeric-cell .pdf-cell-text, .pdf-page td.date-cell .pdf-cell-text {
-    white-space: nowrap !important;
-    word-break: keep-all !important;
-    overflow-wrap: normal !important;
-    direction: ltr !important; 
-  }
-
-  .pdf-page tbody td *, .pdf-page tfoot td *, .pdf-page .num *, .pdf-page .idx * {
-    color: #000000 !important;
-    -webkit-text-fill-color: #000000 !important;
-    text-shadow: none !important;
-    font-weight: 800 !important;
-  }
-  .pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx {
-    color: #000 !important;
-    -webkit-text-fill-color: #000 !important;
-    text-shadow: none !important;
-    font-weight: 800 !important;
-  }
-  .pdf-page .num { font-family: 'Times New Roman', Times, serif !important; font-weight: 900 !important; }
-  .pdf-page .sub { border-bottom-width: 2px !important; padding-bottom: 6px !important; margin-bottom: 8px !important; }
-  .pdf-page .total-row td { border-top: 2px solid #92400e !important; white-space: nowrap !important; }
   `;
-} 
+}
+
+
     
 function forcePdfDataCellTextColor(doc: Document): void {
   doc.querySelectorAll<HTMLElement>('.pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx').forEach((cell) => {
@@ -270,7 +261,7 @@ async function htmlTableToPdfPaginated(opts: {
   const isWideCentered = pdfLayout === 'wide-centered';
   const pageWidthPx = opts.pageWidthPx ?? (isWideCentered ? 1600 : (orientation === 'landscape' ? 1123 : 794));
   const cellPadding = isWideCentered ? '3px 4px' : '3px 4px';
-  const cellFontSize = isWideCentered ? 'clamp(10px, 0.9vw, 14px)' : 'clamp(9px, 1.05vw, 13px)';
+  const cellFontSize = isWideCentered ? 'clamp(14px, 0.9vw, 15px)' : 'clamp(14px, 1.05vw, 16px)';
   const layoutCss = isWideCentered ? `
     .pdf-page { width: 100% !important; max-width: none !important; margin: 0 !important; padding: 0 !important; }
     .pdf-page table { width: 100% !important; max-width: none !important; margin-left: 0 !important; margin-right: 0 !important; }
