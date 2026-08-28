@@ -9,8 +9,8 @@
 }
 
 @font-face {
-  font-family: "Noto Sans Arabic";
-  src: url("/NotoSansArabic-Regular.ttf") format("truetype");
+  font-family: "Mohammad Bold Art";
+src: url("/MohammadBoldArt-Regular.ttf") format("truetype");
   font-style: normal;
   font-weight: 400;
   font-display: swap;
@@ -33,16 +33,16 @@
 }
 
 @font-face {
-  font-family: "Noto Kufi Arabic";
-  src: url("/NotoKufiArabic-ExtraBold.ttf") format("truetype");
+  font-family: "Mohammad Bold Art";
+src: url("/MohammadBoldArt-Regular.ttf") format("truetype");
   font-style: normal;
   font-weight: 800 900;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Cairo";
-  src: url("/Cairo-Regular.ttf") format("truetype");
+  font-family: "Mohammad Bold Art";
+src: url("/MohammadBoldArt-Regular.ttf") format("truetype");
   font-style: normal;
   font-weight: 400 900;
   font-display: swap;
@@ -227,7 +227,7 @@
     word-break: normal !important;
     padding: 5px 6px !important;
     line-height: 1.3;
-    font-size: clamp(12px, 1vw, 14px);
+    font-size: clamp(14px, 1vw, 14px);
     border: 1px solid #000 !important;
   }
 
@@ -273,11 +273,11 @@
   }
 
   table { 
-    font-size: 12px; 
+    font-size: 16px; 
   }
   table th, table td {
     padding: 3px 4px !important;
-    font-size: clamp(11px, 2.8vw, 13px);
+    font-size: clamp(14px, 2.8vw, 16px);
   }
   table input { font-size: 14px; padding: 3px 4px; }
 }
@@ -294,7 +294,7 @@ table th.font-mono,
 table .tabular-nums,
 table input[type="number"] {
   font-family: var(--font-data) !important;
-  font-size: clamp(13px, 1.2vw, 14px) !important;
+  font-size: clamp(14px, 1.2vw, 16px) !important;
   line-height: 1.15 !important;
   color: #000 !important;
   font-weight: 900 !important;
@@ -391,7 +391,7 @@ table td > * {
   table th, table td {
     padding: 3px 4px !important;
     line-height: 1.2;
-    font-size: 12px !important;
+    font-size: 16px !important;
   }
 
   .no-print { display: none !important; }
@@ -400,7 +400,7 @@ table td > * {
 /* نمط APK مدمج: يطبق على شاشة الهاتف داخل Capacitor فقط. */
 @media screen and (max-width: 640px) {
   .apk-tabs-ui {
-    font-size: 13px;
+    font-size: 16px;
   }
 
   .apk-tabs-ui h1 {
