@@ -4,6 +4,7 @@ import reportLetterheadUrl from "@/assets/report-letterhead.png";
 
 export type TableCol = { key: string; label: string };
 
+export const REPORT_LETTERHEAD_SRC = reportLetterheadUrl;
 
 export const reportLetterheadHtml = () => `
   <div class="report-letterhead-block" style="display:flex;position:relative;top:0;width:100%;height:34mm;min-height:34mm;max-height:34mm;overflow:hidden;align-items:stretch;justify-content:center;margin:0 auto 5mm;page-break-before:avoid;page-break-after:avoid;break-before:avoid;break-after:avoid;">
