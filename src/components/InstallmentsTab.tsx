@@ -141,7 +141,7 @@ const downloadDetailedHtmlPdf = async ({
           <style>
             ${css}
             html, body { margin: 0 !important; padding: 0 !important; background: #fff !important; }
-            body { width: ${pageWidthPx}px; font-family: Tahoma, Arial, sans-serif !important; }
+            body { width: ${pageWidthPx}px; font-family: Tahoma, Arial, sans-serif !important; font-size: 14px !important; }
             .pdf-download-root {
               width: 100%;
               max-width: none;
@@ -157,20 +157,37 @@ const downloadDetailedHtmlPdf = async ({
               width: 100% !important;
               max-width: none !important;
               margin: 0 !important;
+              border-collapse: collapse !important;
             }
+            
+            /* تعديل الخطوط والتوسيط لخلايا الجدول */
             .pdf-download-root th,
             .pdf-download-root td {
               text-align: center !important;
               vertical-align: middle !important;
-              padding: 3px 4px !important;
+              padding: 6px 3px !important;
+              font-size: 13px !important;
+              line-height: 1.3 !important;
             }
+
+            /* تكبير وتبريز خطوط العناوين والترويسة */
+            .pdf-download-root th {
+              font-size: 14px !important;
+              font-weight: bold !important;
+              background-color: #f1f5f9 !important;
+            }
+
+            /* ضبط عناصر الخلايا الداخلية لضمان المحاذاة في المنتصف تماماً */
             .pdf-download-root .cell-content {
               display: flex !important;
               align-items: center !important;
               justify-content: center !important;
-              min-height: 1em;
+              min-height: 1.4em;
               padding: 1px 2px;
+              font-size: 13px !important;
+              font-weight: 600 !important;
             }
+
             .print-toolbar { display: none !important; }
             @media print { .print-toolbar { display: none !important; } }
           </style>
@@ -220,6 +237,7 @@ const downloadDetailedHtmlPdf = async ({
     });
     const pageWidthMm = pdf.internal.pageSize.getWidth();
     const pageHeightMm = pdf.internal.pageSize.getHeight();
+    
     // هوامش ضيقة حتى يستغل جدول الأقساط كامل عرض صفحة PDF.
     const marginMm = 3;
     const imageWidthMm = pageWidthMm - marginMm * 2;
@@ -304,6 +322,7 @@ const downloadDetailedHtmlPdf = async ({
     frame.remove();
   }
 };
+
 
 // شبكة إحصائيات علوية بتصميم عصري
 const StatsGrid = ({ stats, columns = 3 }: { stats: any[]; columns?: number }) => {
