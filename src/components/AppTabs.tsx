@@ -9,6 +9,7 @@ import { reportLetterheadHtml } from "@/lib/printTableHtml";
 import { printReportHtml } from "@/lib/nativePrinter";
 import { importUsageInWorker } from "@/lib/excelImportWorkerClient";
 import { saveBlobToInternalStorage } from "@/lib/nativeFileStorage";
+import WebActionMenu from "./WebActionMenu";
   
 const mainHeaders = ["رقم الاستمارة", "كشف التسوية", "التاريخ", "البيان"];  
 const STORAGE_KEY = "app-tabs-usages-v1";  
@@ -593,21 +594,35 @@ const AppTabs: React.FC = () => {
             >  
               {MONTHS.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}  
             </select>  
-            <button onClick={handleImportClick} className="flex items-center gap-1 bg-teal-600 hover:bg-teal-700 text-white text-xs px-3 py-2 rounded shadow-sm">  
-              <Upload className="w-4 h-4" /> استيراد Excel  
-            </button>  
-            <button onClick={handleExportExcel} className="flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-2 rounded shadow-sm">  
-              <Download className="w-4 h-4" /> تصدير Excel  
-            </button>  
-            <button onClick={handlePdf} className="flex items-center gap-1 bg-rose-600 hover:bg-rose-700 text-white text-xs px-3 py-2 rounded shadow-sm">  
-              <FileText className="w-4 h-4" /> تحويل PDF  
-            </button>  
-            <button onClick={handlePrint} className="flex items-center gap-1 bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-2 rounded shadow-sm">  
-              <Printer className="w-4 h-4" /> طباعة  
-            </button>  
-            <button onClick={handleClearAll} className="flex items-center gap-1 bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-2 rounded shadow-sm">  
-              <Eraser className="w-4 h-4" /> مسح الكل  
-            </button>  
+            <div className="web-only-actions">
+              <WebActionMenu
+                label="إجراءات سجل الاستخدامات"
+                actions={[
+                  { label: "استيراد Excel", icon: Upload, onSelect: handleImportClick },
+                  { label: "تصدير Excel", icon: Download, onSelect: handleExportExcel },
+                  { label: "تحويل PDF", icon: FileText, onSelect: handlePdf },
+                  { label: "طباعة", icon: Printer, onSelect: handlePrint },
+                  { label: "مسح الكل", icon: Eraser, onSelect: handleClearAll, destructive: true },
+                ]}
+              />
+            </div>
+            <div className="apk-only-actions flex flex-wrap items-center gap-2">
+              <button onClick={handleImportClick} className="flex items-center gap-1 bg-teal-600 hover:bg-teal-700 text-white text-xs px-3 py-2 rounded shadow-sm">
+                <Upload className="w-4 h-4" /> استيراد Excel
+              </button>
+              <button onClick={handleExportExcel} className="flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-2 rounded shadow-sm">
+                <Download className="w-4 h-4" /> تصدير Excel
+              </button>
+              <button onClick={handlePdf} className="flex items-center gap-1 bg-rose-600 hover:bg-rose-700 text-white text-xs px-3 py-2 rounded shadow-sm">
+                <FileText className="w-4 h-4" /> تحويل PDF
+              </button>
+              <button onClick={handlePrint} className="flex items-center gap-1 bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-2 rounded shadow-sm">
+                <Printer className="w-4 h-4" /> طباعة
+              </button>
+              <button onClick={handleClearAll} className="flex items-center gap-1 bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-2 rounded shadow-sm">
+                <Eraser className="w-4 h-4" /> مسح الكل
+              </button>
+            </div>
             <input ref={fileInputRef} type="file" accept=".xlsx,.xls" onChange={handleImportFile} className="hidden" />
           </div>  
         </div>  

@@ -23,6 +23,7 @@ import {
   Download,
 } from "lucide-react";
 import TabActions from "./TabActions";
+import type { WebActionItem } from "./WebActionMenu";
 import PrintSettingsModal, {
   DEFAULT_PRINT_SETTINGS,
   marginToCss,
@@ -1784,6 +1785,74 @@ const exportToPDF = async (
     },
   ];
 
+  const handleDetailedPdf2026 = async () => {
+    if (detailedPdfBusy2026) return;
+    if (!filteredRows2026.length) {
+      toast.error("لا توجد بيانات للتصدير");
+      return;
+    }
+    setDetailedPdfBusy2026(true);
+    try {
+      await exportToPDF(2026, { ...DEFAULT_PRINT_SETTINGS }, { download: true });
+    } finally {
+      setDetailedPdfBusy2026(false);
+    }
+  };
+
+  const installments2025WebActions: WebActionItem[] = [
+    {
+      label: "استيراد Excel",
+      onSelect: () => undefined,
+      content: (
+        <label className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
+          <span>استيراد Excel</span>
+          <input
+            type="file"
+            accept=".xlsx,.xls"
+            onChange={(e) => importFile(e, 2025)}
+            className="hidden"
+          />
+        </label>
+      ),
+    },
+    { label: "تصدير Excel التفصيلي", icon: FileSpreadsheet, onSelect: () => exportToExcel(2025) },
+    { label: "طباعة تفصيلية", icon: Printer, onSelect: () => setPrintSettingsYear(2025) },
+  ];
+
+  const installments2026WebActions: WebActionItem[] = [
+    {
+      label: condFormatRules.length ? `تنسيق نشط (${condFormatRules.length})` : "تنسيق شرطي",
+      icon: Palette,
+      onSelect: () => setCondFormatModal(true),
+    },
+    { label: "طالب جديد", icon: Plus, onSelect: () => setNewRowModal2026(true) },
+    { label: "عمود جديد", icon: Plus, onSelect: () => setNewColModal(true) },
+    { label: "إضافة قسط", icon: Plus, onSelect: () => setNewPaymentModal(true) },
+    {
+      label: "استيراد Excel",
+      onSelect: () => undefined,
+      content: (
+        <label className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
+          <span>استيراد Excel</span>
+          <input
+            type="file"
+            accept=".xlsx,.xls"
+            onChange={(e) => importFile(e, 2026)}
+            className="hidden"
+          />
+        </label>
+      ),
+    },
+    { label: "تصدير Excel التفصيلي", icon: FileSpreadsheet, onSelect: () => exportToExcel(2026) },
+    { label: "طباعة تفصيلية", icon: Printer, onSelect: () => setPrintSettingsYear(2026) },
+    {
+      label: detailedPdfBusy2026 ? "جارٍ التحضير…" : "تنزيل PDF التفصيلي",
+      icon: Download,
+      onSelect: handleDetailedPdf2026,
+      disabled: detailedPdfBusy2026,
+    },
+  ];
+
   return (
     <div className="w-full space-y-4 sm:space-y-6 p-0" dir="rtl">
       {/* ========== واجهة جدول 2025 ========== */}
@@ -1807,7 +1876,7 @@ const exportToPDF = async (
               />
             </div>
 
-            <label className="w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white text-teal-700 rounded-lg text-xs sm:text-xs font-bold cursor-pointer hover:bg-teal-50 shadow text-center truncate">
+            <label className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white text-teal-700 rounded-lg text-xs sm:text-xs font-bold cursor-pointer hover:bg-teal-50 shadow text-center truncate">
               📥 استيراد الملف{" "}
               <input
                 type="file"
@@ -1817,7 +1886,7 @@ const exportToPDF = async (
               />
             </label>
 
-            <div className="col-span-2 flex gap-1 w-full sm:w-auto">
+            <div className="apk-only-actions col-span-2 flex gap-1 w-full sm:w-auto">
               <button
                 onClick={() => exportToExcel(2025)}
                 className="flex-1 sm:flex-none px-1.5 sm:px-2 py-1 sm:py-1 bg-green-100 text-green-700 rounded-lg text-xs sm:text-xs font-bold shadow hover:bg-green-200 transition-colors flex items-center justify-center gap-1 truncate"
@@ -1847,6 +1916,7 @@ const exportToPDF = async (
               numericKeys={["fees", "totalPaid", "remaining"]}
               onClear={() => clearInstallments("2025")}
               printLabel="الأقساط/إجمالي"
+              additionalWebActions={installments2025WebActions}
               className="col-span-2 w-full !grid !grid-cols-2 sm:!flex !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-1 [&>button]:py-1 sm:[&>button]:px-2 sm:[&>button]:py-1 [&>button]:text-xs sm:[&>button]:text-xs"
             />
           </div>
@@ -2053,7 +2123,7 @@ const exportToPDF = async (
           <div className="w-full sm:w-auto grid grid-cols-2 sm:flex gap-1.5 sm:gap-2 items-center">
             <button
               onClick={() => setCondFormatModal(true)}
-              className={`w-full px-1.5 sm:px-2 py-1.5 rounded-lg text-sm font-extrabold shadow transition-colors flex items-center justify-center gap-1 ${
+              className={`apk-only-actions w-full px-1.5 sm:px-2 py-1.5 rounded-lg text-sm font-extrabold shadow transition-colors flex items-center justify-center gap-1 ${
                 condFormatRules.length
                   ? "bg-yellow-400 text-yellow-900 animate-pulse"
                   : "bg-white/20 text-white hover:bg-white/30"
@@ -2081,25 +2151,25 @@ const exportToPDF = async (
 
             <button
               onClick={() => setNewRowModal2026(true)}
-              className="w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-blue-100 text-blue-800 rounded-lg text-xs sm:text-xs font-bold shadow hover:bg-blue-200 transition-colors flex items-center justify-center gap-1 truncate"
+              className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-blue-100 text-blue-800 rounded-lg text-xs sm:text-xs font-bold shadow hover:bg-blue-200 transition-colors flex items-center justify-center gap-1 truncate"
             >
               <Plus className="w-3 h-3" /> طالب جديد
             </button>
 
             <button
               onClick={() => setNewColModal(true)}
-              className="w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-amber-100 text-amber-800 rounded-lg text-xs sm:text-xs font-bold shadow hover:bg-amber-200 transition-colors flex items-center justify-center gap-1 truncate"
+              className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-amber-100 text-amber-800 rounded-lg text-xs sm:text-xs font-bold shadow hover:bg-amber-200 transition-colors flex items-center justify-center gap-1 truncate"
             >
               <Plus className="w-3 h-3" /> عمود جديد
             </button>
 
             <button
               onClick={() => setNewPaymentModal(true)}
-              className="w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white/20 text-white rounded-lg text-xs sm:text-xs font-bold shadow hover:bg-white/30 transition-colors truncate"
+              className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white/20 text-white rounded-lg text-xs sm:text-xs font-bold shadow hover:bg-white/30 transition-colors truncate"
             >
               ➕ إضافة قسط
             </button>
-            <label className="w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white text-teal-700 rounded-lg text-xs sm:text-xs font-bold cursor-pointer shadow hover:bg-teal-50 transition-colors text-center truncate">
+            <label className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white text-teal-700 rounded-lg text-xs sm:text-xs font-bold cursor-pointer shadow hover:bg-teal-50 transition-colors text-center truncate">
               📥 استيراد{" "}
               <input
                 type="file"
@@ -2109,7 +2179,7 @@ const exportToPDF = async (
               />
             </label>
 
-            <div className="col-span-2 flex gap-1 w-full sm:w-auto">
+            <div className="apk-only-actions col-span-2 flex gap-1 w-full sm:w-auto">
               <button
                 onClick={() => exportToExcel(2026)}
                 className="flex-1 sm:flex-none px-1.5 sm:px-2 py-1 sm:py-1 bg-green-100 text-green-700 rounded-lg text-xs sm:text-xs font-bold shadow hover:bg-green-200 transition-colors flex items-center justify-center gap-1 truncate"
@@ -2149,25 +2219,14 @@ const exportToPDF = async (
                 numericKeys={["prevDue", "fees", "totalPaid", "remaining"]}
                 onClear={() => clearInstallments()}
                 printLabel="الأقساط/إجمالي"
+                additionalWebActions={installments2026WebActions}
                 className="!flex-1 min-w-0 !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-1 [&>button]:py-1 sm:[&>button]:px-2 sm:[&>button]:py-1 [&>button]:text-xs sm:[&>button]:text-xs [&>button:nth-child(2)]:hidden"
               />
               <button
+                className="apk-only-actions flex items-center gap-1.5 px-3 py-1.5 bg-[#10528e] text-white rounded-lg text-xs font-bold shadow-sm hover:bg-[#0d4272] active:scale-95 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-wait"
                 type="button"
-                onClick={async () => {
-                  if (detailedPdfBusy2026) return;
-                  if (!filteredRows2026.length) {
-                    toast.error("لا توجد بيانات للتصدير");
-                    return;
-                  }
-                  setDetailedPdfBusy2026(true);
-                  try {
-                    await exportToPDF(2026, { ...DEFAULT_PRINT_SETTINGS }, { download: true });
-                  } finally {
-                    setDetailedPdfBusy2026(false);
-                  }
-                }}
+                onClick={handleDetailedPdf2026}
                 disabled={detailedPdfBusy2026}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-[#10528e] text-white rounded-lg text-xs font-bold shadow-sm hover:bg-[#0d4272] active:scale-95 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-wait"
                 title="تنزيل تقرير الأقساط التفصيلي لعام 2026"
               >
                 <Download className={`w-4 h-4 ${detailedPdfBusy2026 ? "animate-pulse" : ""}`} />

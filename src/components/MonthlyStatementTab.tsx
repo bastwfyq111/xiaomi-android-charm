@@ -13,6 +13,7 @@ import {
   type ReportPeriodMode,
 } from "@/lib/reportPeriods";
 import { AlertOctagon, FileSpreadsheet, FileText } from "lucide-react";
+import WebActionMenu, { type WebActionItem } from "./WebActionMenu";
 import { toast } from "sonner";
 import ImportButton from "./ImportButton";
 import { useReportDate } from "@/lib/reportDate";
@@ -258,11 +259,24 @@ export default function MonthlyStatementTab() {
       reportDate,
     });
 
+  const webActions: WebActionItem[] = [
+    {
+      label: "استيراد Excel",
+      onSelect: () => undefined,
+      content: <ImportButton kind="monthly" />,
+    },
+    ...(journal.length > 0
+      ? [{ label: "مسح البيانات", icon: AlertOctagon, onSelect: handleClearAllData, destructive: true }]
+      : []),
+    { label: "تصدير Excel", icon: FileSpreadsheet, onSelect: handleExport },
+    { label: "تصدير PDF", icon: FileText, onSelect: handlePdf },
+  ];
+
   return (
     <div className="space-y-3 p-1.5 sm:space-y-5 sm:p-3" dir="rtl">
       {/* لوحة التحكم العلوية */}
       <div className="grid grid-cols-2 items-end gap-1.5 rounded-xl border border-slate-200 bg-white p-1.5 shadow-sm sm:flex sm:flex-wrap sm:gap-3 sm:p-4">
-        <div className="col-span-2 grid w-full grid-cols-2 gap-1.5 sm:order-last sm:ml-auto sm:flex sm:w-auto sm:gap-2">
+        <div className="apk-only-actions col-span-2 grid w-full grid-cols-2 gap-1.5 sm:order-last sm:ml-auto sm:flex sm:w-auto sm:gap-2">
           <div className="[&>label]:min-w-0 [&>label]:justify-center [&>label]:px-1.5 [&>label]:py-1 [&>label]:text-xs sm:[&>label]:px-2 sm:[&>label]:py-1 sm:[&>label]:text-xs">
             <ImportButton kind="monthly" />
           </div>
@@ -350,7 +364,7 @@ export default function MonthlyStatementTab() {
 
         <div className="flex-1" />
 
-        <div className="col-span-2 grid w-full grid-cols-2 gap-1.5 sm:col-span-1 sm:flex sm:w-auto sm:gap-2">
+        <div className="apk-only-actions col-span-2 grid w-full grid-cols-2 gap-1.5 sm:col-span-1 sm:flex sm:w-auto sm:gap-2">
           <button
             onClick={handleExport}
             className="min-w-0 flex-1 justify-center px-1.5 py-1 text-xs sm:flex-initial sm:px-2 sm:py-1 sm:text-xs bg-emerald-600 text-white rounded-lg font-bold hover:bg-emerald-700 shadow-sm transition flex items-center gap-1 sm:gap-1.5"
@@ -363,6 +377,9 @@ export default function MonthlyStatementTab() {
           >
             <FileText className="w-4 h-4" /> تصدير PDF
           </button>
+        </div>
+        <div className="web-only-actions col-span-2 sm:col-span-1 sm:mr-auto">
+          <WebActionMenu label="إجراءات الحساب الشهري" actions={webActions} className="w-full sm:w-auto" />
         </div>
       </div>
 

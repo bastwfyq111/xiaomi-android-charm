@@ -20,6 +20,7 @@ import {
 import { toast } from "sonner";
 import ImportButton from "@/components/ImportButton";
 import TabActions from "@/components/TabActions";
+import type { WebActionItem } from "@/components/WebActionMenu";
 import type { Journal } from "@/lib/store";
 import { useTableControls } from "@/hooks/useTableControls";
 
@@ -445,6 +446,18 @@ export default function JournalTab() {
     );
   };
 
+  const journalWebActions: WebActionItem[] = [
+    {
+      label: "استيراد Excel",
+      onSelect: () => undefined,
+      content: (
+        <div className="flex w-full items-center rounded-lg hover:bg-slate-100">
+          <ImportButton kind="journal" />
+        </div>
+      ),
+    },
+  ];
+
   const tabActions = (
     <TabActions
       title="قيود اليومية"
@@ -462,6 +475,7 @@ export default function JournalTab() {
       numericKeys={["debit", "credit"]}
       pdfLayout="wide-centered"
       onClear={clearJournal}
+      additionalWebActions={journalWebActions}
       className="w-full !grid !grid-cols-2 sm:!flex !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-1 [&>button]:py-1 sm:[&>button]:px-2 sm:[&>button]:py-1 [&>button]:text-xs sm:[&>button]:text-xs"
     />
   );
@@ -486,7 +500,7 @@ export default function JournalTab() {
                 </p>
               </div>
             </div>
-            <div className="shrink-0 [&>label]:border-emerald-700 [&>label]:bg-emerald-600 [&>label]:text-white [&>label]:hover:bg-emerald-700 [&>label]:px-1.5 [&>label]:py-1 [&>label]:text-xs sm:[&>label]:px-2 sm:[&>label]:py-1 sm:[&>label]:text-xs">
+            <div className="apk-only-actions shrink-0 [&>label]:border-emerald-700 [&>label]:bg-emerald-600 [&>label]:text-white [&>label]:hover:bg-emerald-700 [&>label]:px-1.5 [&>label]:py-1 [&>label]:text-xs sm:[&>label]:px-2 sm:[&>label]:py-1 sm:[&>label]:text-xs">
               <ImportButton kind="journal" />
             </div>
           </div>

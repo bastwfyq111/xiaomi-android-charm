@@ -13,6 +13,7 @@ import schemaJson from "@/lib/expensesSchema.json";
 import { useReportDate } from "@/lib/reportDate";
 import { escapeHtml, reportLetterheadHtml } from "@/lib/printTableHtml";
 import { printReportHtml } from "@/lib/nativePrinter";
+import WebActionMenu, { type WebActionItem } from "./WebActionMenu";
 
 // ====== نوع الصف ======
 type Row = {
@@ -720,6 +721,20 @@ export default function ExpensesTab() {
             ? "bg-rose-700"
             : "bg-indigo-700";
 
+  const triggerExpenseAction = (id: string) => {
+    (document.getElementById(id) as HTMLButtonElement | null)?.click();
+  };
+
+  const expenseWebActions: WebActionItem[] = [
+    { label: "طباعة التقرير", onSelect: () => triggerExpenseAction("expenses-print-action") },
+    { label: "تصدير Excel", onSelect: () => triggerExpenseAction("expenses-excel-action") },
+    {
+      label: "مسح بيانات المصروفات",
+      destructive: true,
+      onSelect: () => triggerExpenseAction("expenses-clear-action"),
+    },
+  ];
+
   return (
     <div className="space-y-3" dir="rtl">
       {/* شريط التبويبات + أزرار */}
@@ -741,9 +756,13 @@ export default function ExpensesTab() {
             ))}
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="web-only-actions sm:w-auto">
+          <WebActionMenu label="إجراءات المصروفات" actions={expenseWebActions} />
+        </div>
+        <div className="apk-only-actions flex gap-2">
           {/* زر الطباعة المحدّث مع دعم ألوان الأبواب والاحتواء التلقائي */}
           <button
+            id="expenses-print-action"
             onClick={() => {
               const el = document.getElementById("expenses-view-content");
               if (!el) return;
@@ -815,6 +834,7 @@ export default function ExpensesTab() {
           </button>
           {/* ... باقي الأزرار دون تغيير ... */}
           <button
+            id="expenses-excel-action"
             onClick={async () => {
               const el = document.getElementById("expenses-view-content");
               if (!el) return;
@@ -907,6 +927,7 @@ export default function ExpensesTab() {
             📊 Excel
           </button>
           <button
+            id="expenses-clear-action"
             onClick={() => {
               if (!confirm("هل أنت متأكد من مسح جميع بيانات المصروفات؟")) return;
               setStore({});

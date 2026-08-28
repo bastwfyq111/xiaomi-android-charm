@@ -498,3 +498,37 @@ table td > * {
     box-shadow: 0 1px 2px rgb(15 23 42 / 0.08) !important;
   }
 }
+
+/* قائمة إجراءات نسخة الويب مقابل أزرار APK الأصلية. صفحات التقارير لا تستخدم هذه الأصناف. */
+.web-only-actions {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.web-only-actions > * {
+  width: 100%;
+}
+
+.apk-only-actions {
+  display: none !important;
+}
+
+html.apk-compact .web-only-actions {
+  display: none !important;
+}
+
+html.apk-compact .apk-only-actions {
+  display: flex !important;
+}
+
+/* داخل طبقة utilities لتتغلب على فئات Tailwind المهمة مثل !grid وsm:!flex. */
+@layer utilities {
+  html:not(.apk-compact) .apk-only-actions {
+    display: none !important;
+  }
+
+  html.apk-compact .apk-only-actions {
+    display: flex !important;
+  }
+}

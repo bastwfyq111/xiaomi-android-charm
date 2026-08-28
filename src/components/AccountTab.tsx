@@ -28,6 +28,7 @@ import {
   Ticket,
 } from "lucide-react";
 import TabActions from "./TabActions";
+import WebActionMenu, { type WebActionItem } from "./WebActionMenu";
 import schema from "@/data/revenueTemplate.json";
 
 /* ============================================================
@@ -599,6 +600,31 @@ export default function AccountsTab() {
     }
   };
 
+  const accountEntryWebActions: WebActionItem[] = [
+    {
+      label: "مطابقة شاملة ٢٠٢٦",
+      icon: Zap,
+      onSelect: handleSyncFromHafiza,
+    },
+    {
+      label: "استيراد Excel",
+      icon: FileSpreadsheet,
+      onSelect: () => undefined,
+      content: (
+        <label className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
+          <FileSpreadsheet className="h-4 w-4" />
+          <span>استيراد Excel</span>
+          <input
+            type="file"
+            accept=".xlsx, .xls, .csv"
+            onChange={handleImportExcel}
+            className="hidden"
+          />
+        </label>
+      ),
+    },
+  ];
+
   return (
     <div
       className="accounts-print-scope w-full space-y-6 bg-[#F2EFEA] p-1.5 sm:p-4 rounded-2xl"
@@ -711,7 +737,10 @@ export default function AccountsTab() {
               قيد جديد أو ترحيل مطابق من الحوافظ
             </h2>
           </div>
-          <div className="flex items-center gap-2.5 flex-wrap">
+          <div className="web-only-actions">
+            <WebActionMenu label="إجراءات الإدخال والمطابقة" actions={accountEntryWebActions} />
+          </div>
+          <div className="apk-only-actions flex items-center gap-2.5 flex-wrap">
             <button
               onClick={handleSyncFromHafiza}
               className="flex items-center justify-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 bg-[#D97706] text-white rounded-full text-xs sm:text-xs font-black hover:bg-[#B8620A] transition-colors active:scale-95 shadow-sm"

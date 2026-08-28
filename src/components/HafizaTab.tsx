@@ -29,6 +29,7 @@ import {
   PartyPopper,
 } from "lucide-react";
 import TabActions from "./TabActions";
+import WebActionMenu, { type WebActionItem } from "./WebActionMenu";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -194,6 +195,31 @@ export default function HafizaTab() {
     toast.success("تم تحديث الخلية تلقائياً");
   };
 
+  const hafizaWebActions: WebActionItem[] = [
+    {
+      label: "إضافة حافظة",
+      icon: Plus,
+      onSelect: () => setShowForm(true),
+      disabled: showForm,
+    },
+    {
+      label: "استيراد Excel",
+      onSelect: () => undefined,
+      content: (
+        <div className="flex w-full items-center rounded-lg hover:bg-slate-100">
+          <ImportButton kind="hafiza" />
+        </div>
+      ),
+    },
+    {
+      label: "مسح البيانات",
+      icon: Trash2,
+      onSelect: handleClearHafiza,
+      disabled: hafiza.length === 0,
+      destructive: true,
+    },
+  ];
+
   return (
     <div className="w-full min-h-screen p-1.5 sm:p-3 bg-gradient-to-br from-amber-50 to-white text-slate-900" dir="rtl">
       {/* HERO */}
@@ -209,7 +235,10 @@ export default function HafizaTab() {
         </div>
 
         <Card className="w-full md:w-auto p-2 bg-white rounded-2xl border border-rose-50 shadow-sm">
-          <div className="grid grid-cols-2 sm:flex items-center justify-end gap-1.5 sm:gap-2">
+          <div className="web-only-actions">
+            <WebActionMenu label="إجراءات الحوافظ" actions={hafizaWebActions} />
+          </div>
+          <div className="apk-only-actions grid grid-cols-2 sm:flex items-center justify-end gap-1.5 sm:gap-2">
             {!showForm && (
               <Button onClick={() => setShowForm(true)} className="min-w-0 justify-center bg-gradient-to-r from-rose-400 to-orange-300 text-white rounded-full px-2 sm:px-3 py-1 text-xs sm:text-sm shadow-sm">
                 <Plus className="w-4 h-4" /> إضافة

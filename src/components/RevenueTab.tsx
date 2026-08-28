@@ -8,6 +8,7 @@ import { useReportDate } from "@/lib/reportDate";
 
 // استيراد الأيقونات لإضفاء لمسة بصرية حديثة متناسقة مع الهوية الجديدة
 import { Calendar, FileSpreadsheet, FileText, LayoutGrid, DollarSign } from "lucide-react";
+import WebActionMenu from "@/components/WebActionMenu";
 
 const MONTH_NAMES = [
   "يناير",
@@ -154,8 +155,33 @@ export default function RevenueTab() {
         {/* مساحة مرنة دافعة للأزرار للشاشات الكبيرة */}
         <div className="hidden lg:block lg:flex-1" />
 
-        {/* أزرار الإجراءات والتقارير */}
-        <div className="col-span-2 grid w-full grid-cols-2 gap-1.5 sm:flex sm:w-auto sm:gap-2 lg:col-span-1">
+        {/* أزرار الإجراءات والتقارير: قائمة منسدلة في الويب، وأزرارها الأصلية داخل APK */}
+        <div className="web-only-actions col-span-2 flex w-full justify-end lg:col-span-1 lg:w-auto">
+          <WebActionMenu
+            label="إجراءات الإيرادات"
+            actions={[
+              {
+                label: "تصدير Excel السنوي",
+                icon: FileSpreadsheet,
+                onSelect: () => exportRevenueStatement(revenue, year, reportDate),
+              },
+              {
+                label: "طباعة / PDF",
+                icon: FileText,
+                onSelect: () => revenuePdf(revenue, year, month, reportDate),
+              },
+              {
+                label: "مسح بيانات الإيرادات",
+                destructive: true,
+                onSelect: () => {
+                  if (!confirm("هل أنت متأكد من مسح جميع بيانات الإيرادات؟ لا يمكن التراجع.")) return;
+                  useStore.setState({ revenue: {} });
+                },
+              },
+            ]}
+          />
+        </div>
+        <div className="apk-only-actions col-span-2 grid w-full grid-cols-2 gap-1.5 sm:flex sm:w-auto sm:gap-2 lg:col-span-1">
           <button
             onClick={() => exportRevenueStatement(revenue, year, reportDate)}
             className="min-w-0 flex flex-1 items-center justify-center gap-1 px-1.5 py-1 text-sm sm:flex-initial sm:gap-1.5 sm:px-2 sm:py-1 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold rounded-lg transition-all shadow-sm hover:border-teal-500/30 hover:text-teal-700 active:scale-[0.98]"
@@ -163,7 +189,6 @@ export default function RevenueTab() {
             <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
             <span>تصدير Excel السنوي</span>
           </button>
-
           <button
             onClick={() => revenuePdf(revenue, year, month, reportDate)}
             className="min-w-0 flex flex-1 items-center justify-center gap-1 px-1.5 py-1 text-sm sm:flex-initial sm:gap-1.5 sm:px-2 sm:py-1 bg-gradient-to-r from-teal-700 to-teal-800 hover:from-teal-800 hover:to-teal-900 text-white font-bold rounded-lg transition-all shadow-md shadow-teal-700/10 active:scale-[0.98]"
@@ -171,7 +196,6 @@ export default function RevenueTab() {
             <FileText className="w-4 h-4" />
             <span>طباعة / PDF</span>
           </button>
-
           <button
             onClick={() => {
               if (!confirm("هل أنت متأكد من مسح جميع بيانات الإيرادات؟ لا يمكن التراجع.")) return;

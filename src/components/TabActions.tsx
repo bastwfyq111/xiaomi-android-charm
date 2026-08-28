@@ -14,6 +14,7 @@ import { useReportDate } from "@/lib/reportDate";
 import { exportTablePdf } from "@/lib/pdfExporter";
 import { buildTableHtml, escapeHtml, tablePrintStyles } from "@/lib/printTableHtml";
 import { printReportHtml } from "@/lib/nativePrinter";
+import WebActionMenu, { type WebActionItem } from "@/components/WebActionMenu";
 
 export type TabCol = { key: string; label: string };
 
@@ -27,6 +28,8 @@ type Props = {
   className?: string;
   printLabel?: string;
   pdfLayout?: "default" | "wide-centered";
+  additionalWebActions?: WebActionItem[];
+  webClassName?: string;
 };
 
 export default function TabActions({
@@ -39,6 +42,8 @@ export default function TabActions({
   className = "",
   printLabel = "طباعة",
   pdfLayout = "default",
+  additionalWebActions = [],
+  webClassName = "",
 }: Props) {
   const [pdfBusy, setPdfBusy] = useState(false);
   const { reportDate, reportDateLabel } = useReportDate();
@@ -160,48 +165,65 @@ export default function TabActions({
     toast.success("تم مسح البيانات");
   };
 
-  return (
-    <div className={`flex flex-wrap gap-2 ${className}`}>
-      <button
-        onClick={handlePrint}
-        className="flex items-center gap-1.5 px-3 py-1.5 bg-white text-[#10528e] border border-[#10528e]/30 rounded-lg text-xs font-bold shadow-sm hover:bg-blue-50 active:scale-95 transition-all cursor-pointer"
-        title="طباعة هذا التبويب"
-      >
-        <Printer className="w-4 h-4" /> {printLabel}
-      </button>
-      <button
-        onClick={handleDownloadPdf}
-        disabled={pdfBusy}
-        className="flex items-center gap-1.5 px-3 py-1.5 bg-[#10528e] text-white rounded-lg text-xs font-bold shadow-sm hover:bg-[#0d4272] active:scale-95 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-wait"
-        title="تنزيل PDF بنفس تنسيق الطباعة"
-      >
-        {pdfBusy ? (
-          <>
-            <Loader2 className="w-4 h-4 animate-spin" /> جارٍ التحضير…
-          </>
-        ) : (
-          <>
-            <Download className="w-4 h-4" /> تنزيل PDF
-          </>
-        )}
-      </button>
+  const webActions: WebActionItem[] = [
+    ...additionalWebActions,
+    { label: printLabel, icon: Printer, onSelect: handlePrint },
+    {
+      label: pdfBusy ? "جارٍ التحضير…" : "تنزيل PDF",
+      icon: pdfBusy ? Loader2 : Download,
+      onSelect: handleDownloadPdf,
+      disabled: pdfBusy,
+    },
+    { label: "تصدير Excel", icon: FileSpreadsheet, onSelect: handleExcel },
+    ...(onClear ? [{ label: "مسح البيانات", icon: Trash2, onSelect: handleClear, destructive: true }] : []),
+  ];
 
-      <button
-        onClick={handleExcel}
-        className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow-sm hover:bg-emerald-700 active:scale-95 transition-all cursor-pointer"
-        title="تصدير إلى Excel"
-      >
-        <FileSpreadsheet className="w-4 h-4" /> تصدير Excel
-      </button>
-      {onClear && (
+  return (
+    <>
+      <div className={`web-only-actions ${webClassName}`}>
+        <WebActionMenu label={`إجراءات ${title}`} actions={webActions} className="w-full sm:w-auto" />
+      </div>
+      <div className={`apk-only-actions flex flex-wrap gap-2 ${className}`}>
         <button
-          onClick={handleClear}
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-rose-600 text-white rounded-lg text-xs font-bold shadow-sm hover:bg-rose-700 active:scale-95 transition-all cursor-pointer"
-          title="مسح بيانات هذا التبويب"
+          onClick={handlePrint}
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-white text-[#10528e] border border-[#10528e]/30 rounded-lg text-xs font-bold shadow-sm hover:bg-blue-50 active:scale-95 transition-all cursor-pointer"
+          title="طباعة هذا التبويب"
         >
-          <Trash2 className="w-4 h-4" /> مسح البيانات
+          <Printer className="w-4 h-4" /> {printLabel}
         </button>
-      )}
-    </div>
+        <button
+          onClick={handleDownloadPdf}
+          disabled={pdfBusy}
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-[#10528e] text-white rounded-lg text-xs font-bold shadow-sm hover:bg-[#0d4272] active:scale-95 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-wait"
+          title="تنزيل PDF بنفس تنسيق الطباعة"
+        >
+          {pdfBusy ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" /> جارٍ التحضير…
+            </>
+          ) : (
+            <>
+              <Download className="w-4 h-4" /> تنزيل PDF
+            </>
+          )}
+        </button>
+        <button
+          onClick={handleExcel}
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow-sm hover:bg-emerald-700 active:scale-95 transition-all cursor-pointer"
+          title="تصدير إلى Excel"
+        >
+          <FileSpreadsheet className="w-4 h-4" /> تصدير Excel
+        </button>
+        {onClear && (
+          <button
+            onClick={handleClear}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-rose-600 text-white rounded-lg text-xs font-bold shadow-sm hover:bg-rose-700 active:scale-95 transition-all cursor-pointer"
+            title="مسح بيانات هذا التبويب"
+          >
+            <Trash2 className="w-4 h-4" /> مسح البيانات
+          </button>
+        )}
+      </div>
+    </>
   );
 }
