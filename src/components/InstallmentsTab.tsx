@@ -971,7 +971,7 @@ const exportToPDF = async (
           accent: "#000000",
         };
 
-    const reportCss = `
+ const reportCss = `
       html, body { margin: 0 !important; padding: 0 !important; }
       * { box-sizing: border-box; }
       .print-toolbar {
@@ -1001,14 +1001,14 @@ const exportToPDF = async (
         margin-bottom: 5px;
       }
       .doc-header .title { text-align: right; }
-      .doc-header h1 { font-size: 14px; font-weight: 800; letter-spacing: -0.2px; }
-      .doc-header h2 { font-size: 10.5px; font-weight: 700; margin-top: 1px; color: ${colorTokens.accent}; }
-      .doc-header .meta { font-size: 8.5px; font-weight: 700; text-align: left; line-height: 1.6; }
+      .doc-header h1 { font-size: 20px; font-weight: 800; letter-spacing: -0.2px; }
+      .doc-header h2 { font-size: 15px; font-weight: 700; margin-top: 1px; color: ${colorTokens.accent}; }
+      .doc-header .meta { font-size: 12px; font-weight: 700; text-align: left; line-height: 1.6; }
       .doc-header .meta span { display: block; }
 
       table {
         font-size: ${fontSizePx.toFixed(2)}px;
-        table-layout: auto!important;
+        table-layout: fixed !important; /* عرض ثابت لكل عمود حتى لا يتمدد الجدول بلا حدود */
         width: 100% !important;
         min-width: 100% !important;
         border-collapse: collapse;
@@ -1016,19 +1016,27 @@ const exportToPDF = async (
       }
       th, td {
         border: 0.4pt solid #000;
-        padding: 2px 3px !important;
-        text-align: center;
+        padding: 5px 6px !important;
+        text-align: center !important;
         vertical-align: middle !important; /* ضمان المحاذاة الرأسية لكل الخلايا */
-        white-space: nowrap !important;
-        overflow: visible;
-        text-overflow: clip;
-        font-size: clamp(14px, 1.25vw, 14px);
+        white-space: nowrap !important; /* الأعمدة العادية (أرقام/أشهر) تبقى بسطر واحد */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: clamp(13px, 1.5vw, 18px);
         overflow-wrap: normal !important;
         word-break: keep-all !important;
         hyphens: none !important;
-        line-height: 1.3;
+        line-height: 1.35;
         font-weight: 700;
         color: #000 !important;
+      }
+      /* أعمدة الاسم والمساق (wide): السماح بالتفاف النص بدل خط واحد ممدود */
+      th.wrap, td.wrap {
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        overflow-wrap: break-word !important;
+        word-break: normal !important;
       }
       .cell-content {
         display: flex !important; /* تحويل العنصر الداخلي إلى Flexbox */
@@ -1038,40 +1046,43 @@ const exportToPDF = async (
         height: 100%;
         max-width: 100%;
         box-sizing: border-box;
-        padding: 2px 4px;
+        padding: 3px 5px;
         margin: 0;
-        text-align: center;
+        text-align: center !important;
         white-space: nowrap !important;
-        overflow: visible;
+        overflow: hidden;
         overflow-wrap: normal !important;
         word-break: keep-all !important;
         hyphens: none !important;
         line-height: 1.35;
       }
+      td.wrap .cell-content, th.wrap .cell-content {
+        white-space: normal !important;
+        overflow: visible !important;
+        overflow-wrap: break-word !important;
+        word-break: normal !important;
+        line-height: 1.3;
+      }
       td.wrap, td.wrap .cell-content {
-        white-space: nowrap !important;
-        overflow: visible;
-        text-overflow: clip;
-        overflow-wrap: normal !important;
-        word-break: keep-all !important;
-        hyphens: none !important;
-        line-height: 1.35;
         height: auto;
       }
       table th *, table td * {
-        white-space: nowrap !important;
-        overflow-wrap: normal !important;
-        word-break: keep-all !important;
-        hyphens: none !important;
+        text-align: center !important;
+      }
+      table th.wrap *, table td.wrap * {
+        white-space: normal !important;
+        overflow-wrap: break-word !important;
+        word-break: normal !important;
       }
       td.numeric-cell, th.numeric-cell, td.date-cell, th.date-cell, td.compact-cell, th.compact-cell {
         font-family: 'Times New Roman', Times, serif !important;
-        font-size: clamp(7px, 0.95vw, 11px) !important;
-        line-height: 1.05 !important;
+        font-size: clamp(11px, 1.2vw, 15px) !important;
+        line-height: 1.15 !important;
         white-space: nowrap !important;
         overflow-wrap: normal !important;
         word-break: keep-all !important;
         hyphens: none !important;
+        text-align: center !important;
       }
       td.numeric-cell *, th.numeric-cell *, td.date-cell *, th.date-cell *, td.compact-cell *, th.compact-cell * {
         font-size: inherit !important;
@@ -1079,13 +1090,16 @@ const exportToPDF = async (
         white-space: nowrap !important;
         overflow-wrap: normal !important;
         word-break: keep-all !important;
+        text-align: center !important;
       }
       th {
         background: ${colorTokens.head} !important;
         color: ${colorTokens.headText} !important;
+        font-family: Cairo, Arial, sans-serif !important;
         font-size: ${headerFontSizePx.toFixed(2)}px;
         font-weight: 800;
-        padding: 4px 5px !important;
+        padding: 6px 7px !important;
+        text-align: center !important;
         vertical-align: middle !important;
       }
       tbody tr:nth-child(even) td { background: ${colorTokens.zebra} !important; }
@@ -1099,12 +1113,13 @@ const exportToPDF = async (
         background: ${colorTokens.totals} !important;
         font-weight: 900;
         border-top: 1pt solid #111;
+        text-align: center !important;
       }
       .doc-foot {
         margin-top: 5px;
         display: flex;
         justify-content: space-between;
-        font-size: 8.5px;
+        font-size: 12px;
         font-weight: 700;
         border-top: 0.75pt solid ${colorTokens.accent};
         padding-top: 3px;
