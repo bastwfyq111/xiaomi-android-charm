@@ -57,14 +57,14 @@ function pdfPageCellCss(opts: { padding?: string; fontSize?: string } = {}): str
 
   /* تكبير خط العناوين في رأس الجدول */
   .pdf-page th {
-    font-size: 14px !important;
+    font-size: 18px !important;
     font-weight: 900 !important;
   }
 
   /* تكبير الأرقام مع الحفاظ على خط Times New Roman */
   .pdf-page .num { 
     font-family: 'Times New Roman', Times, serif !important; 
-    font-size: 13.5px !important; 
+    font-size: 15.5px !important; 
     font-weight: 900 !important; 
   }
 
@@ -263,8 +263,16 @@ async function htmlTableToPdfPaginated(opts: {
   const cellPadding = isWideCentered ? '3px 4px' : '3px 4px';
   const cellFontSize = isWideCentered ? 'clamp(14px, 0.9vw, 15px)' : 'clamp(14px, 1.05vw, 16px)';
   const layoutCss = isWideCentered ? `
-    .pdf-page { width: 100% !important; max-width: none !important; margin: 0 !important; padding: 0 !important; }
-    .pdf-page table { width: 100% !important; max-width: none !important; margin-left: 0 !important; margin-right: 0 !important; }
+    .pdf-page {
+    width: 100% !important;
+  max-width:none!important; 
+  margin: 0 !important; padding: 0 !important;
+}
+    .pdf-page table {
+  width: 100% !important;
+  max-width: none!important;
+  margin-left: 0!important;
+  margin-right: 0!important; }
   ` : '';
   const pageHeightPx = Math.round(
     pageWidthPx * (orientation === 'landscape' ? 210 / 297 : 297 / 210)
@@ -322,7 +330,7 @@ async function htmlTableToPdfPaginated(opts: {
     const margin = 3; // تصغير الهوامش لأقصى درجة
     const DPI = 96;
     const pxPerMm = DPI / 25.4;
-    const pdf = new JsPDF({ unit: 'mm', format: 'a4', orientation, compress: true });
+    const pdf = new JsPDF({ unit: 'mm', format: 'A4', orientation, compress: true });
     const pw = pdf.internal.pageSize.getWidth();
     const ph = pdf.internal.pageSize.getHeight();
     const usableHeightPx = (ph - margin * 2) * pxPerMm;
@@ -444,12 +452,35 @@ async function htmlTableToPdfPaginated(opts: {
 
 const statementCss = `
   ${tablePrintStyles}
-  body, .pdf-page { font-size: 12px; margin: 0; padding: 0; }
-  table { width: 100% !important; max-width: 100%; table-layout: auto !important; }
-  .info { width: 100%; border-collapse: collapse; margin: 6px 0 10px; table-layout: auto !important; }
-  .info td { border: 0.75pt solid #000; padding: 6px 8px; text-align: right; font-weight: 700; }
-  .info td.lbl { background: #f1f5f9 !important; width: 22%; white-space: nowrap !important; }
-  .sign { margin-top: 18px; font-weight: 700; font-size: 11px; }
+  body, .pdf-page { 
+  font-size: 15px; 
+  margin: 0;
+  padding: 0;
+  }
+  table {
+  width: 100% !important; max-width: 100%; 
+table-layout: auto!important; 
+  }
+  .info {
+  width: 100%; 
+border: solid 1px black; 
+margin: 6px 0 10px;
+table-layout: auto !important; 
+  }
+  .info td {
+border: 1px solid #000; padding: 6px 8px; 
+text-align: center; 
+font-weight: 700; 
+  }
+  .info td.lbl { 
+background: #f1f5f9 !important; 
+width: auto; 
+white-space: nowrap !important; }
+  .sign {
+margin-top: 20px; 
+font-weight: 700;
+font-size: 11px; 
+  }
 `;
 
 export async function exportStudentStatementPdf(row: any, year: number): Promise<void> {
@@ -505,7 +536,7 @@ export async function exportStudentStatementPdf(row: any, year: number): Promise
         ${lines
           .map(
             (l) =>
-              `<tr><td style="text-align:right;${l.color ? `background:${l.color} !important;` : ''}">${escapeHtml(
+              `<tr><td style="text-align:center;${l.color ? `background:${l.color} !important;` : ''}">${escapeHtml(
                 l.label
               )}</td><td class="num"${l.color ? ` style="background:${l.color} !important;"` : ''}>${escapeHtml(
                 fmt(l.value)
@@ -534,12 +565,12 @@ export function printHtmlContent(htmlContent: string): void {
         /* تصغير الهوامش لأقصى درجة في صفحة الطباعة المباشرة */
         @page { size: A4; margin: 5mm; }
         body {
-          font-family: 'Cairo', 'Tajawal', 'Segoe UI', Tahoma, Arial, sans-serif;
+   font-family: 'Cairo';
           direction: rtl;
           color: #000 !important;
           background: white;
           line-height: 1.5;
-          font-size: 12px;
+          font-size: 15px;
           font-weight: 900 !important;
           width: 100%;
           margin: 0;
@@ -563,7 +594,7 @@ export function printHtmlContent(htmlContent: string): void {
           padding: 3px 5px !important;
           text-align: center;
           vertical-align: middle;
-          font-size: clamp(7px, 1.2vw, 12px);
+          font-size: clamp(14px, 1.2vw, 16px);
           color: #000 !important;
           font-weight: 900 !important;
         }
@@ -622,7 +653,8 @@ export function printHtmlContent(htmlContent: string): void {
     </html>
   `;
   
-  printReportHtml(styledContent, "تقرير للطباعة");
+  printReportHtml(styledContent, 
+  "تقرير للطباعة");
 }
 
 export function printTable(title: string, columns: string[], rows: (string | number)[][]): void {
@@ -792,14 +824,14 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
     @page :first { margin-top: 5mm; }
     html { margin: 0; padding: 0; }
     body { 
-      font-family: 'Cairo','Tajawal','Segoe UI',Tahoma,Arial,sans-serif; 
+      font-family: 'Cairo'; 
       direction: rtl; 
       color: #000 !important; 
       margin: 0; 
       padding: 0; 
       width: 100%; 
       background: white;
-      line-height: 1.3;
+      line-height: 1.5;
       font-weight: 900 !important;
     }
     h1 { 
@@ -808,11 +840,10 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       font-weight: 900;
       margin: 4px 0; 
       color: #000 !important;
-      letter-spacing: -0.01em;
     }
     .meta { 
       text-align: center; 
-      font-size: 12px; 
+      font-size: 15px; 
       color: #000 !important;
       font-weight: 900 !important;
     }
@@ -820,22 +851,22 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       font-weight: 900 !important; 
       color: #000 !important; 
       margin: 2px 0;
-      font-size: 13px;
+      font-size: 15px;
     }
     table { 
       width: 100% !important;
       max-width: 100% !important;
-      border-collapse: collapse; 
-      font-size: 10px; 
+    border: solid 1px black; 
+      font-size: 15px; 
       table-layout: auto !important;
       margin-top: 8px;
     }
     th, td { 
-      border: 1.5px solid #000; 
+      border: 1px solid black; 
       padding: 3px 5px !important;
       text-align: center;
       vertical-align: middle;
-      font-size: clamp(7px, 1.2vw, 12px);
+      font-size: clamp(14px, 1.2vw, 16px);
       font-weight: 900 !important;
       color: #000 !important;
     }

@@ -55,7 +55,7 @@
   table {
     width: 100% !important;
     min-width: 100% !important;
-    border-collapse: collapse !important;
+    border: solid 1px black!important;
     table-layout: auto !important;
     margin-top: 6px !important;
     margin-bottom: 6px !important;
@@ -78,7 +78,7 @@
 
   /* رؤوس وخلايا الجداول - التوسيط التام عمودياً وأفقياً ومنع الالتفاف */
   th, td {
-    border: 1px solid #000000 !important;
+    border: 1px solid #000 !important;
     padding: 6px 8px !important;
     text-align: center !important;
     vertical-align: middle !important;
@@ -126,8 +126,8 @@
   .currency,
   .number,
   .amount {
-    font-family: 'Times New Roman', Times, serif !important;
-    font-size: clamp(14px, 1vw, 16px) !important;
+    font-family: 'Times New Roman' !important;
+    font-size: clamp(14px, vw, 16px) !important;
     color: #000000 !important;
     font-weight: 700 !important;
     direction: ltr !important;
