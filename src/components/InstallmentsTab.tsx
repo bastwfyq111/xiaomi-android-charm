@@ -910,6 +910,13 @@ const exportToPDF = async (
     const cols = allCols.filter((c) => !hidden.has(c.key));
 
     // ملاءمة تلقائية لعرض الصفحة حسب الحجم والاتجاه
+// ==========================================================================
+// الجزء المعدّل من دالة exportToPDF — فقط قسم حساب الخط وبناء reportCss
+// التعديلات: تكبير حجم الخط + تثبيت محاذاة النصوص لمنتصف الخلايا (أفقيًا ورأسيًا)
+// انسخ هذا القسم وضعه بدلاً من نفس القسم في ملفك الأصلي داخل دالة exportToPDF
+// ==========================================================================
+
+    // ملاءمة تلقائية لعرض الصفحة حسب الحجم والاتجاه
     const pageWidthMm =
       settings.pageSize === "A3"
         ? settings.orientation === "landscape"
@@ -922,15 +929,17 @@ const exportToPDF = async (
     const usableWidthMm = pageWidthMm - marginMm;
     const widthUnits = cols.reduce((s, c) => s + (c.wide ? 2.4 : 1), 0);
     const unitMm = usableWidthMm / Math.max(1, widthUnits);
-    const autoFont = Math.max(5, Math.min(11, unitMm * 1.25));
+    // تم رفع الحد الأدنى والأقصى لحجم الخط التلقائي (كان 5 إلى 11)
+    const autoFont = Math.max(8, Math.min(15, unitMm * 1.25));
     const fontSizePx = settings.fontMode === "manual" ? settings.fontSize : autoFont;
-    const headerFontSizePx = fontSizePx + 0.4;
+    const headerFontSizePx = fontSizePx + 0.6;
 
     const fitStyle = (text: any, base = fontSizePx) => {
       const len = String(text ?? "").replace(/<[^>]*>/g, "").length;
       const steps = Math.max(0, Math.ceil(Math.max(0, len - 16) / 10));
-      const final = Math.max(5, base - Math.min(3.5, steps * 0.7));
-      return `font-size:${final.toFixed(2)}px`;
+      // تم رفع الحد الأدنى لحجم الخط داخل الخلايا الطويلة (كان 5)
+      const final = Math.max(8, base - Math.min(3.5, steps * 0.7));
+      return `font-size:${final.toFixed(2)}px; text-align:center;`;
     };
 
     const colGroup = `<colgroup>${cols
@@ -1020,9 +1029,9 @@ const exportToPDF = async (
         margin-bottom: 5px;
       }
       .doc-header .title { text-align: right; }
-      .doc-header h1 { font-size: 14px; font-weight: 800; letter-spacing: -0.2px; }
-      .doc-header h2 { font-size: 10.5px; font-weight: 700; margin-top: 1px; color: ${colorTokens.accent}; }
-      .doc-header .meta { font-size: 8.5px; font-weight: 700; text-align: left; line-height: 1.6; }
+      .doc-header h1 { font-size: 16px; font-weight: 800; letter-spacing: -0.2px; }
+      .doc-header h2 { font-size: 12.5px; font-weight: 700; margin-top: 1px; color: ${colorTokens.accent}; }
+      .doc-header .meta { font-size: 10px; font-weight: 700; text-align: left; line-height: 1.6; }
       .doc-header .meta span { display: block; }
 
       table {
@@ -1035,17 +1044,17 @@ const exportToPDF = async (
       }
       th, td {
         border: 0.4pt solid #000;
-        padding: 2px 3px !important;
-        text-align: center;
+        padding: 4px 5px !important;
+        text-align: center !important;
         vertical-align: middle !important; /* ضمان المحاذاة الرأسية لكل الخلايا */
         white-space: nowrap !important;
         overflow: visible;
         text-overflow: clip;
-        font-size: clamp(14px, 1.25vw, 14px);
+        font-size: clamp(12px, 1.4vw, 16px);
         overflow-wrap: normal !important;
         word-break: keep-all !important;
         hyphens: none !important;
-        line-height: 1.3;
+        line-height: 1.35;
         font-weight: 700;
         color: #000 !important;
       }
@@ -1057,9 +1066,9 @@ const exportToPDF = async (
         height: 100%;
         max-width: 100%;
         box-sizing: border-box;
-        padding: 2px 4px;
+        padding: 3px 5px;
         margin: 0;
-        text-align: center;
+        text-align: center !important;
         white-space: nowrap !important;
         overflow: visible;
         overflow-wrap: normal !important;
@@ -1082,15 +1091,17 @@ const exportToPDF = async (
         overflow-wrap: normal !important;
         word-break: keep-all !important;
         hyphens: none !important;
+        text-align: center !important;
       }
       td.numeric-cell, th.numeric-cell, td.date-cell, th.date-cell, td.compact-cell, th.compact-cell {
         font-family: 'Times New Roman', Times, serif !important;
-        font-size: clamp(7px, 0.95vw, 11px) !important;
-        line-height: 1.05 !important;
+        font-size: clamp(10px, 1.1vw, 14px) !important;
+        line-height: 1.1 !important;
         white-space: nowrap !important;
         overflow-wrap: normal !important;
         word-break: keep-all !important;
         hyphens: none !important;
+        text-align: center !important;
       }
       td.numeric-cell *, th.numeric-cell *, td.date-cell *, th.date-cell *, td.compact-cell *, th.compact-cell * {
         font-size: inherit !important;
@@ -1098,13 +1109,15 @@ const exportToPDF = async (
         white-space: nowrap !important;
         overflow-wrap: normal !important;
         word-break: keep-all !important;
+        text-align: center !important;
       }
       th {
         background: ${colorTokens.head} !important;
         color: ${colorTokens.headText} !important;
         font-size: ${headerFontSizePx.toFixed(2)}px;
         font-weight: 800;
-        padding: 4px 5px !important;
+        padding: 5px 6px !important;
+        text-align: center !important;
         vertical-align: middle !important;
       }
       tbody tr:nth-child(even) td { background: ${colorTokens.zebra} !important; }
@@ -1118,12 +1131,13 @@ const exportToPDF = async (
         background: ${colorTokens.totals} !important;
         font-weight: 900;
         border-top: 1pt solid #111;
+        text-align: center !important;
       }
       .doc-foot {
         margin-top: 5px;
         display: flex;
         justify-content: space-between;
-        font-size: 8.5px;
+        font-size: 10px;
         font-weight: 700;
         border-top: 0.75pt solid ${colorTokens.accent};
         padding-top: 3px;
