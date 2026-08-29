@@ -159,21 +159,7 @@ fdoc.write(`<!doctype html>
             .pdf-download-root .report-letterhead-block {
               width: 100% !important;
               max-width: auto !important;
-              margin: 0 0 8mm !important; /* تم تكبيرها من 3mm لإبعاد النص عن الجدول */
-              padding-bottom: 2mm !important;
-            }
-            .pdf-download-root .report-letterhead-block * {
-              line-height: 1.7 !important; /* تباعد سطري أوضح داخل الترويسة */
-            }
-            .pdf-download-root .report-letterhead-block + table {
-              margin-top: 4mm !important; /* فاصل إضافي قبل الجدول مباشرة */
-            }
-            .pdf-download-root .report-letterhead-cell {
-              padding-bottom: 4mm !important; /* لوضع letterheadPlacement === "table" */
-            }
-            .pdf-download-root .report-letterhead-image {
-              display: block !important;
-              margin-bottom: 3mm !important;
+              margin: 0 0 3mm !important;
             }
             .pdf-download-root table {
               width: 100% !important;
@@ -181,18 +167,29 @@ fdoc.write(`<!doctype html>
               margin: 0 !important;
               border: 1px solid black;
               border-collapse: collapse;
-              table-layout: auto; /* توزيع متساوٍ للعرض */
+              table-layout: fixed; /* ثابت بدل auto: يضمن نفس توزيع الأعمدة عبر كل الصفحات عند الطباعة/PDF */
             }
             .pdf-download-root th,
             .pdf-download-root td {
               text-align: center !important;
               vertical-align: middle !important;
               padding: 2px 1px !important; /* تقليل الحشوة */
-              word-break: break-word; /* تقسيم الكلمات الطويلة */
-              overflow-wrap: break-word; /* دعم إضافي */
               font-size: 18px !important; /* خط مناسب */
-              white-space: normal; /* التفاف النص */
               border: 1px solid #000;
+            }
+
+            /* ===== التفاف النص فقط لخلايا النصوص، وليس الأرقام ===== */
+            .pdf-download-root td.cell-text,
+            .pdf-download-root th.cell-text {
+              word-break: break-word;
+              overflow-wrap: break-word;
+              white-space: normal;
+            }
+            .pdf-download-root td.cell-number,
+            .pdf-download-root th.cell-number {
+              white-space: nowrap;
+              word-break: normal;
+              overflow-wrap: normal;
             }
             
             /* ===== تلوين رؤوس الأعمدة ===== */
@@ -254,58 +251,18 @@ fdoc.write(`<!doctype html>
                 overflow-x: visible !important;
               }
               .pdf-download-root table {
-                table-layout: auto !important;
+                table-layout: fixed !important; /* موحّد مع الوضع العادي لضمان ثبات الأعمدة بين الصفحات */
               }
             }
             /* ===== انتهى التعديل ===== */
           </style>
         </head>
         <body>
-          <div class="pdf-download-root">${letterheadPlacement === "top" ? reportLetterheadHtml() : ""}
-${body}</div>
-<script>
-  (function () {
-    if (${JSON.stringify(letterheadPlacement)} !== "table") return;
-    var tables = document.querySelectorAll("table");
-    if (!tables.length) return;
-
-    var standalone = document.querySelector(".report-letterhead-block");
-    if (standalone) standalone.remove();
-
-    tables.forEach(function (table) {
-      var thead = table.tHead || table.querySelector("thead");
-      if (!thead) {
-        thead = document.createElement("thead");
-        table.insertBefore(thead, table.firstChild);
-      }
-      thead.style.display = "table-header-group";
-      if (thead.querySelector(".report-letterhead-row")) return;
-
-      var firstRow = thead.rows[0];
-      var columnCount = firstRow
-        ? Array.prototype.reduce.call(firstRow.cells, function (sum, cell) {
-            return sum + (cell.colSpan || 1);
-          }, 0)
-        : 1;
-      var row = document.createElement("tr");
-      row.className = "report-letterhead-row";
-      var cell = document.createElement("th");
-      cell.className = "report-letterhead-cell";
-      cell.colSpan = Math.max(1, columnCount);
-      var image = document.createElement("img");
-      image.className = "report-letterhead-image";
-      image.src = ${JSON.stringify(REPORT_LETTERHEAD_SRC)};
-      image.alt = "ترويسة المجلس اليمني للاختصاصات الطبية";
-      cell.appendChild(image);
-      row.appendChild(cell);
-      thead.insertBefore(row, thead.firstChild);
-    });
-  })();
-</script>
-${autoPrintScript}
-</body>
-</html>`);
+          <div class="pdf-download-root">${reportLetterheadHtml()}${body}</div>
+        </body>
+      </html>`);
 fdoc.close();
+
 
 
     const images = Array.from(fdoc.images);
