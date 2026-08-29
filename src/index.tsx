@@ -138,7 +138,7 @@ function Index() {
   return (
     // الحاوية الرئيسية مع مساحة سفلية لشريط التنقل
     <div
-      className="w-full min-h-screen bg-[#f5f2ea] font-tajawal selection:bg-[#1a3a52]/20 text-sm sm:text-base pb-[72px]"
+      className="w-full min-h-screen bg-[#f5f2ea] font-tajawal selection:bg-[#1a3a52]/20 text-lg sm:text-base pb-[72px]"
       dir="rtl"
     >
       {/* قسم الهيدر العلوي — هوية كحلية مؤسسية بلمسة ختم برونزي */}
@@ -153,10 +153,10 @@ function Index() {
           </div>
           <div className="ledger-seam self-stretch hidden sm:block rounded-full" />
           <div className="flex flex-col gap-1">
-            <h1 className="text-base sm:text-lg md:text-2xl font-bold tracking-wide font-cairo text-white">
+            <h1 className="text-base sm:text-lg md:text-2xl font-bold tracking-wide font- Al Qabas text-white">
               المجلس اليمني للاختصاصات الطبية
             </h1>
-            <p className="text-[10px] sm:text-xs md:text-sm text-[#cfe0ec] font-medium flex items-center gap-1.5">
+            <p className="text-[14px] sm:text-xs md:text-sm text-[#cfe0ec] font-medium flex items-center gap-1.5">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#e3c281]"></span>
               نظام الإدارة المالية وحوافظ التوريد — صعدة، 2026م
             </p>
@@ -168,7 +168,7 @@ function Index() {
           {pwaInstallable && (
             <button
               onClick={handlePWAInstall}
-              className="flex items-center gap-1.5 bg-[#c99a4e] hover:bg-[#d9ac63] text-[#1a1206] font-bold text-[10px] sm:text-xs px-3 py-1.5 sm:py-2 rounded-md transition-all shadow-sm"
+              className="flex items-center gap-1.5 bg-[#c99a4e] hover:bg-[#d9ac63] text-[#1a1206] font-bold text-[13px] sm:text-xs px-3 py-1.5 sm:py-2 rounded-md transition-all shadow-sm"
             >
               <DownloadCloud className="w-3.5 h-3.5" />
               <span>تثبيت التطبيق</span>
@@ -214,7 +214,7 @@ function Index() {
                   <span className={`transition-transform duration-200 ${isActive ? "scale-110" : "scale-100"}`}>
                     {tab.icon}
                   </span>
-                  <span className="text-[10px] font-bold leading-tight whitespace-nowrap">
+                  <span className="text-[17px] font-bold leading-tight whitespace-nowrap">
                     {tab.shortLabel}
                   </span>
                 </button>
