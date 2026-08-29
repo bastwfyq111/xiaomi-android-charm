@@ -132,7 +132,7 @@ const downloadDetailedHtmlPdf = async ({
     if (!fdoc) throw new Error("تعذر إنشاء مساحة PDF");
 
     fdoc.open();
-  Fdoc.write(`<!doctype html>
+     fdoc.write(`<!doctype html>
       <html lang="ar" dir="rtl">
         <head>
           <meta charset="utf-8" />
@@ -141,12 +141,9 @@ const downloadDetailedHtmlPdf = async ({
           <style>
             ${css}
             html, body { margin: 0 !important; padding: 0 !important; background: #fff !important; }
-            body {
-              width: ${pageWidthPx}px;
-              font-family: Cairo !important;
-              font-weight: bold !important;
-              font-size: 18px !important;
-              color: #000000 !important;
+body {
+width: ${pageWidthPx}px;
+font-family:Cairo!important;
             }
             .pdf-download-root {
               width: 100%;
@@ -156,36 +153,31 @@ const downloadDetailedHtmlPdf = async ({
             }
             .pdf-download-root .report-letterhead-block {
               width: 100% !important;
-              max-width: auto !important;
+              max-width:auto !important;
               margin: 0 0 3mm !important;
             }
             .pdf-download-root table {
               width: 100% !important;
-              max-width: auto !important;
+              max-width:auto !important;
               margin: 0 !important;
-              border: 1px solid #000000 !important;
-              border-collapse: collapse !important;
+              border:1px solid black; 
             }
             .pdf-download-root th,
             .pdf-download-root td {
               text-align: center !important;
               vertical-align: middle !important;
-              padding: 4px 4px !important;
-              border: 1px solid #000000 !important;
-              font-weight: bold !important;
-              font-size: 18px !important;
-              color: #000000 !important;
+ padding: 8px 8px!important;
             }
             .pdf-download-root .cell-content {
               display: flex !important;
               align-items: center !important;
               justify-content: center !important;
               min-height: auto;
-              padding: 2px 2px;
-              font-family: Cairo !important;
-              font-size: 18px !important;
-              font-weight: bold !important;
-              color: #000000 !important;
+              padding: 8px 8px;
+font-family:Cairo!important; 
+  font-size:18px; 
+  border:1px solid black; 
+  font-weight:1000;
             }
             .print-toolbar { display: none !important; }
             @media print { .print-toolbar { display: none !important; } }
@@ -195,7 +187,6 @@ const downloadDetailedHtmlPdf = async ({
           <div class="pdf-download-root">${reportLetterheadHtml()}${body}</div>
         </body>
       </html>`);
-
     fdoc.close();
 
     const images = Array.from(fdoc.images);
