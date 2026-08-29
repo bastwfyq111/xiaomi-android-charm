@@ -166,17 +166,18 @@ font-family:Cairo!important;
             .pdf-download-root td {
               text-align: center !important;
               vertical-align: middle !important;
- padding: 8px 8px!important;
+ padding-top:4px !important;
+ padding-bottom=:4px!important;
+
             }
             .pdf-download-root .cell-content {
               display: flex !important;
               align-items: center !important;
               justify-content: center !important;
               min-height: auto;
-              padding: 8px 8px;
+        vertical-align: middle !important;
 font-family:Cairo!important; 
   font-size:18px; 
-  border:1px solid black; 
   font-weight:1000;
             }
             .print-toolbar { display: none !important; }
