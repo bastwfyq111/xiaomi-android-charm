@@ -147,7 +147,7 @@ font-family:Cairo!important;
             }
             .pdf-download-root {
               width: 100%;
-              max-width: 100%;
+              max-width: auto;
               margin: 0;
               background: #fff;
             }
@@ -160,22 +160,23 @@ font-family:Cairo!important;
               width: 100% !important;
               max-width:auto !important;
               margin: 0 !important;
+              border:1px solid black; 
             }
             .pdf-download-root th,
             .pdf-download-root td {
               text-align: center !important;
               vertical-align: middle !important;
-              padding: 8px 4
-              6px !important;
+              padding: 4px
+              4px !important;
             }
             .pdf-download-root .cell-content {
               display: flex !important;
               align-items: center !important;
               justify-content: center !important;
-              min-height: 70px;
-              padding: 4px 5px;
-              font-family:Cairo; 
-              font-size:14px; 
+              min-height: auto;
+              padding: 2px 2px;
+font-family:Cairo!important; 
+  font-size:16px; 
             }
             .print-toolbar { display: none !important; }
             @media print { .print-toolbar { display: none !important; } }
