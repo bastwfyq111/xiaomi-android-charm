@@ -167,7 +167,7 @@ fdoc.write(`<!doctype html>
               margin: 0 !important;
               border: 1px solid black;
               border-collapse: collapse;
-              table-layout: fixed; /* توزيع متساوٍ للعرض */
+              table-layout: auto; /* توزيع متساوٍ للعرض */
             }
             .pdf-download-root th,
             .pdf-download-root td {
@@ -177,7 +177,7 @@ fdoc.write(`<!doctype html>
               word-break: break-word; /* تقسيم الكلمات الطويلة */
               overflow-wrap: break-word; /* دعم إضافي */
               font-size: 18px !important; /* خط مناسب */
-              white-space: nowrap; /* التفاف النص */
+              white-space: normal; /* التفاف النص */
               border: 1px solid #000;
             }
             
@@ -185,7 +185,7 @@ fdoc.write(`<!doctype html>
             .pdf-download-root thead th {
               background-color: #2c3e50 !important;
               color: #ffffff !important;
-              font-weight: bold !important;
+          font-family: "Al Qabas Bold" !important;
               padding: 4px 2px !important;
             }
             
@@ -193,7 +193,8 @@ fdoc.write(`<!doctype html>
             .pdf-download-root tbody tr:last-child {
               background-color: #3498db !important;
               color: #ffffff !important;
-              font-weight: bold !important;
+        
+     font-family: "Al Qabas Bold"!important;
             }
             
             /* ===== تلوين خلايا الإجمالي في آخر صف ===== */
@@ -223,7 +224,7 @@ fdoc.write(`<!doctype html>
               vertical-align: middle !important;
               font-family:mohammad-bold !important;
               font-size: 18px !important;
-              font-weight: 1000;
+        
             }
             .print-toolbar { 
               display: none !important; 
