@@ -147,7 +147,7 @@ fdoc.write(`<!doctype html>
             }
             body {
               width: ${pageWidthPx}px;
-              font-family: Cairo, "Segoe UI", Tahoma, sans-serif !important;
+              font-family:MohammadBoldArt-Regular !important;
             }
             .pdf-download-root {
               width: 100%;
@@ -167,7 +167,7 @@ fdoc.write(`<!doctype html>
               margin: 0 !important;
               border: 1px solid black;
               border-collapse: collapse;
-              table-layout: fixed; /* ثابت بدل auto: يضمن نفس توزيع الأعمدة عبر كل الصفحات عند الطباعة/PDF */
+              table-layout: auto; /* ثابت بدل auto: يضمن نفس توزيع الأعمدة عبر كل الصفحات عند الطباعة/PDF */
             }
             .pdf-download-root th,
             .pdf-download-root td {
@@ -233,7 +233,7 @@ fdoc.write(`<!doctype html>
               justify-content: center !important;
               min-height: auto;
               vertical-align: middle !important;
-              font-family:mohammad-bold !important;
+              font-family:MohammadBoldArt-Regular!important;
               font-size: 18px !important;
         
             }
@@ -251,7 +251,7 @@ fdoc.write(`<!doctype html>
                 overflow-x: visible !important;
               }
               .pdf-download-root table {
-                table-layout: fixed !important; /* موحّد مع الوضع العادي لضمان ثبات الأعمدة بين الصفحات */
+                table-layout: auto!important; /* موحّد مع الوضع العادي لضمان ثبات الأعمدة بين الصفحات */
               }
             }
             /* ===== انتهى التعديل ===== */
