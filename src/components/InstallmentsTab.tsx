@@ -141,10 +141,10 @@ const downloadDetailedHtmlPdf = async ({
           <style>
             ${css}
             html, body { margin: 0 !important; padding: 0 !important; background: #fff !important; }
-            body { width: ${pageWidthPx}px; font-family: Tahoma, Arial, sans-serif !important; }
+            body { width: ${pageWidthPx}px; font-family: cairo !important; }
             .pdf-download-root {
               width: 100%;
-              max-width: none;
+              max-width: auto;
               margin: 0;
               background: #fff;
             }
@@ -168,7 +168,7 @@ const downloadDetailedHtmlPdf = async ({
               display: flex !important;
               align-items: center !important;
               justify-content: center !important;
-              min-height: 1em;
+              min-height: 20px;
               padding: 1px 2px;
             }
             .print-toolbar { display: none !important; }
@@ -1014,7 +1014,7 @@ font-weight: 800;
 letter-spacing: -0.2px;
 }
 .doc-header h2 { 
-font-size: 13px; 
+font-size: 16px; 
 font-weight: 700;
 margin-top: 1px; 
 color: ${colorTokens.accent}; }
@@ -1028,23 +1028,21 @@ line-height: 1.6;
    }
 
       table {
-  font-size:14px;
-  table-layout: auto!important;
-  width: 100% !important;
-min-width: 100% !important;
- border-collapse: collapse;
-border: 0.75pt solid #000;
+  font-size:16px;
+table-layout: auto!important;
+  width: 100% !important; 
+border: 1px solid #000;
       }
       th, td {
- border: 0.4pt solid #000;
+ border: 1px solid #000;
 padding: 5px 6px !important;
 text-align: center !important;
 vertical-align: middle !important; /* ضمان المحاذاة الرأسية لكل الخلايا */
 white-space: nowrap !important; /* الأعمدة العادية (أرقام/أشهر) تبقى بسطر واحد */
         overflow: hidden;
         text-overflow: ellipsis;
-        font-size: clamp(15px, 1.5vw, 18px);
-        overflow-wrap: normal !important;
+        font-size:15px;
+overflow-wrap: normal !important;
         word-break: keep-all !important;
         hyphens: none !important;
      line-height: 1.5;
@@ -1053,7 +1051,7 @@ white-space: nowrap !important; /* الأعمدة العادية (أرقام/أ�
       }
       /* أعمدة الاسم والمساق (wide): السماح بالتفاف النص بدل خط واحد ممدود */
       th.wrap, td.wrap {
-      white-space: normal !important;
+      white-space: nowrap!important;
         overflow: visible !important;
         text-overflow: clip !important;
         overflow-wrap: break-word !important;
@@ -1064,8 +1062,7 @@ white-space: nowrap !important; /* الأعمدة العادية (أرقام/أ�
   align-items: center !important; /* التمركز الرأسي للمحتوى */
 justify-content: center !important; /* التمركز الأفقي للمحتوى */
         width: 100%;
-        height: 100%;
-        max-width: 100%;
+        height: auto;
         box-sizing: border-box;
         padding: 3px 5px;
         margin: 0;
@@ -1078,7 +1075,7 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
         line-height: 1.35;
       }
       td.wrap .cell-content, th.wrap .cell-content {
-        white-space: normal !important;
+        white-space: nowrap!important;
         overflow: visible !important;
         overflow-wrap: break-word !important;
         word-break: normal !important;
@@ -1091,13 +1088,13 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
         text-align: center !important;
       }
       table th.wrap *, table td.wrap * {
-        white-space: normal !important;
+        white-space: nowrap!important;
         overflow-wrap: break-word !important;
         word-break: normal !important;
       }
       td.numeric-cell, th.numeric-cell, td.date-cell, th.date-cell, td.compact-cell, th.compact-cell {
         font-family: 'Times New Roman', Times, serif !important;
-        font-size: clamp(14px, 1.2vw, 15px) !important;
+        font-size: 15px !important;
         line-height: 1.15 !important;
         white-space: nowrap !important;
         overflow-wrap: normal !important;
@@ -1117,7 +1114,7 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
         background: ${colorTokens.head} !important;
         color: ${colorTokens.headText} !important;
         font-family: Cairo, Arial, sans-serif !important;
-        font-size: ${headerFontSizePx.toFixed(2)}px;
+        font-size: 14px;
         font-weight: 800;
         padding: 6px 7px !important;
         text-align: center !important;
@@ -1593,7 +1590,7 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
     const statementCss = `
       @page { size: A4 portrait; margin: 10mm; }
       * { box-sizing: border-box; }
-      html, body { width: 100%; min-height: auto; margin: 0; padding: 0; }
+      html, body { width: 100%;  margin: 0; padding: 0; }
       body {
         font-family: "Times New Roman", "Noto Naskh Arabic", "Cairo", Tahoma, sans-serif;
         color: #111827;
@@ -1609,9 +1606,9 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
       }
       .page-frame {
         width: 100%;
-        min-height: 260mm;
+        min-height: 290mm;
         padding: 7mm;
-        border: 1.5pt solid #0f766e;
+        border: 1px solid #0f766e;
         border-radius: 3mm;
         background: #fff;
         box-shadow: 0 2mm 8mm rgba(15, 118, 110, 0.14);
@@ -1671,7 +1668,7 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
         word-break: break-word;
         hyphens: auto;
       }
-      th { background: #0f766e; color: #000 !important; font-weight: 800; }
+      th { background: #0f766e; color:white!important; font-weight: 1000; }
       td { color: #000 !important; font-weight: 700; }
       .lbl { text-align: center; font-weight: 800; }
       .num { font-family: "Times New Roman", Times, serif; font-weight: 800; font-size: 11pt; font-variant-numeric: tabular-nums; direction: ltr; }
@@ -1885,7 +1882,9 @@ label:
     { label: "تصدير Excel التفصيلي", icon: FileSpreadsheet, onSelect: () => exportToExcel(2026) },
     { label: "طباعة تفصيلية", icon: Printer, onSelect: () => setPrintSettingsYear(2026) },
     {
-      label: detailedPdfBusy2026 ? "جارٍ التحضير…" : "تنزيل PDF التفصيلي",
+      label: detailedPdfBusy2026 ? 
+      
+"جارٍ التحضير…" : "تنزيل PDF التفصيلي",
       icon: Download,
       onSelect: handleDetailedPdf2026,
       disabled: detailedPdfBusy2026,
@@ -1975,7 +1974,7 @@ label:
           <StatsGrid stats={stats2025} columns={3} />
           <div className="overflow-auto max-h-[72vh] rounded-lg border border-slate-200 shadow-sm relative">
             <table className="installments-table min-w-max table-auto text-sm sm:text-base font-semibold">
-              <thead className="bg-gradient-to-b from-teal-700 to-teal-800 font-bold border-b-2 border-emerald-900 text-white [&>tr>th]:!text-white sticky top-0 z-20 shadow-md">
+              <thead className="bg-gradient-to-b from-teal-700 to-teal-800 font-bold border-b-2 border-emerald-900  [&>tr>th]:!text-white sticky top-0 z-20 shadow-md">
                 <tr>
                   <th className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">#</th>
                   <th
@@ -2162,7 +2161,7 @@ label:
             </h2>
             <p className="text-sm font-bold text-white">بيانات المسدد والرصيد المدور لعام 2026</p>
           </div>
-          <div className="w-full sm:w-auto grid grid-cols-2 sm:flex gap-1.5 sm:gap-2 items-center">
+          <div className="w-full grid grid-cols-2 sm:flex gap-1.5 sm:gap-2 items-center">
             <button
               onClick={() => setCondFormatModal(true)}
               className={`apk-only-actions w-full px-1.5 sm:px-2 py-1.5 rounded-lg text-sm font-extrabold shadow transition-colors flex items-center justify-center gap-1 ${
