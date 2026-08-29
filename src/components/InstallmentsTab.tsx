@@ -159,7 +159,21 @@ fdoc.write(`<!doctype html>
             .pdf-download-root .report-letterhead-block {
               width: 100% !important;
               max-width: auto !important;
-              margin: 0 0 3mm !important;
+              margin: 0 0 8mm !important; /* تم تكبيرها من 3mm لإبعاد النص عن الجدول */
+              padding-bottom: 2mm !important;
+            }
+            .pdf-download-root .report-letterhead-block * {
+              line-height: 1.7 !important; /* تباعد سطري أوضح داخل الترويسة */
+            }
+            .pdf-download-root .report-letterhead-block + table {
+              margin-top: 4mm !important; /* فاصل إضافي قبل الجدول مباشرة */
+            }
+            .pdf-download-root .report-letterhead-cell {
+              padding-bottom: 4mm !important; /* لوضع letterheadPlacement === "table" */
+            }
+            .pdf-download-root .report-letterhead-image {
+              display: block !important;
+              margin-bottom: 3mm !important;
             }
             .pdf-download-root table {
               width: 100% !important;
@@ -247,10 +261,52 @@ fdoc.write(`<!doctype html>
           </style>
         </head>
         <body>
-          <div class="pdf-download-root">${reportLetterheadHtml()}${body}</div>
-        </body>
-      </html>`);
+          <div class="pdf-download-root">${letterheadPlacement === "top" ? reportLetterheadHtml() : ""}
+${body}</div>
+<script>
+  (function () {
+    if (${JSON.stringify(letterheadPlacement)} !== "table") return;
+    var tables = document.querySelectorAll("table");
+    if (!tables.length) return;
+
+    var standalone = document.querySelector(".report-letterhead-block");
+    if (standalone) standalone.remove();
+
+    tables.forEach(function (table) {
+      var thead = table.tHead || table.querySelector("thead");
+      if (!thead) {
+        thead = document.createElement("thead");
+        table.insertBefore(thead, table.firstChild);
+      }
+      thead.style.display = "table-header-group";
+      if (thead.querySelector(".report-letterhead-row")) return;
+
+      var firstRow = thead.rows[0];
+      var columnCount = firstRow
+        ? Array.prototype.reduce.call(firstRow.cells, function (sum, cell) {
+            return sum + (cell.colSpan || 1);
+          }, 0)
+        : 1;
+      var row = document.createElement("tr");
+      row.className = "report-letterhead-row";
+      var cell = document.createElement("th");
+      cell.className = "report-letterhead-cell";
+      cell.colSpan = Math.max(1, columnCount);
+      var image = document.createElement("img");
+      image.className = "report-letterhead-image";
+      image.src = ${JSON.stringify(REPORT_LETTERHEAD_SRC)};
+      image.alt = "ترويسة المجلس اليمني للاختصاصات الطبية";
+      cell.appendChild(image);
+      row.appendChild(cell);
+      thead.insertBefore(row, thead.firstChild);
+    });
+  })();
+</script>
+${autoPrintScript}
+</body>
+</html>`);
 fdoc.close();
+
 
     const images = Array.from(fdoc.images);
     await Promise.all(
