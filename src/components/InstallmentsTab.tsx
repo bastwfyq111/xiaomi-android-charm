@@ -141,35 +141,41 @@ const downloadDetailedHtmlPdf = async ({
           <style>
             ${css}
             html, body { margin: 0 !important; padding: 0 !important; background: #fff !important; }
-            body { width: ${pageWidthPx}px; font-family: cairo !important; }
+body {
+width: ${pageWidthPx}px;
+font-family:Cairo!important;
+            }
             .pdf-download-root {
               width: 100%;
-              max-width: auto;
+              max-width: 100%;
               margin: 0;
               background: #fff;
             }
             .pdf-download-root .report-letterhead-block {
               width: 100% !important;
-              max-width: none !important;
+              max-width:auto !important;
               margin: 0 0 3mm !important;
             }
             .pdf-download-root table {
               width: 100% !important;
-              max-width: none !important;
+              max-width:auto !important;
               margin: 0 !important;
             }
             .pdf-download-root th,
             .pdf-download-root td {
               text-align: center !important;
               vertical-align: middle !important;
-              padding: 3px 4px !important;
+              padding: 8px 4
+              6px !important;
             }
             .pdf-download-root .cell-content {
               display: flex !important;
               align-items: center !important;
               justify-content: center !important;
-              min-height: 20px;
-              padding: 1px 2px;
+              min-height: 70px;
+              padding: 4px 5px;
+              font-family:Cairo; 
+              font-size:14px; 
             }
             .print-toolbar { display: none !important; }
             @media print { .print-toolbar { display: none !important; } }
