@@ -132,63 +132,89 @@ const downloadDetailedHtmlPdf = async ({
     if (!fdoc) throw new Error("تعذر إنشاء مساحة PDF");
 
     fdoc.open();
-     fdoc.write(`<!doctype html>
+    fdoc.write(`<!doctype html>
       <html lang="ar" dir="rtl">
         <head>
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <title>${escapeHtml(title)}</title>
           <style>
-            ${css}
-            html, body { margin: 0 !important; padding: 0 !important; background: #fff !important; }
-body {
-width: ${pageWidthPx}px;
-font-family:Cairo!important;
+            /* ===== التعديلات هنا فقط (بدون تغيير النهج البرمجي) ===== */
+            html, body { 
+              margin: 0 !important; 
+              padding: 0 !important; 
+              background: #fff !important; 
+            }
+            body {
+              width: ${pageWidthPx}px;
+              font-family: Cairo, "Segoe UI", Tahoma, sans-serif !important;
             }
             .pdf-download-root {
               width: 100%;
               max-width: auto;
               margin: 0;
               background: #fff;
+              overflow-x: auto; /* تمرير أفقي عند الحاجة */
             }
             .pdf-download-root .report-letterhead-block {
               width: 100% !important;
-              max-width:auto !important;
+              max-width: auto !important;
               margin: 0 0 3mm !important;
             }
             .pdf-download-root table {
               width: 100% !important;
-              max-width:auto !important;
+              max-width: auto !important;
               margin: 0 !important;
-              border:1px solid black; 
+              border: 1px solid black;
+              border-collapse: collapse;
+              table-layout: fixed; /* توزيع متساوٍ للعرض */
             }
             .pdf-download-root th,
             .pdf-download-root td {
               text-align: center !important;
               vertical-align: middle !important;
- padding-top:4px !important;
- padding-bottom=:4px!important;
-
+              padding: 2px 1px !important; /* تقليل الحشوة */
+              word-break: break-word; /* تقسيم الكلمات الطويلة */
+              overflow-wrap: break-word; /* دعم إضافي */
+              font-size: 12px !important; /* خط مناسب */
+              white-space: normal; /* التفاف النص */
+              border: 1px solid #aaa;
             }
             .pdf-download-root .cell-content {
               display: flex !important;
               align-items: center !important;
               justify-content: center !important;
               min-height: auto;
-        vertical-align: middle !important;
-font-family:Cairo!important; 
-  font-size:18px; 
-  font-weight:1000;
+              vertical-align: middle !important;
+              font-family: Cairo, "Segoe UI", Tahoma, sans-serif !important;
+              font-size: 12px !important;
+              font-weight: 1000;
             }
-            .print-toolbar { display: none !important; }
-            @media print { .print-toolbar { display: none !important; } }
+            .print-toolbar { 
+              display: none !important; 
+            }
+            @media print { 
+              .print-toolbar { 
+                display: none !important; 
+              }
+              body {
+                width: 100% !important;
+              }
+              .pdf-download-root {
+                overflow-x: visible !important;
+              }
+              .pdf-download-root table {
+                table-layout: auto !important;
+              }
+            }
+            /* ===== انتهى التعديل ===== */
           </style>
         </head>
         <body>
           <div class="pdf-download-root">${reportLetterheadHtml()}${body}</div>
         </body>
       </html>`);
-    fdoc.close();
+fdoc.close();
 
     const images = Array.from(fdoc.images);
     await Promise.all(
