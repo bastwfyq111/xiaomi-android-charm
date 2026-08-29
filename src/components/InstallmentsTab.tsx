@@ -144,10 +144,13 @@ fdoc.write(`<!doctype html>
               margin: 0 !important; 
               padding: 0 !important; 
               background: #fff !important; 
+              font-family:MohammadBoldArt-Regular !important;
+        font-weight: bold !important;
+
+
             }
             body {
               width: ${pageWidthPx}px;
-              font-family:MohammadBoldArt-Regular !important;
             }
             .pdf-download-root {
               width: 100%;
@@ -176,6 +179,8 @@ fdoc.write(`<!doctype html>
               padding: 2px 1px !important; /* تقليل الحشوة */
               font-size: 18px !important; /* خط مناسب */
               border: 1px solid #000;
+              font-weight: bold !important;
+
             }
 
             /* ===== التفاف النص فقط لخلايا النصوص، وليس الأرقام ===== */
@@ -235,7 +240,8 @@ fdoc.write(`<!doctype html>
               vertical-align: middle !important;
               font-family:MohammadBoldArt-Regular!important;
               font-size: 18px !important;
-        
+        font-weight: bold !important;
+
             }
             .print-toolbar { 
               display: none !important; 

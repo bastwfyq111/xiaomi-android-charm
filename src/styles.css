@@ -12,7 +12,7 @@
   font-family: "Mohammad Bold Art";
 src: url("/MohammadBoldArt-Regular.ttf") format("truetype");
   font-style: normal;
-  font-weight: 400;
+  font-weight: 1000;
   font-display: swap;
 }
 
@@ -53,7 +53,7 @@ src: url("/MohammadBoldArt-Regular.ttf") format("truetype");
   font-family: "Mohammad Bold Art";
   src: url("/MohammadBoldArt-Regular.ttf") format("truetype");
   font-style: normal;
-  font-weight: 400 900;
+  font-weight: 600 900;
   font-display: swap;
 }
 
@@ -67,7 +67,7 @@ src: url("/MohammadBoldArt-Regular.ttf") format("truetype");
 }
 
 :root {
-  --font-ui: "MohammadBoldArt-Regular", Tahoma, sans-serif;
+  --font-ui: "MohammadBoldArt-Regular";
   --font-display: "Al Qabas Bold", "Noto Kufi Arabic", "Noto Sans Arabic", "Cairo", sans-serif;
   --font-heading: "Al Qabas Bold", "Noto Kufi Arabic", "Noto Sans Arabic", "Cairo", sans-serif;
   --font-data: "Times New Roman", "Noto Sans Arabic", "Segoe UI", sans-serif;
@@ -153,13 +153,13 @@ src: url("/MohammadBoldArt-Regular.ttf") format("truetype");
       var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-ui);
-    font-weight: 500;
+    font-weight: 700;
     letter-spacing: 0;
     min-height: 100dvh;
     overscroll-behavior-y: none;
     -webkit-tap-highlight-color: transparent;
   }
-  h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 800; letter-spacing: -0.022em; }
+  h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 800; letter-spacing: 0 }
 
   /* نظام الخطوط المرئي: نص عربي واضح وعناوين قوية وأرقام سهلة القراءة */
   .font-tajawal,
@@ -296,10 +296,10 @@ table th.font-mono,
 table .tabular-nums,
 table input[type="number"] {
   font-family: var(--font-data) !important;
-  font-size: clamp(14px, 1.2vw, 16px) !important;
-  line-height: 1.15 !important;
+  font-size: clamp(14px, 2vw, 16px) !important;
+  line-height: 1.5 !important;
   color: #000 !important;
-  font-weight: 900 !important;
+  font-weight: 1000 !important;
   white-space: nowrap !important; /* حماية الأرقام والتواريخ من الانقسام */
   overflow: visible !important;
   overflow-wrap: normal !important;
@@ -334,7 +334,7 @@ table th.font-mono :where(span, div, input, button) {
   table th.font-mono,
   table .tabular-nums,
   table input[type="number"] {
-    font-size: clamp(18px, 2.35vw, 16px) !important;
+    font-size: clamp(16px, 2vw, 18px) !important;
   }
 }
 
@@ -392,7 +392,7 @@ table td > * {
 
   table th, table td {
     padding: 3px 4px !important;
-    line-height: 1.2;
+    line-height: 1.5;
     font-size: 16px !important;
   }
 
