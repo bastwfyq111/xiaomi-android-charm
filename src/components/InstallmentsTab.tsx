@@ -176,9 +176,10 @@ const downloadDetailedHtmlPdf = async ({
               padding: 2px 1px !important; /* تقليل الحشوة */
               word-break: break-word; /* تقسيم الكلمات الطويلة */
               overflow-wrap: break-word; /* دعم إضافي */
-              font-size: 12px !important; /* خط مناسب */
+              font-size: 18px !important; /* خط مناسب */
               white-space: normal; /* التفاف النص */
-              border: 1px solid #aaa;
+              border: 1px solid #000;
+background:#fff; 
             }
             .pdf-download-root .cell-content {
               display: flex !important;
@@ -186,8 +187,8 @@ const downloadDetailedHtmlPdf = async ({
               justify-content: center !important;
               min-height: auto;
               vertical-align: middle !important;
-              font-family: Cairo, "Segoe UI", Tahoma, sans-serif !important;
-              font-size: 12px !important;
+              font-family: Cairo !important;
+              font-size: 16px !important;
               font-weight: 1000;
             }
             .print-toolbar { 
