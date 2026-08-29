@@ -132,7 +132,7 @@ const downloadDetailedHtmlPdf = async ({
     if (!fdoc) throw new Error("تعذر إنشاء مساحة PDF");
 
     fdoc.open();
-    fdoc.write(`<!doctype html>
+fdoc.write(`<!doctype html>
       <html lang="ar" dir="rtl">
         <head>
           <meta charset="utf-8" />
@@ -177,18 +177,52 @@ const downloadDetailedHtmlPdf = async ({
               word-break: break-word; /* تقسيم الكلمات الطويلة */
               overflow-wrap: break-word; /* دعم إضافي */
               font-size: 18px !important; /* خط مناسب */
-              white-space: normal; /* التفاف النص */
+              white-space: nowrap; /* التفاف النص */
               border: 1px solid #000;
-background:#fff; 
             }
+            
+            /* ===== تلوين رؤوس الأعمدة ===== */
+            .pdf-download-root thead th {
+              background-color: #2c3e50 !important;
+              color: #ffffff !important;
+              font-weight: bold !important;
+              padding: 4px 2px !important;
+            }
+            
+            /* ===== تلوين صف الإجمالي ===== */
+            .pdf-download-root tbody tr:last-child {
+              background-color: #3498db !important;
+              color: #ffffff !important;
+              font-weight: bold !important;
+            }
+            
+            /* ===== تلوين خلايا الإجمالي في آخر صف ===== */
+            .pdf-download-root tbody tr:last-child td {
+              background-color: #3498db !important;
+              color: #ffffff !important;
+              font-weight: bold !important;
+            }
+            
+            /* ===== تلوين عمود الإجمالي (إذا كان موجوداً) ===== */
+            .pdf-download-root td:last-child {
+              background-color: #ecf0f1 !important;
+              font-weight: bold !important;
+            }
+            
+            /* ===== تلوين رأس عمود الإجمالي ===== */
+            .pdf-download-root th:last-child {
+              background-color: #e67e22 !important;
+              color: #ffffff !important;
+            }
+            
             .pdf-download-root .cell-content {
               display: flex !important;
               align-items: center !important;
               justify-content: center !important;
               min-height: auto;
               vertical-align: middle !important;
-              font-family: Cairo !important;
-              font-size: 16px !important;
+              font-family:mohammad-bold !important;
+              font-size: 18px !important;
               font-weight: 1000;
             }
             .print-toolbar { 
