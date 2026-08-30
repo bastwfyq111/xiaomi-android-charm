@@ -74,56 +74,56 @@ const tabs: TabItem[] = [
     value: "installments",
     label: "كشف الأقساط",
     shortLabel: "أقساط",
-    icon: <WalletCards className="w-5 h-5" />,
+    icon: <WalletCards className="w-6 h-6 sm:w-7 sm:h-7" />,
     activeClass: "bg-teal-700",
   },
   {
     value: "hafiza",
     label: "حوافظ التوريد",
     shortLabel: "حوافظ",
-    icon: <FileBox className="w-5 h-5" />,
+    icon: <FileBox className="w-6 h-6 sm:w-7 sm:h-7" />,
     activeClass: "bg-amber-600",
   },
   {
     value: "account",
     label: "الحساب الجاري",
     shortLabel: "حساب",
-    icon: <FileSpreadsheet className="w-5 h-5" />,
+    icon: <FileSpreadsheet className="w-6 h-6 sm:w-7 sm:h-7" />,
     activeClass: "bg-stone-600",
   },
   {
     value: "journal",
     label: "القيود اليومية",
     shortLabel: "قيود",
-    icon: <BookOpenText className="w-5 h-5" />,
+    icon: <BookOpenText className="w-6 h-6 sm:w-7 sm:h-7" />,
     activeClass: "bg-[#0e2b40]",
   },
   {
     value: "monthly",
     label: "كشف شهري",
     shortLabel: "شهري",
-    icon: <PieChart className="w-5 h-5" />,
+    icon: <PieChart className="w-6 h-6 sm:w-7 sm:h-7" />,
     activeClass: "bg-slate-700",
   },
   {
     value: "revenue",
     label: "الإيرادات",
     shortLabel: "إيرادات",
-    icon: <TrendingUp className="w-5 h-5" />,
+    icon: <TrendingUp className="w-6 h-6 sm:w-7 sm:h-7" />,
     activeClass: "bg-emerald-700",
   },
   {
     value: "expenses-table",
     label: "المصروفات",
     shortLabel: "مصروفات",
-    icon: <ReceiptText className="w-5 h-5" />,
+    icon: <ReceiptText className="w-6 h-6 sm:w-7 sm:h-7" />,
     activeClass: "bg-indigo-700",
   },
   {
     value: "general-expenses-ledger",
     label: "سجل النفقات",
     shortLabel: "السجل",
-    icon: <FileSpreadsheet className="w-5 h-5" />,
+    icon: <FileSpreadsheet className="w-6 h-6 sm:w-7 sm:h-7" />,
     activeClass: "bg-rose-700",
   },
 ];
@@ -330,17 +330,17 @@ function Index() {
                 type="button"
                 onClick={() => handleTabChange(tab.value)}
                 aria-current={isActive ? "page" : undefined}
-                className={`flex min-w-[74px] shrink-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-lg px-1.5 py-1.5 text-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#e3c281] sm:min-w-[92px] sm:gap-1 sm:px-2 sm:py-2 ${
+                className={`flex min-w-[84px] shrink-0 flex-1 flex-col items-center justify-center gap-1 rounded-lg px-2 py-2 text-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#e3c281] sm:min-w-[104px] sm:gap-1.5 sm:px-3 sm:py-2.5 ${
                   isActive
                     ? `${tab.activeClass} text-white shadow-md`
                     : "text-white/70 hover:bg-white/[0.1] hover:text-white"
                 }`}
               >
                 <span className={isActive ? "scale-110" : "scale-100"}>{tab.icon}</span>
-                <span className="text-[10px] font-bold leading-tight whitespace-nowrap sm:hidden">
+                <span className="text-xs font-bold leading-tight whitespace-nowrap sm:hidden">
                   {tab.shortLabel}
                 </span>
-                <span className="hidden text-xs font-bold leading-tight whitespace-nowrap sm:inline">
+                <span className="hidden text-sm font-bold leading-tight whitespace-nowrap sm:inline">
                   {tab.label}
                 </span>
               </button>
