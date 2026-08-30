@@ -144,7 +144,7 @@ fdoc.write(`<!doctype html>
               margin: 0 !important; 
               padding: 0 !important; 
               background: #fff !important; 
-              font-family:MohammadBoldArt-Regular !important;
+              font-family:"Mohammad Bold Art" !important;
         font-weight: bold !important;
 
 
@@ -238,7 +238,7 @@ fdoc.write(`<!doctype html>
               justify-content: center !important;
               min-height: auto;
               vertical-align: middle !important;
-              font-family:MohammadBoldArt-Regular!important;
+              font-family:"Mohammad Bold Art"!important;
               font-size: 18px !important;
         font-weight: bold !important;
 
