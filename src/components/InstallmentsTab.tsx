@@ -442,7 +442,7 @@ const Modal = ({
         dir="rtl"
       >
         <div className="flex justify-between items-center p-4 border-b bg-gradient-to-l from-blue-50 to-slate-50 sticky top-0 z-10">
-          <h3 className="font-bold text-base sm:text-lg text-slate-900">{title}</h3>
+          <h3 className="font-bold text-base sm:text-base sm:text-lg text-slate-900">{title}</h3>
           <button onClick={onClose} className="p-1 hover:bg-slate-200 rounded-lg">
             <X className="w-5 h-5 text-slate-600" />
           </button>
@@ -1988,7 +1988,7 @@ label:
       <div className="w-full bg-gradient-to-b from-teal-50/60 to-white shadow-lg border border-teal-100 rounded-2xl overflow-hidden">
         <div className="bg-gradient-to-l from-teal-800 via-teal-600 to-emerald-600 px-2 sm:px-6 py-2.5 sm:py-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center flex-wrap gap-2">
           <div className="min-w-0">
-            <h2 className="text-base sm:text-lg font-bold text-white">
+            <h2 className="text-base sm:text-base sm:text-lg font-bold text-white">
 
  📊 أقساط ومستندات 
  العام 2025
@@ -2242,19 +2242,19 @@ label:
         </div>
       </div>
 
-      {/* ========== واجهة جدول 2026 ========== */}
+{/* ========== واجهة جدول 2026 ========== */}
      <div className="w-full bg-gradient-to-b from-teal-50/60 to-white shadow-lg border border-teal-100 rounded-2xl overflow-hidden">
         <div className="bg-gradient-to-l from-teal-800 via-teal-600 to-emerald-600 px-2 sm:px-6 py-2.5 sm:py-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center flex-wrap gap-2">
           <div className="min-w-0">
-            <h2 className="text-lg sm:text-xl font-extrabold text-white">
+            <h2 className="text-base sm:text-lg sm:text-xl font-extrabold text-white">
               📊 سجل أقساط العام الحالي 2026
             </h2>
-            <p className="text-lg font-bold text-white">بيانات المسدد والرصيد المدور لعام 2026</p>
+            <p className="text-base sm:text-lg font-bold text-white">بيانات المسدد والرصيد المدور لعام 2026</p>
           </div>
           <div className="w-full grid grid-cols-2 sm:flex gap-1.5 sm:gap-2 items-center">
             <button
               onClick={() => setCondFormatModal(true)}
-              className={`apk-only-actions w-full px-1.5 sm:px-2 py-1.5 rounded-lg text-sm font-extrabold shadow transition-colors flex items-center justify-center gap-1 ${
+              className={`apk-only-actions w-full px-1.5 sm:px-2 py-1.5 rounded-lg text-lg font-extrabold shadow transition-colors flex items-center justify-center gap-1 ${
                 condFormatRules.length
                   ? "bg-yellow-400 text-yellow-900 animate-pulse"
                   : "bg-white/20 text-white hover:bg-white/30"
@@ -2266,41 +2266,36 @@ label:
             </button>
 
             <div className="relative">
-              <Search className="w-4 h-4 absolute right-2.5 top-2.5 text-teal-500" />
-  <input type="text"
-placeholder=
-"بحث (الاسم، الدفعة، المساق)..."
+              <Search className="w-4 h-4 absolute right-2.5 top-2.5 text-yellow-500" />
+              <input type="text"
+                placeholder="بحث (الاسم، الدفعة، المساق)..."
                 value={search2026}
                 onChange={(e) => setSearch2026(e.target.value)}
-                className="pl-3 pr-8 py-2 rounded-lg text-base font-extrabold border border-teal-300 outline-none focus:ring-2 focus:ring-teal-300 w-full sm:w-48 text-gold shadow-sm"
+                className="pl-3 pr-8 py-2 rounded-lg text-lg font-extrabold border border-teal-300 outline-none focus:ring-2 focus:ring-teal-300 w-full sm:w-48 text-yellow-600 shadow-sm"
               />
             </div>
       
-
-     
-    
-
             <button
               onClick={() => setNewRowModal2026(true)}
-              className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-blue-100 text-blue-800 rounded-lg text-xs sm:text-xs font-bold shadow hover:bg-blue-200 transition-colors flex items-center justify-center gap-1 truncate"
+              className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-blue-100 text-blue-800 rounded-lg text-lg font-bold shadow hover:bg-blue-200 transition-colors flex items-center justify-center gap-1 truncate"
             >
-              <Plus className="w-3 h-3" /> طالب جديد
+              <Plus className="w-4 h-4" /> طالب جديد
             </button>
 
             <button
               onClick={() => setNewColModal(true)}
-              className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-amber-100 text-amber-800 rounded-lg text-xs sm:text-xs font-bold shadow hover:bg-amber-200 transition-colors flex items-center justify-center gap-1 truncate"
+              className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-amber-100 text-amber-800 rounded-lg text-lg font-bold shadow hover:bg-amber-200 transition-colors flex items-center justify-center gap-1 truncate"
             >
-              <Plus className="w-3 h-3" /> عمود جديد
+              <Plus className="w-4 h-4" /> عمود جديد
             </button>
 
             <button
               onClick={() => setNewPaymentModal(true)}
-              className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white/20 text-white rounded-lg text-xs sm:text-xs font-bold shadow hover:bg-white/30 transition-colors truncate"
+              className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white/20 text-white rounded-lg text-lg font-bold shadow hover:bg-white/30 transition-colors truncate"
             >
               ➕ إضافة قسط
             </button>
-            <label className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white text-teal-700 rounded-lg text-xs sm:text-xs font-bold cursor-pointer shadow hover:bg-teal-50 transition-colors text-center truncate">
+            <label className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white text-teal-700 rounded-lg text-lg font-bold cursor-pointer shadow hover:bg-teal-50 transition-colors text-center truncate">
               📥 استيراد{" "}
               <input
                 type="file"
@@ -2313,15 +2308,15 @@ placeholder=
             <div className="apk-only-actions col-span-2 flex gap-1 w-full sm:w-auto">
               <button
                 onClick={() => exportToExcel(2026)}
-                className="flex-1 sm:flex-none px-1.5 sm:px-2 py-1 sm:py-1 bg-green-100 text-green-700 rounded-lg text-xs sm:text-xs font-bold shadow hover:bg-green-200 transition-colors flex items-center justify-center gap-1 truncate"
+                className="flex-1 sm:flex-none px-1.5 sm:px-2 py-1 sm:py-1 bg-green-100 text-green-700 rounded-lg text-lg font-bold shadow hover:bg-green-200 transition-colors flex items-center justify-center gap-1 truncate"
               >
-                <FileSpreadsheet className="w-3.5 h-3.5" /> Excel
+                <FileSpreadsheet className="w-4 h-4" /> Excel
               </button>
               <button
                 onClick={() => setPrintSettingsYear(2026)}
-                className="flex-1 sm:flex-none px-1.5 sm:px-2 py-1 sm:py-1 bg-white/95 text-teal-800 rounded-lg text-xs sm:text-xs font-bold shadow hover:bg-white transition-colors flex items-center justify-center gap-1 truncate"
+                className="flex-1 sm:flex-none px-1.5 sm:px-2 py-1 sm:py-1 bg-white/95 text-teal-800 rounded-lg text-lg font-bold shadow hover:bg-white transition-colors flex items-center justify-center gap-1 truncate"
               >
-                <Printer className="w-3.5 h-3.5" /> طباعة تفصيلية
+                <Printer className="w-4 h-4" /> طباعة تفصيلية
               </button>
             </div>
 
@@ -2351,10 +2346,10 @@ placeholder=
                 onClear={() => clearInstallments()}
                 printLabel="الأقساط/إجمالي"
                 additionalWebActions={installments2026WebActions}
-        className="!flex-1 min-w-0 !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-1 [&>button]:py-1 sm:[&>button]:px-2 sm:[&>button]:py-1 [&>button]:text-xs sm:[&>button]:text-xs [&>button:nth-child(2)]:hidden"
+                className="!flex-1 min-w-0 !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-2 [&>button]:py-1 [&>button]:text-lg [&>button:nth-child(2)]:hidden"
               />
               <button
-                className="apk-only-actions flex items-center gap-1.5 px-3 py-1.5 bg-[#10528e] text-white rounded-lg text-xs font-bold shadow-sm hover:bg-[#0d4272] active:scale-95 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-wait"
+                className="apk-only-actions flex items-center gap-1.5 px-3 py-1.5 bg-[#10528e] text-white rounded-lg text-lg font-bold shadow-sm hover:bg-[#0d4272] active:scale-95 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-wait"
                 type="button"
                 onClick={handleDetailedPdf2026}
                 disabled={detailedPdfBusy2026}
@@ -2366,105 +2361,89 @@ placeholder=
             </div>
           </div>
         </div>
-<div className="p-1 sm:p-3">
-  <StatsGrid stats={stats2026} columns={3} />
-  <div className="overflow-auto max-h-auto rounded-lg border border-slate-200 shadow-sm relative">
-    {/* تم إضافة خط أسود غامق، تكبير الخط، ومنع التفاف النص للجدول بالكامل */}
-    <table className="installments-table min-w-max table-auto text-lg fon-extrabold tex-black">
-      {/*
-      ترويسة الجل
-      بخط أبيض غامق جداً مع الحفاظ على لون الخلفية */}
-      <thead className="bg-gradient-to-b from-teal-700 to-teal-800 font-extrabold border-b-2 border-emerald-900 text-white sticky top-0 z-20 shadow-md">
-        <tr>
-          <th className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg">#</th>
-          <th
-            className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
-            onClick={() => handleSort2026("name")}
-          >
-            <div className="flex items-center justify-center gap-1">
-              اسم المتدرب <SortIcon sortConfig={sortConfig2026} columnKey="name" />
-            </div>
-          </th>
-          <th
-            className="text-center whitespace-nowrap
-            !text-white
-            cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
-            onClick={() => handleSort2026("batch")}
-          >
-            <div className="flex items-center justify-center gap-1">
-              دفعة <SortIcon sortConfig={sortConfig2026} columnKey="batch" />
-            </div>
-          </th>
-          <th
-            className="text-center whitespace-nowrap
-            text-white
-            cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
-            onClick={() => handleSort2026("specialty")}
-          >
-            <div className="flex items-center justify-center gap-1">
-              المساق <SortIcon sortConfig={sortConfig2026} columnKey="specialty" />
-            </div>
-          </th>
-          <th
-            className="text-center whitespace-nowrap 
-            text-white
-            cursor-pointer hover:bg-white/10 transition-colors border-x border-white/25 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg"
-            onClick={() => handleSort2026("prevDue")}
-          >
-            <div className="flex items-center justify-center gap-1">
-              المتبقي من 2025 <SortIcon sortConfig={sortConfig2026} columnKey="prevDue" />
-            </div>
-          </th>
-          <th
-            className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg"
-            onClick={() => handleSort2026("fees")}
-          >
-            <div className="flex items-center justify-center gap-1">
-              الرسوم <SortIcon sortConfig={sortConfig2026} columnKey="fees" />
-            </div>
-          </th>
-          {MONTHS_2026.map((m) => (
-            <th
-              key={m}
-              className="text-center border-l border-white/25 whitespace-nowrap 
-              !text-white
-              !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
-            >
-              {m.trim()}
-            </th>
-          ))}
-          {extraCols2026.map((col) => (
-            <th
-              key={col.name}
-              className="text-center border-l border-white/25 whitespace-nowrap 
-              text-white !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg"
-            >
-              <div className="flex items-center justify-center gap-1">
-                {col.name}
-                <button
-                  onClick={() =>
-                    setEditColModal({
-                      oldName: col.name,
-                      name: col.name,
-                      type: col.type,
-                      options: col.options?.join(",") || "",
-                      formula: col.formula || "",
-                    })
-                  }
-
-
-
-
-        className="p-0.5 bg-black/10 hover:bg-black/20 rounded transition-all"
+        <div className="p-1 sm:p-3">
+          <StatsGrid stats={stats2026} columns={3} />
+          <div className="overflow-auto max-h-auto rounded-lg border border-slate-200 shadow-sm relative">
+            <table className="installments-table min-w-max w-full table-auto text-lg font-extrabold text-black">
+              {/* ترويسة الجدول: لون ذهبي لامع مع خط أسود غامق */}
+              <thead className="bg-gradient-to-b from-yellow-300 via-yellow-400 to-yellow-500 font-extrabold border-b-2 border-yellow-700 text-black sticky top-0 z-20 shadow-md">
+                <tr>
+                  <th className="text-center whitespace-nowrap !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30">#</th>
+                  <th
+                    className="text-center whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    onClick={() => handleSort2026("name")}
+                  >
+                    <div className="flex items-center justify-center gap-1">
+                      اسم المتدرب <SortIcon sortConfig={sortConfig2026} columnKey="name" />
+                    </div>
+                  </th>
+                  <th
+                    className="text-center whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    onClick={() => handleSort2026("batch")}
+                  >
+                    <div className="flex items-center justify-center gap-1">
+                      دفعة <SortIcon sortConfig={sortConfig2026} columnKey="batch" />
+                    </div>
+                  </th>
+                  <th
+                    className="text-center whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    onClick={() => handleSort2026("specialty")}
+                  >
+                    <div className="flex items-center justify-center gap-1">
+                      المساق <SortIcon sortConfig={sortConfig2026} columnKey="specialty" />
+                    </div>
+                  </th>
+                  <th
+                    className="text-center whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    onClick={() => handleSort2026("prevDue")}
+                  >
+                    <div className="flex items-center justify-center gap-1">
+                      المتبقي من 2025 <SortIcon sortConfig={sortConfig2026} columnKey="prevDue" />
+                    </div>
+                  </th>
+                  <th
+                    className="text-center whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    onClick={() => handleSort2026("fees")}
+                  >
+                    <div className="flex items-center justify-center gap-1">
+                      الرسوم <SortIcon sortConfig={sortConfig2026} columnKey="fees" />
+                    </div>
+                  </th>
+                  {MONTHS_2026.map((m) => (
+                    <th
+                      key={m}
+                      className="text-center whitespace-nowrap !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    >
+                      {m.trim()}
+                    </th>
+                  ))}
+                  {extraCols2026.map((col) => (
+                    <th
+                      key={col.name}
+                      className="text-center whitespace-nowrap !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    >
+                      <div className="flex items-center justify-center gap-1">
+                        {col.name}
+                        <button
+                          onClick={() =>
+                            setEditColModal({
+                              oldName: col.name,
+                              name: col.name,
+                              type: col.type,
+                              options: col.options?.join(",") || "",
+                              formula: col.formula || "",
+                            })
+                          }
+                          className="p-0.5 bg-black/10 hover:bg-black/20 rounded transition-all"
                           title="تعديل أو حذف العمود"
                         >
-                          <Settings className="w-3 h-3" />
+                          <Settings className="w-4 h-4" />
                         </button>
                       </div>
                     </th>
                   ))}
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"
+                    className="text-center whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30"
                     onClick={() => handleSort2026("totalPaid")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -2472,21 +2451,15 @@ placeholder=
                     </div>
                   </th>
                   <th
-                    className="text-center whitespace-nowrap 
-            text-white
-            cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg"
+                    className="text-center whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30"
                     onClick={() => handleSort2026("remaining")}
                   >
                     <div className="flex items-center justify-center gap-1">
                       الرصيد المتبقي <SortIcon sortConfig={sortConfig2026} columnKey="remaining" />
                     </div>
                   </th>
-                  <th className="text-center whitespace-nowrap
-            !text-white
-            !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg">حالة</th>
-                  <th className="text-center whitespace-nowrap 
-        !text-white
-        !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg">إجراءات</th>
+                  <th className="text-center whitespace-nowrap !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30">حالة</th>
+                  <th className="text-center whitespace-nowrap !px-2 !py-3 !text-lg text-black">إجراءات</th>
                 </tr>
               </thead>
               <tbody>
@@ -2494,7 +2467,7 @@ placeholder=
                   <tr>
                     <td
                       colSpan={10 + MONTHS_2026.length + extraCols2026.length}
-                      className="text-center text-slate-400 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg:!text-base whitespace-nowrap"
+                      className="text-center text-slate-400 !px-2 !py-3 !text-lg whitespace-nowrap"
                     >
                       لا توجد بيانات (يرجى التأكد من استيراد الملف أو تعديل البحث)
                     </td>
@@ -2513,61 +2486,58 @@ placeholder=
                           key={i}
                           className={`border-t border-slate-200 transition-colors ${rowBgClass}`}
                         >
-                          <td className="text-center text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg sm:!text-base">
+                          <td className="text-center text-black whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
                             {i + 1}
                           </td>
-                          <td className="text-center font-bold text-black whitespace-nowrap bg-fuchsia-50/70 !px-1 !py-1.5 sm:!px-2 sm:!py-2 text-lg">
+                          <td className="text-center font-bold text-black whitespace-nowrap bg-fuchsia-50/70 !px-2 !py-2 !text-lg border-l border-slate-200">
                             <input
                               value={r.name || ""}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "name", e.target.value)
                               }
-    className=
-    "w-full sm: w-auto bg-transparent text-center text-white text-lg outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
+                              className="w-full min-w-max bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                             />
                           </td>
-                          <td className="text-center text-black whitespace-nowrap bg-violet-50/70 !px-1 !py-1 sm:!px-2 sm:!py-2 
-            text-lg">
+                          <td className="text-center text-black whitespace-nowrap bg-violet-50/70 !px-2 !py-2 !text-lg border-l border-slate-200">
                             <input
                               value={r.batch || ""}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "batch", e.target.value)
                               }
- className="w-full sm: w-auto
- bg-transparent text-center text-white :text-lg outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
+                              className="w-full min-w-max bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                               placeholder="—"
                             />
                           </td>
-                          <td className="text-center text-black whitespace-nowrap bg-teal-50/60 !px-1 !py-1 sm:!px-2 sm:!py-2 !text-lg">
+                          <td className="text-center text-black whitespace-nowrap bg-teal-50/60 !px-2 !py-2 !text-lg border-l border-slate-200">
                             <input
                               value={r.specialty || ""}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "specialty", e.target.value)
                               }
-  className="w-full sm: w-auto bg-transparent text-center text-white text-lg outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
+                              className="w-full min-w-max bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                               placeholder="—"
                             />
                           </td>
-                          <td className="text-center numeric-cell font-Cairo text-black font-bold bg-amber-50/20 whitespace-nowrap !px-1 !py-1 sm:!px-2 sm:!py-2 text-lg">
+                          <td className="text-center numeric-cell font-Cairo text-black font-extrabold bg-amber-50/40 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
                             <input
                               type="number"
-                              value={r.prevDue || 0}
+                              step="0.01"
+                              value={r.prevDue !== undefined ? Number(r.prevDue).toFixed(2) : "0.00"}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "prevDue", e.target.value)
                               }
-className="w-full sm: w-auto bg-transparent text-center text-white text-lg outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
+                              className="w-full min-w-max bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                             />
                           </td>
-                          <td className="text-center numeric-cell font-cairo text-black font-bold whitespace-nowrap bg-indigo-50/70 !px-1 !py-1 sm:!px-2 sm:!py-2 
-            !text-lg">
+                          <td className="text-center numeric-cell font-cairo text-black font-extrabold whitespace-nowrap bg-indigo-50/50 !px-2 !py-2 !text-lg border-l border-slate-200">
                             <input
                               type="number"
-                              value={r.fees || 0}
+                              step="0.01"
+                              value={r.fees !== undefined ? Number(r.fees).toFixed(2) : "0.00"}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "fees", e.target.value)
                               }
-className="w-full sm: w-auto 
-bg-transparent text-center text-white text-lg outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
+                              className="w-full min-w-max bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                             />
                           </td>
                           {MONTHS_2026.map((m) => {
@@ -2576,32 +2546,30 @@ bg-transparent text-center text-white text-lg outline-none focus:bg-white focus:
                             return (
                               <td
                                 key={m}
-                                className="numeric-cell text-center relative bg-white/40 border-l border-slate-200 hover:bg-slate-100 cursor-pointer group transition-colors whitespace-nowrap !px-1 !py-1 sm:!px-2 sm:!py-2
-          !text-lg"
+                                className="numeric-cell text-center relative bg-white/40 border-l border-slate-200 hover:bg-yellow-50 cursor-pointer group transition-colors whitespace-nowrap !px-2 !py-2 !text-lg"
                                 onMouseEnter={() => setHoveredCell(cellId)}
                                 onMouseLeave={() => setHoveredCell(null)}
                               >
                                 <input
                                   type="number"
-                                  value={paid || ""}
+                                  step="0.01"
+                                  value={paid > 0 ? paid.toFixed(2) : ""}
                                   onChange={(e) =>
                                     update2026PaymentValue(originalIndex, m, e.target.value)
                                   }
-className="w-auto bg-transparent text-center numeric-cell font-Cairo text-black font-bold outline-none focus:bg-white focus:ring-1 ring-emerald-300 rounded px-1 py-1"
+                                  className="w-full min-w-max bg-transparent text-center numeric-cell font-Cairo text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                                   placeholder="—"
                                   min="0"
-                                  step="0.01"
                                 />
                               </td>
                             );
                           })}
 
                           {extraCols2026.map((col) => (
-                            <td key={col.name} className="border-l border-slate-200 !px-1 !py-1 sm:!px-2 sm:!py-2 
-      !text-lg  whitespace-nowrap">
+                            <td key={col.name} className="border-l border-slate-200 !px-2 !py-2 !text-lg whitespace-nowrap">
                               {col.type === "select" ? (
                                 <select
-                                  className="w-full text-center text-black bg-transparent outline-none focus:bg-white focus:ring-1 ring-blue-300 rounded px-1 py-1 text-xs"
+                                  className="w-full min-w-max text-center text-black font-extrabold bg-transparent outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1 !text-lg"
                                   value={r.customData?.[col.name] || ""}
                                   onChange={(e) =>
                                     updateCustomColValue(originalIndex, col.name, e.target.value)
@@ -2615,13 +2583,13 @@ className="w-auto bg-transparent text-center numeric-cell font-Cairo text-black 
                                   ))}
                                 </select>
                               ) : col.type === "formula" ? (
-                                <div className="text-center numeric-cell font-mono text-xs font-bold text-black bg-white/50 py-1.5 rounded">
-                                  {evaluateFormula(col.formula || "", r)}
+                                <div className="text-center numeric-cell font-mono !text-lg font-extrabold text-yellow-700 bg-white/50 py-1.5 rounded">
+                                  {Number(evaluateFormula(col.formula || "", r) || 0).toFixed(2)}
                                 </div>
                               ) : (
                                 <input
                                   type="text"
-                                  className="w-full text-center text-black bg-transparent outline-none focus:bg-white focus:ring-1 ring-blue-300 rounded px-1 py-1 text-xs"
+                                  className="w-full min-w-max text-center text-black font-extrabold bg-transparent outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1 !text-lg"
                                   value={r.customData?.[col.name] || ""}
                                   onChange={(e) =>
                                     updateCustomColValue(originalIndex, col.name, e.target.value)
@@ -2632,91 +2600,90 @@ className="w-auto bg-transparent text-center numeric-cell font-Cairo text-black 
                             </td>
                           ))}
 
-                          <td className="text-center numeric-cell font-mono text-black font-bold bg-emerald-50/30 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg:!text-base">
-                            {fmt(r.totalPaid)}
+                          <td className="text-center numeric-cell font-mono text-black font-extrabold bg-emerald-50/50 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
+                            {fmt(Number(r.totalPaid || 0).toFixed(2))}
                           </td>
-                          <td className="text-center numeric-cell font-mono text-black font-bold bg-rose-50/30 whitespace-nowrap !px-1 !py-1 sm:!px-2 sm:!py-2 !text-lg">
-                            {fmt(r.remaining)}
+                          <td className="text-center numeric-cell font-mono text-black font-extrabold bg-rose-50/40 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
+                            {fmt(Number(r.remaining || 0).toFixed(2))}
                           </td>
-                          <td className="text-center whitespace-nowrap !px-1 !py-1 sm:!px-2 sm:!py-2 !text-lg">
+                          <td className="text-center whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
                             <span
-                              className={`px-1.5 py-0.5 rounded-full text-xs font-bold ${status.bg} ${status.color}`}
+                              className={`px-3 py-1 rounded-full !text-lg font-extrabold ${status.bg} ${status.color}`}
                             >
                               {status.text}
                             </span>
                           </td>
-                          <td className="text-center whitespace-nowrap flex justify-center gap-1 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="text-center whitespace-nowrap flex justify-center gap-2 !px-2 !py-2 !text-lg">
                             <button
                               onClick={() => {
                                 setEditRowData(r);
                                 setEditRowModal({ year: 2026, row: r, index: originalIndex });
                               }}
-                              className="p-1 bg-amber-50 text-amber-600 rounded border border-amber-200 hover:bg-amber-500 hover:text-white transition-colors"
+                              className="p-1.5 bg-amber-50 text-amber-600 rounded border border-amber-200 hover:bg-amber-500 hover:text-white transition-colors"
                               title="تعديل الصف"
                             >
-                              <Edit className="w-3.5 h-3.5" />
+                              <Edit className="w-5 h-5" />
                             </button>
                             <button
                               onClick={() => printStatement(r, 2026)}
-                              className="p-1 bg-blue-50 text-blue-600 rounded border border-blue-200 hover:bg-blue-500 hover:text-white transition-colors"
+                              className="p-1.5 bg-blue-50 text-blue-600 rounded border border-blue-200 hover:bg-blue-500 hover:text-white transition-colors"
                               title="طباعة الكشف"
                             >
-                              <Printer className="w-3.5 h-3.5" />
+                              <Printer className="w-5 h-5" />
                             </button>
                             <button
                               onClick={() => handleExportPdf(r, 2026)}
-                              className="p-1 bg-emerald-50 text-emerald-600 rounded border border-emerald-200 hover:bg-emerald-500 hover:text-white transition-colors"
+                              className="p-1.5 bg-emerald-50 text-emerald-600 rounded border border-emerald-200 hover:bg-emerald-500 hover:text-white transition-colors"
                               title="تنزيل PDF (متوافق مع شاومي)"
                             >
-                              <FileText className="w-3.5 h-3.5" />
+                              <FileText className="w-5 h-5" />
                             </button>
                             <button
                               onClick={() => deleteRow2026(originalIndex, r.name)}
-                              className="p-1 bg-red-50 text-red-600 rounded border border-red-200 hover:bg-red-500 hover:text-white transition-colors"
+                              className="p-1.5 bg-red-50 text-red-600 rounded border border-red-200 hover:bg-red-500 hover:text-white transition-colors"
                               title="حذف الصف"
                             >
-                              <Trash className="w-3.5 h-3.5" />
+                              <Trash className="w-5 h-5" />
                             </button>
                           </td>
                         </tr>
                       );
                     })}
-                    <tr className="border-t-2 border-teal-800 bg-teal-100/80 font-extrabold">
-                      <td className="text-center text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg
-            :!text-base" colSpan={4}>
+                    <tr className="border-t-2 border-yellow-600 bg-yellow-100 font-extrabold">
+                      <td className="text-center text-black whitespace-nowrap !px-2 !py-3 !text-lg border-l border-yellow-300" colSpan={4}>
                         الإجماليات
                       </td>
-                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg :!text-base">
-                        {fmt(totals2026.prevDue)}
+                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-2 !py-3 !text-lg border-l border-yellow-300">
+                        {fmt(Number(totals2026.prevDue || 0).toFixed(2))}
                       </td>
-                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg :!text-base">
-                        {fmt(totals2026.fees)}
+                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-2 !py-3 !text-lg border-l border-yellow-300">
+                        {fmt(Number(totals2026.fees || 0).toFixed(2))}
                       </td>
 
                       {MONTHS_2026.map((m) => (
                         <td
                           key={m}
-                          className="text-center numeric-cell font-cairo text-black border-l border-slate-200 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg"
+                          className="text-center numeric-cell font-cairo text-black whitespace-nowrap !px-2 !py-3 !text-lg border-l border-yellow-300"
                         >
-                          {totals2026.months[m] > 0 ? fmt(totals2026.months[m]) : "—"}
+                          {totals2026.months[m] > 0 ? fmt(Number(totals2026.months[m]).toFixed(2)) : "—"}
                         </td>
                       ))}
                       {extraCols2026.map((col) => (
                         <td
                           key={col.name}
-                          className="text-center text-black border-l border-slate-200 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg :!text-base"
+                          className="text-center text-black whitespace-nowrap !px-2 !py-3 !text-lg border-l border-yellow-300"
                         >
                           —
                         </td>
                       ))}
-                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg :!text-base">
-                        {fmt(totals2026.paid)}
+                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-2 !py-3 !text-lg border-l border-yellow-300">
+                        {fmt(Number(totals2026.paid || 0).toFixed(2))}
                       </td>
-                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg :!text-base">
-                        {fmt(totals2026.remaining)}
+                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-2 !py-3 !text-lg border-l border-yellow-300">
+                        {fmt(Number(totals2026.remaining || 0).toFixed(2))}
                       </td>
-                      <td className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg :!text-base"></td>
-                      <td className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg :!text-base"></td>
+                      <td className="text-center whitespace-nowrap !px-2 !py-3 !text-lg border-l border-yellow-300"></td>
+                      <td className="text-center whitespace-nowrap !px-2 !py-3 !text-lg"></td>
                     </tr>
                   </>
                 )}
@@ -2725,6 +2692,10 @@ className="w-auto bg-transparent text-center numeric-cell font-Cairo text-black 
           </div>
         </div>
       </div>
+
+
+
+
 
       {/* ========== النوافذ المنبثقة ========== */}
 
