@@ -1551,7 +1551,8 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
 
   const editPayment = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!editPaymentModal || !editAmount) return;
+    if (!editPaymentModal || !editAmount)
+    return;
     const newAmount = Number(editAmount) || 0;
     const list = [...(installments || [])];
     const updated = list.map((s) => {
@@ -1925,18 +1926,18 @@ label:
     }
   };
 
-  const installments2025WebActions: WebActionItem[] = [
+const installments2025WebActions: WebActionItem[] = [
     {
       label: "استيراد Excel",
       onSelect: () => undefined,
       content: (
-        <label className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
+        <label className="flex w-full relative cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
           <span>استيراد Excel</span>
           <input
             type="file"
             accept=".xlsx,.xls"
             onChange={(e) => importFile(e, 2025)}
-            className="hidden"
+            className="absolute h-0 w-0 opacity-0 overflow-hidden"
           />
         </label>
       ),
@@ -1945,41 +1946,41 @@ label:
     { label: "طباعة تفصيلية", icon: Printer, onSelect: () => setPrintSettingsYear(2025) },
   ];
 
-  const installments2026WebActions: WebActionItem[] = [
-    {
-      label: condFormatRules.length ? `تنسيق نشط (${condFormatRules.length})` : "تنسيق شرطي",
-      icon: Palette,
-      onSelect: () => setCondFormatModal(true),
-    },
-    { label: "طالب جديد", icon: Plus, onSelect: () => setNewRowModal2026(true) },
-    { label: "عمود جديد", icon: Plus, onSelect: () => setNewColModal(true) },
-    { label: "إضافة قسط", icon: Plus, onSelect: () => setNewPaymentModal(true) },
-    {
-      label: "استيراد Excel",
-      onSelect: () => undefined,
-      content: (
-        <label className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
+const installments2026WebActions: WebActionItem[] = [
+  {
+    label: condFormatRules.length ? `تنسيق نشط (${condFormatRules.length})` : "تنسيق شرطي",
+    icon: Palette,
+    onSelect: () => setCondFormatModal(true),
+  },
+  { label: "طالب جديد", icon: Plus, onSelect: () => setNewRowModal2026(true) },
+  { label: "عمود جديد", icon: Plus, onSelect: () => setNewColModal(true) },
+  { label: "إضافة قسط", icon: Plus, onSelect: () => setNewPaymentModal(true) },
+  {
+    label: "استيراد Excel",
+    onSelect: () => undefined,
+    content: (
+      <label className="flex w-full relative cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
           <span>استيراد Excel</span>
           <input
             type="file"
             accept=".xlsx,.xls"
             onChange={(e) => importFile(e, 2026)}
-            className="hidden"
+            className="absolute h-0 w-0 opacity-0 overflow-hidden"
           />
         </label>
-      ),
-    },
-    { label: "تصدير Excel التفصيلي", icon: FileSpreadsheet, onSelect: () => exportToExcel(2026) },
-    { label: "طباعة تفصيلية", icon: Printer, onSelect: () => setPrintSettingsYear(2026) },
-    {
-      label: detailedPdfBusy2026 ? 
+    ),
+  },
+  { label: "تصدير Excel التفصيلي", icon: FileSpreadsheet, onSelect: () => exportToExcel(2026) },
+  { label: "طباعة تفصيلية", icon: Printer, onSelect: () => setPrintSettingsYear(2026) },
+  {
+    label: detailedPdfBusy2026 ?
       
-"جارٍ التحضير…" : "تنزيل PDF التفصيلي",
-      icon: Download,
-      onSelect: handleDetailedPdf2026,
-      disabled: detailedPdfBusy2026,
-    },
-  ];
+      "جارٍ التحضير…" : "تنزيل PDF التفصيلي",
+    icon: Download,
+    onSelect: handleDetailedPdf2026,
+    disabled: detailedPdfBusy2026,
+  },
+];
 
   return (
     <div className="w-full space-y-4 sm:space-y-6 p-0" dir="rtl">
@@ -2294,13 +2295,14 @@ label:
             >
               ➕ إضافة قسط
             </button>
+    
             <label className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white text-teal-700 rounded-lg text-lg font-bold cursor-pointer shadow hover:bg-teal-50 transition-colors text-center truncate">
               📥 استيراد{" "}
               <input
                 type="file"
                 accept=".xlsx,.xls"
                 onChange={(e) => importFile(e, 2026)}
-                className="hidden"
+          className="absolute h-0 w-0 opacity-0 overflow-hidden"
               />
             </label>
 
