@@ -8,7 +8,7 @@ export const REPORT_LETTERHEAD_SRC = reportLetterheadUrl;
 
 export const reportLetterheadHtml = () => `
   <div class="report-letterhead-block" style="display:flex;position:relative;top:0;width:100%;height:34mm;min-height:34mm;max-height:34mm;overflow:hidden;align-items:stretch;justify-content:center;margin:0 auto 5mm;page-break-before:avoid;page-break-after:avoid;break-before:avoid;break-after:avoid;">
-    <img class="report-letterhead-image" style="display:block;width:100%;max-width:100%;height:100%;max-height:100%;object-fit:fill;object-position:center;margin:0;" src="${REPORT_LETTERHEAD_SRC}" alt="ترويسة المجلس اليمني للاختصاصات الطبية" />
+    <img class="report-letterhead-image" style="display:block;width:100%;max-width:100%;height:100%;max-height:100%;object-fit:fill;object-position:top;margin:0;" src="${REPORT_LETTERHEAD_SRC}" alt="ترويسة المجلس اليمني للاختصاصات الطبية" />
   </div>
 `;
 
@@ -67,7 +67,7 @@ export const tablePrintStyles = `
     margin-bottom: 5px;
     font-size: 14.5px;
     font-weight: 800;
-    border-bottom: 1.5pt solid #b8860b;
+    border-bottom:1px solid #b8860b;
     padding-bottom: 4px;
   }
   
@@ -208,7 +208,7 @@ align-items: center !important;     /* توسيط عمودي للعنصر الد
     height: 100%;
     max-height: 100%;
     object-fit: fill;
-    object-position: center;
+    object-position: top;
     image-rendering: auto;
     margin: 0;
   }
@@ -233,7 +233,7 @@ align-items: center !important;     /* توسيط عمودي للعنصر الد
     height: 30mm !important;
     max-height: 30mm !important;
     object-fit: fill !important;
-    object-position: center !important;
+    object-position: top!important;
     margin: 0 !important;
   }
   .pdf-page .report-letterhead-cell {
@@ -289,11 +289,11 @@ export function buildTableHtml(opts: {
     }
   });
 
-  const totalRow = `<tr class="total-row"><td class="idx numeric-cell" style="font-size:12px;"><span class="pdf-cell-text">الإجمالي</span></td>${columns
+  const totalRow = `<tr class="total-row"><td class="idx numeric-cell" style="font-size:14px;"><span class="pdf-cell-text">الإجمالي</span></td>${columns
     .map((c) =>
       numericKeys.includes(c.key)
-        ? `<td class="num numeric-cell"><span class="pdf-cell-text" style="color:#000000 !important;font-weight:800 !important;">${escapeHtml(fmt(totals[c.key] || 0))}</span></td>`
-        : `<td class="${isDateColumn(c) ? "date-cell" : ""}"><span class="pdf-cell-text" style="color:#000000 !important;font-weight:800 !important;"></span></td>`
+        ? `<td class="num numeric-cell"><span class="pdf-cell-text" style="color:#000 !important;font-weight:1000 !important;">${escapeHtml(fmt(totals[c.key] || 0))}</span></td>`
+        : `<td class="${isDateColumn(c) ? "date-cell" : ""}"><span class="pdf-cell-text" style="color:#000 !important;font-weight:1000 !important;"></span></td>`
     )
     .join("")}</tr>`;
 
@@ -306,7 +306,7 @@ export function buildTableHtml(opts: {
             const isNum = numericKeys.includes(c.key) || typeof v === "number";
             const classes = getCellClass(c, v);
             
-            return `<td class="${classes}"><span class="pdf-cell-text" style="color:#000000 !important;font-weight:800 !important;">${
+            return `<td class="${classes}"><span class="pdf-cell-text" style="color:#000 !important;font-weight:1000 !important;">${
               isNum ? escapeHtml(fmt(Number(v) || 0)) : escapeHtml(v)
             }</span></td>`;
           })
