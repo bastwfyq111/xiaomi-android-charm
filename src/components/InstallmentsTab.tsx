@@ -2241,9 +2241,8 @@ label:
           </div>
         </div>
       </div>
-
 {/* ========== واجهة جدول 2026 ========== */}
-     <div className="w-full bg-gradient-to-b from-teal-50/60 to-white shadow-lg border border-teal-100 rounded-2xl overflow-hidden">
+      <div className="w-full bg-gradient-to-b from-teal-50/60 to-white shadow-lg border border-teal-100 rounded-2xl overflow-hidden">
         <div className="bg-gradient-to-l from-teal-800 via-teal-600 to-emerald-600 px-2 sm:px-6 py-2.5 sm:py-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center flex-wrap gap-2">
           <div className="min-w-0">
             <h2 className="text-base sm:text-lg sm:text-xl font-extrabold text-white">
@@ -2364,13 +2363,13 @@ label:
         <div className="p-1 sm:p-3">
           <StatsGrid stats={stats2026} columns={3} />
           <div className="overflow-auto max-h-auto rounded-lg border border-slate-200 shadow-sm relative">
-            <table className="installments-table min-w-max w-full table-auto text-lg font-extrabold text-black">
+            <table className="installments-table min-w-full w-max table-auto text-lg font-extrabold text-black">
               {/* ترويسة الجدول: لون ذهبي لامع مع خط أسود غامق */}
               <thead className="bg-gradient-to-b from-yellow-300 via-yellow-400 to-yellow-500 font-extrabold border-b-2 border-yellow-700 text-black sticky top-0 z-20 shadow-md">
                 <tr>
-                  <th className="text-center whitespace-nowrap !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30">#</th>
+                  <th className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30">#</th>
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30"
                     onClick={() => handleSort2026("name")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -2378,7 +2377,7 @@ label:
                     </div>
                   </th>
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30"
                     onClick={() => handleSort2026("batch")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -2386,7 +2385,7 @@ label:
                     </div>
                   </th>
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30"
                     onClick={() => handleSort2026("specialty")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -2394,7 +2393,7 @@ label:
                     </div>
                   </th>
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30"
                     onClick={() => handleSort2026("prevDue")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -2402,7 +2401,7 @@ label:
                     </div>
                   </th>
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30"
                     onClick={() => handleSort2026("fees")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -2412,7 +2411,7 @@ label:
                   {MONTHS_2026.map((m) => (
                     <th
                       key={m}
-                      className="text-center whitespace-nowrap !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                      className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30"
                     >
                       {m.trim()}
                     </th>
@@ -2420,7 +2419,7 @@ label:
                   {extraCols2026.map((col) => (
                     <th
                       key={col.name}
-                      className="text-center whitespace-nowrap !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                      className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30"
                     >
                       <div className="flex items-center justify-center gap-1">
                         {col.name}
@@ -2443,7 +2442,7 @@ label:
                     </th>
                   ))}
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30"
                     onClick={() => handleSort2026("totalPaid")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -2451,15 +2450,15 @@ label:
                     </div>
                   </th>
                   <th
-                    className="text-center whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30"
                     onClick={() => handleSort2026("remaining")}
                   >
                     <div className="flex items-center justify-center gap-1">
                       الرصيد المتبقي <SortIcon sortConfig={sortConfig2026} columnKey="remaining" />
                     </div>
                   </th>
-                  <th className="text-center whitespace-nowrap !px-2 !py-3 !text-lg text-black border-l border-yellow-600/30">حالة</th>
-                  <th className="text-center whitespace-nowrap !px-2 !py-3 !text-lg text-black">إجراءات</th>
+                  <th className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30">حالة</th>
+                  <th className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black">إجراءات</th>
                 </tr>
               </thead>
               <tbody>
@@ -2467,7 +2466,7 @@ label:
                   <tr>
                     <td
                       colSpan={10 + MONTHS_2026.length + extraCols2026.length}
-                      className="text-center text-slate-400 !px-2 !py-3 !text-lg whitespace-nowrap"
+                      className="text-center w-auto text-slate-400 !px-3 !py-4 !text-lg whitespace-nowrap"
                     >
                       لا توجد بيانات (يرجى التأكد من استيراد الملف أو تعديل البحث)
                     </td>
@@ -2486,58 +2485,58 @@ label:
                           key={i}
                           className={`border-t border-slate-200 transition-colors ${rowBgClass}`}
                         >
-                          <td className="text-center text-black whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
+                          <td className="text-center w-auto text-black font-mono whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
                             {i + 1}
                           </td>
-                          <td className="text-center font-bold text-black whitespace-nowrap bg-fuchsia-50/70 !px-2 !py-2 !text-lg border-l border-slate-200">
+                          <td className="text-center w-auto font-bold text-black whitespace-nowrap bg-fuchsia-50/70 !px-2 !py-2 !text-lg border-l border-slate-200">
                             <input
                               value={r.name || ""}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "name", e.target.value)
                               }
-                              className="w-full min-w-max bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
+                              className="w-full min-w-[180px] bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                             />
                           </td>
-                          <td className="text-center text-black whitespace-nowrap bg-violet-50/70 !px-2 !py-2 !text-lg border-l border-slate-200">
+                          <td className="text-center w-auto text-black whitespace-nowrap bg-violet-50/70 !px-2 !py-2 !text-lg border-l border-slate-200">
                             <input
                               value={r.batch || ""}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "batch", e.target.value)
                               }
-                              className="w-full min-w-max bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
+                              className="w-full min-w-[100px] bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                               placeholder="—"
                             />
                           </td>
-                          <td className="text-center text-black whitespace-nowrap bg-teal-50/60 !px-2 !py-2 !text-lg border-l border-slate-200">
+                          <td className="text-center w-auto text-black whitespace-nowrap bg-teal-50/60 !px-2 !py-2 !text-lg border-l border-slate-200">
                             <input
                               value={r.specialty || ""}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "specialty", e.target.value)
                               }
-                              className="w-full min-w-max bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
+                              className="w-full min-w-[120px] bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                               placeholder="—"
                             />
                           </td>
-                          <td className="text-center numeric-cell font-Cairo text-black font-extrabold bg-amber-50/40 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
+                          <td className="text-center w-auto numeric-cell font-mono text-black font-extrabold bg-amber-50/40 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
                             <input
                               type="number"
                               step="0.01"
-                              value={r.prevDue !== undefined ? Number(r.prevDue).toFixed(2) : "0.00"}
+                              value={r.prevDue !== undefined && r.prevDue !== "" ? Number(r.prevDue).toFixed(2) : "0.00"}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "prevDue", e.target.value)
                               }
-                              className="w-full min-w-max bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
+                              className="w-full min-w-[110px] bg-transparent text-center font-mono text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                             />
                           </td>
-                          <td className="text-center numeric-cell font-cairo text-black font-extrabold whitespace-nowrap bg-indigo-50/50 !px-2 !py-2 !text-lg border-l border-slate-200">
+                          <td className="text-center w-auto numeric-cell font-mono text-black font-extrabold whitespace-nowrap bg-indigo-50/50 !px-2 !py-2 !text-lg border-l border-slate-200">
                             <input
                               type="number"
                               step="0.01"
-                              value={r.fees !== undefined ? Number(r.fees).toFixed(2) : "0.00"}
+                              value={r.fees !== undefined && r.fees !== "" ? Number(r.fees).toFixed(2) : "0.00"}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "fees", e.target.value)
                               }
-                              className="w-full min-w-max bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
+                              className="w-full min-w-[100px] bg-transparent text-center font-mono text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                             />
                           </td>
                           {MONTHS_2026.map((m) => {
@@ -2546,7 +2545,7 @@ label:
                             return (
                               <td
                                 key={m}
-                                className="numeric-cell text-center relative bg-white/40 border-l border-slate-200 hover:bg-yellow-50 cursor-pointer group transition-colors whitespace-nowrap !px-2 !py-2 !text-lg"
+                                className="numeric-cell w-auto text-center relative bg-white/40 border-l border-slate-200 hover:bg-yellow-50 cursor-pointer group transition-colors whitespace-nowrap !px-2 !py-2 !text-lg font-mono"
                                 onMouseEnter={() => setHoveredCell(cellId)}
                                 onMouseLeave={() => setHoveredCell(null)}
                               >
@@ -2557,7 +2556,7 @@ label:
                                   onChange={(e) =>
                                     update2026PaymentValue(originalIndex, m, e.target.value)
                                   }
-                                  className="w-full min-w-max bg-transparent text-center numeric-cell font-Cairo text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
+                                  className="w-full min-w-[80px] bg-transparent text-center numeric-cell font-mono text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                                   placeholder="—"
                                   min="0"
                                 />
@@ -2566,10 +2565,10 @@ label:
                           })}
 
                           {extraCols2026.map((col) => (
-                            <td key={col.name} className="border-l border-slate-200 !px-2 !py-2 !text-lg whitespace-nowrap">
+                            <td key={col.name} className="border-l w-auto border-slate-200 !px-2 !py-2 !text-lg whitespace-nowrap">
                               {col.type === "select" ? (
                                 <select
-                                  className="w-full min-w-max text-center text-black font-extrabold bg-transparent outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1 !text-lg"
+                                  className="w-full min-w-[100px] text-center text-black font-extrabold bg-transparent outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1 !text-lg"
                                   value={r.customData?.[col.name] || ""}
                                   onChange={(e) =>
                                     updateCustomColValue(originalIndex, col.name, e.target.value)
@@ -2583,13 +2582,13 @@ label:
                                   ))}
                                 </select>
                               ) : col.type === "formula" ? (
-                                <div className="text-center numeric-cell font-mono !text-lg font-extrabold text-yellow-700 bg-white/50 py-1.5 rounded">
+                                <div className="text-center min-w-[80px] numeric-cell font-mono !text-lg font-extrabold text-yellow-700 bg-white/50 py-1.5 rounded">
                                   {Number(evaluateFormula(col.formula || "", r) || 0).toFixed(2)}
                                 </div>
                               ) : (
                                 <input
                                   type="text"
-                                  className="w-full min-w-max text-center text-black font-extrabold bg-transparent outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1 !text-lg"
+                                  className="w-full min-w-[120px] text-center text-black font-extrabold bg-transparent outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1 !text-lg"
                                   value={r.customData?.[col.name] || ""}
                                   onChange={(e) =>
                                     updateCustomColValue(originalIndex, col.name, e.target.value)
@@ -2600,20 +2599,20 @@ label:
                             </td>
                           ))}
 
-                          <td className="text-center numeric-cell font-mono text-black font-extrabold bg-emerald-50/50 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
+                          <td className="text-center w-auto min-w-[100px] numeric-cell font-mono text-black font-extrabold bg-emerald-50/50 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
                             {fmt(Number(r.totalPaid || 0).toFixed(2))}
                           </td>
-                          <td className="text-center numeric-cell font-mono text-black font-extrabold bg-rose-50/40 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
+                          <td className="text-center w-auto min-w-[100px] numeric-cell font-mono text-black font-extrabold bg-rose-50/40 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
                             {fmt(Number(r.remaining || 0).toFixed(2))}
                           </td>
-                          <td className="text-center whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
+                          <td className="text-center w-auto whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
                             <span
                               className={`px-3 py-1 rounded-full !text-lg font-extrabold ${status.bg} ${status.color}`}
                             >
                               {status.text}
                             </span>
                           </td>
-                          <td className="text-center whitespace-nowrap flex justify-center gap-2 !px-2 !py-2 !text-lg">
+                          <td className="text-center w-auto whitespace-nowrap flex justify-center gap-2 !px-2 !py-2 !text-lg">
                             <button
                               onClick={() => {
                                 setEditRowData(r);
@@ -2650,20 +2649,20 @@ label:
                       );
                     })}
                     <tr className="border-t-2 border-yellow-600 bg-yellow-100 font-extrabold">
-                      <td className="text-center text-black whitespace-nowrap !px-2 !py-3 !text-lg border-l border-yellow-300" colSpan={4}>
+                      <td className="text-center w-auto text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300" colSpan={4}>
                         الإجماليات
                       </td>
-                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-2 !py-3 !text-lg border-l border-yellow-300">
+                      <td className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300">
                         {fmt(Number(totals2026.prevDue || 0).toFixed(2))}
                       </td>
-                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-2 !py-3 !text-lg border-l border-yellow-300">
+                      <td className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300">
                         {fmt(Number(totals2026.fees || 0).toFixed(2))}
                       </td>
 
                       {MONTHS_2026.map((m) => (
                         <td
                           key={m}
-                          className="text-center numeric-cell font-cairo text-black whitespace-nowrap !px-2 !py-3 !text-lg border-l border-yellow-300"
+                          className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300"
                         >
                           {totals2026.months[m] > 0 ? fmt(Number(totals2026.months[m]).toFixed(2)) : "—"}
                         </td>
@@ -2671,19 +2670,19 @@ label:
                       {extraCols2026.map((col) => (
                         <td
                           key={col.name}
-                          className="text-center text-black whitespace-nowrap !px-2 !py-3 !text-lg border-l border-yellow-300"
+                          className="text-center w-auto text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300"
                         >
                           —
                         </td>
                       ))}
-                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-2 !py-3 !text-lg border-l border-yellow-300">
+                      <td className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300">
                         {fmt(Number(totals2026.paid || 0).toFixed(2))}
                       </td>
-                      <td className="text-center numeric-cell font-mono text-black whitespace-nowrap !px-2 !py-3 !text-lg border-l border-yellow-300">
+                      <td className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300">
                         {fmt(Number(totals2026.remaining || 0).toFixed(2))}
                       </td>
-                      <td className="text-center whitespace-nowrap !px-2 !py-3 !text-lg border-l border-yellow-300"></td>
-                      <td className="text-center whitespace-nowrap !px-2 !py-3 !text-lg"></td>
+                      <td className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300"></td>
+                      <td className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg"></td>
                     </tr>
                   </>
                 )}
@@ -2692,9 +2691,6 @@ label:
           </div>
         </div>
       </div>
-
-
-
 
 
       {/* ========== النوافذ المنبثقة ========== */}
