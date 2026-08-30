@@ -2249,7 +2249,7 @@ label:
             <h2 className="text-lg sm:text-xl font-extrabold text-white">
               📊 سجل أقساط العام الحالي 2026
             </h2>
-            <p className="text-sm font-bold text-white">بيانات المسدد والرصيد المدور لعام 2026</p>
+            <p className="text-lg font-bold text-white">بيانات المسدد والرصيد المدور لعام 2026</p>
           </div>
           <div className="w-full grid grid-cols-2 sm:flex gap-1.5 sm:gap-2 items-center">
             <button
@@ -2267,12 +2267,12 @@ label:
 
             <div className="relative">
               <Search className="w-4 h-4 absolute right-2.5 top-2.5 text-teal-500" />
-              <input
-                type="text"
-                placeholder="بحث (الاسم، الدفعة، المساق)..."
+  <input type="text"
+placeholder=
+"بحث (الاسم، الدفعة، المساق)..."
                 value={search2026}
                 onChange={(e) => setSearch2026(e.target.value)}
-                className="pl-3 pr-8 py-2 rounded-lg text-base font-extrabold border border-teal-300 outline-none focus:ring-2 focus:ring-teal-300 w-full sm:w-48 text-black shadow-sm"
+                className="pl-3 pr-8 py-2 rounded-lg text-base font-extrabold border border-teal-300 outline-none focus:ring-2 focus:ring-teal-300 w-full sm:w-48 text-gold shadow-sm"
               />
             </div>
       
@@ -2370,9 +2370,11 @@ label:
   <StatsGrid stats={stats2026} columns={3} />
   <div className="overflow-auto max-h-auto rounded-lg border border-slate-200 shadow-sm relative">
     {/* تم إضافة خط أسود غامق، تكبير الخط، ومنع التفاف النص للجدول بالكامل */}
-    <table className="installments-table min-w-max table-auto text-base sm:text-lg font-bold text-black whitespace-nowrap">
-      {/* ترويسة الجدول بخط أبيض غامق جداً مع الحفاظ على لون الخلفية */}
-      <thead className="bg-gradient-to-b from-teal-700 to-teal-800 font-extrabold border-b-2 border-emerald-900 text-white [&>tr>th]:!text-white sticky top-0 z-20 shadow-md">
+    <table className="installments-table min-w-max table-auto text-lg fon-extrabold tex-black">
+      {/*
+      ترويسة الجل
+      بخط أبيض غامق جداً مع الحفاظ على لون الخلفية */}
+      <thead className="bg-gradient-to-b from-teal-700 to-teal-800 font-extrabold border-b-2 border-emerald-900 text-white sticky top-0 z-20 shadow-md">
         <tr>
           <th className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg">#</th>
           <th
@@ -2406,7 +2408,7 @@ label:
           <th
             className="text-center whitespace-nowrap 
             text-white
-            cursor-pointer hover:bg-white/10 transition-colors border-x border-white/25 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
+            cursor-pointer hover:bg-white/10 transition-colors border-x border-white/25 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg"
             onClick={() => handleSort2026("prevDue")}
           >
             <div className="flex items-center justify-center gap-1">
@@ -2414,7 +2416,7 @@ label:
             </div>
           </th>
           <th
-            className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
+            className="text-center whitespace-nowrap cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg"
             onClick={() => handleSort2026("fees")}
           >
             <div className="flex items-center justify-center gap-1">
@@ -2425,7 +2427,7 @@ label:
             <th
               key={m}
               className="text-center border-l border-white/25 whitespace-nowrap 
-              $text-white
+              !text-white
               !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
             >
               {m.trim()}
@@ -2435,7 +2437,7 @@ label:
             <th
               key={col.name}
               className="text-center border-l border-white/25 whitespace-nowrap 
-              text-white !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-base sm:!text-lg"
+              text-white !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg"
             >
               <div className="flex items-center justify-center gap-1">
                 {col.name}
@@ -2472,7 +2474,7 @@ label:
                   <th
                     className="text-center whitespace-nowrap 
             text-white
-            cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg :!text-base"
+            cursor-pointer hover:bg-white/10 transition-colors !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg"
                     onClick={() => handleSort2026("remaining")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -2481,10 +2483,10 @@ label:
                   </th>
                   <th className="text-center whitespace-nowrap
             !text-white
-            !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">حالة</th>
+            !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg">حالة</th>
                   <th className="text-center whitespace-nowrap 
         !text-white
-        !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">إجراءات</th>
+        !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg">إجراءات</th>
                 </tr>
               </thead>
               <tbody>
@@ -2514,7 +2516,7 @@ label:
                           <td className="text-center text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg sm:!text-base">
                             {i + 1}
                           </td>
-                          <td className="text-center font-bold text-black whitespace-nowrap bg-fuchsia-50/70 !px-1 !py-1.5 sm:!px-2 sm:!py-2 text-lg:!text-base">
+                          <td className="text-center font-bold text-black whitespace-nowrap bg-fuchsia-50/70 !px-1 !py-1.5 sm:!px-2 sm:!py-2 text-lg">
                             <input
                               value={r.name || ""}
                               onChange={(e) =>
@@ -2524,8 +2526,8 @@ label:
     "w-full sm: w-auto bg-transparent text-center text-white text-lg outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
                             />
                           </td>
-                          <td className="text-center text-black whitespace-nowrap bg-violet-50/70 !px-1 !py-1.5 sm:!px-2 sm:!py-2 
-            text-lg:!text-base">
+                          <td className="text-center text-black whitespace-nowrap bg-violet-50/70 !px-1 !py-1 sm:!px-2 sm:!py-2 
+            text-lg">
                             <input
                               value={r.batch || ""}
                               onChange={(e) =>
@@ -2536,7 +2538,7 @@ label:
                               placeholder="—"
                             />
                           </td>
-                          <td className="text-center text-black whitespace-nowrap bg-teal-50/60 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg :!text-base">
+                          <td className="text-center text-black whitespace-nowrap bg-teal-50/60 !px-1 !py-1 sm:!px-2 sm:!py-2 !text-lg">
                             <input
                               value={r.specialty || ""}
                               onChange={(e) =>
@@ -2546,7 +2548,7 @@ label:
                               placeholder="—"
                             />
                           </td>
-                          <td className="text-center numeric-cell font-cairo text-black font-bold bg-amber-50/20 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 text-lg :!text-base">
+                          <td className="text-center numeric-cell font-Cairo text-black font-bold bg-amber-50/20 whitespace-nowrap !px-1 !py-1 sm:!px-2 sm:!py-2 text-lg">
                             <input
                               type="number"
                               value={r.prevDue || 0}
@@ -2556,8 +2558,8 @@ label:
 className="w-full sm: w-auto bg-transparent text-center text-white text-lg outline-none focus:bg-white focus:ring-1 ring-teal-300 rounded px-1 py-1"
                             />
                           </td>
-                          <td className="text-center numeric-cell font-cairo text-black font-bold whitespace-nowrap bg-indigo-50/70 !px-1 !py-1.5 sm:!px-2 sm:!py-2 
-            text-lg:!text-base">
+                          <td className="text-center numeric-cell font-cairo text-black font-bold whitespace-nowrap bg-indigo-50/70 !px-1 !py-1 sm:!px-2 sm:!py-2 
+            !text-lg">
                             <input
                               type="number"
                               value={r.fees || 0}
@@ -2574,8 +2576,8 @@ bg-transparent text-center text-white text-lg outline-none focus:bg-white focus:
                             return (
                               <td
                                 key={m}
-                                className="numeric-cell text-center relative bg-white/40 border-l border-slate-200 hover:bg-slate-100 cursor-pointer group transition-colors whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2
-          text-lg:!text-base"
+                                className="numeric-cell text-center relative bg-white/40 border-l border-slate-200 hover:bg-slate-100 cursor-pointer group transition-colors whitespace-nowrap !px-1 !py-1 sm:!px-2 sm:!py-2
+          !text-lg"
                                 onMouseEnter={() => setHoveredCell(cellId)}
                                 onMouseLeave={() => setHoveredCell(null)}
                               >
@@ -2585,7 +2587,7 @@ bg-transparent text-center text-white text-lg outline-none focus:bg-white focus:
                                   onChange={(e) =>
                                     update2026PaymentValue(originalIndex, m, e.target.value)
                                   }
-className="w-auto bg-transparent text-center numeric-cell font-mono text-black font-bold outline-none focus:bg-white focus:ring-1 ring-emerald-300 rounded px-1 py-1"
+className="w-auto bg-transparent text-center numeric-cell font-Cairo text-black font-bold outline-none focus:bg-white focus:ring-1 ring-emerald-300 rounded px-1 py-1"
                                   placeholder="—"
                                   min="0"
                                   step="0.01"
@@ -2595,9 +2597,8 @@ className="w-auto bg-transparent text-center numeric-cell font-mono text-black f
                           })}
 
                           {extraCols2026.map((col) => (
-                            <td key={col.name} className="border-l border-slate-200 !px-1 !py-1.5 sm:!px-2 sm:!py-2 
-      text-lg
-      :!text-base whitespace-nowrap">
+                            <td key={col.name} className="border-l border-slate-200 !px-1 !py-1 sm:!px-2 sm:!py-2 
+      !text-lg  whitespace-nowrap">
                               {col.type === "select" ? (
                                 <select
                                   className="w-full text-center text-black bg-transparent outline-none focus:bg-white focus:ring-1 ring-blue-300 rounded px-1 py-1 text-xs"
@@ -2634,10 +2635,10 @@ className="w-auto bg-transparent text-center numeric-cell font-mono text-black f
                           <td className="text-center numeric-cell font-mono text-black font-bold bg-emerald-50/30 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg:!text-base">
                             {fmt(r.totalPaid)}
                           </td>
-                          <td className="text-center numeric-cell font-mono text-black font-bold bg-rose-50/30 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="text-center numeric-cell font-mono text-black font-bold bg-rose-50/30 whitespace-nowrap !px-1 !py-1 sm:!px-2 sm:!py-2 !text-lg">
                             {fmt(r.remaining)}
                           </td>
-                          <td className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="text-center whitespace-nowrap !px-1 !py-1 sm:!px-2 sm:!py-2 !text-lg">
                             <span
                               className={`px-1.5 py-0.5 rounded-full text-xs font-bold ${status.bg} ${status.color}`}
                             >
@@ -2695,7 +2696,7 @@ className="w-auto bg-transparent text-center numeric-cell font-mono text-black f
                       {MONTHS_2026.map((m) => (
                         <td
                           key={m}
-                          className="text-center numeric-cell font-cairo text-black border-l border-slate-200 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg :!text-base"
+                          className="text-center numeric-cell font-cairo text-black border-l border-slate-200 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-lg"
                         >
                           {totals2026.months[m] > 0 ? fmt(totals2026.months[m]) : "—"}
                         </td>
