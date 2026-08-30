@@ -201,7 +201,7 @@ fdoc.write(`<!doctype html>
             .pdf-download-root thead th {
               background-color: #2c3e50 !important;
               color: #ffffff !important;
-          font-family: "Al Qabas Bold" !important;
+          font-family: Al Qabas Bold !important;
               padding: 4px 2px !important;
             }
             
@@ -210,7 +210,7 @@ fdoc.write(`<!doctype html>
               background-color: #3498db !important;
               color: #ffffff !important;
         
-     font-family: "Al Qabas Bold"!important;
+     font-family: Al Qabas Bold!important;
             }
             
             /* ===== تلوين خلايا الإجمالي في آخر صف ===== */
@@ -238,7 +238,7 @@ fdoc.write(`<!doctype html>
               justify-content: center !important;
               min-height: auto;
               vertical-align: middle !important;
-              font-family:"Mohammad Bold Art"!important;
+              font-family:Mohammad Bold Art!important;
               font-size: 18px !important;
         font-weight: bold !important;
 

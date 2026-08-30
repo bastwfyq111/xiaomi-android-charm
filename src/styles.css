@@ -67,7 +67,7 @@ src: url("/MohammadBoldArt-Regular.ttf") format("truetype");
 }
 
 :root {
-  --font-ui: "Mohammad Bold Art ";
+  --font-ui: "Mohammad Bold Art";
   --font-display: "Al Qabas Bold", "Noto Kufi Arabic", "Noto Sans Arabic", "Cairo", sans-serif;
   --font-heading: "Al Qabas Bold", "Noto Kufi Arabic", "Noto Sans Arabic", "Cairo", sans-serif;
   --font-data: "Times New Roman", "Noto Sans Arabic", "Segoe UI", sans-serif;
