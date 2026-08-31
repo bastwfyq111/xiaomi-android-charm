@@ -2007,16 +2007,17 @@ const installments2026WebActions: WebActionItem[] = [
                 className="pl-3 pr-8 py-2 rounded-lg text-sm border border-teal-300 outline-none focus:ring-2 focus:ring-teal-300 w-full sm:w-48 text-slate-800 shadow-sm"
               />
             </div>
+<label className="apk-only-actions relative w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white text-teal-700 rounded-lg text-xs sm:text-xs font-bold cursor-pointer hover:bg-teal-50 shadow text-center truncate">
+  📥 استيراد الملف{" "}
+  <input
+    type="file"
+    accept=".xlsx,.xls"
+    onChange={(e) => importFile(e, 2025)}
+    className="absolute h-0 w-0 opacity-0 overflow-hidden"
+  />
+</label>
 
-            <label className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white text-teal-700 rounded-lg text-xs sm:text-xs font-bold cursor-pointer hover:bg-teal-50 shadow text-center truncate">
-              📥 استيراد الملف{" "}
-              <input
-                type="file"
-                accept=".xlsx,.xls"
-                onChange={(e) => importFile(e, 2025)}
-                className="hidden"
-              />
-            </label>
+
 
             <div className="apk-only-actions col-span-2 flex gap-1 w-full sm:w-auto">
               <button
