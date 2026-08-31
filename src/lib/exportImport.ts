@@ -255,9 +255,14 @@ export const normHeader = (s: unknown): string => {
 /**
  * دالة استيراد وتحليل ملفات Excel الواردة إلى النظام
  */
-export async function importFromExcel(file: File, only?: ImportKind) {
-  const buf = await file.arrayBuffer();
+export async function importFromExcel(
+  source: File | ArrayBuffer,
+  only?: ImportKind,
+  _fileName?: string,
+) {
+  const buf = source instanceof ArrayBuffer ? source : await source.arrayBuffer();
   const wb = XLSX.read(buf);
+  
   const result: {
     hafiza: Hafiza[];
     accounts: Account[];

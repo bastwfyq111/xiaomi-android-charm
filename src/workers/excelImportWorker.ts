@@ -22,10 +22,10 @@ self.onmessage = async (event: MessageEvent<ExcelWorkerRequest>) => {
       return;
     }
 
-    const file = new File([request.buffer], request.name, {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    });
-    const data = await importFromExcel(file, request.kind);
+    // ملاحظة: لا نستخدم `new File(...)` هنا — منشئ File غير موثوق داخل
+    // Web Worker على بعض متصفحات أندرويد/شاومي ويفشل بصمت بدون أن
+    // يصل الخطأ إلى catch. نمرر الـ ArrayBuffer مباشرة بدلاً من ذلك.
+    const data = await importFromExcel(request.buffer, request.kind, request.name);
     self.postMessage({ ok: true, data });
   } catch (error) {
     self.postMessage({
