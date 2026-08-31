@@ -241,7 +241,7 @@ function Index() {
   return (
     // الحاوية الرئيسية مع قائمة تبويبات جانبية تظهر فوق المحتوى عند فتحها
     <div
-      className="apk-tabs-ui w-full min-h-screen bg-[#f5f2ea] font-tajawal selection:bg-[#1a3a52]/20 text-sm sm:text-base"
+      className="apk-tabs-ui w-full min-h-screen bg-[#f5f2ea] font-Al Qabas Bold; selection:bg-[#1a3a52]/20 text-lg sm:text-base"
       dir="rtl"
     >
       {/* قسم الهيدر العلوي — هوية كحلية مؤسسية بلمسة ختم برونزي */}
@@ -256,7 +256,7 @@ function Index() {
           </div>
           <div className="ledger-seam self-stretch hidden sm:block rounded-full shrink-0" />
           <div className="flex flex-col gap-0.5 sm:gap-1 min-w-0">
-            <h1 className="text-[clamp(0.85rem,3.2vw,1.5rem)] font-bold tracking-wide font-cairo text-white leading-tight truncate sm:whitespace-normal">
+            <h1 className="text-[clamp(1rem,3.2vw,1.5rem)] font-bold tracking-wide font-cairo text-white leading-tight truncate sm:whitespace-normal">
               المجلس اليمني للاختصاصات الطبية
             </h1>
             <p className="text-[clamp(0.6rem,2vw,0.875rem)] text-[#cfe0ec] font-medium flex items-center gap-1.5 leading-snug">
@@ -269,16 +269,7 @@ function Index() {
         </div>
 
         {/* الجزء الأيسر: زر الرجوع والتثبيت PWA */}
-        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 shrink-0">
-          <button
-            type="button"
-            onClick={handleBack}
-            className="inline-flex items-center gap-1.5 rounded-md border border-white/25 bg-white/[0.08] px-2.5 py-1.5 text-[10px] font-bold text-white transition-colors hover:bg-white/[0.16] focus:outline-none focus:ring-2 focus:ring-[#e3c281] sm:px-3 sm:py-2 sm:text-xs"
-            aria-label="الرجوع إلى الصفحة السابقة"
-          >
-            <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
-            <span>رجوع</span>
-          </button>
+      
           {pwaInstallable && (
             <button
               onClick={handlePWAInstall}
@@ -289,31 +280,8 @@ function Index() {
             </button>
           )}
         </div>
-      </div>
+  
 
-      {/* محتوى التبويب النشط */}
-      <div className="w-full bg-[#faf8f3] p-2 pb-24 sm:p-4 sm:pb-20 md:p-6 min-h-[calc(100vh-140px)]">
-        <Suspense
-          fallback={
-            <div
-              className="flex min-h-[35vh] items-center justify-center rounded-2xl border border-[#c99a4e]/30 bg-white/70 p-6 text-sm font-semibold text-[#153a54]"
-              role="status"
-              aria-live="polite"
-            >
-              جارٍ فتح التبويب…
-            </div>
-          }
-        >
-          {activeTab === "installments" && <InstallmentsTab />}
-          {activeTab === "hafiza" && <HafizaTab />}
-          {activeTab === "account" && <AccountTab />}
-          {activeTab === "journal" && <JournalTab />}
-          {activeTab === "monthly" && <MonthlyStatementTab />}
-          {activeTab === "revenue" && <RevenueTab />}
-          {activeTab === "expenses-table" && <ExpensesTab />}
-          {activeTab === "general-expenses-ledger" && <AppTabs />}
-        </Suspense>
-      </div>
 
       {/* شريط التبويبات السفلي */}
       <nav

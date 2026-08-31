@@ -29,13 +29,13 @@ async function downloadPdfBlob(pdf: any, fileName: string): Promise<void> {
 function pdfPageCellCss(opts: { padding?: string; fontSize?: string } = {}): string {
   // تم تكبير حجم الخط الافتراضي وتصغير الحشوة لإتاحة مساحة أكبر للنص
   const padding = opts.padding ?? '2px 3px';
-  const fontSize = opts.fontSize ?? '13px'; // تم الرفع من 9-10px إلى 13px ثابتة أو أكبر
+  const fontSize = opts.fontSize ?? '15px'; // تم الرفع من 9-10px إلى 13px ثابتة أو أكبر
 
   return `
   .pdf-page table { 
     table-layout: auto !important; 
     width: 100% !important; 
-    max-width: 100% !important;
+max-width: auto!important;
     border-collapse: collapse !important;
   }
 
@@ -72,7 +72,7 @@ function pdfPageCellCss(opts: { padding?: string; fontSize?: string } = {}): str
     display: block !important;
     width: 100% !important;
     text-align: center !important;
-    color: #000000 !important;
+    color: #000 !important;
     font-weight: 800 !important;
     margin: 0 auto !important;
   }
@@ -83,13 +83,13 @@ function pdfPageCellCss(opts: { padding?: string; fontSize?: string } = {}): str
     
 function forcePdfDataCellTextColor(doc: Document): void {
   doc.querySelectorAll<HTMLElement>('.pdf-page tbody td, .pdf-page tfoot td, .pdf-page .num, .pdf-page .idx').forEach((cell) => {
-    cell.style.setProperty('color', '#000000', 'important');
-    cell.style.setProperty('-webkit-text-fill-color', '#000000', 'important');
+    cell.style.setProperty('color', '#000', 'important');
+    cell.style.setProperty('-webkit-text-fill-color', '#000', 'important');
     cell.style.setProperty('text-shadow', 'none', 'important');
-    cell.style.setProperty('font-weight', '800', 'important');
+    cell.style.setProperty('font-weight', '1000', 'important');
     cell.querySelectorAll<HTMLElement>('*').forEach((textNode) => {
-      textNode.style.setProperty('color', '#000000', 'important');
-      textNode.style.setProperty('-webkit-text-fill-color', '#000000', 'important');
+      textNode.style.setProperty('color', '#000', 'important');
+      textNode.style.setProperty('-webkit-text-fill-color', '#000', 'important');
       textNode.style.setProperty('text-shadow', 'none', 'important');
       textNode.style.setProperty('font-weight', '800', 'important');
     });
@@ -479,7 +479,7 @@ white-space: nowrap !important; }
   .sign {
 margin-top: 20px; 
 font-weight: 700;
-font-size: 11px; 
+font-size: 15px; 
   }
 `;
 
@@ -567,7 +567,7 @@ export function printHtmlContent(htmlContent: string): void {
         body {
    font-family: 'Cairo';
           direction: rtl;
-          color: #000 !important;
+  color: #000 !important;
           background: white;
           line-height: 1.5;
           font-size: 15px;
@@ -857,16 +857,16 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       width: 100% !important;
       max-width: 100% !important;
     border: solid 1px black; 
-      font-size: 15px; 
+font-size: 15px!important; 
       table-layout: auto !important;
       margin-top: 8px;
     }
     th, td { 
       border: 1px solid black; 
-      padding: 3px 5px !important;
+      padding: 2px 2px !important;
       text-align: center;
       vertical-align: middle;
-      font-size: clamp(14px, 1.2vw, 16px);
+      font-size: 16px!important;
       font-weight: 900 !important;
       color: #000 !important;
     }
@@ -875,11 +875,11 @@ export function revenuePdf(revenue: Record<string, number>, year: number, month:
       width: 1%;
     }
     td:not(.num):not(.idx) {
-      white-space: normal !important;
+      white-space: nowrap!important;
       overflow-wrap: break-word !important;
       word-break: normal !important;
       overflow: visible;
-      width: auto !important;
+  width:auto!important; 
     }
     td.num, td.idx {
       white-space: nowrap !important;

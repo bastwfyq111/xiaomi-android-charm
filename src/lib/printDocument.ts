@@ -45,15 +45,17 @@ const baseCss = (
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
-  h1, h2, h3 { font-weight: 700; margin: 0; }
+  h1, h2, h3 { font-weight: 700; margin: 3px 0; }
 
   /* جداول: احتواء تلقائي للأعمدة بحسب محتواها وتوسيط تام */
   table { 
-    width: 100%; 
+    width: 100%!important; 
     max-width: 100%; 
+    border-collapse: collapse;
+
     border: solid 1px black; 
     table-layout: auto !important; 
-    font-size: clamp(14px, 1.05vw, 16px); 
+font-size: 15px!important;
   }
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
@@ -66,9 +68,9 @@ const baseCss = (
     vertical-align: middle !important; 
     padding: 6px 8px !important; 
     line-height: 1.5 !important; 
-    font-size: clamp(14px, 1vw, 16px); 
+    font-size: 15px; 
     color: #000 !important; 
-    font-weight: 700 !important; 
+    font-weight: 900 !important; 
     white-space: nowrap !important;
     width: max-content !important;
     word-break: keep-all !important;
@@ -152,7 +154,7 @@ vertical - align: top;
     height: 30mm;
     max-height: 30mm;
     object-fit: fill;
-    object-position: center;
+    object-position: top;
     margin: 0;
   }
 
@@ -162,13 +164,14 @@ vertical - align: top;
   /* تحسينات خاصة بالـ print / PDF */
   @media print {
     html, body { width: 100%; }
-    body { margin: 0; padding: 0; font-size: 14px; line-height: 1.3; }
+    body { margin: 0; padding: 0; font-size: 6
+    16px; line-height: 1.3; }
     thead { display: table-header-group; }
     tfoot { display: table-footer-group; }
     .page-break { page-break-after: always; }
     th, td { 
-      padding: 5px 6px !important; 
-      font-size: clamp(14px, 1vw, 16px); 
+      padding: 2px 2px !important; 
+      font-size:16px; 
       color: #000 !important; 
       font-weight: 700 !important; 
       white-space: nowrap !important;

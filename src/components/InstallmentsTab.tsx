@@ -2302,7 +2302,7 @@ const installments2026WebActions: WebActionItem[] = [
                 type="file"
                 accept=".xlsx,.xls"
                 onChange={(e) => importFile(e, 2026)}
-          className="absolute h-0 w-0 opacity-0 overflow-hidden"
+          className="absolute h-0 w-0 opacity-0 overflow-hidden"  
               />
             </label>
 
