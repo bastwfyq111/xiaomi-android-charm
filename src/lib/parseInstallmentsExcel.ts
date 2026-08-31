@@ -41,12 +41,12 @@ const cleanNumber = (value: unknown): number => {
 // وتوحيد حالة الأحرف — لضمان مطابقة أسماء الأعمدة حتى مع اختلافات الكتابة الشائعة.
 const normalizeArabic = (value: unknown): string =>
   String(value ?? "")
-  .replace(/[أإآا]/g, "ا")
-  .replace(/ى/g, "ي")
-  .replace(/ة/g, "ه")
-  .replace(/\s+/g, "")
-  .toLowerCase()
-  .trim();
+    .replace(/[أإآا]/g, "ا")
+    .replace(/ى/g, "ي")
+    .replace(/ة/g, "ه")
+    .replace(/\s+/g, "")
+    .toLowerCase()
+    .trim();
 
 // مطابقة تامة (بعد التطبيع) — تُستخدم لأسماء الأشهر
 const findKeyExact = (keys: string[], target: string, fallback: string): string => {
@@ -68,16 +68,15 @@ export function parseInstallmentsExcel(buffer: ArrayBuffer, year: 2025 | 2026): 
   const workbook = XLSX.read(new Uint8Array(buffer), { type: "array" });
   const worksheet = workbook.Sheets[workbook.SheetNames[0]];
   if (!worksheet) return [];
-  
-  const rows = XLSX.utils.sheet_to_json < Record < string,
-    unknown >> (worksheet, {
-      defval: "",
-    });
+
+  const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(worksheet, {
+    defval: "",
+  });
   const months = year === 2025 ? MONTHS_2025 : MONTHS_2026;
   const keys = rows.length ? Object.keys(rows[0]) : [];
-  
+
   const monthKeys = months.map((month) => findKeyExact(keys, month, month));
-  
+
   const nameKey = findKeyContains(keys, "اسم المتدرب", "name");
   const batchKey = findKeyContains(keys, "رقم الدفعة", "batch");
   const specialtyKey = findKeyContains(keys, "المساق", "specialty");
@@ -86,36 +85,37 @@ export function parseInstallmentsExcel(buffer: ArrayBuffer, year: 2025 | 2026): 
   const remainingKey = findKeyExact(keys, "المتبقي", "remaining");
   const notesKey = findKeyContains(keys, "ملاحظات", "notes");
   const phoneKey = findKeyContains(keys, "رقم الهاتف", "phone");
-  
+
   return rows.flatMap((row) => {
     const name = String(row[nameKey] ?? "").trim();
     if (!name) return [];
-    
-    const payments: Record < string, number > = {};
+
+    const payments: Record<string, number> = {};
     let totalPaid = 0;
     months.forEach((month, index) => {
       const amount = cleanNumber(row[monthKeys[index]]);
       payments[month] = amount;
       totalPaid += amount;
     });
-    
+
     const fees = cleanNumber(row[feesKey]);
     const prevDue = cleanNumber(row[prevDueKey]);
     const importedTotal = row["الإجمالي"] ? cleanNumber(row["الإجمالي"]) : totalPaid;
-    
+
     return [
-    {
-      name,
-      batch: String(row[batchKey] ?? "").trim(),
-      specialty: String(row[specialtyKey] ?? "").trim(),
-      fees,
-      prevDue,
-      totalPaid: importedTotal,
-      remaining: cleanNumber(row[remainingKey]),
-      notes: String(row[notesKey] ?? "").trim(),
-      phone: String(row[phoneKey] ?? "").trim(),
-      payments,
-      customData: {},
-    }, ];
+      {
+        name,
+        batch: String(row[batchKey] ?? "").trim(),
+        specialty: String(row[specialtyKey] ?? "").trim(),
+        fees,
+        prevDue,
+        totalPaid: importedTotal,
+        remaining: cleanNumber(row[remainingKey]),
+        notes: String(row[notesKey] ?? "").trim(),
+        phone: String(row[phoneKey] ?? "").trim(),
+        payments,
+        customData: {},
+      },
+    ];
   });
 }
