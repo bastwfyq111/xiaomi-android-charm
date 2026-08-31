@@ -12,7 +12,6 @@ import {
   TrendingUp,
   ReceiptText,
   DownloadCloud,
-  ArrowRight,
 } from "lucide-react";
 
 // تحميل ملفات التبويبات عند فتحها فقط لتقليل حجم التشغيل الأول.
@@ -216,20 +215,6 @@ function Index() {
     window.history.pushState({ tab }, "", `${url.pathname}${url.search}${url.hash}`);
   };
 
-  const handleBack = () => {
-    if (goBackWithinApp()) return;
-
-    if (window.history.length > 1) {
-      window.history.back();
-      return;
-    }
-
-    activeTabRef.current = "installments";
-    tabHistoryRef.current = ["installments"];
-    setActiveTab("installments");
-    window.history.replaceState({ tab: "installments" }, "", window.location.pathname);
-  };
-
   const handlePWAInstall = async () => {
     const success = await promptInstall();
     if (success) {
@@ -241,7 +226,7 @@ function Index() {
   return (
     // الحاوية الرئيسية مع قائمة تبويبات جانبية تظهر فوق المحتوى عند فتحها
     <div
-      className="apk-tabs-ui w-full min-h-screen bg-[#f5f2ea] font-Al Qabas Bold; selection:bg-[#1a3a52]/20 text-lg sm:text-base"
+      className="apk-tabs-ui w-full min-h-screen bg-[#f5f2ea] selection:bg-[#1a3a52]/20 text-lg sm:text-base"
       dir="rtl"
     >
       {/* قسم الهيدر العلوي — هوية كحلية مؤسسية بلمسة ختم برونزي */}
@@ -268,8 +253,8 @@ function Index() {
           </div>
         </div>
 
-        {/* الجزء الأيسر: زر الرجوع والتثبيت PWA */}
-      
+        {/* الجزء الأيسر: زر تثبيت PWA */}
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 shrink-0">
           {pwaInstallable && (
             <button
               onClick={handlePWAInstall}
@@ -280,8 +265,31 @@ function Index() {
             </button>
           )}
         </div>
-  
+      </div>
 
+      {/* محتوى التبويب النشط */}
+      <div className="w-full bg-[#faf8f3] p-2 pb-24 sm:p-4 sm:pb-20 md:p-6 min-h-[calc(100vh-140px)]">
+        <Suspense
+          fallback={
+            <div
+              className="flex min-h-[35vh] items-center justify-center rounded-2xl border border-[#c99a4e]/30 bg-white/70 p-6 text-sm font-semibold text-[#153a54]"
+              role="status"
+              aria-live="polite"
+            >
+              جارٍ فتح التبويب…
+            </div>
+          }
+        >
+          {activeTab === "installments" && <InstallmentsTab />}
+          {activeTab === "hafiza" && <HafizaTab />}
+          {activeTab === "account" && <AccountTab />}
+          {activeTab === "journal" && <JournalTab />}
+          {activeTab === "monthly" && <MonthlyStatementTab />}
+          {activeTab === "revenue" && <RevenueTab />}
+          {activeTab === "expenses-table" && <ExpensesTab />}
+          {activeTab === "general-expenses-ledger" && <AppTabs />}
+        </Suspense>
+      </div>
 
       {/* شريط التبويبات السفلي */}
       <nav
