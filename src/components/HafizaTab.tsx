@@ -218,12 +218,11 @@ export default function HafizaTab() {
   disabled: hafiza.length === 0,
   destructive: true,
  }, ];
- 
  return (
   <div className="w-full min-h-screen p-1.5 sm:p-3 bg-gradient-to-br from-[#f5f2ea] to-white text-slate-900" dir="rtl">
       {/* HERO */}
-      <div className="mb-3 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
-        <div>
+<div className="mb-3 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+        </div>
 <div className="bg-[oklch(0.96_0.02_240)] border border-black/15 shadow-sm rounded-xl p-3">
   <div className="flex items-center gap-2">
     <span className="p-1.5 rounded-lg bg-[oklch(0.92_0.03_240)] border border-black/10 text-[oklch(0.12_0_0)] shadow-xs shrink-0">
@@ -244,10 +243,7 @@ export default function HafizaTab() {
   </div>
   <div className="apk-only-actions grid grid-cols-2 sm:flex items-center justify-end gap-1.5 sm:gap-2">
     {!showForm && (
-      <Button 
-        onClick={() => setShowForm(true)} 
-        className="min-w-0 justify-center bg-[oklch(0.92_0.03_240)] hover:bg-[oklch(0.88_0.04_245)] text-[oklch(0.12_0_0)] border border-black/15 rounded-full px-2 sm:px-3 py-1 text-xs sm:text-sm shadow-xs font-semibold"
-      >
+      <Button onClick={() => setShowForm(true)} className="min-w-0 justify-center bg-[oklch(0.92_0.03_240)] hover:bg-[oklch(0.88_0.04_245)] text-[oklch(0.12_0_0)] border border-black/15 rounded-full px-2 sm:px-3 py-1 text-xs sm:text-sm shadow-xs font-semibold">
         <Plus className="w-4 h-4 ml-1" /> إضافة
       </Button>
     )}
@@ -264,7 +260,6 @@ export default function HafizaTab() {
     </Button>
   </div>
 </Card>
-
       {/* MAIN LAYOUT: SIDEBAR + CONTENT */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
         {/* CONTENT */}
