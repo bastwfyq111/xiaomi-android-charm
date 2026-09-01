@@ -1699,7 +1699,7 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
       }
       .page-frame {
         width: 100%;
-        min-height: 290mm;
+        min-height: auto;
         padding: 7mm;
         border: 1px solid #0f766e;
         border-radius: 3mm;
