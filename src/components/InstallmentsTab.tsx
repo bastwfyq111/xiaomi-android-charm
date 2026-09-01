@@ -1592,25 +1592,38 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
   };
 
   const importFile = async (e: React.ChangeEvent<HTMLInputElement>, year: 2025 | 2026) => {
-    const file = e.target.files?.[0];
+    const input = e.target;
+    const file = input.files?.[0];
     if (!file) return;
-    e.target.value = "";
     try {
+      // ملاحظة: لا نصفّر قيمة الحقل قبل القراءة — بعض متصفحات أندرويد/شاومي
+      // تُبطل الملف عند التصفير فتخرج النتيجة فارغة بدون خطأ.
       const formattedData = await importInstallmentsInWorker(file, year);
+      if (!formattedData?.length) {
+        const msg =
+          "لم يتم العثور على أسماء متدربين في الملف — تأكد من وجود عمود «اسم المتدرب» في الصف الأول.";
+        setImportError(msg);
+        toast.error(msg);
+        return;
+      }
       if (year === 2025) {
         useStore.setState({ installments2025: formattedData });
       } else {
         useStore.setState({ installments: formattedData });
       }
 
-      toast.success(`تم استيراد بيانات العام ${year} بنجاح!`);
+      toast.success(`تم استيراد ${formattedData.length} سجلاً للعام ${year} بنجاح!`);
       setImportError(null);
     } catch (error) {
       console.error(`[Excel] Installments ${year} import failed`, error);
-      setImportError("حدث خطأ في قراءة الملف.");
+      const detail = error instanceof Error ? error.message : String(error);
+      setImportError(`حدث خطأ في قراءة الملف: ${detail}`);
       toast.error("فشل استيراد الملف");
+    } finally {
+      input.value = "";
     }
   };
+
 
   const getStatusText = (rem: number) =>
     rem <= 0
