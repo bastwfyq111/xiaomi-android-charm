@@ -234,13 +234,13 @@ export default function HafizaTab() {
           <p className="text-xs text-slate-600 mt-1">تصميم ملائم للهواتف: صفان من الحقول، عناصر متراصة وأقسام مرقمة بألوان مميزة.</p>
         </div>
 
-        <Card className="w-full md:w-auto p-2 bg-white rounded-2xl border border-rose-50 shadow-sm">
+        <Card className="w-full md:w-auto p-2 bg-gold  rounded-2xl border border--50 shadow-sm">
           <div className="web-only-actions">
             <WebActionMenu label="إجراءات الحوافظ" actions={hafizaWebActions} />
           </div>
           <div className="apk-only-actions grid grid-cols-2 sm:flex items-center justify-end gap-1.5 sm:gap-2">
             {!showForm && (
-              <Button onClick={() => setShowForm(true)} className="min-w-0 justify-center bg-gradient-to-r from-[#0e2b40] to-[#153a54] text-white rounded-full px-2 sm:px-3 py-1 text-xs sm:text-sm shadow-sm">
+              <Button onClick={() => setShowForm(true)} className="min-w-0 justify-center bg-gradient-to-r from-[gold] to-[#153a54] text-black rounded-full px-2 sm:px-3 py-1 text-xs sm:text-sm shadow-sm">
                 <Plus className="w-4 h-4" /> إضافة
               </Button>
             )}
@@ -249,7 +249,7 @@ export default function HafizaTab() {
               type="button"
               variant="outline"
               onClick={handleClearHafiza}
-              className="min-w-0 justify-center rounded-full border-red-200 text-red-600 hover:bg-red-50 px-2 sm:px-3 py-1 text-xs sm:text-sm"
+              className="min-w-0 justify-center rounded-full border-red-200 text-red-600 hover:bg-Orange-50 px-2 sm:px-3 py-1 text-xs sm:text-sm"
               disabled={hafiza.length === 0}
             >
               <Trash2 className="w-4 h-4" />
@@ -265,7 +265,7 @@ export default function HafizaTab() {
         <main className="lg:col-span-12 space-y-3">
           {/* FORM (قابلة للطي) */}
  <div className={`transition-all duration-300 ${showForm ? "max-h-[1400px] opacity-100" : "max-h-0 opacity-0 overflow-hidden"}`}>
-            <Card className="p-3 bg-white rounded-2xl border border-[#c99a4e]/20 shadow-sm border-l-4 border-[#c99a4e]">
+            <Card className="p-3 bg-silver rounded-2xl border border-[#c99a4e]/20 shadow-sm border-l-4 border-[#c99a4e]">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1">
                   <h3 className="text-md font-bold flex items-center gap-2">
@@ -283,7 +283,7 @@ export default function HafizaTab() {
                 {/* compact grid: always two columns so each row shows 2 fields */}
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-xs font-semibold text-slate-700 mb-1 block">الاسم الكامل *</label>
+                    <label className="text-xs font-semibold text-slate-700 mb-1 white">الاسم الكامل *</label>
                     <div className="relative">
                       <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-white p-1 rounded-md border border-gray-100">
                         <User className="w-4 h-4 text-amber-500" />
@@ -317,13 +317,13 @@ export default function HafizaTab() {
                   </div>
 
                   <FieldDark label="الدفعة" icon={<Sparkles className="w-4 h-4 text-amber-500" />} v={form.batch} on={(v) => setForm({ ...form, batch: v })} />
-                  <FieldDark label="التخصص" icon={<FileText className="w-4 h-4 text-black -500" />} v={form.specialty} on={(v) => setForm({ ...form, specialty: v })} />
-                  <FieldDark label="التاريخ" type="date" icon={<Calendar className="w-4 h-4 text-black -400" />} v={form.date} on={(v) => setForm({ ...form, date: v })} />
-                  <FieldDark label="رقم الحافظة" icon={<Hash className="w-4 h-4 text-violet-400" />} v={form.hafizaNo} on={(v) => setForm({ ...form, hafizaNo: v })} />
+                  <FieldDark label="التخصص" icon={<FileText className="w-4 h-4 text-white -500" />} v={form.specialty} on={(v) => setForm({ ...form, specialty: v })} />
+                  <FieldDark label="التاريخ" type="date" icon={<Calendar className="w-4 h-4 text-white-400" />} v={form.date} on={(v) => setForm({ ...form, date: v })} />
+                  <FieldDark label="رقم الحافظة" icon={<Hash className="w-4 h-4 text--400" />} v={form.hafizaNo} on={(v) => setForm({ ...form, hafizaNo: v })} />
                   <FieldDark label="مبلغ الحافظة" type="number" icon={<Banknote className="w-4 h-4 text-teal-400" />} v={form.hafizaAmount} on={(v) => setForm({ ...form, hafizaAmount: v })} />
 
                   <div>
-                    <label className="text-xs font-semibold text-slate-700 mb-1 block">البيان</label>
+                    <label className="text-xs font-semibold text-w-700 mb-1 block">البيان</label>
                     <div className="relative">
                       <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-white p-1 rounded-md border border-gray-100">
                         <ScrollText className="w-4 h-4 text-cyan-500" />
@@ -337,9 +337,9 @@ export default function HafizaTab() {
                     </datalist>
                   </div>
 
-                  <FieldDark label="تاريخ التوريد" type="date" icon={<Calendar className="w-4 h-4 text-orange-400" />} v={form.notifyDate} on={(v) => setForm({ ...form, notifyDate: v })} />
-                  <FieldDark label="رقم الاشعار" icon={<Hash className="w-4 h-4 text-pink-400" />} v={form.notifyNo} on={(v) => setForm({ ...form, notifyNo: v })} />
-                  <FieldDark label="مبلغ التوريد" type="number" icon={<CreditCard className="w-4 h-4 text-indigo-400" />} v={form.notifyAmount} on={(v) => setForm({ ...form, notifyAmount: v })} />
+                  <FieldDark label="تاريخ التوريد" type="date" icon={<Calendar className="w-4 h-4 text-white-400" />} v={form.notifyDate} on={(v) => setForm({ ...form, notifyDate: v })} />
+                  <FieldDark label="رقم الاشعار" icon={<Hash className="w-4 h-4 text-white -400" />} v={form.notifyNo} on={(v) => setForm({ ...form, notifyNo: v })} />
+                  <FieldDark label="مبلغ التوريد" type="number" icon={<CreditCard className="w-4 h-4 text-white-400" />} v={form.notifyAmount} on={(v) => setForm({ ...form, notifyAmount: v })} />
 
                 </div>
 
