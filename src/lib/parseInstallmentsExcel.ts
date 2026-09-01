@@ -48,10 +48,17 @@ const normalizeArabic = (value: unknown): string =>
     .toLowerCase()
     .trim();
 
-// مطابقة تامة (بعد التطبيع) — تُستخدم لأسماء الأشهر
+// إزالة الأرقام (السنة) من اسم الشهر لمطابقة مثل «نوفمبر2025» مع «نوفمبر»
+const monthCore = (value: unknown): string =>
+  normalizeArabic(value).replace(/[0-9\u0660-\u0669]/g, "");
+
+// مطابقة أسماء الأشهر: تامة أولاً، ثم بتجاهل السنة الملحقة
 const findKeyExact = (keys: string[], target: string, fallback: string): string => {
   const normTarget = normalizeArabic(target);
-  return keys.find((key) => normalizeArabic(key) === normTarget) ?? fallback;
+  const exact = keys.find((key) => normalizeArabic(key) === normTarget);
+  if (exact) return exact;
+  const core = monthCore(target);
+  return (core && keys.find((key) => monthCore(key) === core)) || fallback;
 };
 
 // مطابقة جزئية (بعد التطبيع) — تُستخدم للحقول الوصفية مثل "اسم المتدرب"
@@ -62,6 +69,15 @@ const findKeyContains = (
 ): string => {
   const normPart = normalizeArabic(part);
   return keys.find((key) => normalizeArabic(key).includes(normPart)) ?? fallback;
+};
+
+// أول مطابقة ناجحة من عدة بدائل
+const findKeyAny = (keys: string[], parts: string[], fallback: string): string => {
+  for (const part of parts) {
+    const found = findKeyContains(keys, part, "");
+    if (found) return found;
+  }
+  return fallback;
 };
 
 export function parseInstallmentsExcel(buffer: ArrayBuffer, year: 2025 | 2026): Installment[] {
@@ -77,14 +93,19 @@ export function parseInstallmentsExcel(buffer: ArrayBuffer, year: 2025 | 2026): 
 
   const monthKeys = months.map((month) => findKeyExact(keys, month, month));
 
-  const nameKey = findKeyContains(keys, "اسم المتدرب", "name");
-  const batchKey = findKeyContains(keys, "رقم الدفعة", "batch");
-  const specialtyKey = findKeyContains(keys, "المساق", "specialty");
-  const feesKey = findKeyContains(keys, "مبلغ الرسوم", "fees");
-  const prevDueKey = findKeyContains(keys, "المتبقي عليهم من العام 2025", "prevDue");
+  const nameKey = findKeyAny(keys, ["اسم المتدرب", "اسم الطالب", "الاسم", "اسم"], "name");
+  const batchKey = findKeyAny(keys, ["رقم الدفعة", "الدفعة"], "batch");
+  const specialtyKey = findKeyAny(keys, ["المساق", "التخصص"], "specialty");
+  const feesKey = findKeyAny(keys, ["مبلغ الرسوم", "الرسوم"], "fees");
+  const prevDueKey = findKeyAny(
+    keys,
+    ["المتبقي عليهم من العام 2025", "المتبقي من العام", "متبقي سابق"],
+    "prevDue",
+  );
   const remainingKey = findKeyExact(keys, "المتبقي", "remaining");
   const notesKey = findKeyContains(keys, "ملاحظات", "notes");
-  const phoneKey = findKeyContains(keys, "رقم الهاتف", "phone");
+  const phoneKey = findKeyAny(keys, ["رقم الهاتف", "الهاتف", "الجوال"], "phone");
+
 
   return rows.flatMap((row) => {
     const name = String(row[nameKey] ?? "").trim();
