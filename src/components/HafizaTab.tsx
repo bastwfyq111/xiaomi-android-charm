@@ -223,7 +223,7 @@ export default function HafizaTab() {
       {/* HERO */}
 <div className="mb-3 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
         </div>
-<div className="bg-[oklch(0.96_0.02_240)] border border-black shadow-xm rounded-xl p-3">
+<div className="bg-[oklch(0.80_0.02_100)] border border-black shadow-xm rounded-xl p-3">
   <div className="flex items-center gap-2">
     <span className="p-1.5 rounded-lg bg-[oklch(0.92_0.03_240)] border border-black text-[oklch(0.12_0_0)] shadow-xs shrink-0">
       <Wallet className="w-4 h-4" />
@@ -285,9 +285,9 @@ export default function HafizaTab() {
                 {/* compact grid: always two columns so each row shows 2 fields */}
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-xs font-semibold text-slate-200 mb-1 block">الاسم الكامل *</label>
+                    <label className="text-xl font-semibold text-white mb-1 block">الاسم الكامل *</label>
                     <div className="relative">
-                      <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-slate-100 p-1 rounded-md border border-black/40 z-10">
+                      <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-slate-100 p-1 rounded-md border border-black z-10">
                         <User className="w-4 h-4 text-amber-600" />
                       </div>
                       <Input
@@ -318,17 +318,17 @@ export default function HafizaTab() {
                     )}
                   </div>
 
-                  <FieldDark label="الدفعة" icon={<Sparkles className="w-4 h-4 text-amber-500" />} v={form.batch} on={(v) => setForm({ ...form, batch: v })} />
-                  <FieldDark label="التخصص" icon={<FileText className="w-4 h-4 text-sky-600" />} v={form.specialty} on={(v) => setForm({ ...form, specialty: v })} />
-                  <FieldDark label="التاريخ" type="date" icon={<Calendar className="w-4 h-4 text-sky-600" />} v={form.date} on={(v) => setForm({ ...form, date: v })} />
-                  <FieldDark label="رقم الحافظة" icon={<Hash className="w-4 h-4 text-sky-600" />} v={form.hafizaNo} on={(v) => setForm({ ...form, hafizaNo: v })} />
-                  <FieldDark label="مبلغ الحافظة" type="number" icon={<Banknote className="w-4 h-4 text-emerald-600" />} v={form.hafizaAmount} on={(v) => setForm({ ...form, hafizaAmount: v })} />
+                  <FieldDark label="الدفعة" icon={<Sparkles className="w-4 h-4 text-white-500" />} v={form.batch} on={(v) => setForm({ ...form, batch: v })} />
+                  <FieldDark label="التخصص" icon={<FileText className="w-4 h-4 text-white-600" />} v={form.specialty} on={(v) => setForm({ ...form, specialty: v })} />
+                  <FieldDark label="التاريخ" type="date" icon={<Calendar className="w-4 h-4 text-white-600" />} v={form.date} on={(v) => setForm({ ...form, date: v })} />
+                  <FieldDark label="رقم الحافظة" icon={<Hash className="w-4 h-4 text-white-600" />} v={form.hafizaNo} on={(v) => setForm({ ...form, hafizaNo: v })} />
+                  <FieldDark label="مبلغ الحافظة" type="number" icon={<Banknote className="w-4 h-4 text-white-600" />} v={form.hafizaAmount} on={(v) => setForm({ ...form, hafizaAmount: v })} />
 
                   <div>
-                    <label className="text-xs font-semibold text-slate-200 mb-1 block">البيان</label>
+                    <label className="text-xs font-semibold text-white -200 mb-1 block">البيان</label>
                     <div className="relative">
                       <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-slate-100 p-1 rounded-md border border-black/40 z-10">
-                        <ScrollText className="w-4 h-4 text-cyan-600" />
+                        <ScrollText className="w-4 h-4 text-white-600" />
                       </div>
                       <Input list="hafiza-descriptions" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="اكتب أو اختر..." className="pr-10 bg-white text-black border-2 border-black/80 focus:border-black rounded-md h-8 text-xs font-semibold placeholder:text-slate-500 shadow-inner" />
                     </div>
@@ -339,9 +339,10 @@ export default function HafizaTab() {
                     </datalist>
                   </div>
 
-                  <FieldDark label="تاريخ التوريد" type="date" icon={<Calendar className="w-4 h-4 text-sky-600" />} v={form.notifyDate} on={(v) => setForm({ ...form, notifyDate: v })} />
+                  <FieldDark label="تاريخ التوريد" type="date" icon={<Calendar className="w-4 h-4 text-w-600" />} v={form.notifyDate} on={(v) => setForm({ ...form, notifyDate: v })} />
                   <FieldDark label="رقم الاشعار" icon={<Hash className="w-4 h-4 text-sky-600" />} v={form.notifyNo} on={(v) => setForm({ ...form, notifyNo: v })} />
-                  <FieldDark label="مبلغ التوريد" type="number" icon={<CreditCard className="w-4 h-4 text-emerald-600" />} v={form.notifyAmount} on={(v) => setForm({ ...form, notifyAmount: v })} />
+                  <FieldDark label="مبلغ التوريد" type="number" icon
+                  ={<CreditCard className="w-4 h-4 text-emerald-600" />} v={form.notifyAmount} on={(v) => setForm({ ...form, notifyAmount: v })} />
 
                 </div>
 
