@@ -132,58 +132,95 @@ const downloadDetailedHtmlPdf = async ({
     if (!fdoc) throw new Error("تعذر إنشاء مساحة PDF");
 
     fdoc.open();
-fdoc.write(`<!doctype html>
+    const fontFaces = `
+      @font-face {
+        font-family: "Mohammad Bold Art";
+        src: url("${window.location.origin}/MohammadBoldArt-Regular.ttf") format("truetype");
+        font-style: normal;
+        font-weight: 400 1000;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Al Qabas Bold";
+        src: url("${window.location.origin}/AlQabas-Bold.ttf") format("truetype");
+        font-style: normal;
+        font-weight: 400 1000;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Noto Kufi Arabic";
+        src: url("${window.location.origin}/NotoKufiArabic-Medium.ttf") format("truetype");
+        font-style: normal;
+        font-weight: 400 900;
+        font-display: block;
+      }
+    `;
+
+    fdoc.write(`<!doctype html>
       <html lang="ar" dir="rtl">
         <head>
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <title>${escapeHtml(title)}</title>
           <style>
-            /* ===== التعديلات هنا فقط (بدون تغيير النهج البرمجي) ===== */
-            html, body { 
-              margin: 0 !important; 
-              padding: 0 !important; 
-              background: #fff !important; 
-              font-family:"Mohammad Bold Art" !important;
-        font-weight: bold !important;
+            ${fontFaces}
+            /* أنماط التقرير الأصلية (نفس أنماط الطباعة) */
+            ${css}
 
-
+            /* ===== ضبط خاص بتنزيل PDF ===== */
+            html, body {
+              margin: 0 !important;
+              padding: 0 !important;
+              background: #fff !important;
+              font-family: "Mohammad Bold Art", "Noto Kufi Arabic", Tahoma, Arial, sans-serif !important;
             }
-            body {
-              width: ${pageWidthPx}px;
-            }
+            body { width: ${pageWidthPx}px; }
             .pdf-download-root {
               width: 100%;
-              max-width: auto;
               margin: 0;
+              padding: 0 4px;
               background: #fff;
-              overflow-x: auto; /* تمرير أفقي عند الحاجة */
+              box-sizing: border-box;
             }
             .pdf-download-root .report-letterhead-block {
               width: 100% !important;
-              max-width: auto !important;
-              margin: 0 0 3mm !important;
+              height: 30mm !important;
+              min-height: 30mm !important;
+              max-height: 30mm !important;
+              margin: 0 0 4mm !important;
             }
+            .pdf-download-root .report-letterhead-image {
+              width: 100% !important;
+              height: 100% !important;
+              object-fit: contain !important;
+              object-position: center !important;
+            }
+            .pdf-download-root .doc-header .title h1 { font-size: 22px !important; }
+            .pdf-download-root .doc-header .title h2 { font-size: 18px !important; }
+            .pdf-download-root .doc-header .meta { font-size: 14px !important; }
             .pdf-download-root table {
               width: 100% !important;
-              max-width: auto !important;
               margin: 0 !important;
-              border: 1px solid black;
-              border-collapse: collapse;
-              table-layout: auto; /* ثابت بدل auto: يضمن نفس توزيع الأعمدة عبر كل الصفحات عند الطباعة/PDF */
+              border-collapse: collapse !important;
+              table-layout: auto !important;
+              border: 1px solid #000 !important;
             }
             .pdf-download-root th,
             .pdf-download-root td {
               text-align: center !important;
               vertical-align: middle !important;
-              padding: 2px 1px !important; /* تقليل الحشوة */
-              font-size: 18px !important; /* خط مناسب */
-              border: 1px solid #000;
-              font-weight: bold !important;
-
+              padding: 5px 4px !important;
+              font-size: 15px !important;
+              line-height: 1.45 !important;
+              border: 1px solid #000 !important;
+              font-family: "Mohammad Bold Art", "Noto Kufi Arabic", Tahoma, Arial, sans-serif !important;
+              font-weight: 700 !important;
             }
-
-            /* ===== التفاف النص فقط لخلايا النصوص، وليس الأرقام ===== */
+            .pdf-download-root thead th {
+              font-family: "Al Qabas Bold", "Mohammad Bold Art", Tahoma, Arial, sans-serif !important;
+              font-size: 15.5px !important;
+              padding: 7px 4px !important;
+            }
             .pdf-download-root td.cell-text,
             .pdf-download-root th.cell-text {
               word-break: break-word;
@@ -191,76 +228,28 @@ fdoc.write(`<!doctype html>
               white-space: normal;
             }
             .pdf-download-root td.cell-number,
-            .pdf-download-root th.cell-number {
-              white-space: nowrap;
-              word-break: normal;
-              overflow-wrap: normal;
+            .pdf-download-root th.cell-number,
+            .pdf-download-root .num,
+            .pdf-download-root .numeric-cell {
+              white-space: nowrap !important;
+              word-break: normal !important;
+              overflow-wrap: normal !important;
+              font-variant-numeric: tabular-nums;
+              direction: ltr;
             }
-            
-            /* ===== تلوين رؤوس الأعمدة ===== */
-            .pdf-download-root thead th {
-              background-color: #2c3e50 !important;
-              color: #ffffff !important;
-          font-family: Al Qabas Bold !important;
-              padding: 4px 2px !important;
-            }
-            
-            /* ===== تلوين صف الإجمالي ===== */
-            .pdf-download-root tbody tr:last-child {
-              background-color: #3498db !important;
-              color: #ffffff !important;
-        
-     font-family: Al Qabas Bold!important;
-            }
-            
-            /* ===== تلوين خلايا الإجمالي في آخر صف ===== */
-            .pdf-download-root tbody tr:last-child td {
-              background-color: #3498db !important;
-              color: #ffffff !important;
-              font-weight: bold !important;
-            }
-            
-            /* ===== تلوين عمود الإجمالي (إذا كان موجوداً) ===== */
-            .pdf-download-root td:last-child {
-              background-color: #ecf0f1 !important;
-              font-weight: bold !important;
-            }
-            
-            /* ===== تلوين رأس عمود الإجمالي ===== */
-            .pdf-download-root th:last-child {
-              background-color: #e67e22 !important;
-              color: #ffffff !important;
-            }
-            
             .pdf-download-root .cell-content {
               display: flex !important;
               align-items: center !important;
               justify-content: center !important;
-              min-height: auto;
-              vertical-align: middle !important;
-              font-family:Mohammad Bold Art!important;
-              font-size: 18px !important;
-        font-weight: bold !important;
-
+              font-size: inherit !important;
+              font-weight: inherit !important;
             }
-            .print-toolbar { 
-              display: none !important; 
+            .pdf-download-root .total-row td {
+              font-family: "Al Qabas Bold", "Mohammad Bold Art", Tahoma, Arial, sans-serif !important;
+              font-size: 15.5px !important;
             }
-            @media print { 
-              .print-toolbar { 
-                display: none !important; 
-              }
-              body {
-                width: 100% !important;
-              }
-              .pdf-download-root {
-                overflow-x: visible !important;
-              }
-              .pdf-download-root table {
-                table-layout: auto!important; /* موحّد مع الوضع العادي لضمان ثبات الأعمدة بين الصفحات */
-              }
-            }
-            /* ===== انتهى التعديل ===== */
+            .pdf-download-root .doc-foot { font-size: 13px !important; margin-top: 6px !important; }
+            .print-toolbar { display: none !important; }
           </style>
         </head>
         <body>
@@ -288,7 +277,7 @@ fdoc.close();
     if ((fdoc as any).fonts?.ready) {
       await Promise.race([
         (fdoc as any).fonts.ready,
-        new Promise((resolve) => window.setTimeout(resolve, 1200)),
+        new Promise((resolve) => window.setTimeout(resolve, 3000)),
       ]);
     }
     await new Promise((resolve) => window.setTimeout(resolve, 120));
