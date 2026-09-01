@@ -523,36 +523,23 @@ table td > * {
   }
 }
 
-/* قائمة إجراءات نسخة الويب مقابل أزرار APK الأصلية. صفحات التقارير لا تستخدم هذه الأصناف. */
+/* تم إلغاء تجميع الإجراءات في قائمة واحدة: تظهر الأزرار المنفصلة دائماً. */
 .web-only-actions {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.web-only-actions > * {
-  width: 100%;
+  display: none !important;
 }
 
 .apk-only-actions {
-  display: none !important;
-}
-
-html.apk-compact .web-only-actions {
-  display: none !important;
-}
-
-html.apk-compact .apk-only-actions {
   display: flex !important;
+  flex-wrap: wrap;
 }
 
-/* داخل طبقة utilities لتتغلب على فئات Tailwind المهمة مثل !grid وsm:!flex. */
 @layer utilities {
-  html:not(.apk-compact) .apk-only-actions {
+  .web-only-actions {
     display: none !important;
   }
 
-  html.apk-compact .apk-only-actions {
+  .apk-only-actions {
     display: flex !important;
   }
 }
+
