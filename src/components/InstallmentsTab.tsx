@@ -2616,10 +2616,10 @@ const installments2026WebActions: WebActionItem[] = [
                           ))}
 
                           <td className="text-center w-auto min-w-[100px] numeric-cell font-mono text-black font-extrabold bg-emerald-50/50 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
-                            {fmt(Number(r.totalPaid || 0).toFixed(2))}
+                            {fmt(Number(r.totalPaid || 0))}
                           </td>
                           <td className="text-center w-auto min-w-[100px] numeric-cell font-mono text-black font-extrabold bg-rose-50/40 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
-                            {fmt(Number(r.remaining || 0).toFixed(2))}
+                            {fmt(Number(r.remaining || 0))}
                           </td>
                           <td className="text-center w-auto whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
                             <span
@@ -2669,10 +2669,10 @@ const installments2026WebActions: WebActionItem[] = [
                         الإجماليات
                       </td>
                       <td className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300">
-                        {fmt(Number(totals2026.prevDue || 0).toFixed(2))}
+                        {fmt(Number(totals2026.prevDue || 0))}
                       </td>
                       <td className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300">
-                        {fmt(Number(totals2026.fees || 0).toFixed(2))}
+                        {fmt(Number(totals2026.fees || 0))}
                       </td>
 
                       {MONTHS_2026.map((m) => (
@@ -2680,7 +2680,7 @@ const installments2026WebActions: WebActionItem[] = [
                           key={m}
                           className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300"
                         >
-                          {totals2026.months[m] > 0 ? fmt(Number(totals2026.months[m]).toFixed(2)) : "—"}
+                          {totals2026.months[m] > 0 ? fmt(Number(totals2026.months[m])) : "—"}
                         </td>
                       ))}
                       {extraCols2026.map((col) => (
@@ -2692,10 +2692,10 @@ const installments2026WebActions: WebActionItem[] = [
                         </td>
                       ))}
                       <td className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300">
-                        {fmt(Number(totals2026.paid || 0).toFixed(2))}
+                        {fmt(Number(totals2026.paid || 0))}
                       </td>
                       <td className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300">
-                        {fmt(Number(totals2026.remaining || 0).toFixed(2))}
+                        {fmt(Number(totals2026.remaining || 0))}
                       </td>
                       <td className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300"></td>
                       <td className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg"></td>
