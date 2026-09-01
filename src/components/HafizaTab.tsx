@@ -221,12 +221,12 @@ export default function HafizaTab() {
   ];
 
   return (
-    <div className="w-full min-h-screen p-1.5 sm:p-3 bg-gradient-to-br from-amber-50 to-white text-slate-900" dir="rtl">
+    <div className="w-full min-h-screen p-1.5 sm:p-3 bg-gradient-to-br from-[#f5f2ea] to-white text-slate-900" dir="rtl">
       {/* HERO */}
       <div className="mb-3 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
         <div>
           <h1 className="text-xl md:text-2xl font-extrabold flex items-center gap-2">
-            <span className="p-2 rounded-lg bg-gradient-to-br from-rose-100 to-amber-100 shadow-sm text-amber-700">
+            <span className="p-2 rounded-lg bg-gradient-to-br from-[#0e2b40] to-[#153a54] shadow-sm text-[#e3c281]">
               <Wallet className="w-5 h-5" />
             </span>
     لوحة الحوافظ التوريد
@@ -240,7 +240,7 @@ export default function HafizaTab() {
           </div>
           <div className="apk-only-actions grid grid-cols-2 sm:flex items-center justify-end gap-1.5 sm:gap-2">
             {!showForm && (
-              <Button onClick={() => setShowForm(true)} className="min-w-0 justify-center bg-gradient-to-r from-rose-400 to-orange-300 text-white rounded-full px-2 sm:px-3 py-1 text-xs sm:text-sm shadow-sm">
+              <Button onClick={() => setShowForm(true)} className="min-w-0 justify-center bg-gradient-to-r from-[#0e2b40] to-[#153a54] text-white rounded-full px-2 sm:px-3 py-1 text-xs sm:text-sm shadow-sm">
                 <Plus className="w-4 h-4" /> إضافة
               </Button>
             )}
@@ -265,11 +265,11 @@ export default function HafizaTab() {
         <main className="lg:col-span-12 space-y-3">
           {/* FORM (قابلة للطي) */}
  <div className={`transition-all duration-300 ${showForm ? "max-h-[1400px] opacity-100" : "max-h-0 opacity-0 overflow-hidden"}`}>
-            <Card className="p-3 bg-white rounded-2xl border border-rose-50 shadow-sm border-l-4 border-rose-200">
+            <Card className="p-3 bg-white rounded-2xl border border-[#c99a4e]/20 shadow-sm border-l-4 border-[#c99a4e]">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1">
                   <h3 className="text-md font-bold flex items-center gap-2">
-                    <span className="p-2 rounded-md bg-rose-50 text-rose-700">
+                    <span className="p-2 rounded-md bg-[#0e2b40]/10 text-[#0e2b40]">
                       <Plus className="w-4 h-4" />
                     </span>
                     إضافة حافظة
@@ -344,7 +344,7 @@ export default function HafizaTab() {
                 </div>
 
                 <div className="mt-2 flex items-center gap-2 justify-end">
-                  <Button onClick={submit} className="bg-gradient-to-r from-rose-400 to-orange-300 text-white rounded-md py-1 px-3 text-sm shadow-sm">
+                  <Button onClick={submit} className="bg-gradient-to-r from-[#0e2b40] to-[#153a54] text-white rounded-md py-1 px-3 text-sm shadow-sm">
                     <Save className="w-4 h-4" /> حفظ
                   </Button>
                   <Button variant="outline" onClick={() => { setForm(empty); setNameQuery(""); }} className="rounded-md py-1 px-3 text-sm text-slate-700 border border-gray-200">
@@ -356,17 +356,17 @@ export default function HafizaTab() {
           </div>
 
           {/* TABLE CARD */}
-          <Card className="p-0 bg-white rounded-2xl border border-amber-50 shadow-sm border-l-4 border-amber-200">
+          <Card className="p-0 bg-white rounded-2xl border border-[#0e2b40]/10 shadow-sm border-l-4 border-[#0e2b40]">
             <CardHeader className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between p-2 sm:p-3 gap-2 border-b border-gray-100">
               <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                <div className="p-2 rounded-lg bg-amber-50 text-amber-600">
+                <div className="p-2 rounded-lg bg-[#0e2b40]/10 text-[#0e2b40]">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
                   <CardTitle className="text-md font-bold text-slate-800">كشف القيود</CardTitle>
                   <CardDescription className="text-sm text-slate-600">عرض وتدقيق كافة حوافظ التوريد</CardDescription>
                 </div>
-                <Badge className="mr-4 bg-amber-300 text-slate-900">{filtered.length} سجل</Badge>
+                <Badge className="mr-4 bg-[#c99a4e] text-[#1a1206]">{filtered.length} سجل</Badge>
               </div>
 
               <div className="grid grid-cols-2 sm:flex items-center justify-end gap-1 sm:gap-2 w-full sm:w-auto">
@@ -397,7 +397,7 @@ export default function HafizaTab() {
             <CardContent className="p-0">
               <div className="w-full overflow-auto max-h-[72vh] overscroll-x-contain rounded-xl">
                 <Table className="min-w-max table-auto text-sm sm:text-base font-semibold">
-                  <TableHeader className="bg-white sticky top-0 z-10">
+                  <TableHeader className="bg-[#0e2b40] sticky top-0 z-10 [&_th]:text-white">
                     <TableRow>
                       <TableHead className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center text-slate-500">#</TableHead>
                       {COLS.map((c) => (
