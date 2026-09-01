@@ -277,7 +277,7 @@ fdoc.close();
     if ((fdoc as any).fonts?.ready) {
       await Promise.race([
         (fdoc as any).fonts.ready,
-        new Promise((resolve) => window.setTimeout(resolve, 1200)),
+        new Promise((resolve) => window.setTimeout(resolve, 3000)),
       ]);
     }
     await new Promise((resolve) => window.setTimeout(resolve, 120));
