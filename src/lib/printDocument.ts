@@ -145,7 +145,7 @@ min - height: 30 mm!important;
 padding: 0!important;
 border: 0!important;
 background: #fff!important;
-vertical - align: top;
+vertical-align:top;
   }
   .report-letterhead-cell img {
     display: block;
@@ -154,7 +154,7 @@ vertical - align: top;
     height: 30mm;
     max-height: 30mm;
     object-fit: fill;
-    object-position: top;
+    object-position:top;
     margin: 0;
   }
 

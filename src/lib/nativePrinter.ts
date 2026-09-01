@@ -7,8 +7,12 @@ const PRINT_LETTERHEAD_ALT = "ترويسة المجلس اليمني للاخت�
 /**
  * يضمن وجود الترويسة داخل رأس كل جدول، وليس كعنصر منفصل يظهر في الصفحة الأولى فقط.
  * وضعها داخل thead يجعل محرك الطباعة يعيدها تلقائياً عند انتقال الجدول إلى صفحة جديدة.
+ *
+ * إذا كانت الصفحة تحتوي بالفعل على شعار مستقل (report-letterhead-block) — كما يحدث
+ * عندما يُبنى المستند عبر letterheadPlacement: "top" (مثل كشف حساب متدرب فردي) —
+ * لا نحذفه ولا نقحم نسخة إضافية داخل الجدول؛ نترك الصفحة كما بُنيت أصلاً.
  */
-function ensurePrintLetterhead(html: string): string {
+function ensurePrintLetterhead(html: string, forceTable: boolean = true): string {
   if (!html) return html;
 
   const letterheadRow = (columnCount: number) => `<tr class="report-letterhead-row" data-report-letterhead-injected="true"><th class="report-letterhead-cell" colspan="${Math.max(1, columnCount)}"><img class="report-letterhead-image" src="${REPORT_LETTERHEAD_SRC}" alt="${PRINT_LETTERHEAD_ALT}" /></th></tr>`;
@@ -22,9 +26,15 @@ function ensurePrintLetterhead(html: string): string {
   </style>`;
 
   let printableHtml = html.includes("</head>") ? html.replace("</head>", `${printCss}</head>`) : `${printCss}${html}`;
-  printableHtml = printableHtml.replace(/<div[^>]*class=["'][^"']*report-letterhead-block[^"']*["'][\s\S]*?<\/div>\s*/i, "");
 
-  if (/<table\b[^>]*>/i.test(printableHtml)) {
+  // إذا كان الشعار المستقل موجودًا بالفعل (letterheadPlacement: "top")، لا نحذفه
+  // ولا نقحم نسخة إضافية داخل الجدول — نتركه كما بُني في الصفحة الأصلية.
+  const hasStandaloneLetterhead = /<div[^>]*class=["'][^"']*report-letterhead-block[^"']*["']/i.test(printableHtml);
+  if (hasStandaloneLetterhead) {
+    return printableHtml;
+  }
+
+  if (forceTable && /<table\b[^>]*>/i.test(printableHtml)) {
     return printableHtml.replace(/<table\b[^>]*>[\s\S]*?<\/table>/gi, (tableHtml) => {
       const hasLetterheadRow = /<tr\b[^>]*class=["'][^"']*report-letterhead-row[^"']*["']/i.test(tableHtml);
       if (hasLetterheadRow) return tableHtml;
