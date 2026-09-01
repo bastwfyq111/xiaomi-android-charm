@@ -54,7 +54,7 @@ const targetedReportLetterheadStyles = `
       height: 30mm !important;
       max-height: 30mm !important;
       object-fit: fill !important;
-      object-position: center;
+      object-position:top;
       margin: 0 !important;
     }
     tbody tr { break-inside: avoid; page-break-inside: avoid; }

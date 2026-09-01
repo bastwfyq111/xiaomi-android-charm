@@ -17,7 +17,7 @@ function ensurePrintLetterhead(html: string): string {
     thead { display: table-header-group !important; }
     .report-letterhead-row { break-inside: avoid; page-break-inside: avoid; }
     .report-letterhead-cell { border: 0 !important; background: #fff !important; padding: 0 0 2mm !important; height: 30mm !important; }
-    .report-letterhead-image { display: block !important; width: 100% !important; max-width: none !important; height: 30mm !important; max-height: 30mm !important; object-fit: fill !important; object-position: center !important; margin: 0 auto !important; }
+    .report-letterhead-image { display: block !important; width: 100% !important; max-width: none !important; height: 30mm !important; max-height: 30mm !important; object-fit: fill !important; object-position: top!important; margin: 0 auto !important; }
     .report-letterhead-block { display: flex !important; width: 100% !important; height: 30mm !important; min-height: 30mm !important; max-height: 30mm !important; align-items: stretch !important; justify-content: center !important; overflow: hidden !important; margin: 0 auto 4mm !important; page-break-before: avoid !important; page-break-after: avoid !important; }
   </style>`;
 

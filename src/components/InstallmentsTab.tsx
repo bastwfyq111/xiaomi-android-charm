@@ -193,7 +193,7 @@ const downloadDetailedHtmlPdf = async ({
               width: 100% !important;
               height: 100% !important;
               object-fit: contain !important;
-              object-position: center !important;
+object-position:top!important;
             }
             .pdf-download-root .doc-header .title h1 { font-size: 22px !important; }
             .pdf-download-root .doc-header .title h2 { font-size: 18px !important; }
@@ -1729,7 +1729,6 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
         color: #fff;
         padding: 5mm 4mm;
         border-radius: 2mm;
-        text-align: center;
         margin-bottom: 5mm;
       }
       .header h1 { margin: 0; font-size: 16pt; line-height: 1.25; font-weight: 800; color: #fff; }

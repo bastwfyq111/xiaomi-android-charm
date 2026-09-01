@@ -544,7 +544,7 @@ const AppTabs: React.FC = () => {
       html, body { margin:0; padding:0; }
       body { font-family:'Cairo','Tajawal','Segoe UI',Tahoma,Arial,sans-serif; direction:rtl; color:#000 !important; padding:0 1px; width:100%; font-weight:700 !important; }
       .report-letterhead-block { display:flex; width:100%; max-width:none; height:30mm; min-height:30mm; max-height:30mm; overflow:hidden; align-items:stretch; justify-content:center; margin:0 0 3mm; page-break-before:avoid; page-break-after:avoid; }
-      .report-letterhead-image { display:block; width:100% !important; max-width:none !important; height:100% !important; max-height:100% !important; object-fit:fill !important; object-position:center; margin:0 !important; }
+      .report-letterhead-image { display:block; width:100% !important; max-width:none !important; height:100% !important; max-height:100% !important; object-fit:fill !important; object-position:top; margin:0 !important; }
       h2 { text-align:center; color:#000 !important; margin:0 0 3mm; font-weight:800; }
       .report-date { text-align:center; color:#000 !important; margin:0 0 5px; font-size:10px; font-weight:700; }
       table { width:100%; max-width:100%; min-width:0; border-collapse:collapse; table-layout:auto !important; font-size:clamp(14px,1.05vw,16px); }

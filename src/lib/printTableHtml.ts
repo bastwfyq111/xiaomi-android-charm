@@ -15,7 +15,7 @@ export const reportLetterheadHtml = () => `
 export const reportLetterheadRowHtml = (columnCount: number) => `
   <tr class="report-letterhead-row">
     <th class="report-letterhead-cell" colspan="${Math.max(1, Math.floor(columnCount))}">
-      <img class="report-letterhead-image" style="display:block;width:100%;max-width:100%;height:30mm;max-height:30mm;object-fit:fill;object-position:center;margin:0;" src="${REPORT_LETTERHEAD_SRC}" alt="ترويسة المجلس اليمني للاختصاصات الطبية" />
+      <img class="report-letterhead-image" style="display:block;width:100%;max-width:100%;height:30mm;max-height:30mm;object-fit:fill;object-position:top;margin:0;" src="${REPORT_LETTERHEAD_SRC}" alt="ترويسة المجلس اليمني للاختصاصات الطبية" />
     </th>
   </tr>
 `;
@@ -233,7 +233,7 @@ align-items: center !important;     /* توسيط عمودي للعنصر الد
     height: 30mm !important;
     max-height: 30mm !important;
     object-fit: fill !important;
-    object-position: top!important;
+    object-position:top!important;
     margin: 0 !important;
   }
   .pdf-page .report-letterhead-cell {
