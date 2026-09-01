@@ -6,27 +6,27 @@ import { toast } from "sonner";
 import ImportButton from "./ImportButton";
 import { useTableControls, sortIndicator } from "@/hooks/useTableControls";
 import {
-  X,
-  Plus,
-  Trash2,
-  Search,
-  Save,
-  Eraser,
-  CheckSquare,
-  Calendar,
-  Hash,
-  FileText,
-  User,
-  Sparkles,
-  Wallet,
-  ArrowUpRight,
-  Filter,
-  Layers,
-  CreditCard,
-  Banknote,
-  ScrollText,
-  BadgeCheck,
-  PartyPopper,
+ X,
+ Plus,
+ Trash2,
+ Search,
+ Save,
+ Eraser,
+ CheckSquare,
+ Calendar,
+ Hash,
+ FileText,
+ User,
+ Sparkles,
+ Wallet,
+ ArrowUpRight,
+ Filter,
+ Layers,
+ CreditCard,
+ Banknote,
+ ScrollText,
+ BadgeCheck,
+ PartyPopper,
 } from "lucide-react";
 import TabActions from "./TabActions";
 import WebActionMenu, { type WebActionItem } from "./WebActionMenu";
@@ -38,226 +38,232 @@ import { Badge } from "@/components/ui/badge";
 
 // تعريف أعمدة الجدول الثابتة
 const COLS = [
-  { key: "name", label: "الاسم" },
-  { key: "batch", label: "الدفعة" },
-  { key: "specialty", label: "التخصص" },
-  { key: "date", label: "التاريخ" },
-  { key: "hafizaNo", label: "رقم الحافظة" },
-  { key: "description", label: "البيان" },
-  { key: "hafizaAmount", label: "مبلغ الحافظة" },
-  { key: "notifyDate", label: "تاريخ التوريد" },
-  { key: "notifyNo", label: "رقم الاشعار" },
-  { key: "notifyAmount", label: "مبلغ التوريد" },
+ { key: "name", label: "الاسم" },
+ { key: "batch", label: "الدفعة" },
+ { key: "specialty", label: "التخصص" },
+ { key: "date", label: "التاريخ" },
+ { key: "hafizaNo", label: "رقم الحافظة" },
+ { key: "description", label: "البيان" },
+ { key: "hafizaAmount", label: "مبلغ الحافظة" },
+ { key: "notifyDate", label: "تاريخ التوريد" },
+ { key: "notifyNo", label: "رقم الاشعار" },
+ { key: "notifyAmount", label: "مبلغ التوريد" },
 ];
 
 type Form = {
-  name: string;
-  batch: string;
-  specialty: string;
-  date: string;
-  hafizaNo: string;
-  description: string;
-  hafizaAmount: string;
-  notifyDate: string;
-  notifyNo: string;
-  notifyAmount: string;
+ name: string;
+ batch: string;
+ specialty: string;
+ date: string;
+ hafizaNo: string;
+ description: string;
+ hafizaAmount: string;
+ notifyDate: string;
+ notifyNo: string;
+ notifyAmount: string;
 };
 
 const empty: Form = {
-  name: "",
-  batch: "",
-  specialty: "",
-  date: today(),
-  hafizaNo: "",
-  description: "",
-  hafizaAmount: "",
-  notifyDate: "",
-  notifyNo: "",
-  notifyAmount: "",
+ name: "",
+ batch: "",
+ specialty: "",
+ date: today(),
+ hafizaNo: "",
+ description: "",
+ hafizaAmount: "",
+ notifyDate: "",
+ notifyNo: "",
+ notifyAmount: "",
 };
 
 export default function HafizaTab() {
-  const { trainees, hafiza, addHafiza, deleteHafiza, clearHafiza, addTrainee, updateHafiza } = useStore();
-  const [form, setForm] = useState<Form>(empty);
-  const [nameQuery, setNameQuery] = useState("");
-  const [showSugg, setShowSugg] = useState(false);
-
-  const [activeCell, setActiveCell] = useState<{ rowId: string; colKey: string } | null>(null);
-  const [cellValue, setCellValue] = useState("");
-
-  const [showForm, setShowForm] = useState(true);
-
-  const {
-    rows: filtered,
-    sortKey,
-    sortDir,
-    toggleSort,
-    filters,
-    setFilter,
-    clearFilters,
-  } = useTableControls(
-    hafiza,
-    COLS.map((c) => c.key)
-  );
-
-  const totalHafizaAmount = useMemo(() => {
-    return filtered.reduce((sum, item) => sum + (Number(item.hafizaAmount) || 0), 0);
-  }, [filtered]);
-
-  const totalNotifyAmount = useMemo(() => {
-    return filtered.reduce((sum, item) => sum + (Number(item.notifyAmount) || 0), 0);
-  }, [filtered]);
-
-  const nameSuggestions = useMemo(() => {
-    const q = nameQuery.trim();
-    if (!q) return trainees.slice(0, 8);
-    return trainees.filter((t) => t.name.includes(q)).slice(0, 8);
-  }, [trainees, nameQuery]);
-
-  const pickName = (t: Trainee) => {
-    setForm((f) => ({ ...f, name: t.name, batch: t.batch, specialty: t.specialty }));
-    setNameQuery(t.name);
-    setShowSugg(false);
-  };
-
-  const submit = () => {
-    const amount = Number(form.hafizaAmount) || 0;
-    const notifyAmt = Number(form.notifyAmount) || 0;
-
-    if (!form.name || !form.hafizaNo) {
-      toast.error("يرجى إدخال الاسم ورقم الحافظة على الأقل");
-      return;
-    }
-
-    addHafiza({
-      name: form.name,
-      batch: form.batch,
-      specialty: form.specialty,
-      date: form.date,
-      hafizaNo: form.hafizaNo,
-      description: form.description,
-      hafizaAmount: amount,
-      notifyDate: form.notifyDate,
-      notifyNo: form.notifyNo,
-      notifyAmount: notifyAmt,
-    });
-
-    if (!trainees.find((t) => t.name === form.name)) {
-      addTrainee({ name: form.name, batch: form.batch, specialty: form.specialty });
-    }
-
-    toast.success("تم حفظ الحافظة وترحيل البيانات بنجاح");
-    setForm(empty);
-    setNameQuery("");
-    setShowForm(false);
-  };
-
-  const handleClearHafiza = () => {
-    if (hafiza.length === 0) {
-      toast.info("لا توجد سجلات حوافظ لمسحها");
-      return;
-    }
-    if (!confirm("هل أنت متأكد من مسح جميع سجلات الحوافظ؟ لا يمكن التراجع عن هذا الإجراء.")) return;
-    clearHafiza();
-    setActiveCell(null);
-    toast.success("تم مسح جميع سجلات الحوافظ بنجاح");
-  };
-
-  const handleCopyAmountsToNotify = () => {
-    if (filtered.length === 0) {
-      toast.error("لا توجد سجلات حالية لنقل مبالغها");
-      return;
-    }
-    // حافظ على الAPI الحالي: تحدث كل صف (يمكن تبديله لاحقًا لبulkUpdate)
-    filtered.forEach((row) => {
-      updateHafiza(row.id, { ...row, notifyAmount: Number(row.hafizaAmount) || 0 });
-    });
-    toast.success(`تمت تسوية ونسخ المبالغ لـ (${filtered.length}) سجل بنجاح!`);
-  };
-
-  const handleCellClick = (rowId: string, colKey: string, currentVal: unknown) => {
-    setActiveCell({ rowId, colKey });
-    setCellValue(String(currentVal ?? ""));
-  };
-
-  const handleCellSave = (row: Record<string, unknown> & { id: string }) => {
-    if (!activeCell) return;
-
-    const { colKey, rowId } = activeCell;
-    let finalVal: string | number = cellValue;
-
-    if (colKey === "hafizaAmount" || colKey === "notifyAmount") {
-      finalVal = Number(cellValue) || 0;
-    }
-
-    updateHafiza(rowId, { ...row, [colKey]: finalVal });
-    setActiveCell(null);
-    toast.success("تم تحديث الخلية تلقائياً");
-  };
-
-  const hafizaWebActions: WebActionItem[] = [
-    {
-      label: "إضافة حافظة",
-      icon: Plus,
-      onSelect: () => setShowForm(true),
-      disabled: showForm,
-    },
-    {
-      label: "استيراد Excel",
-      onSelect: () => undefined,
-      content: (
-        <div className="flex w-full items-center rounded-lg hover:bg-slate-100">
+ const { trainees, hafiza, addHafiza, deleteHafiza, clearHafiza, addTrainee, updateHafiza } = useStore();
+ const [form, setForm] = useState < Form > (empty);
+ const [nameQuery, setNameQuery] = useState("");
+ const [showSugg, setShowSugg] = useState(false);
+ 
+ const [activeCell, setActiveCell] = useState < { rowId: string;colKey: string } | null > (null);
+ const [cellValue, setCellValue] = useState("");
+ 
+ const [showForm, setShowForm] = useState(true);
+ 
+ const {
+  rows: filtered,
+  sortKey,
+  sortDir,
+  toggleSort,
+  filters,
+  setFilter,
+  clearFilters,
+ } = useTableControls(
+  hafiza,
+  COLS.map((c) => c.key)
+ );
+ 
+ const totalHafizaAmount = useMemo(() => {
+  return filtered.reduce((sum, item) => sum + (Number(item.hafizaAmount) || 0), 0);
+ }, [filtered]);
+ 
+ const totalNotifyAmount = useMemo(() => {
+  return filtered.reduce((sum, item) => sum + (Number(item.notifyAmount) || 0), 0);
+ }, [filtered]);
+ 
+ const nameSuggestions = useMemo(() => {
+  const q = nameQuery.trim();
+  if (!q) return trainees.slice(0, 8);
+  return trainees.filter((t) => t.name.includes(q)).slice(0, 8);
+ }, [trainees, nameQuery]);
+ 
+ const pickName = (t: Trainee) => {
+  setForm((f) => ({ ...f, name: t.name, batch: t.batch, specialty: t.specialty }));
+  setNameQuery(t.name);
+  setShowSugg(false);
+ };
+ 
+ const submit = () => {
+  const amount = Number(form.hafizaAmount) || 0;
+  const notifyAmt = Number(form.notifyAmount) || 0;
+  
+  if (!form.name || !form.hafizaNo) {
+   toast.error("يرجى إدخال الاسم ورقم الحافظة على الأقل");
+   return;
+  }
+  
+  addHafiza({
+   name: form.name,
+   batch: form.batch,
+   specialty: form.specialty,
+   date: form.date,
+   hafizaNo: form.hafizaNo,
+   description: form.description,
+   hafizaAmount: amount,
+   notifyDate: form.notifyDate,
+   notifyNo: form.notifyNo,
+   notifyAmount: notifyAmt,
+  });
+  
+  if (!trainees.find((t) => t.name === form.name)) {
+   addTrainee({ name: form.name, batch: form.batch, specialty: form.specialty });
+  }
+  
+  toast.success("تم حفظ الحافظة وترحيل البيانات بنجاح");
+  setForm(empty);
+  setNameQuery("");
+  setShowForm(false);
+ };
+ 
+ const handleClearHafiza = () => {
+  if (hafiza.length === 0) {
+   toast.info("لا توجد سجلات حوافظ لمسحها");
+   return;
+  }
+  if (!confirm("هل أنت متأكد من مسح جميع سجلات الحوافظ؟ لا يمكن التراجع عن هذا الإجراء.")) return;
+  clearHafiza();
+  setActiveCell(null);
+  toast.success("تم مسح جميع سجلات الحوافظ بنجاح");
+ };
+ 
+ const handleCopyAmountsToNotify = () => {
+  if (filtered.length === 0) {
+   toast.error("لا توجد سجلات حالية لنقل مبالغها");
+   return;
+  }
+  // حافظ على الAPI الحالي: تحدث كل صف (يمكن تبديله لاحقًا لبulkUpdate)
+  filtered.forEach((row) => {
+   updateHafiza(row.id, { ...row, notifyAmount: Number(row.hafizaAmount) || 0 });
+  });
+  toast.success(`تمت تسوية ونسخ المبالغ لـ (${filtered.length}) سجل بنجاح!`);
+ };
+ 
+ const handleCellClick = (rowId: string, colKey: string, currentVal: unknown) => {
+  setActiveCell({ rowId, colKey });
+  setCellValue(String(currentVal ?? ""));
+ };
+ 
+ const handleCellSave = (row: Record < string, unknown > & { id: string }) => {
+  if (!activeCell) return;
+  
+  const { colKey, rowId } = activeCell;
+  let finalVal: string | number = cellValue;
+  
+  if (colKey === "hafizaAmount" || colKey === "notifyAmount") {
+   finalVal = Number(cellValue) || 0;
+  }
+  
+  updateHafiza(rowId, { ...row, [colKey]: finalVal });
+  setActiveCell(null);
+  toast.success("تم تحديث الخلية تلقائياً");
+ };
+ 
+ const hafizaWebActions: WebActionItem[] = [
+ {
+  label: "إضافة حافظة",
+  icon: Plus,
+  onSelect: () => setShowForm(true),
+  disabled: showForm,
+ },
+ {
+  label: "استيراد Excel",
+  onSelect: () => undefined,
+  content: (
+   <div className="flex w-full items-center rounded-lg hover:bg-slate-100">
           <ImportButton kind="hafiza" />
         </div>
-      ),
-    },
-    {
-      label: "مسح البيانات",
-      icon: Trash2,
-      onSelect: handleClearHafiza,
-      disabled: hafiza.length === 0,
-      destructive: true,
-    },
-  ];
-
-  return (
-    <div className="w-full min-h-screen p-1.5 sm:p-3 bg-gradient-to-br from-[#f5f2ea] to-white text-slate-900" dir="rtl">
+  ),
+ },
+ {
+  label: "مسح البيانات",
+  icon: Trash2,
+  onSelect: handleClearHafiza,
+  disabled: hafiza.length === 0,
+  destructive: true,
+ }, ];
+ 
+ return (
+  <div className="w-full min-h-screen p-1.5 sm:p-3 bg-gradient-to-br from-[#f5f2ea] to-white text-slate-900" dir="rtl">
       {/* HERO */}
       <div className="mb-3 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl md:text-2xl font-extrabold flex items-center gap-2">
-            <span className="p-2 rounded-lg bg-gradient-to-br from-[#0e2b40] to-[#153a54] shadow-sm text-[#e3c281]">
-              <Wallet className="w-5 h-5" />
-            </span>
-    لوحة الحوافظ التوريد
-          </h1>
-          <p className="text-xs text-slate-600 mt-1">تصميم ملائم للهواتف: صفان من الحقول، عناصر متراصة وأقسام مرقمة بألوان مميزة.</p>
-        </div>
+<div className="bg-[oklch(0.96_0.02_240)] border border-black/15 shadow-sm rounded-xl p-3">
+  <div className="flex items-center gap-2">
+    <span className="p-1.5 rounded-lg bg-[oklch(0.92_0.03_240)] border border-black/10 text-[oklch(0.12_0_0)] shadow-xs shrink-0">
+      <Wallet className="w-4 h-4" />
+    </span>
+    <h1 className="text-sm md:text-base font-bold text-[oklch(0.12_0_0)] whitespace-nowrap">
+      لوحة الحوافظ التوريد
+    </h1>
+  </div>
+  <p className="text-[11px] text-[oklch(0.25_0_0)] mt-1 whitespace-nowrap truncate">
+    تصميم ملائم للهواتف: صفان من الحقول، عناصر متراصة وأقسام مرقمة بألوان مميزة.
+  </p>
+</div>
 
-        <Card className="w-full md:w-auto p-2 bg-gold  rounded-2xl border border--50 shadow-sm">
-          <div className="web-only-actions">
-            <WebActionMenu label="إجراءات الحوافظ" actions={hafizaWebActions} />
-          </div>
-          <div className="apk-only-actions grid grid-cols-2 sm:flex items-center justify-end gap-1.5 sm:gap-2">
-            {!showForm && (
-              <Button onClick={() => setShowForm(true)} className="min-w-0 justify-center bg-gradient-to-r from-[gold] to-[#153a54] text-black rounded-full px-2 sm:px-3 py-1 text-xs sm:text-sm shadow-sm">
-                <Plus className="w-4 h-4" /> إضافة
-              </Button>
-            )}
-            <ImportButton kind="hafiza" />
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleClearHafiza}
-              className="min-w-0 justify-center rounded-full border-red-200 text-red-600 hover:bg-Orange-50 px-2 sm:px-3 py-1 text-xs sm:text-sm"
-              disabled={hafiza.length === 0}
-            >
-              <Trash2 className="w-4 h-4" />
-              مسح البيانات
-            </Button>
-          </div>
-        </Card>
-      </div>
+<Card className="w-full md:w-auto p-2 bg-[oklch(0.96_0.02_240)] rounded-2xl border border-black/15 shadow-sm">
+  <div className="web-only-actions">
+    <WebActionMenu label="إجراءات الحوافظ" actions={hafizaWebActions} />
+  </div>
+  <div className="apk-only-actions grid grid-cols-2 sm:flex items-center justify-end gap-1.5 sm:gap-2">
+    {!showForm && (
+      <Button 
+        onClick={() => setShowForm(true)} 
+        className="min-w-0 justify-center bg-[oklch(0.92_0.03_240)] hover:bg-[oklch(0.88_0.04_245)] text-[oklch(0.12_0_0)] border border-black/15 rounded-full px-2 sm:px-3 py-1 text-xs sm:text-sm shadow-xs font-semibold"
+      >
+        <Plus className="w-4 h-4 ml-1" /> إضافة
+      </Button>
+    )}
+    <ImportButton kind="hafiza" />
+    <Button
+      type="button"
+      variant="outline"
+      onClick={handleClearHafiza}
+      className="min-w-0 justify-center rounded-full border-red-500/30 text-red-700 hover:bg-red-500/10 hover:text-red-800 px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium"
+      disabled={hafiza.length === 0}
+    >
+      <Trash2 className="w-4 h-4 ml-1" />
+      مسح البيانات
+    </Button>
+  </div>
+</Card>
 
       {/* MAIN LAYOUT: SIDEBAR + CONTENT */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
@@ -516,26 +522,26 @@ export default function HafizaTab() {
       </div>
 
     </div>
-  );
+ );
 }
 
 function FieldDark({
-  label,
-  v,
-  on,
-  type = "text",
-  icon,
-  className = "",
+ label,
+ v,
+ on,
+ type = "text",
+ icon,
+ className = "",
 }: {
-  label: string;
-  v: string;
-  on: (v: string) => void;
-  type?: string;
-  icon?: React.ReactNode;
-  className?: string;
+ label: string;
+ v: string;
+ on: (v: string) => void;
+ type ? : string;
+ icon ? : React.ReactNode;
+ className ? : string;
 }) {
-  return (
-    <div className="w-full">
+ return (
+  <div className="w-full">
       <label className="text-xs font-medium text-slate-700 mb-1 block">{label}</label>
       <div className="relative">
         {icon && (
@@ -551,17 +557,17 @@ function FieldDark({
         />
       </div>
     </div>
-  );
+ );
 }
 
-function Stat({ label, value, icon }: { label: string; value: string; icon: React.ReactNode }) {
-  return (
-    <div className="flex items-center justify-between">
+function Stat({ label, value, icon }: { label: string;value: string;icon: React.ReactNode }) {
+ return (
+  <div className="flex items-center justify-between">
       <div className="text-xs text-slate-600">{label}</div>
       <div className="flex items-center gap-2">
         <div className="text-sm font-semibold text-slate-800">{value}</div>
         <div className="p-1 rounded-md bg-amber-50">{icon}</div>
       </div>
     </div>
-  );
+ );
 }

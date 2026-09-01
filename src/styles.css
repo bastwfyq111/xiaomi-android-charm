@@ -109,36 +109,42 @@ src: url("/MohammadBoldArt-Regular.ttf") format("truetype");
   --foreground: oklch(0.16 0.02 240);
 
   /* البطاقات والحاويات */
-  --card: oklch(0.995 0.002 85);
-  --card-foreground: oklch(0.16 0.02 240);
+    --card: oklch(0.96 0.02 240);                /* أزرق فاتح هادئ */
+  --card-foreground: oklch(0.12 0 0);         /* أسود داكن للنصوص */
 
-  /* اللون الأساسي */
-  --primary: oklch(0.34 0.09 240);
-  --primary-foreground: oklch(0.98 0.01 85);
+  /* اللون الأساسي (Primary) */
+  --primary: oklch(0.92 0.03 240);             /* أزرق فاتح أغمق قليلاً من الكارت */
+  --primary-foreground: oklch(0.12 0 0);       /* أسود داكن */
 
-  /* الثانوي */
-  --secondary: oklch(0.93 0.015 230);
-  --secondary-foreground: oklch(0.30 0.07 240);
+  /* اللون الثانوي (Secondary) */
+  --secondary: oklch(0.94 0.02 235);           /* أزرق فاتح محايد */
+  --secondary-foreground: oklch(0.15 0 0);     /* أسود داكن */
 
-  --muted: oklch(0.94 0.012 85);
-  --muted-foreground: oklch(0.42 0.03 235);
+  /* العناصر الباهتة (Muted) */
+  --muted: oklch(0.90 0.025 240);              /* أزرق رمادي فاتح */
+  --muted-foreground: oklch(0.25 0 0);        /* أسود متوسط للتفاصيل الثانوية */
 
-  /* التمييز */
-  --accent: oklch(0.68 0.13 75);
-  --accent-foreground: oklch(0.20 0.03 80);
+  /* التمييز (Accent) */
+  --accent: oklch(0.88 0.04 245);             /* أزرق فاتح مشبع للمس والتركيز */
+  --accent-foreground: oklch(0.12 0 0);       /* أسود داكن */
 
   /* الحالات الخاصة */
-  --destructive: oklch(0.52 0.19 25);
-  --destructive-foreground: oklch(0.98 0 0);
-  --success: oklch(0.50 0.11 155);
-  --success-foreground: oklch(0.98 0 0);
+  --destructive: oklch(0.92 0.04 25);         /* أحمر وردي فاتح جداً */
+  --destructive-foreground: oklch(0.25 0.12 25);/* أحمر داكن جداً للقراءة */
+  --success: oklch(0.92 0.04 155);            /* أخضر نعناعي فاتح جداً */
+  --success-foreground: oklch(0.20 0.08 155);  /* أخضر داكن جداً */
 
   /* الحدود */
   --border: oklch(0.30 0.02 240 / 0.14);
-  --input: oklch(0.20 0.02 240 / 0.20);
-  --ring: oklch(0.34 0.09 240 / 0.35);
-}
-
+  --border: oklch(0 0 0 / 0.14);
+  
+  /* حقول الإدخال: أزرق فاتح جداً مع شفافية خفيفة للتناغم مع الخلفية */
+  --input: oklch(0.94 0.02 240 / 0.80);
+  
+  /* حلقة التركيز (Focus Ring): أسود شبه شفاف (25%) لمظهر نظيف وعصري */
+  --ring: oklch(0 0 0 / 0.25);
+  }
+  
 @layer base {
   * { border-color: var(--color-border); }
   html {
