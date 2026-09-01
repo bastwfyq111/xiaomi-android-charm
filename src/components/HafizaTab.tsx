@@ -265,16 +265,16 @@ export default function HafizaTab() {
         <main className="lg:col-span-12 space-y-3">
           {/* FORM (قابلة للطي) */}
  <div className={`transition-all duration-300 ${showForm ? "max-h-[1400px] opacity-100" : "max-h-0 opacity-0 overflow-hidden"}`}>
-            <Card className="p-3 bg-silver rounded-2xl border border-[#c99a4e]/20 shadow-sm border-l-4 border-[#c99a4e]">
+            <Card className="p-3 bg-sky rounded-2xl border border-[black]/20 shadow-sm border-l-4 border-[black]">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1">
-                  <h3 className="text-md font-bold flex items-center gap-2">
-                    <span className="p-2 rounded-md bg-[#0e2b40]/10 text-[#0e2b40]">
+                  <h3 className="text-xl font-bolder flex items-center gap-2">
+                    <span className="p-2 rounded-md bg-[bluesky]/10 text-[black]">
                       <Plus className="w-4 h-4" />
                     </span>
                     إضافة حافظة
                   </h3>
-                  <p className="text-xs text-slate-600 mt-1">صفان من الحقول في كل صف — تصميم مدمج للهواتف.</p>
+                  <p className="text-xm text-slate-600 mt-1">صفان من الحقول في كل صف — تصميم مدمج للهواتف.</p>
                 </div>
 
               </div>
@@ -283,9 +283,9 @@ export default function HafizaTab() {
                 {/* compact grid: always two columns so each row shows 2 fields */}
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-xs font-semibold text-slate-700 mb-1 white">الاسم الكامل *</label>
+                    <label className="text-xm font-semibold text-slate-700 mb-1 white">الاسم الكامل *</label>
                     <div className="relative">
-                      <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-white p-1 rounded-md border border-gray-100">
+                      <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-greenlight p-1 rounded-md border border-black-100">
                         <User className="w-4 h-4 text-amber-500" />
                       </div>
                       <Input
@@ -298,7 +298,7 @@ export default function HafizaTab() {
                         onFocus={() => setShowSugg(true)}
                         onBlur={() => setTimeout(() => setShowSugg(false), 200)}
                         placeholder="ابحث أو اكتب..."
-                        className="pr-10 bg-white text-slate-900 border border-gray-200 rounded-md h-8 text-sm"
+                        className="pr-10 bg-white text-slate-900 border border-black -200 rounded-md h-8 text-xm"
                       />
                     </div>
 
@@ -344,11 +344,13 @@ export default function HafizaTab() {
                 </div>
 
                 <div className="mt-2 flex items-center gap-2 justify-end">
-                  <Button onClick={submit} className="bg-gradient-to-r from-[#0e2b40] to-[#153a54] text-white rounded-md py-1 px-3 text-sm shadow-sm">
-                    <Save className="w-4 h-4" /> حفظ
+                  <Button onClick={submit} className="bg-gradient-to-r from-[gold] to-[white]
+          text-black rounded-md py-1
+          px-3 text-xm shadow-xm">
+                    <Save className="w-6 h-6" /> حفظ
                   </Button>
-                  <Button variant="outline" onClick={() => { setForm(empty); setNameQuery(""); }} className="rounded-md py-1 px-3 text-sm text-slate-700 border border-gray-200">
-                    <Eraser className="w-4 h-4 text-orange-400" /> مسح
+                  <Button variant="outline" onClick={() => { setForm(empty); setNameQuery(""); }} className="rounded-md py-1 px-3 text-sm text-slate-700 border border-gray-200 bg-red">
+                    <Eraser className="w-5 h-5 text-white-400" /> مسح
                   </Button>
                 </div>
               </CardContent>
