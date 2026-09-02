@@ -219,6 +219,12 @@ align-items: center !important;     /* توسيط عمودي للعنصر الد
     .report-letterhead-block { height: 34mm; min-height: 34mm; max-height: 34mm; }
   }
   .report-letterhead-row { page-break-after: avoid; break-after: avoid; }
+  .doc-title-row { page-break-after: avoid; break-after: avoid; }
+  .doc-title-row td.doc-title-cell {
+    border: none !important;
+    background: #fff !important;
+    padding: 2px 0 6px !important;
+  }
   .report-letterhead-row .report-letterhead-cell {
     height: 30mm !important;
     min-height: 30mm !important;
@@ -278,7 +284,18 @@ export function buildTableHtml(opts: {
     ].filter(Boolean).join(" ");
   };
 
-  const head = `${reportLetterheadRowHtml(columns.length + 1)}<tr><th class="idx numeric-cell">م</th>${columns
+  const reportDateLabel =
+    formatReportDate(reportDate) || new Date().toLocaleDateString("ar-EG-u-nu-latn");
+  const sub =
+    subtitle ??
+    `المجلس اليمني للاختصاصات الطبية - صعدة • تاريخ التقرير: ${reportDateLabel} • عدد السجلات: ${rows.length}`;
+
+  const titleRow = `<tr class="doc-title-row"><td colspan="${columns.length + 1}" class="doc-title-cell">
+    <h1>${escapeHtml(title)}</h1>
+    <div class="sub">${escapeHtml(sub)}</div>
+  </td></tr>`;
+
+  const head = `${reportLetterheadRowHtml(columns.length + 1)}${titleRow}<tr><th class="idx numeric-cell">م</th>${columns
     .map((c) => `<th class="${getCellClass(c)}"><span class="pdf-cell-text">${escapeHtml(c.label)}</span></th>`)
     .join("")}</tr>`;
 
@@ -314,15 +331,7 @@ export function buildTableHtml(opts: {
     )
     .join("");
 
-  const reportDateLabel =
-    formatReportDate(reportDate) || new Date().toLocaleDateString("ar-EG-u-nu-latn");
-  const sub =
-    subtitle ??
-    `المجلس اليمني للاختصاصات الطبية - صعدة • تاريخ التقرير: ${reportDateLabel} • عدد السجلات: ${rows.length}`;
-
   return `
-    <h1>${escapeHtml(title)}</h1>
-    <div class="sub">${escapeHtml(sub)}</div>
     <table><thead>${head}</thead><tbody>${body}${totalRow}</tbody></table>
   `;
 }
