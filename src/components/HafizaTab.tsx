@@ -359,31 +359,33 @@ export default function HafizaTab() {
           </div>
 
           {/* TABLE CARD */}
-          <Card className="p-0 bg-blue rounded-2xl border border-1-black shadow-sm border-l-4 border-[#2e6b8a]">
-            <CardHeader className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between p-2 sm:p-3 gap-2 border-b border-gray-100">
-              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                <div className="p-2 rounded-lg bg-[#2e6b8a]/10 text-gold">
+
+<Card className="p-0 bg-[#FDCA40] rounded-2xl border border-1-black shadow-sm">
+<CardHeader className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between p-2 sm:p-3 gap-2 border border-1-black">
+
+<div className="flex items-center gap-2 sm:gap-3 min-w-0">
+ <div className="p-2 rounded-lg bg-[#2e6b8a]/10 text-gold">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
-                  <CardTitle className="text-xl font-bold text-gold">كشف القيود</CardTitle>
-                  <CardDescription className="text-xm text-slate-600">عرض وتدقيق كافة حوافظ التوريد</CardDescription>
-                </div>
-                <Badge className="mr-4 bg-[#b8d4e8] text-[#1a1206]">{filtered.length} سجل</Badge>
+                  <CardTitle className="text-xl font-bolder text-black">كشف القيود</CardTitle>
+                  <CardDescription className="text-xm text-blue">عرض وتدقيق كافة حوافظ التوريد</CardDescription>
+ </div>
+ <Badge className="mr-4 bg-[#b8d4e8] text-[#1a1206]">{filtered.length} سجل</Badge>
               </div>
 
-              <div className="grid grid-cols-2 sm:flex items-center justify-end gap-1 sm:gap-2 w-full sm:w-auto">
-                <div className="col-span-2 sm:col-span-1 relative min-w-0">
-                  <input
-                    value={filters.name || ""}
+<div className="grid grid-cols-2 sm:flex items-center justify-end gap-1 sm:gap-2 w-full sm:w-auto">
+ 
+ <div className="col-span-2 sm:col-span-1 relative min-w-0">
+ <input value={filters.name || ""}
                     onChange={(e) => setFilter("name", e.target.value)}
                     placeholder="بحث بالاسم..."
-                    className="w-full sm:w-40 px-1.5 py-1 rounded-full border border-gray-200 text-xs sm:text-xs bg-white text-slate-800"
+                    className="w-full sm:w-40 px-1.5 py-1 rounded-full border border-1-black text-xs sm:text-xs bg-white text-slate-800"
                   />
-                  <Search className="w-3.5 h-3.5 absolute left-2 top-1.5 text-slate-400" />
+ <Search className="w-3.5 h-3.5 absolute left-2 top-1.5 text-slate-400 border border-1-black" />
                 </div>
 
-                <Button size="sm" onClick={handleCopyAmountsToNotify} className="min-w-0 justify-center bg-emerald-500 text-white rounded-full px-1.5 sm:px-2 py-1 text-xs sm:text-xs">
+ <Button size="sm" onClick={handleCopyAmountsToNotify} className="min-w-0 justify-center bg-emerald-500 text-white rounded-full px-1.5 sm:px-2 py-1 text-xs sm:text-xs">
                   <CheckSquare className="w-4 h-4" />
                 </Button>
 
@@ -393,18 +395,22 @@ export default function HafizaTab() {
                   </Button>
                 )}
 
-                <TabActions title="حوافظ التوريد" rows={hafiza} columns={COLS} fileName="حوافظ-التوريد" pdfLayout="wide-centered" className="col-span-2 w-full !grid !grid-cols-2 sm:!flex !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-1 [&>button]:py-1 sm:[&>button]:px-2 sm:[&>button]:py-1 [&>button]:text-xs sm:[&>button]:text-xs" />
+<TabActions title="حوافظ التوريد" rows={hafiza} columns={COLS} fileName="حوافظ-التوريد"
+  pdfLayout="wide-centered" className="col-span-2 w-full !grid !grid-cols-2 sm:!flex !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-1 [&>button]:py-1 sm:[&>button]:px-2 sm:[&>button]:py-1 [&>button]:text-xs sm:[&>button]:text-xs" />
               </div>
             </CardHeader>
 
             <CardContent className="p-0">
               <div className="w-full overflow-auto max-h-[72vh] overscroll-x-contain rounded-xl">
-                <Table className="min-w-max table-auto text-xm sm:text-base font-semibold">
-                  <TableHeader className="bg-[#2e6b8a] sticky top-0 z-10 [&_th]:text-white">
+
+<Table className="min-w-max table-auto text-xm sm:text-base font-semibold">
+
+<TableHeader className="bg-[#CDD5AE] sticky top-0 z-10 [&_th]:text-black">
                     <TableRow>
-                      <TableHead className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center text-white">#</TableHead>
+ 
+ <TableHead className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xm xm:!text-base text-center text-white">#</TableHead>
                       {COLS.map((c) => (
-                        <TableHead key={c.key} className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center">
+<TableHead key={c.key} className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center">
                           <div className="flex flex-col items-center">
                             <button onClick={() => toggleSort(c.key)} className="flex items-center gap-1 whitespace-nowrap text-slate-800 text-xs sm:text-sm">
                               <span className="font-semibold">{c.label}</span>
@@ -416,13 +422,14 @@ export default function HafizaTab() {
                                 value={filters[c.key] || ""}
                                 onChange={(e) => setFilter(c.key, e.target.value)}
                                 placeholder="فلتر..."
-                        className="w-20 sm:w-24 max-w-none whitespace-nowrap bg-white px-1 py-1 text-xs sm:text-xs text-center text-slate-800 border border-gray-200 rounded-full"
+
+className="w-20 sm:w-24 max-w-none whitespace-nowrap bg-white px-1 py-1 text-xs sm:text-xs text-center text-slate-800 border border-gray-200 rounded-full"
                               />
                             </div>
                           </div>
                         </TableHead>
                       ))}
-                      <TableHead className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center text-white">إجراءات</TableHead>
+ <TableHead className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center text-white">إجراءات</TableHead>
                     </TableRow>
                   </TableHeader>
 
@@ -452,8 +459,9 @@ export default function HafizaTab() {
                                   className="h-8 sm:h-9 text-xs sm:text-sm bg-white text-slate-900 border-2 border-amber-400 text-center rounded-md"
                                 />
                               ) : (
-                                <span className={`${isMoney ? "numeric-cell font-mono font-bold text-black-700 px-1.5 py-1 sm:px-2 rounded-md bg-sky-50 inline-block text-xs sm:text-sm" : isDate ? "date-cell text-slate-800 font-medium text-xs sm:text-sm whitespace-nowrap" : "text-slate-800 font-medium text-xs sm:text-sm whitespace-nowrap"}`}>
-                                  {isMoney ? fmt(Number(val) || 0) : String(val ?? "")}
+ <span className={`${isMoney ? "numeric-cell font-mono font-bold text-black px-1.5 py-1 sm:px-2 rounded-md bg-sky-50 inline-block text-xs sm:text-sm" : isDate ? "date-cell text-slate-800 font-medium text-xs sm:text-sm whitespace-nowrap" : "text-black font-bold text-xs sm:text-sm whitespace-nowrap"}`}>
+
+{isMoney ? fmt(Number(val) || 0) : String(val ?? "")}
                                 </span>
                               )}
                             </TableCell>
@@ -496,7 +504,7 @@ export default function HafizaTab() {
                     <TableFooter>
                       <TableRow>
                         <TableCell className="text-center font-bold text-slate-600">∑</TableCell>
-                        <TableCell className="text-center font-bold text-slate-800">إجمالي الصفحة</TableCell>
+                        <TableCell className="text-center font-bold text-gold">إجمالي الصفحة</TableCell>
                         <TableCell colSpan={5}></TableCell>
                         <TableCell className="text-center numeric-cell font-mono font-bold text-amber-700 text-xs sm:text-sm">
                           {fmt(totalHafizaAmount)}
@@ -537,7 +545,7 @@ function FieldDark({
 }) {
  return (
   <div className="w-full">
-      <label className="text-xs font-medium text-slate-700 mb-1 block">{label}</label>
+      <label className="text-xm font-bold text-black mb-1 block">{label}</label>
       <div className="relative">
         {icon && (
           <div className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white p-1 rounded-md border border-gray-100">
@@ -548,7 +556,7 @@ function FieldDark({
           type={type}
           value={v}
           onChange={(e) => on(e.target.value)}
-          className={`${icon ? "pr-10" : "px-2"} bg-white text-slate-900 border border-gray-200 rounded-md h-8 text-sm ${className}`}
+          className={`${icon ? "pr-10" : "px-2"} bg-white text-slate-900 border border-1-black rounded-md h-8 text-sm ${className}`}
         />
       </div>
     </div>

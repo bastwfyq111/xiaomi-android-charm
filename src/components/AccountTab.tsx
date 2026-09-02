@@ -936,7 +936,7 @@ export default function AccountsTab() {
 
         <div className="p-1.5 sm:p-3">
           <div className="overflow-x-auto overflow-y-auto max-h-[72vh] relative rounded-xl">
-            <table className="min-w-max table-auto text-sm sm:text-base text-center font-semibold border-collapse border-2 border-black">
+            <table className="min-w-max table-auto text-xm xm:text-base text-center font-semibold border-collapse border-2 border-black">
               <thead className="sticky top-0 z-20 text-[#171412] font-black text-[16px] bg-[#E7E2D8]">
                 <tr>
                   <th className="border border-black text-center w-10 bg-[#E7E2D8] sticky top-0 z-20 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
@@ -989,7 +989,7 @@ export default function AccountsTab() {
                 ) : (
                   filteredWithBalance.map((acc, index) => (
                     <tr key={acc.id} className="odd:bg-white even:bg-[#FAF9F6] hover:bg-[#F0EBDE] transition-colors group">
-                      <td className="border border-black text-center font-mono tabular-nums numeric-cell !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                      <td className="border border-black text-center font-mono tabular-nums numeric-cell !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xm sm:!text-base whitespace-nowrap">
                         {index + 1}
                       </td>
                       <td className="border border-black font-mono tabular-nums numeric-cell text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
