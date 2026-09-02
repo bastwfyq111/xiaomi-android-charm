@@ -267,7 +267,7 @@ export default function HafizaTab() {
         <main className="lg:col-span-12 space-y-3">
           {/* FORM (قابلة للطي) */}
  <div className={`transition-all duration-300 ${showForm ? "max-h-[1400px] opacity-100" : "max-h-0 opacity-0 overflow-hidden"}`}>
-            <Card className="p-3 bg-[oklch(0.20_0.03_240)] rounded-2xl border-2 border-black shadow-md border-l-4 border-l-black">
+            <Card className="p-3  bg-gradient-to-b from-sky-50/60 to-white shadow-lg border border-sky-100 rounded-2xl">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1">
                   <h3 className="text-xl font-bold flex items-center gap-2 text-white">
