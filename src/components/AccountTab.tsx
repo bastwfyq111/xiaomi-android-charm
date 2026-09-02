@@ -642,7 +642,7 @@ export default function AccountsTab() {
             سجل الحركات المالية المُرحّلة
           </p>
         </div>
-        <div className="hidden sm:flex items-center gap-2 px-3.5 py-2 bg-white rounded-xl border border-black/10 shadow-sm">
+        <div className="hidden sm:flex items-center gap-2 px-3.5 py-2 bg-[#F5EBE1] rounded-xl border border-black shadow-sm">
           <Landmark className="w-4 h-4 text-[#8B5CF6]" />
           <span className="text-sm text-[#6B655D] font-bold">عدد القيود</span>
           <span className="text-[#171412] font-mono text-base tabular-nums font-black">{accounts.length}</span>
@@ -657,14 +657,19 @@ export default function AccountsTab() {
       </div>
 
       {/* ===== التقارير الدورية ===== */}
-      <div className="accounts-print-hide w-full bg-white rounded-2xl overflow-hidden border border-black/10 shadow-sm">
-        <div className="bg-[#FAF9F6] px-5 py-4 flex flex-wrap justify-between items-center gap-4 border-b border-black/10">
-          <div>
-            <h2 className="text-sm sm:text-base font-black text-[#171412] tracking-wide">تقارير الحساب الدورية</h2>
-            <p className="text-xs text-[#6B655D] font-bold mt-1">اختر الربع أو النصف أو السنة ثم صدّر التقرير</p>
+      <div className="accounts-print-hide w-full bg-[#FAEDCD] rounded-2xl overflow-hidden border border-black shadow-sm">
+
+<div className="bg-[#BDE0FE] px-5 py-4 flex flex-wrap justify-between items-center gap-4 border-b border-black">
+
+<div>
+  <h2 className="text-xl sm:text-base font-black text-black tracking-wide">
+تقارير الحساب الدورية</h2>
+ <p className="text-xm text-[#6B655D] font-bold mt-1">اختر الربع أو النصف أو السنة ثم صدّر التقرير</p>
           </div>
-          <div className="flex flex-wrap items-end gap-2">
-            <label className="text-xs font-black text-[#6B655D]">
+ 
+ <div className="flex flex-wrap items-end gap-2">
+
+<label className="text-xm font-black text-black">
               نوع التقرير
               <select
                 value={accountReportMode}
