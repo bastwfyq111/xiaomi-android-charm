@@ -657,7 +657,7 @@ export default function AccountsTab() {
       </div>
 
       {/* ===== التقارير الدورية ===== */}
-      <div className="accounts-print-hide w-full bg-[#FAEDCD] rounded-2xl overflow-hidden border border-black shadow-sm">
+ <div className="accounts-print-hide w-full bg-[#D3A373] rounded-2xl overflow-hidden border border-black shadow-sm">
 
 <div className="bg-[#BDE0FE] px-5 py-4 flex flex-wrap justify-between items-center gap-4 border-b border-black">
 
@@ -732,10 +732,12 @@ export default function AccountsTab() {
       </div>
 
       {/* ===== لوحة القيد اليدوي والمطابقة ===== */}
-      <div className="accounts-print-hide w-full bg-white rounded-2xl overflow-hidden border border-black/10 shadow-sm">
-        <div className="bg-[#FAF9F6] px-5 py-4 flex flex-wrap justify-between items-center gap-4 border-b border-black/10">
+      <div className="accounts-print-hide w-full bg-[#0077B6] rounded-2xl overflow-hidden border border-black shadow-sm">
+
+<div className="bg-[#90E0EF] px-5 py-4 flex flex-wrap justify-between items-center gap-4 border border-1-black">
           <div className="flex items-center gap-2.5">
-            <div className="p-1.5 bg-[#2563AC]/10 rounded-lg text-[#2563AC]">
+
+ <div className="p-1.5 bg-[#2563AC]/10 rounded-lg text-[#2563AC]">
               <Plus className="w-4 h-4" />
             </div>
             <h2 className="text-sm sm:text-base font-black text-[#171412] tracking-wide">
