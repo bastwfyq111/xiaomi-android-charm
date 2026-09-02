@@ -191,7 +191,7 @@ function AccountDropdownCell({
             <div className="mx-auto mt-2 h-1.5 w-12 rounded-full bg-slate-200 md:hidden" />
             <div
               className={`mt-2 flex items-center gap-1.5 px-2.5 py-2.5 md:mt-0 md:gap-2 md:px-3 md:py-3
-              ${isDebit ? "bg-gradient-to-l from-emerald-700 to-emerald-500" : "bg-gradient-to-l from-rose-700 to-rose-500"}`}
+              ${isDebit ? "bg-gradient-to-l from-sky-700 to-sky-500" : "bg-gradient-to-l from-rose-700 to-rose-500"}`}
             >
               <Search className="h-4 w-4 shrink-0 text-white" />
               <input
@@ -608,7 +608,7 @@ export default function JournalTab() {
           {/* شريط التوازن + الحفظ */}
           <div
             className={`sticky bottom-2 z-30 rounded-2xl border p-2 sm:p-3 shadow-lg backdrop-blur
-              ${isBalanced ? "border-emerald-300 bg-emerald-50/95" : "border-amber-300 bg-amber-50/95"}`}
+              ${isBalanced ? "border-emerald-300 bg-emerald-50/95" : "border-amber-300 bg-sky-50/95"}`}
           >
             <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 sm:gap-3">
               <div className="min-w-0">
@@ -651,7 +651,7 @@ export default function JournalTab() {
                 onClick={handleSave}
                 title={isBalanced ? "" : "يجب تساوي إجمالي المدين والدائن"}
                 className={`min-w-0 flex min-h-[40px] flex-1 items-center justify-center gap-1.5 rounded-xl px-2 sm:min-h-[48px] sm:gap-2 sm:px-4 text-xs sm:text-sm font-bold text-white shadow-sm transition-all active:scale-[0.99]
-                  ${isBalanced ? "bg-gradient-to-l from-sky-700 to-emerald-600 hover:brightness-110" : "bg-slate-300 text-slate-600"}`}
+                  ${isBalanced ? "bg-gradient-to-l from-sky-700 to-sky-600 hover:brightness-110" : "bg-slate-300 text-slate-600"}`}
               >
                 <Save className="h-4 w-4" />
                 {editingId ? "تحديث القيد" : "حفظ القيد المركب"}

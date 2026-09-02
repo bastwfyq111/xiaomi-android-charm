@@ -525,7 +525,7 @@ export default function InstallmentsTab() {
   } | null>(null);
 
   const [condFormatModal, setCondFormatModal] = useState(false);
-  const [condFormatParams, setCondFormatParams] = useState({ text: "", color: "bg-yellow-100" });
+  const [condFormatParams, setCondFormatParams] = useState({ text: "", color: "bg-sky-100" });
   const condFormatRules = (installmentConditionalRules2026 || []) as Array<{
     text: string;
     color: string;
@@ -614,7 +614,7 @@ export default function InstallmentsTab() {
       ...condFormatRules,
       { ...condFormatParams, text: condFormatParams.text.trim() },
     ]);
-    setCondFormatParams({ text: "", color: "bg-yellow-100" });
+    setCondFormatParams({ text: "", color: "bg-sky-100" });
     toast.success("تمت إضافة قاعدة التنسيق");
   };
 
@@ -1988,7 +1988,7 @@ const installments2026WebActions: WebActionItem[] = [
       
 {/* ========== واجهة جدول 2025 ========== */}
       <div className="w-full bg-gradient-to-b from-sky-50/60 to-white shadow-lg border border-sky-100 rounded-2xl overflow-hidden">
-        <div className="bg-gradient-to-l from-sky-800 via-sky-600 to-emerald-600 px-2 sm:px-6 py-2.5 sm:py-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center flex-wrap gap-2">
+        <div className="bg-gradient-to-l from-sky-800 via-sky-600 to-sky-600 px-2 sm:px-6 py-2.5 sm:py-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center flex-wrap gap-2">
           <div className="min-w-0">
             <h2 className="text-base sm:text-base sm:text-lg font-bold text-white">
 
@@ -2191,7 +2191,7 @@ const installments2026WebActions: WebActionItem[] = [
                                 setEditRowData(r);
                                 setEditRowModal({ year: 2025, row: r, index: originalIndex });
                               }}
-                              className="p-1 bg-amber-50 text-amber-600 rounded border border-amber-200 hover:bg-amber-500 hover:text-white transition-colors"
+                              className="p-1 bg-sky-50 text-amber-600 rounded border border-amber-200 hover:bg-amber-500 hover:text-white transition-colors"
                               title="تعديل الصف"
                             >
                               <Edit className="w-3.5 h-3.5" />
@@ -2246,7 +2246,7 @@ const installments2026WebActions: WebActionItem[] = [
       </div>
 {/* ========== واجهة جدول 2026 ========== */}
       <div className="w-full bg-gradient-to-b from-sky-50/60 to-white shadow-lg border border-sky-100 rounded-2xl overflow-hidden">
-        <div className="bg-gradient-to-l from-sky-800 via-sky-600 to-emerald-600 px-2 sm:px-6 py-2.5 sm:py-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center flex-wrap gap-2">
+        <div className="bg-gradient-to-l from-sky-800 via-sky-600 to-sky-600 px-2 sm:px-6 py-2.5 sm:py-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center flex-wrap gap-2">
           <div className="min-w-0">
             <h2 className="text-base sm:text-lg sm:text-xl font-extrabold text-white">
               📊 سجل أقساط العام الحالي 2026
@@ -2369,11 +2369,11 @@ const installments2026WebActions: WebActionItem[] = [
           <div className="overflow-auto max-h-auto rounded-lg border border-slate-200 shadow-sm relative">
             <table className="installments-table min-w-full w-max table-auto text-lg font-extrabold text-black">
               {/* ترويسة الجدول: لون ذهبي لامع مع خط أسود غامق */}
-              <thead className="bg-gradient-to-b from-yellow-300 via-yellow-400 to-yellow-500 font-extrabold border-b-2 border-yellow-700 text-black sticky top-0 z-20 shadow-md">
+              <thead className="bg-gradient-to-b from-sky-300 via-sky-400 to-sky-500 font-extrabold border-b-2 border-yellow-700 text-black sticky top-0 z-20 shadow-md">
                 <tr>
-                  <th className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30">#</th>
+                  <th className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black border-l border-sky-700/30">#</th>
                   <th
-                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-sky-700/30"
                     onClick={() => handleSort2026("name")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -2381,7 +2381,7 @@ const installments2026WebActions: WebActionItem[] = [
                     </div>
                   </th>
                   <th
-                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-sky-700/30"
                     onClick={() => handleSort2026("batch")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -2389,7 +2389,7 @@ const installments2026WebActions: WebActionItem[] = [
                     </div>
                   </th>
                   <th
-                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-sky-700/30"
                     onClick={() => handleSort2026("specialty")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -2397,7 +2397,7 @@ const installments2026WebActions: WebActionItem[] = [
                     </div>
                   </th>
                   <th
-                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-sky-700/30"
                     onClick={() => handleSort2026("prevDue")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -2405,7 +2405,7 @@ const installments2026WebActions: WebActionItem[] = [
                     </div>
                   </th>
                   <th
-                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-sky-700/30"
                     onClick={() => handleSort2026("fees")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -2415,7 +2415,7 @@ const installments2026WebActions: WebActionItem[] = [
                   {MONTHS_2026.map((m) => (
                     <th
                       key={m}
-                      className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                      className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black border-l border-sky-700/30"
                     >
                       {m.trim()}
                     </th>
@@ -2423,7 +2423,7 @@ const installments2026WebActions: WebActionItem[] = [
                   {extraCols2026.map((col) => (
                     <th
                       key={col.name}
-                      className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                      className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black border-l border-sky-700/30"
                     >
                       <div className="flex items-center justify-center gap-1">
                         {col.name}
@@ -2446,7 +2446,7 @@ const installments2026WebActions: WebActionItem[] = [
                     </th>
                   ))}
                   <th
-                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-sky-700/30"
                     onClick={() => handleSort2026("totalPaid")}
                   >
                     <div className="flex items-center justify-center gap-1">
@@ -2454,14 +2454,14 @@ const installments2026WebActions: WebActionItem[] = [
                     </div>
                   </th>
                   <th
-                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30"
+                    className="text-center w-auto whitespace-nowrap cursor-pointer hover:bg-black/5 transition-colors !px-3 !py-3 !text-lg text-black border-l border-sky-700/30"
                     onClick={() => handleSort2026("remaining")}
                   >
                     <div className="flex items-center justify-center gap-1">
                       الرصيد المتبقي <SortIcon sortConfig={sortConfig2026} columnKey="remaining" />
                     </div>
                   </th>
-                  <th className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black border-l border-yellow-600/30">حالة</th>
+                  <th className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black border-l border-sky-700/30">حالة</th>
                   <th className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black">إجراءات</th>
                 </tr>
               </thead>
@@ -2521,7 +2521,7 @@ const installments2026WebActions: WebActionItem[] = [
                               placeholder="—"
                             />
                           </td>
-                          <td className="text-center w-auto numeric-cell font-mono text-black font-extrabold bg-amber-50/40 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
+                          <td className="text-center w-auto numeric-cell font-mono text-black font-extrabold bg-sky-50/40 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
                             <input
                               type="number"
                               step="0.01"
@@ -2622,7 +2622,7 @@ const installments2026WebActions: WebActionItem[] = [
                                 setEditRowData(r);
                                 setEditRowModal({ year: 2026, row: r, index: originalIndex });
                               }}
-                              className="p-1.5 bg-amber-50 text-amber-600 rounded border border-amber-200 hover:bg-amber-500 hover:text-white transition-colors"
+                              className="p-1.5 bg-sky-50 text-amber-600 rounded border border-amber-200 hover:bg-amber-500 hover:text-white transition-colors"
                               title="تعديل الصف"
                             >
                               <Edit className="w-5 h-5" />
@@ -2652,21 +2652,21 @@ const installments2026WebActions: WebActionItem[] = [
                         </tr>
                       );
                     })}
-                    <tr className="border-t-2 border-yellow-600 bg-yellow-100 font-extrabold">
-                      <td className="text-center w-auto text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300" colSpan={4}>
+                    <tr className="border-t-2 border-sky-700 bg-sky-100 font-extrabold">
+                      <td className="text-center w-auto text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-sky-300" colSpan={4}>
                         الإجماليات
                       </td>
-                      <td className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300">
+                      <td className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-sky-300">
                         {fmt(Number(totals2026.prevDue || 0))}
                       </td>
-                      <td className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300">
+                      <td className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-sky-300">
                         {fmt(Number(totals2026.fees || 0))}
                       </td>
 
                       {MONTHS_2026.map((m) => (
                         <td
                           key={m}
-                          className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300"
+                          className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-sky-300"
                         >
                           {totals2026.months[m] > 0 ? fmt(Number(totals2026.months[m])) : "—"}
                         </td>
@@ -2674,18 +2674,18 @@ const installments2026WebActions: WebActionItem[] = [
                       {extraCols2026.map((col) => (
                         <td
                           key={col.name}
-                          className="text-center w-auto text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300"
+                          className="text-center w-auto text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-sky-300"
                         >
                           —
                         </td>
                       ))}
-                      <td className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300">
+                      <td className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-sky-300">
                         {fmt(Number(totals2026.paid || 0))}
                       </td>
-                      <td className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300">
+                      <td className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-sky-300">
                         {fmt(Number(totals2026.remaining || 0))}
                       </td>
-                      <td className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg border-l border-yellow-300"></td>
+                      <td className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg border-l border-sky-300"></td>
                       <td className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg"></td>
                     </tr>
                   </>
@@ -2728,7 +2728,7 @@ const installments2026WebActions: WebActionItem[] = [
             </label>
             <div className="flex gap-2">
               {[
-                { name: "أصفر", class: "bg-yellow-100 hover:bg-yellow-100" },
+                { name: "أصفر", class: "bg-sky-100 hover:bg-sky-100" },
                 { name: "أخضر", class: "bg-green-100 hover:bg-green-100" },
                 { name: "أحمر", class: "bg-red-100 hover:bg-red-100" },
                 { name: "أزرق", class: "bg-blue-100 hover:bg-blue-100" },
@@ -2771,7 +2771,7 @@ const installments2026WebActions: WebActionItem[] = [
           <div className="flex justify-between items-center pt-3 border-t mt-4">
             <button
               onClick={() => {
-                setCondFormatParams({ text: "", color: "bg-yellow-100" });
+                setCondFormatParams({ text: "", color: "bg-sky-100" });
                 setInstallmentConditionalRules2026([]);
                 setCondFormatModal(false);
               }}

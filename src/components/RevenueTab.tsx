@@ -465,7 +465,7 @@ export default function RevenueTab() {
               })}
 
               {/* السطر الختامي: المجموع العام للموارد */}
-              <tr className="bg-gradient-to-r from-sky-50 to-emerald-50 font-black text-sky-950 border-t-4 border-black">
+              <tr className="bg-gradient-to-r from-sky-50 to-sky-50 font-black text-sky-950 border-t-4 border-black">
                 <td
                   colSpan={5}
                   className="border border-black text-right font-cairo tracking-wide text-sky-900 whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base"

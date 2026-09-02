@@ -75,7 +75,7 @@ const Segmented = <T extends string | number>({
         onClick={() => onChange(o.value)}
         className={`flex-1 min-h-[38px] px-2 rounded-lg text-xs font-bold transition-all ${
           value === o.value
-            ? "bg-gradient-to-l from-sky-600 to-emerald-600 text-white shadow"
+            ? "bg-gradient-to-l from-sky-600 to-sky-600 text-white shadow"
             : "text-black hover:bg-white"
         }`}
       >
@@ -151,7 +151,7 @@ export default function PrintSettingsModal({
         className="w-full sm:max-w-lg bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl max-h-[92vh] overflow-y-auto"
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
-        <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-3 bg-gradient-to-l from-sky-700 via-sky-600 to-emerald-600 text-white">
+        <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-3 bg-gradient-to-l from-sky-700 via-sky-600 to-sky-600 text-white">
           <div className="min-w-0">
             <h3 className="text-sm sm:text-base font-extrabold truncate">إعدادات الطباعة والتوسيط التلقائي</h3>
             <p className="text-[11px] text-sky-100">تقرير أقساط العام {year}م</p>
@@ -294,7 +294,7 @@ export default function PrintSettingsModal({
           </button>
           <button
             onClick={handlePrint}
-            className="flex-1 min-h-[48px] rounded-xl bg-gradient-to-l from-sky-700 to-emerald-600 text-white text-sm font-extrabold shadow-lg hover:brightness-110 active:scale-[0.99] transition-all flex items-center justify-center gap-2"
+            className="flex-1 min-h-[48px] rounded-xl bg-gradient-to-l from-sky-700 to-sky-600 text-white text-sm font-extrabold shadow-lg hover:brightness-110 active:scale-[0.99] transition-all flex items-center justify-center gap-2"
           >
             <Printer className="w-4 h-4" /> طباعة وتصدير PDF
           </button>

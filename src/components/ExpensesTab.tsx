@@ -222,7 +222,7 @@ const rowClass = (r: Row) => {
     case "header":
       return "bg-sky-700 text-white font-bold";
     case "fasl":
-      return "bg-yellow-100 text-amber-900 font-semibold";
+      return "bg-sky-100 text-amber-900 font-semibold";
     case "band":
       return "bg-sky-50 text-slate-800 font-medium";
     case "type":
@@ -249,7 +249,7 @@ const fmt = (n: number) => (n === 0 ? "0" : n.toLocaleString("en-US"));
 
 // ===== ثوابت ألوان الأعمدة =====
 const CUR_H = "bg-amber-300 text-amber-900"; 
-const CUR_C = "bg-amber-50"; 
+const CUR_C = "bg-sky-50"; 
 const PREV_H = "bg-sky-300 text-sky-900"; 
 const PREV_C = "bg-sky-50"; 
 const TOT_H = "bg-emerald-200 text-black-900"; 
@@ -789,13 +789,13 @@ export default function ExpensesTab() {
                 #expenses-report .bg-gradient-to-r { background: linear-gradient(90deg, #0f766e, #047857) !important; color: #fff !important; padding: 9px !important; text-align: center; }
                 #expenses-report .bg-sky-800 { background: #115e59 !important; color: #fff !important; padding: 8px !important; text-align: center; }
                 #expenses-report .bg-sky-700 { background: #0f766e !important; color: #fff !important; }
-                #expenses-report .bg-yellow-100 { background: #fef3c7 !important; color: #78350f !important; }
+                #expenses-report .bg-sky-100 { background: #fef3c7 !important; color: #78350f !important; }
                 #expenses-report .bg-sky-50 { background: #f0f9ff !important; color: #1e293b !important; }
                 #expenses-report .bg-slate-50 { background: #f8fafc !important; color: #000 !important; }
                 #expenses-report .bg-white { background: #fff !important; color: #000 !important; }
                 #expenses-report .bg-slate-200 { background: #e2e8f0 !important; color: #000 !important; }
                 #expenses-report .bg-amber-300 { background: #fcd34d !important; color: #78350f !important; }
-                #expenses-report .bg-amber-50 { background: #fffbeb !important; color: #000 !important; }
+                #expenses-report .bg-sky-50 { background: #fffbeb !important; color: #000 !important; }
                 #expenses-report .bg-sky-300 { background: #7dd3fc !important; color: #0c4a6e !important; }
                 #expenses-report .bg-emerald-200 { background: #a7f3d0 !important; color: #064e3b !important; }
                 #expenses-report .bg-emerald-50 { background: #ecfdf5 !important; color: #000 !important; }

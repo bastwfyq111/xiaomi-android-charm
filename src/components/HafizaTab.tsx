@@ -428,7 +428,7 @@ export default function HafizaTab() {
 
                   <TableBody>
                     {filtered.map((row, idx) => (
-                      <TableRow key={row.id} className="hover:bg-amber-50 transition-colors">
+                      <TableRow key={row.id} className="hover:bg-sky-50 transition-colors">
                         <TableCell className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center text-slate-600">{idx + 1}</TableCell>
                         {COLS.map((c) => {
                           const isEditing = activeCell?.rowId === row.id && activeCell?.colKey === c.key;
@@ -439,7 +439,7 @@ export default function HafizaTab() {
                           return (
                             <TableCell
                               key={c.key}
-                              className={`whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center align-middle ${isMoney ? "numeric-cell" : ""} ${isDate ? "date-cell" : ""} ${isEditing ? "bg-amber-50" : "cursor-pointer"}`}
+                              className={`whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center align-middle ${isMoney ? "numeric-cell" : ""} ${isDate ? "date-cell" : ""} ${isEditing ? "bg-sky-50" : "cursor-pointer"}`}
                               onClick={() => !isEditing && handleCellClick(row.id, c.key, val)}
                             >
                               {isEditing ? (
@@ -452,7 +452,7 @@ export default function HafizaTab() {
                                   className="h-8 sm:h-9 text-xs sm:text-sm bg-white text-slate-900 border-2 border-amber-400 text-center rounded-md"
                                 />
                               ) : (
-                                <span className={`${isMoney ? "numeric-cell font-mono font-bold text-amber-700 px-1.5 py-1 sm:px-2 rounded-md bg-amber-50 inline-block text-xs sm:text-sm" : isDate ? "date-cell text-slate-800 font-medium text-xs sm:text-sm whitespace-nowrap" : "text-slate-800 font-medium text-xs sm:text-sm whitespace-nowrap"}`}>
+                                <span className={`${isMoney ? "numeric-cell font-mono font-bold text-amber-700 px-1.5 py-1 sm:px-2 rounded-md bg-sky-50 inline-block text-xs sm:text-sm" : isDate ? "date-cell text-slate-800 font-medium text-xs sm:text-sm whitespace-nowrap" : "text-slate-800 font-medium text-xs sm:text-sm whitespace-nowrap"}`}>
                                   {isMoney ? fmt(Number(val) || 0) : String(val ?? "")}
                                 </span>
                               )}
@@ -481,7 +481,7 @@ export default function HafizaTab() {
                       <TableRow>
                         <TableCell colSpan={COLS.length + 2} className="h-36 text-center">
                           <div className="flex flex-col items-center justify-center gap-2 text-slate-600">
-                            <div className="p-2 rounded-full bg-amber-50">
+                            <div className="p-2 rounded-full bg-sky-50">
                               <Search className="w-6 h-6 opacity-60 text-amber-500" />
                             </div>
                             <div className="font-bold text-slate-700">لا توجد سجلات مطابقة</div>
@@ -561,7 +561,7 @@ function Stat({ label, value, icon }: { label: string;value: string;icon: React.
       <div className="text-xs text-slate-600">{label}</div>
       <div className="flex items-center gap-2">
         <div className="text-sm font-semibold text-slate-800">{value}</div>
-        <div className="p-1 rounded-md bg-amber-50">{icon}</div>
+        <div className="p-1 rounded-md bg-sky-50">{icon}</div>
       </div>
     </div>
  );

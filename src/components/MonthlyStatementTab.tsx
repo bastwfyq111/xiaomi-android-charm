@@ -429,7 +429,7 @@ export default function MonthlyStatementTab() {
                 </th>
                 <th
                   colSpan={2}
-                  className="border border-black text-center bg-amber-50 text-amber-900 font-extrabold !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-normal"
+                  className="border border-black text-center bg-sky-50 text-amber-900 font-extrabold !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-normal"
                 >
    الرصيد الختامي في {year}/{endMonth}/{lastDayOfMonth(year, endMonth)}م
                 </th>
@@ -453,10 +453,10 @@ export default function MonthlyStatementTab() {
                 <th className="border border-black text-center font-semibold bg-slate-50 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   مصروفات / دائن
                 </th>
-                <th className="border border-black text-center font-bold bg-amber-50/50 text-amber-950 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                <th className="border border-black text-center font-bold bg-sky-50/50 text-amber-950 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   أرصدة مدينة
                 </th>
-                <th className="border border-black text-center font-bold bg-amber-50/50 text-amber-950 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                <th className="border border-black text-center font-bold bg-sky-50/50 text-amber-950 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   أرصدة دائنة
                 </th>
               </tr>
