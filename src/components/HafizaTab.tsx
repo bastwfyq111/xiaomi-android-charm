@@ -270,8 +270,8 @@ export default function HafizaTab() {
             <Card className= "bg-[oklch(0.80_0.02_100)] border border-black shadow-xm rounded-xl p-3">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold flex items-center gap-2 text-white">
-                    <span className="p-2 rounded-md bg-white/10 text-white border border-black/30">
+                  <h3 className="text-xl font-bolder flex items-center gap-2 text-black">
+                    <span className="p-2 rounded-md bg-white/10 text-red border border-black/30">
                       <Plus className="w-4 h-4" />
                     </span>
                     إضافة حافظة
@@ -285,7 +285,7 @@ export default function HafizaTab() {
                 {/* compact grid: always two columns so each row shows 2 fields */}
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="text-xl font-semibold text-white mb-1 block">الاسم الكامل *</label>
+                    <label className="text-xl font-semibold text-black mb-1 block">الاسم الكامل *</label>
                     <div className="relative">
                       <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-slate-100 p-1 rounded-md border border-black z-10">
                         <User className="w-4 h-4 text-amber-600" />
@@ -318,14 +318,14 @@ export default function HafizaTab() {
                     )}
                   </div>
 
-                  <FieldDark label="الدفعة" icon={<Sparkles className="w-4 h-4 text-white-500" />} v={form.batch} on={(v) => setForm({ ...form, batch: v })} />
-                  <FieldDark label="التخصص" icon={<FileText className="w-4 h-4 text-white-600" />} v={form.specialty} on={(v) => setForm({ ...form, specialty: v })} />
-                  <FieldDark label="التاريخ" type="date" icon={<Calendar className="w-4 h-4 text-white-600" />} v={form.date} on={(v) => setForm({ ...form, date: v })} />
-                  <FieldDark label="رقم الحافظة" icon={<Hash className="w-4 h-4 text-white-600" />} v={form.hafizaNo} on={(v) => setForm({ ...form, hafizaNo: v })} />
-                  <FieldDark label="مبلغ الحافظة" type="number" icon={<Banknote className="w-4 h-4 text-white-600" />} v={form.hafizaAmount} on={(v) => setForm({ ...form, hafizaAmount: v })} />
+                  <FieldDark label="الدفعة" icon={<Sparkles className="w-4 h-4 text-black-500" />} v={form.batch} on={(v) => setForm({ ...form, batch: v })} />
+                  <FieldDark label="التخصص" icon={<FileText className="w-4 h-4 text-black-600" />} v={form.specialty} on={(v) => setForm({ ...form, specialty: v })} />
+                  <FieldDark label="التاريخ" type="date" icon={<Calendar className="w-4 h-4 text-black-600" />} v={form.date} on={(v) => setForm({ ...form, date: v })} />
+                  <FieldDark label="رقم الحافظة" icon={<Hash className="w-4 h-4 text-black-600" />} v={form.hafizaNo} on={(v) => setForm({ ...form, hafizaNo: v })} />
+                  <FieldDark label="مبلغ الحافظة" type="number" icon={<Banknote className="w-4 h-4 text-black-600" />} v={form.hafizaAmount} on={(v) => setForm({ ...form, hafizaAmount: v })} />
 
                   <div>
-                    <label className="text-xs font-semibold text-white -200 mb-1 block">البيان</label>
+                    <label className="text-xs font-semibold text-blac-600 mb-1 block">البيان</label>
                     <div className="relative">
                       <div className="absolute right-2 top-1/2 -translate-y-1/2 bg-slate-100 p-1 rounded-md border border-black/40 z-10">
                         <ScrollText className="w-4 h-4 text-white-600" />
@@ -339,18 +339,18 @@ export default function HafizaTab() {
                     </datalist>
                   </div>
 
-                  <FieldDark label="تاريخ التوريد" type="date" icon={<Calendar className="w-4 h-4 text-w-600" />} v={form.notifyDate} on={(v) => setForm({ ...form, notifyDate: v })} />
-                  <FieldDark label="رقم الاشعار" icon={<Hash className="w-4 h-4 text-sky-600" />} v={form.notifyNo} on={(v) => setForm({ ...form, notifyNo: v })} />
+                  <FieldDark label="تاريخ التوريد" type="date" icon={<Calendar className="w-4 h-4 text-black-600" />} v={form.notifyDate} on={(v) => setForm({ ...form, notifyDate: v })} />
+                  <FieldDark label="رقم الاشعار" icon={<Hash className="w-4 h-4 text-black-600" />} v={form.notifyNo} on={(v) => setForm({ ...form, notifyNo: v })} />
                   <FieldDark label="مبلغ التوريد" type="number" icon
-                  ={<CreditCard className="w-4 h-4 text-emerald-600" />} v={form.notifyAmount} on={(v) => setForm({ ...form, notifyAmount: v })} />
+                  ={<CreditCard className="w-4 h-4 text-black-600" />} v={form.notifyAmount} on={(v) => setForm({ ...form, notifyAmount: v })} />
 
                 </div>
 
                 <div className="mt-4 flex items-center gap-3 justify-end pt-2 border-t border-black/30">
-                  <Button onClick={submit} className="bg-emerald-600 hover:bg-emerald-500 text-white border-2 border-black rounded-lg py-2 px-5 text-base font-bold shadow-md flex items-center gap-1.5 transition-colors">
+                  <Button onClick={submit} className="bg-emerald-600 hover:bg-emerald-500 text-white border-1 border-black rounded-lg py-2 px-5 text-base font-bold shadow-md flex items-center gap-1.5 transition-colors">
                     <Save className="w-5 h-5" /> حفظ
                   </Button>
-                  <Button variant="outline" onClick={() => { setForm(empty); setNameQuery(""); }} className="rounded-lg py-2 px-5 text-base font-bold text-white bg-rose-700 hover:bg-rose-600 border-2 border-black shadow-md flex items-center gap-1.5 transition-colors">
+                  <Button variant="outline" onClick={() => { setForm(empty); setNameQuery(""); }} className="rounded-lg py-2 px-5 text-base font-bold text-white bg-rose-700 hover:bg-rose-600 border-1 border-black shadow-md flex items-center gap-1.5 transition-colors">
                     <Eraser className="w-5 h-5 text-white" /> مسح
                   </Button>
                 </div>
@@ -359,15 +359,15 @@ export default function HafizaTab() {
           </div>
 
           {/* TABLE CARD */}
-          <Card className="p-0 bg-white rounded-2xl border border-[#2e6b8a]/10 shadow-sm border-l-4 border-[#2e6b8a]">
+          <Card className="p-0 bg-blue rounded-2xl border border-1-black shadow-sm border-l-4 border-[#2e6b8a]">
             <CardHeader className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between p-2 sm:p-3 gap-2 border-b border-gray-100">
               <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                <div className="p-2 rounded-lg bg-[#2e6b8a]/10 text-[#2e6b8a]">
+                <div className="p-2 rounded-lg bg-[#2e6b8a]/10 text-gold">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
-                  <CardTitle className="text-md font-bold text-slate-800">كشف القيود</CardTitle>
-                  <CardDescription className="text-sm text-slate-600">عرض وتدقيق كافة حوافظ التوريد</CardDescription>
+                  <CardTitle className="text-xl font-bold text-gold">كشف القيود</CardTitle>
+                  <CardDescription className="text-xm text-slate-600">عرض وتدقيق كافة حوافظ التوريد</CardDescription>
                 </div>
                 <Badge className="mr-4 bg-[#b8d4e8] text-[#1a1206]">{filtered.length} سجل</Badge>
               </div>
@@ -399,10 +399,10 @@ export default function HafizaTab() {
 
             <CardContent className="p-0">
               <div className="w-full overflow-auto max-h-[72vh] overscroll-x-contain rounded-xl">
-                <Table className="min-w-max table-auto text-sm sm:text-base font-semibold">
+                <Table className="min-w-max table-auto text-xm sm:text-base font-semibold">
                   <TableHeader className="bg-[#2e6b8a] sticky top-0 z-10 [&_th]:text-white">
                     <TableRow>
-                      <TableHead className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center text-slate-500">#</TableHead>
+                      <TableHead className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center text-white">#</TableHead>
                       {COLS.map((c) => (
                         <TableHead key={c.key} className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center">
                           <div className="flex flex-col items-center">
@@ -422,14 +422,14 @@ export default function HafizaTab() {
                           </div>
                         </TableHead>
                       ))}
-                      <TableHead className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center text-slate-500">إجراءات</TableHead>
+                      <TableHead className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center text-white">إجراءات</TableHead>
                     </TableRow>
                   </TableHeader>
 
                   <TableBody>
                     {filtered.map((row, idx) => (
                       <TableRow key={row.id} className="hover:bg-sky-50 transition-colors">
-                        <TableCell className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center text-slate-600">{idx + 1}</TableCell>
+                        <TableCell className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center text-black">{idx + 1}</TableCell>
                         {COLS.map((c) => {
                           const isEditing = activeCell?.rowId === row.id && activeCell?.colKey === c.key;
                           const val = (row as any)[c.key];
@@ -452,7 +452,7 @@ export default function HafizaTab() {
                                   className="h-8 sm:h-9 text-xs sm:text-sm bg-white text-slate-900 border-2 border-amber-400 text-center rounded-md"
                                 />
                               ) : (
-                                <span className={`${isMoney ? "numeric-cell font-mono font-bold text-amber-700 px-1.5 py-1 sm:px-2 rounded-md bg-sky-50 inline-block text-xs sm:text-sm" : isDate ? "date-cell text-slate-800 font-medium text-xs sm:text-sm whitespace-nowrap" : "text-slate-800 font-medium text-xs sm:text-sm whitespace-nowrap"}`}>
+                                <span className={`${isMoney ? "numeric-cell font-mono font-bold text-black-700 px-1.5 py-1 sm:px-2 rounded-md bg-sky-50 inline-block text-xs sm:text-sm" : isDate ? "date-cell text-slate-800 font-medium text-xs sm:text-sm whitespace-nowrap" : "text-slate-800 font-medium text-xs sm:text-sm whitespace-nowrap"}`}>
                                   {isMoney ? fmt(Number(val) || 0) : String(val ?? "")}
                                 </span>
                               )}
