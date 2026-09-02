@@ -296,7 +296,7 @@ export default function MonthlyStatementTab() {
           <select
             value={mode}
             onChange={(e) => setMode(e.target.value as ReportPeriodMode)}
-            className="block w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 sm:w-auto sm:px-3 sm:py-2 sm:text-sm"
+            className="block w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500 sm:w-auto sm:px-3 sm:py-2 sm:text-sm"
           >
             <option value="month">كشف شهري تفصيلي</option>
             <option value="quarter">تقرير ربع سنوي</option>
@@ -311,7 +311,7 @@ export default function MonthlyStatementTab() {
             <select
               value={month}
               onChange={(e) => setMonth(Number(e.target.value))}
-              className="block w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 sm:w-auto sm:px-3 sm:py-2 sm:text-sm"
+              className="block w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500 sm:w-auto sm:px-3 sm:py-2 sm:text-sm"
             >
               {REPORT_MONTH_NAMES.map((n, i) => (
                 <option key={i} value={i + 1}>
@@ -326,7 +326,7 @@ export default function MonthlyStatementTab() {
             <select
               value={quarter}
               onChange={(e) => setQuarter(Number(e.target.value))}
-              className="block w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 sm:w-auto sm:px-3 sm:py-2 sm:text-sm"
+              className="block w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500 sm:w-auto sm:px-3 sm:py-2 sm:text-sm"
             >
               <option value={1}>الربع الأول (يناير - مارس)</option>
               <option value={2}>الربع الثاني (أبريل - يونيو)</option>
@@ -340,7 +340,7 @@ export default function MonthlyStatementTab() {
             <select
               value={halfYear}
               onChange={(e) => setHalfYear(Number(e.target.value))}
-              className="block w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 sm:w-auto sm:px-3 sm:py-2 sm:text-sm"
+              className="block w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500 sm:w-auto sm:px-3 sm:py-2 sm:text-sm"
             >
               <option value={1}>النصف الأول (يناير - يونيو)</option>
               <option value={2}>النصف الثاني (يوليو - ديسمبر)</option>
@@ -358,7 +358,7 @@ export default function MonthlyStatementTab() {
             type="number"
             value={year}
             onChange={(e) => setYear(Number(e.target.value) || year)}
-            className="block w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 sm:w-auto sm:px-3 sm:py-2 sm:text-sm font-mono text-center"
+            className="block w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-sky-500 sm:w-auto sm:px-3 sm:py-2 sm:text-sm font-mono text-center"
           />
         </div>
 
@@ -373,7 +373,7 @@ export default function MonthlyStatementTab() {
           </button>
           <button
             onClick={handlePdf}
-            className="min-w-0 flex-1 justify-center px-1.5 py-1 text-xs sm:flex-initial sm:px-2 sm:py-1 sm:text-xs bg-teal-700 text-white rounded-lg font-bold hover:bg-teal-800 shadow-sm transition flex items-center gap-1 sm:gap-1.5"
+            className="min-w-0 flex-1 justify-center px-1.5 py-1 text-xs sm:flex-initial sm:px-2 sm:py-1 sm:text-xs bg-sky-700 text-white rounded-lg font-bold hover:bg-sky-800 shadow-sm transition flex items-center gap-1 sm:gap-1.5"
           >
             <FileText className="w-4 h-4" /> تصدير PDF
           </button>
@@ -393,7 +393,7 @@ export default function MonthlyStatementTab() {
             {schema.office || "دفتر اليومية العامة والبيانات المساعدة"} —{" "}
             {schema.governorate || "العام المالي 2026م"}
           </p>
-          <div className="inline-block bg-teal-600/40 text-teal-300 text-xs px-3 py-1 rounded-full font-medium mt-2 border border-teal-500/20">
+          <div className="inline-block bg-sky-600/40 text-sky-300 text-xs px-3 py-1 rounded-full font-medium mt-2 border border-sky-500/20">
             تقرير مالي عن: {periodLabel}
           </div>
         </div>
@@ -417,7 +417,7 @@ export default function MonthlyStatementTab() {
                 </th>
                 <th
                   colSpan={2}
-                  className="border border-black text-center bg-teal-50 text-teal-900 font-bold !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-normal"
+                  className="border border-black text-center bg-sky-50 text-sky-900 font-bold !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-normal"
                 >
                   {movementLabel}
                 </th>
@@ -429,7 +429,7 @@ export default function MonthlyStatementTab() {
                 </th>
                 <th
                   colSpan={2}
-                  className="border border-black text-center bg-amber-50 text-amber-900 font-extrabold !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-normal"
+                  className="border border-black text-center bg-sky-50 text-amber-900 font-extrabold !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-normal"
                 >
    الرصيد الختامي في {year}/{endMonth}/{lastDayOfMonth(year, endMonth)}م
                 </th>
@@ -441,10 +441,10 @@ export default function MonthlyStatementTab() {
                 <th className="border border-black text-center font-semibold bg-slate-50 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   مصروفات / دائن
                 </th>
-                <th className="border border-black text-center font-semibold bg-teal-50/50 text-teal-950 min-w-[100px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                <th className="border border-black text-center font-semibold bg-sky-50/50 text-sky-950 min-w-[100px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   إيرادات / مدين
                 </th>
-                <th className="border border-black text-center font-semibold bg-teal-50/50 text-teal-950 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                <th className="border border-black text-center font-semibold bg-sky-50/50 text-sky-950 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   مصروفات / دائن
                 </th>
                 <th className="border border-black text-center font-semibold bg-slate-50 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
@@ -453,10 +453,10 @@ export default function MonthlyStatementTab() {
                 <th className="border border-black text-center font-semibold bg-slate-50 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   مصروفات / دائن
                 </th>
-                <th className="border border-black text-center font-bold bg-amber-50/50 text-amber-950 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                <th className="border border-black text-center font-bold bg-sky-50/50 text-amber-950 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   أرصدة مدينة
                 </th>
-                <th className="border border-black text-center font-bold bg-amber-50/50 text-amber-950 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                <th className="border border-black text-center font-bold bg-sky-50/50 text-amber-950 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   أرصدة دائنة
                 </th>
               </tr>
@@ -505,10 +505,10 @@ export default function MonthlyStatementTab() {
                           <td className="border border-black numeric-cell font-mono text-center text-slate-600 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                             {r.prevCredit ? fmt(r.prevCredit) : "—"}
                           </td>
-                          <td className="border border-black numeric-cell font-mono text-center text-teal-700 bg-teal-50/10 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="border border-black numeric-cell font-mono text-center text-sky-700 bg-sky-50/10 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                             {r.curDebit ? fmt(r.curDebit) : "—"}
                           </td>
-                          <td className="border border-black numeric-cell font-mono text-center text-teal-700 bg-teal-50/10 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="border border-black numeric-cell font-mono text-center text-sky-700 bg-sky-50/10 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                             {r.curCredit ? fmt(r.curCredit) : "—"}
                           </td>
                           <td className="border border-black numeric-cell font-mono text-center text-slate-800 font-medium min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
@@ -536,10 +536,10 @@ export default function MonthlyStatementTab() {
                       <td className="border border-black numeric-cell font-mono text-center text-slate-700 bg-slate-100/50 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                         {fmt(gPC)}
                       </td>
-                      <td className="border border-black numeric-cell font-mono text-center text-teal-800 bg-teal-50/40 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      <td className="border border-black numeric-cell font-mono text-center text-sky-800 bg-sky-50/40 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                         {fmt(gCD)}
                       </td>
-                      <td className="border border-black numeric-cell font-mono text-center text-teal-800 bg-teal-50/40 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                      <td className="border border-black numeric-cell font-mono text-center text-sky-800 bg-sky-50/40 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                         {fmt(gCC)}
                       </td>
                       <td className="border border-black numeric-cell font-mono text-center text-slate-900 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
@@ -569,10 +569,10 @@ export default function MonthlyStatementTab() {
                 <td className="border border-black numeric-cell font-mono text-center text-slate-200 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   {fmt(totals.prevCredit)}
                 </td>
-                <td className="border border-black numeric-cell font-mono text-center text-teal-300 bg-slate-800 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                <td className="border border-black numeric-cell font-mono text-center text-sky-300 bg-slate-800 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   {fmt(totals.curDebit)}
                 </td>
-                <td className="border border-black numeric-cell font-mono text-center text-teal-300 bg-slate-800 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                <td className="border border-black numeric-cell font-mono text-center text-sky-300 bg-slate-800 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   {fmt(totals.curCredit)}
                 </td>
                 <td className="border border-black numeric-cell font-mono text-center text-slate-100 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
@@ -581,7 +581,7 @@ export default function MonthlyStatementTab() {
                 <td className="border border-black numeric-cell font-mono text-center text-slate-100 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   {fmt(totals.prevCredit + totals.curCredit)}
                 </td>
-                <td className="border border-black numeric-cell font-mono text-center text-emerald-400 bg-teal-950/50 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                <td className="border border-black numeric-cell font-mono text-center text-emerald-400 bg-sky-950/50 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   {fmt(
                     Math.max(
                       0,
@@ -589,7 +589,7 @@ export default function MonthlyStatementTab() {
                     ),
                   )}
                 </td>
-                <td className="border border-black numeric-cell font-mono text-center text-rose-400 bg-teal-950/50 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                <td className="border border-black numeric-cell font-mono text-center text-rose-400 bg-sky-950/50 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   {fmt(
                     Math.max(
                       0,
@@ -605,7 +605,7 @@ export default function MonthlyStatementTab() {
 
       {/* جدول تجميع إيرادات الحساب */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-        <div className="flex flex-col items-stretch justify-between gap-2 bg-gradient-to-r from-teal-700 to-teal-900 p-2.5 text-white sm:flex-row sm:items-center sm:p-4">
+        <div className="flex flex-col items-stretch justify-between gap-2 bg-gradient-to-r from-sky-700 to-sky-900 p-2.5 text-white sm:flex-row sm:items-center sm:p-4">
           <div>
             <h3 className="font-bold text-base">📊 تجميع إيرادات الحساب حسب رمز الإيراد</h3>
             <p className="text-xs opacity-80 mt-0.5">
@@ -618,7 +618,7 @@ export default function MonthlyStatementTab() {
         </div>
         <div className="relative max-h-[72vh] overflow-auto">
           <table ref={tableRef2} className="min-w-max table-auto border-collapse text-sm sm:text-base text-center font-semibold">
-            <thead className="bg-teal-50 text-teal-900 font-bold border-b border-black sticky top-0 z-20 shadow-sm">
+            <thead className="bg-sky-50 text-sky-900 font-bold border-b border-black sticky top-0 z-20 shadow-sm">
               <tr>
                 <th className="border border-black text-center min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                   م
@@ -652,11 +652,11 @@ export default function MonthlyStatementTab() {
                 </tr>
               ) : (
                 revenueByCode.map((r, i) => (
-                  <tr key={r.code} className="hover:bg-teal-50/40 transition-colors">
+                  <tr key={r.code} className="hover:bg-sky-50/40 transition-colors">
                     <td className="border border-black text-center numeric-cell font-mono text-slate-500 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                       {i + 1}
                     </td>
-                    <td className="border border-black text-center numeric-cell font-mono font-extrabold text-teal-800 bg-teal-50/40 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                    <td className="border border-black text-center numeric-cell font-mono font-extrabold text-sky-800 bg-sky-50/40 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                       {r.code}
                     </td>
                     <td className="border border-black text-center font-medium text-slate-800 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
@@ -668,7 +668,7 @@ export default function MonthlyStatementTab() {
                     <td className="border border-black text-center numeric-cell font-mono text-slate-700 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                       {r.prev ? fmt(r.prev) : "—"}
                     </td>
-                    <td className="border border-black text-center numeric-cell font-mono text-teal-700 font-bold bg-teal-50/30 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                    <td className="border border-black text-center numeric-cell font-mono text-sky-700 font-bold bg-sky-50/30 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                       {r.cur ? fmt(r.cur) : "—"}
                     </td>
                     <td className="border border-black text-center numeric-cell font-mono text-emerald-700 font-black bg-emerald-50/30 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
@@ -693,7 +693,7 @@ export default function MonthlyStatementTab() {
                   <td className="border border-black text-center numeric-cell font-mono text-slate-200 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                     {fmt(revenueTotals.prev)}
                   </td>
-                  <td className="border border-black text-center numeric-cell font-mono text-teal-300 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                  <td className="border border-black text-center numeric-cell font-mono text-sky-300 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                     {fmt(revenueTotals.cur)}
                   </td>
                   <td className="border border-black text-center numeric-cell font-mono text-emerald-400 min-w-[96px] sm:min-w-[120px] whitespace-normal overflow-hidden !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">

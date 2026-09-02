@@ -39,7 +39,7 @@ export const Route = createFileRoute("/")({
         content:
           "تطبيق إدارة قيود اليومية وحوافظ التوريد للمجلس اليمني للاختصاصات الطبية - يعمل بدون إنترنت",
       },
-      { name: "theme-color", content: "#10528e" },
+      { name: "theme-color", content: "#2e6b8a" },
     ],
     links: [
       { rel: "manifest", href: "/manifest.json" },
@@ -67,65 +67,68 @@ type TabItem = {
   activeClass: string;
 };
 
-// تعريف قائمة التبويبات مع بياناتها وألوانها
+// تعريف قائمة التبويبات مع بياناتها (تدرج موحّد لهوية "صقيع قطبي")
+const ACTIVE_TAB_CLASS = "bg-gradient-to-b from-[#2e6b8a] to-[#6ba3c8]";
+
 const tabs: TabItem[] = [
   {
     value: "installments",
     label: "كشف الأقساط",
     shortLabel: "أقساط",
-    icon: <WalletCards className="w-6 h-6 sm:w-7 sm:h-7" />,
-    activeClass: "bg-teal-700",
+    icon: <WalletCards className="w-5 h-5 sm:w-6 sm:h-6" />,
+    activeClass: ACTIVE_TAB_CLASS,
   },
   {
     value: "hafiza",
     label: "حوافظ التوريد",
     shortLabel: "حوافظ",
-    icon: <FileBox className="w-6 h-6 sm:w-7 sm:h-7" />,
-    activeClass: "bg-amber-600",
+    icon: <FileBox className="w-5 h-5 sm:w-6 sm:h-6" />,
+    activeClass: ACTIVE_TAB_CLASS,
   },
   {
     value: "account",
     label: "الحساب الجاري",
     shortLabel: "حساب",
-    icon: <FileSpreadsheet className="w-6 h-6 sm:w-7 sm:h-7" />,
-    activeClass: "bg-stone-600",
+    icon: <FileSpreadsheet className="w-5 h-5 sm:w-6 sm:h-6" />,
+    activeClass: ACTIVE_TAB_CLASS,
   },
   {
     value: "journal",
     label: "القيود اليومية",
     shortLabel: "قيود",
-    icon: <BookOpenText className="w-6 h-6 sm:w-7 sm:h-7" />,
-    activeClass: "bg-[#0e2b40]",
+    icon: <BookOpenText className="w-5 h-5 sm:w-6 sm:h-6" />,
+    activeClass: ACTIVE_TAB_CLASS,
   },
   {
     value: "monthly",
     label: "كشف شهري",
     shortLabel: "شهري",
-    icon: <PieChart className="w-6 h-6 sm:w-7 sm:h-7" />,
-    activeClass: "bg-slate-700",
+    icon: <PieChart className="w-5 h-5 sm:w-6 sm:h-6" />,
+    activeClass: ACTIVE_TAB_CLASS,
   },
   {
     value: "revenue",
     label: "الإيرادات",
     shortLabel: "إيرادات",
-    icon: <TrendingUp className="w-6 h-6 sm:w-7 sm:h-7" />,
-    activeClass: "bg-emerald-700",
+    icon: <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6" />,
+    activeClass: ACTIVE_TAB_CLASS,
   },
   {
     value: "expenses-table",
     label: "المصروفات",
     shortLabel: "مصروفات",
-    icon: <ReceiptText className="w-6 h-6 sm:w-7 sm:h-7" />,
-    activeClass: "bg-indigo-700",
+    icon: <ReceiptText className="w-5 h-5 sm:w-6 sm:h-6" />,
+    activeClass: ACTIVE_TAB_CLASS,
   },
   {
     value: "general-expenses-ledger",
     label: "سجل النفقات",
     shortLabel: "السجل",
-    icon: <FileSpreadsheet className="w-6 h-6 sm:w-7 sm:h-7" />,
-    activeClass: "bg-rose-700",
+    icon: <FileSpreadsheet className="w-5 h-5 sm:w-6 sm:h-6" />,
+    activeClass: ACTIVE_TAB_CLASS,
   },
 ];
+
 
 const isTabValue = (value: string | null): value is Tab =>
   value !== null && tabs.some((tab) => tab.value === value);
@@ -224,28 +227,27 @@ function Index() {
   };
 
   return (
-    // الحاوية الرئيسية مع قائمة تبويبات جانبية تظهر فوق المحتوى عند فتحها
+    // الحاوية الرئيسية بهوية "صقيع قطبي" الفاتحة
     <div
-      className="apk-tabs-ui w-full min-h-screen bg-[#f5f2ea] selection:bg-[#1a3a52]/20 text-lg sm:text-base"
+      className="apk-tabs-ui w-full min-h-screen bg-[#e8f0f8] selection:bg-[#6ba3c8]/30 text-base"
       dir="rtl"
     >
-      {/* قسم الهيدر العلوي — هوية كحلية مؤسسية بلمسة ختم برونزي */}
-      <div className="relative flex flex-col landscape:flex-row landscape:items-center lg:flex-row lg:items-center lg:justify-between gap-2 sm:gap-3 bg-gradient-to-l from-[#0e2b40] via-[#153a54] to-[#0e2b40] px-3 py-2.5 sm:p-5 border-b-2 border-[#c99a4e]/60 shadow-md text-white overflow-hidden">
-        {/* خيط دفتري زخرفي أعلى الهيدر */}
-        <div className="absolute inset-x-0 top-0 h-[3px] bg-[repeating-linear-gradient(90deg,#c99a4e_0_10px,transparent_10px_20px)] opacity-70" />
+      {/* قسم الهيدر العلوي — أزرق ثلجي عصري */}
+      <div className="relative grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 bg-gradient-to-l from-[#2e6b8a] via-[#3d7fa0] to-[#2e6b8a] px-3 py-3 sm:px-5 sm:py-4 border-b border-[#b8d4e8] shadow-sm text-white overflow-hidden">
+        {/* خيط زخرفي أعلى الهيدر */}
+        <div className="absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,#b8d4e8,#e8f0f8,#b8d4e8)] opacity-80" />
 
-        {/* الجزء الأيمن: شعار الختم، العنوان، والوصف */}
-        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-          <div className="relative shrink-0 p-2 sm:p-2.5 bg-white/[0.06] border border-[#c99a4e]/40 rounded-full text-[#e3c281] hidden sm:flex items-center justify-center">
-            <FileSpreadsheet className="w-4 h-4 sm:w-5 sm:h-5" />
+        {/* الجزء الأيمن: الشعار والعنوان والوصف */}
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div className="relative shrink-0 p-2 sm:p-2.5 bg-white/15 border border-white/30 rounded-2xl text-white hidden sm:flex items-center justify-center">
+            <FileSpreadsheet className="w-5 h-5" />
           </div>
-          <div className="ledger-seam self-stretch hidden sm:block rounded-full shrink-0" />
-          <div className="flex flex-col gap-0.5 sm:gap-1 min-w-0">
-            <h1 className="text-[clamp(1rem,3.2vw,1.5rem)] font-bold tracking-wide font-cairo text-white leading-tight truncate sm:whitespace-normal">
+          <div className="flex flex-col gap-0.5 min-w-0">
+            <h1 className="text-[clamp(1rem,3.4vw,1.35rem)] font-bold tracking-wide text-white leading-tight truncate sm:whitespace-normal">
               المجلس اليمني للاختصاصات الطبية
             </h1>
-            <p className="text-[clamp(0.6rem,2vw,0.875rem)] text-[#cfe0ec] font-medium flex items-center gap-1.5 leading-snug">
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#e3c281] shrink-0"></span>
+            <p className="text-[clamp(0.75rem,2.4vw,0.875rem)] text-[#e8f0f8] font-medium flex items-center gap-1.5 leading-snug min-w-0">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#b8d4e8] shrink-0"></span>
               <span className="truncate sm:whitespace-normal">
                 نظام الإدارة المالية وحوافظ التوريد — صعدة، 2026م
               </span>
@@ -253,14 +255,14 @@ function Index() {
           </div>
         </div>
 
-        {/* الجزء الأيسر: زر تثبيت PWA */}
-        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 shrink-0">
+        {/* الجزء الأيسر: زر تثبيت التطبيق */}
+        <div className="flex items-center gap-2 shrink-0">
           {pwaInstallable && (
             <button
               onClick={handlePWAInstall}
-              className="flex items-center gap-1.5 bg-[#c99a4e] hover:bg-[#d9ac63] text-[#1a1206] font-bold text-[10px] sm:text-xs px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-md transition-all shadow-sm whitespace-nowrap"
+              className="flex items-center gap-1.5 bg-white text-[#2e6b8a] hover:bg-[#e8f0f8] font-bold text-[13px] px-3 py-2 rounded-xl transition-all shadow-sm whitespace-nowrap active:scale-[0.97]"
             >
-              <DownloadCloud className="w-3.5 h-3.5 shrink-0" />
+              <DownloadCloud className="w-4 h-4 shrink-0" />
               <span>تثبيت التطبيق</span>
             </button>
           )}
@@ -268,11 +270,11 @@ function Index() {
       </div>
 
       {/* محتوى التبويب النشط */}
-      <div className="w-full bg-[#faf8f3] p-2 pb-24 sm:p-4 sm:pb-20 md:p-6 min-h-[calc(100vh-140px)]">
+      <div className="w-full bg-[#f4f9fd] p-2.5 pb-28 sm:p-4 sm:pb-24 md:p-6 min-h-[calc(100vh-140px)]">
         <Suspense
           fallback={
             <div
-              className="flex min-h-[35vh] items-center justify-center rounded-2xl border border-[#c99a4e]/30 bg-white/70 p-6 text-sm font-semibold text-[#153a54]"
+              className="flex min-h-[35vh] items-center justify-center rounded-2xl border border-[#b8d4e8] bg-white/80 p-6 text-sm font-semibold text-[#2e6b8a]"
               role="status"
               aria-live="polite"
             >
@@ -291,13 +293,13 @@ function Index() {
         </Suspense>
       </div>
 
-      {/* شريط التبويبات السفلي */}
+      {/* شريط التبويبات السفلي — عائم زجاجي فاتح */}
       <nav
-        className="fixed inset-x-0 bottom-0 z-[60] border-t-2 border-[#c99a4e]/60 bg-[#0e2b40]/[0.98] pb-[env(safe-area-inset-bottom)] shadow-[0_-6px_24px_rgba(0,0,0,0.2)] backdrop-blur-md"
+        className="fixed inset-x-0 bottom-0 z-[60] border-t border-[#b8d4e8] bg-white/90 pb-[env(safe-area-inset-bottom)] shadow-[0_-6px_22px_rgba(46,107,138,0.14)] backdrop-blur-xl"
         dir="rtl"
         aria-label="التنقل الرئيسي"
       >
-        <div className="mx-auto flex max-w-7xl gap-1 overflow-x-auto px-1 py-1.5 sm:gap-2 sm:px-2 sm:py-2">
+        <div className="mx-auto flex max-w-7xl gap-1.5 overflow-x-auto px-2 py-2 sm:gap-2 sm:px-3">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.value;
             return (
@@ -306,17 +308,17 @@ function Index() {
                 type="button"
                 onClick={() => handleTabChange(tab.value)}
                 aria-current={isActive ? "page" : undefined}
-                className={`flex min-w-[84px] shrink-0 flex-1 flex-col items-center justify-center gap-1 rounded-lg px-2 py-2 text-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#e3c281] sm:min-w-[104px] sm:gap-1.5 sm:px-3 sm:py-2.5 ${
+                className={`flex min-h-[48px] min-w-[76px] shrink-0 flex-1 flex-col items-center justify-center gap-1 rounded-2xl px-2 py-1.5 text-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#6ba3c8] active:scale-[0.97] sm:min-w-[104px] sm:px-3 ${
                   isActive
                     ? `${tab.activeClass} text-white shadow-md`
-                    : "text-white/70 hover:bg-white/[0.1] hover:text-white"
+                    : "text-[#4e6b80] hover:bg-[#e8f0f8]"
                 }`}
               >
-                <span className={isActive ? "scale-110" : "scale-100"}>{tab.icon}</span>
-                <span className="text-xs font-bold leading-tight whitespace-nowrap sm:hidden">
+                <span className={isActive ? "scale-105" : "scale-100"}>{tab.icon}</span>
+                <span className="text-[11.5px] font-bold leading-tight whitespace-nowrap sm:hidden">
                   {tab.shortLabel}
                 </span>
-                <span className="hidden text-sm font-bold leading-tight whitespace-nowrap sm:inline">
+                <span className="hidden text-[13px] font-bold leading-tight whitespace-nowrap sm:inline">
                   {tab.label}
                 </span>
               </button>
@@ -324,6 +326,7 @@ function Index() {
           })}
         </div>
       </nav>
+
 
       <Toaster position="top-center" richColors />
     </div>

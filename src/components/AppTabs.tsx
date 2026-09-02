@@ -163,7 +163,7 @@ const EditableCell: React.FC<{
       value={value ?? ""}  
       onChange={(e) => onCommit(rowId, field, e.target.value)}  
       dir={isDate ? "ltr" : /^[\d.,\-]*$/.test(String(value ?? "")) ? "ltr" : "rtl"}  
-      className="w-full h-full min-w-[70px] bg-transparent focus:bg-amber-50 focus:outline-none focus:ring-1 focus:ring-blue-500 rounded px-1 text-center text-[12px] text-slate-800"  
+      className="w-full h-full min-w-[70px] bg-transparent focus:bg-sky-50 focus:outline-none focus:ring-1 focus:ring-blue-500 rounded px-1 text-center text-[12px] text-slate-800"  
     />  
   );  
 });  
@@ -615,7 +615,7 @@ const AppTabs: React.FC = () => {
               />
             </div>
             <div className="apk-only-actions flex flex-wrap items-center gap-2">
-              <button onClick={handleImportClick} className="flex items-center gap-1 bg-teal-600 hover:bg-teal-700 text-white text-xs px-3 py-2 rounded shadow-sm">
+              <button onClick={handleImportClick} className="flex items-center gap-1 bg-sky-600 hover:bg-sky-700 text-white text-xs px-3 py-2 rounded shadow-sm">
                 <Upload className="w-4 h-4" /> استيراد Excel
               </button>
               <button onClick={handleExportExcel} className="flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-2 rounded shadow-sm">
@@ -650,7 +650,7 @@ const AppTabs: React.FC = () => {
               return (
                 <React.Fragment key={m.id}>
                   {/* شريط الشهر */}
-                  <tr className="bg-blue-900 text-yellow-400 font-bold">
+                  <tr className="bg-blue-900 text-sky-200 font-bold">
                     <td colSpan={TOTAL_COLS} className="text-right border border-slate-300 !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap">
                       شهر {m.name}
                       <button 
@@ -714,7 +714,7 @@ const AppTabs: React.FC = () => {
                   </tr>
 
                   {/* صف الإجمالي العام التراكمي */}
-                  <tr className="bg-blue-900 text-yellow-400 font-bold">
+                  <tr className="bg-blue-900 text-sky-200 font-bold">
                     <td colSpan={4} className="border border-slate-300 text-right !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap">الإجمالي العام (حتى {m.name})</td>
                     {dataColumnsOrder.map((c) => (
                       <td key={c} className="border border-slate-300 !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap">

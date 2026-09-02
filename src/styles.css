@@ -104,46 +104,50 @@ src: url("/MohammadBoldArt-Regular.ttf") format("truetype");
 :root {
   --radius: 0.7rem;
 
+  /* هوية "صقيع قطبي": أزرق ثلجي فاتح مع أزرق متوسط عميق */
+  --ice-050: oklch(0.975 0.012 235);
+  --ice-100: oklch(0.955 0.020 235);
+  --ice-200: oklch(0.885 0.038 235);
+  --ice-400: oklch(0.735 0.070 232);
+  --ice-600: oklch(0.545 0.085 232);
+  --ice-700: oklch(0.470 0.082 232);
+
   /* الخلفية العامة */
-  --background: oklch(0.97 0.008 85);
-  --foreground: oklch(0.16 0.02 240);
+  --background: oklch(0.955 0.020 235);
+  --foreground: oklch(0.24 0.035 240);
 
   /* البطاقات والحاويات */
-    --card: oklch(0.96 0.02 240);                /* أزرق فاتح هادئ */
-  --card-foreground: oklch(0.12 0 0);         /* أسود داكن للنصوص */
+  --card: oklch(0.995 0.004 235);
+  --card-foreground: oklch(0.20 0.03 240);
 
   /* اللون الأساسي (Primary) */
-  --primary: oklch(0.92 0.03 240);             /* أزرق فاتح أغمق قليلاً من الكارت */
-  --primary-foreground: oklch(0.12 0 0);       /* أسود داكن */
+  --primary: var(--ice-600);
+  --primary-foreground: oklch(0.99 0.005 235);
 
   /* اللون الثانوي (Secondary) */
-  --secondary: oklch(0.94 0.02 235);           /* أزرق فاتح محايد */
-  --secondary-foreground: oklch(0.15 0 0);     /* أسود داكن */
+  --secondary: var(--ice-200);
+  --secondary-foreground: oklch(0.28 0.04 235);
 
   /* العناصر الباهتة (Muted) */
-  --muted: oklch(0.90 0.025 240);              /* أزرق رمادي فاتح */
-  --muted-foreground: oklch(0.25 0 0);        /* أسود متوسط للتفاصيل الثانوية */
+  --muted: oklch(0.925 0.024 235);
+  --muted-foreground: oklch(0.44 0.035 238);
 
   /* التمييز (Accent) */
-  --accent: oklch(0.88 0.04 245);             /* أزرق فاتح مشبع للمس والتركيز */
-  --accent-foreground: oklch(0.12 0 0);       /* أسود داكن */
+  --accent: var(--ice-400);
+  --accent-foreground: oklch(0.20 0.03 240);
 
   /* الحالات الخاصة */
-  --destructive: oklch(0.92 0.04 25);         /* أحمر وردي فاتح جداً */
-  --destructive-foreground: oklch(0.25 0.12 25);/* أحمر داكن جداً للقراءة */
-  --success: oklch(0.92 0.04 155);            /* أخضر نعناعي فاتح جداً */
-  --success-foreground: oklch(0.20 0.08 155);  /* أخضر داكن جداً */
+  --destructive: oklch(0.60 0.16 22);
+  --destructive-foreground: oklch(0.99 0.01 22);
+  --success: oklch(0.60 0.11 175);
+  --success-foreground: oklch(0.99 0.01 175);
 
-  /* الحدود */
-  --border: oklch(0.30 0.02 240 / 0.14);
-  --border: oklch(0 0 0 / 0.14);
-  
-  /* حقول الإدخال: أزرق فاتح جداً مع شفافية خفيفة للتناغم مع الخلفية */
-  --input: oklch(0.94 0.02 240 / 0.80);
-  
-  /* حلقة التركيز (Focus Ring): أسود شبه شفاف (25%) لمظهر نظيف وعصري */
-  --ring: oklch(0 0 0 / 0.25);
+  /* الحدود وحقول الإدخال وحلقة التركيز */
+  --border: oklch(0.885 0.038 235);
+  --input: oklch(0.985 0.010 235);
+  --ring: var(--ice-400);
   }
+
   
 @layer base {
   * { border-color: var(--color-border); }
@@ -154,9 +158,10 @@ src: url("/MohammadBoldArt-Regular.ttf") format("truetype");
   }
   body {
     background:
-      radial-gradient(1100px 550px at 100% -10%, oklch(0.90 0.03 235 / 0.35), transparent 62%),
-      radial-gradient(800px 450px at -10% 108%, oklch(0.85 0.05 75 / 0.18), transparent 60%),
+      radial-gradient(1100px 550px at 100% -10%, oklch(0.885 0.038 235 / 0.55), transparent 62%),
+      radial-gradient(800px 450px at -10% 108%, oklch(0.735 0.070 232 / 0.20), transparent 60%),
       var(--color-background);
+
     color: var(--color-foreground);
     font-family: var(--font-ui);
     font-weight: 700;
@@ -405,129 +410,120 @@ table td > * {
   .no-print { display: none !important; }
 }
 
-/* نمط APK مدمج: يطبق على شاشة الهاتف داخل Capacitor فقط. */
+/* مقياس شاشات الهواتف (شاومي ~390px): خطوط متوسطة متوازنة وأزرار مريحة للمس */
 @media screen and (max-width: 640px) {
   .apk-tabs-ui {
-    font-size: 16px;
+    font-size: 14px;
   }
 
-  .apk-tabs-ui h1 {
-    font-size: 1.3rem !important;
-  }
+  .apk-tabs-ui h1 { font-size: 1.18rem !important; line-height: 1.35 !important; }
+  .apk-tabs-ui h2 { font-size: 1.06rem !important; line-height: 1.35 !important; }
+  .apk-tabs-ui h3 { font-size: 0.98rem !important; line-height: 1.35 !important; }
+  .apk-tabs-ui h4 { font-size: 0.92rem !important; line-height: 1.35 !important; }
 
-  .apk-tabs-ui h2 {
-    font-size: 1.12rem !important;
-  }
-
-  .apk-tabs-ui h3 {
-    font-size: 1rem !important;
-  }
-
-  .apk-tabs-ui h4 {
-    font-size: 0.9rem !important;
-  }
-
+  /* أزرار موحّدة: ارتفاع 40px، زوايا ناعمة، خط 13.5px */
   .apk-tabs-ui :where(button, [role="button"]) {
-    min-height: 1.75rem;
-    padding: 0.25rem 0.4rem !important;
-    gap: 0.25rem !important;
-    font-size: 0.6875rem !important;
-    line-height: 1.1 !important;
+    min-height: 2.5rem;
+    padding: 0.5rem 0.75rem !important;
+    gap: 0.375rem !important;
+    font-size: 0.845rem !important;
+    line-height: 1.2 !important;
+    border-radius: 0.75rem !important;
+    transition: transform 0.12s ease, filter 0.12s ease;
+  }
+
+  .apk-tabs-ui :where(button, [role="button"]):active {
+    transform: scale(0.97);
+  }
+
+  .apk-tabs-ui :where(button, [role="button"]):disabled {
+    opacity: 0.55;
   }
 
   .apk-tabs-ui :where(button, [role="button"]) svg {
-    width: 0.78rem !important;
-    height: 0.78rem !important;
+    width: 1rem !important;
+    height: 1rem !important;
     flex: 0 0 auto;
   }
 
   .apk-tabs-ui svg {
-    max-width: 1rem;
-    max-height: 1rem;
+    max-width: 1.25rem;
+    max-height: 1.25rem;
+  }
+
+  /* أزرار ثانوية داخل الجداول: 36px */
+  .apk-tabs-ui table :where(button, [role="button"]) {
+    min-height: 2.25rem;
+    padding: 0.3rem 0.5rem !important;
+    font-size: 0.8rem !important;
+    border-radius: 0.625rem !important;
   }
 
   .apk-tabs-ui :where(input, select, textarea) {
-    min-height: 1.75rem;
-    padding: 0.25rem 0.4rem !important;
-    font-size: 0.75rem !important;
-    line-height: 1.1;
-  }
-
-  .apk-tabs-ui :where(.text-5xl, .text-4xl) {
-    font-size: 1.65rem !important;
-  }
-
-  .apk-tabs-ui .text-3xl {
-    font-size: 1.35rem !important;
-  }
-
-  .apk-tabs-ui .text-2xl {
-    font-size: 1.2rem !important;
-  }
-
-  .apk-tabs-ui .text-xl {
-    font-size: 1.05rem !important;
-  }
-
-  .apk-tabs-ui .text-lg {
-    font-size: 0.95rem !important;
-  }
-
-  .apk-tabs-ui .text-base {
+    min-height: 2.5rem;
+    padding: 0.45rem 0.6rem !important;
     font-size: 0.875rem !important;
+    line-height: 1.25;
+    border-radius: 0.625rem !important;
   }
 
-  /* تقليل حشو كروت المعلومات والحاويات المتكررة دون تغيير ألوانها أو منطقها. */
-  .apk-tabs-ui .p-8 { padding: 1rem !important; }
-  .apk-tabs-ui .p-6 { padding: 0.8rem !important; }
-  .apk-tabs-ui .p-5 { padding: 0.7rem !important; }
-  .apk-tabs-ui .p-4 { padding: 0.65rem !important; }
-  .apk-tabs-ui .p-3 { padding: 0.5rem !important; }
-  .apk-tabs-ui .p-2 { padding: 0.4rem !important; }
-  .apk-tabs-ui .p-1\.5 { padding: 0.3rem !important; }
+  .apk-tabs-ui :where(.text-5xl, .text-4xl) { font-size: 1.5rem !important; }
+  .apk-tabs-ui .text-3xl { font-size: 1.3rem !important; }
+  .apk-tabs-ui .text-2xl { font-size: 1.18rem !important; }
+  .apk-tabs-ui .text-xl { font-size: 1.06rem !important; }
+  .apk-tabs-ui .text-lg { font-size: 0.98rem !important; }
+  .apk-tabs-ui .text-base { font-size: 0.9rem !important; }
+  .apk-tabs-ui .text-sm { font-size: 0.855rem !important; }
+  .apk-tabs-ui :where(.text-xs, .text-\[10px\], .text-\[11px\], .text-\[12px\]) {
+    font-size: 0.8rem !important;
+  }
 
-  .apk-tabs-ui .px-8 { padding-left: 1rem !important; padding-right: 1rem !important; }
-  .apk-tabs-ui .px-6 { padding-left: 0.8rem !important; padding-right: 0.8rem !important; }
-  .apk-tabs-ui .px-5 { padding-left: 0.7rem !important; padding-right: 0.7rem !important; }
-  .apk-tabs-ui .px-4 { padding-left: 0.65rem !important; padding-right: 0.65rem !important; }
-  .apk-tabs-ui .px-3 { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
-  .apk-tabs-ui .px-2 { padding-left: 0.4rem !important; padding-right: 0.4rem !important; }
+  /* حشو مريح للحاويات والبطاقات دون تغيير ألوانها أو منطقها */
+  .apk-tabs-ui .p-8 { padding: 1.1rem !important; }
+  .apk-tabs-ui .p-6 { padding: 0.9rem !important; }
+  .apk-tabs-ui .p-5 { padding: 0.8rem !important; }
+  .apk-tabs-ui .p-4 { padding: 0.75rem !important; }
+  .apk-tabs-ui .p-3 { padding: 0.6rem !important; }
+  .apk-tabs-ui .p-2 { padding: 0.5rem !important; }
 
-  .apk-tabs-ui .py-8 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
-  .apk-tabs-ui .py-6 { padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; }
-  .apk-tabs-ui .py-5 { padding-top: 0.7rem !important; padding-bottom: 0.7rem !important; }
-  .apk-tabs-ui .py-4 { padding-top: 0.65rem !important; padding-bottom: 0.65rem !important; }
-  .apk-tabs-ui .py-3 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
-  .apk-tabs-ui .py-2 { padding-top: 0.4rem !important; padding-bottom: 0.4rem !important; }
+  .apk-tabs-ui .px-8 { padding-left: 1.1rem !important; padding-right: 1.1rem !important; }
+  .apk-tabs-ui .px-6 { padding-left: 0.9rem !important; padding-right: 0.9rem !important; }
+  .apk-tabs-ui .px-5 { padding-left: 0.8rem !important; padding-right: 0.8rem !important; }
+  .apk-tabs-ui .px-4 { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
+
+  .apk-tabs-ui .py-8 { padding-top: 1.1rem !important; padding-bottom: 1.1rem !important; }
+  .apk-tabs-ui .py-6 { padding-top: 0.9rem !important; padding-bottom: 0.9rem !important; }
+  .apk-tabs-ui .py-5 { padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; }
+  .apk-tabs-ui .py-4 { padding-top: 0.75rem !important; padding-bottom: 0.75rem !important; }
 
   .apk-tabs-ui .gap-8 { gap: 1rem !important; }
-  .apk-tabs-ui .gap-6 { gap: 0.75rem !important; }
-  .apk-tabs-ui .gap-4 { gap: 0.6rem !important; }
-  .apk-tabs-ui .gap-3 { gap: 0.5rem !important; }
-  .apk-tabs-ui .gap-2 { gap: 0.4rem !important; }
+  .apk-tabs-ui .gap-6 { gap: 0.8rem !important; }
+  .apk-tabs-ui .gap-4 { gap: 0.65rem !important; }
 
+  /* خلايا الجداول: 13-14px بحشو مقروء */
   .apk-tabs-ui table th,
   .apk-tabs-ui table td {
-    padding: 1px 2px !important;
-    font-size: clamp(9px, 2.1vw, 11px) !important;
-    line-height: 1.1 !important;
+    padding: 3px 5px !important;
+    font-size: clamp(13px, 3.4vw, 14px) !important;
+    line-height: 1.3 !important;
   }
 
   .apk-tabs-ui table input,
   .apk-tabs-ui table select {
-    min-height: 1.55rem;
-    padding: 1px 2px !important;
-    font-size: 0.6875rem !important;
+    min-height: 2.1rem;
+    padding: 2px 4px !important;
+    font-size: 0.845rem !important;
   }
 
   .apk-tabs-ui :where(.rounded-xl, .rounded-2xl, .rounded-3xl) {
-    border-radius: 0.5rem !important;
+    border-radius: 0.85rem !important;
   }
 
   .apk-tabs-ui :where(.shadow, .shadow-sm, .shadow-md, .shadow-lg) {
-    box-shadow: 0 1px 2px rgb(15 23 42 / 0.08) !important;
+    box-shadow: 0 2px 8px oklch(0.47 0.082 232 / 0.12) !important;
   }
 }
+
 
 /* تم إلغاء تجميع الإجراءات في قائمة واحدة: تظهر الأزرار المنفصلة دائماً. */
 .web-only-actions {
