@@ -67,65 +67,68 @@ type TabItem = {
   activeClass: string;
 };
 
-// تعريف قائمة التبويبات مع بياناتها وألوانها
+// تعريف قائمة التبويبات مع بياناتها (تدرج موحّد لهوية "صقيع قطبي")
+const ACTIVE_TAB_CLASS = "bg-gradient-to-b from-[#2e6b8a] to-[#6ba3c8]";
+
 const tabs: TabItem[] = [
   {
     value: "installments",
     label: "كشف الأقساط",
     shortLabel: "أقساط",
-    icon: <WalletCards className="w-6 h-6 sm:w-7 sm:h-7" />,
-    activeClass: "bg-teal-700",
+    icon: <WalletCards className="w-5 h-5 sm:w-6 sm:h-6" />,
+    activeClass: ACTIVE_TAB_CLASS,
   },
   {
     value: "hafiza",
     label: "حوافظ التوريد",
     shortLabel: "حوافظ",
-    icon: <FileBox className="w-6 h-6 sm:w-7 sm:h-7" />,
-    activeClass: "bg-amber-600",
+    icon: <FileBox className="w-5 h-5 sm:w-6 sm:h-6" />,
+    activeClass: ACTIVE_TAB_CLASS,
   },
   {
     value: "account",
     label: "الحساب الجاري",
     shortLabel: "حساب",
-    icon: <FileSpreadsheet className="w-6 h-6 sm:w-7 sm:h-7" />,
-    activeClass: "bg-stone-600",
+    icon: <FileSpreadsheet className="w-5 h-5 sm:w-6 sm:h-6" />,
+    activeClass: ACTIVE_TAB_CLASS,
   },
   {
     value: "journal",
     label: "القيود اليومية",
     shortLabel: "قيود",
-    icon: <BookOpenText className="w-6 h-6 sm:w-7 sm:h-7" />,
-    activeClass: "bg-[#0e2b40]",
+    icon: <BookOpenText className="w-5 h-5 sm:w-6 sm:h-6" />,
+    activeClass: ACTIVE_TAB_CLASS,
   },
   {
     value: "monthly",
     label: "كشف شهري",
     shortLabel: "شهري",
-    icon: <PieChart className="w-6 h-6 sm:w-7 sm:h-7" />,
-    activeClass: "bg-slate-700",
+    icon: <PieChart className="w-5 h-5 sm:w-6 sm:h-6" />,
+    activeClass: ACTIVE_TAB_CLASS,
   },
   {
     value: "revenue",
     label: "الإيرادات",
     shortLabel: "إيرادات",
-    icon: <TrendingUp className="w-6 h-6 sm:w-7 sm:h-7" />,
-    activeClass: "bg-emerald-700",
+    icon: <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6" />,
+    activeClass: ACTIVE_TAB_CLASS,
   },
   {
     value: "expenses-table",
     label: "المصروفات",
     shortLabel: "مصروفات",
-    icon: <ReceiptText className="w-6 h-6 sm:w-7 sm:h-7" />,
-    activeClass: "bg-indigo-700",
+    icon: <ReceiptText className="w-5 h-5 sm:w-6 sm:h-6" />,
+    activeClass: ACTIVE_TAB_CLASS,
   },
   {
     value: "general-expenses-ledger",
     label: "سجل النفقات",
     shortLabel: "السجل",
-    icon: <FileSpreadsheet className="w-6 h-6 sm:w-7 sm:h-7" />,
-    activeClass: "bg-rose-700",
+    icon: <FileSpreadsheet className="w-5 h-5 sm:w-6 sm:h-6" />,
+    activeClass: ACTIVE_TAB_CLASS,
   },
 ];
+
 
 const isTabValue = (value: string | null): value is Tab =>
   value !== null && tabs.some((tab) => tab.value === value);
