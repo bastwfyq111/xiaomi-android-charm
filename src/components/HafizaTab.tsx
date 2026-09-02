@@ -359,17 +359,17 @@ export default function HafizaTab() {
           </div>
 
           {/* TABLE CARD */}
-          <Card className="p-0 bg-white rounded-2xl border border-[#0e2b40]/10 shadow-sm border-l-4 border-[#0e2b40]">
+          <Card className="p-0 bg-white rounded-2xl border border-[#2e6b8a]/10 shadow-sm border-l-4 border-[#2e6b8a]">
             <CardHeader className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between p-2 sm:p-3 gap-2 border-b border-gray-100">
               <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                <div className="p-2 rounded-lg bg-[#0e2b40]/10 text-[#0e2b40]">
+                <div className="p-2 rounded-lg bg-[#2e6b8a]/10 text-[#2e6b8a]">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
                   <CardTitle className="text-md font-bold text-slate-800">كشف القيود</CardTitle>
                   <CardDescription className="text-sm text-slate-600">عرض وتدقيق كافة حوافظ التوريد</CardDescription>
                 </div>
-                <Badge className="mr-4 bg-[#c99a4e] text-[#1a1206]">{filtered.length} سجل</Badge>
+                <Badge className="mr-4 bg-[#b8d4e8] text-[#1a1206]">{filtered.length} سجل</Badge>
               </div>
 
               <div className="grid grid-cols-2 sm:flex items-center justify-end gap-1 sm:gap-2 w-full sm:w-auto">
@@ -400,7 +400,7 @@ export default function HafizaTab() {
             <CardContent className="p-0">
               <div className="w-full overflow-auto max-h-[72vh] overscroll-x-contain rounded-xl">
                 <Table className="min-w-max table-auto text-sm sm:text-base font-semibold">
-                  <TableHeader className="bg-[#0e2b40] sticky top-0 z-10 [&_th]:text-white">
+                  <TableHeader className="bg-[#2e6b8a] sticky top-0 z-10 [&_th]:text-white">
                     <TableRow>
                       <TableHead className="whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base text-center text-slate-500">#</TableHead>
                       {COLS.map((c) => (

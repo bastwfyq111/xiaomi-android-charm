@@ -615,7 +615,7 @@ const AppTabs: React.FC = () => {
               />
             </div>
             <div className="apk-only-actions flex flex-wrap items-center gap-2">
-              <button onClick={handleImportClick} className="flex items-center gap-1 bg-teal-600 hover:bg-teal-700 text-white text-xs px-3 py-2 rounded shadow-sm">
+              <button onClick={handleImportClick} className="flex items-center gap-1 bg-sky-600 hover:bg-sky-700 text-white text-xs px-3 py-2 rounded shadow-sm">
                 <Upload className="w-4 h-4" /> استيراد Excel
               </button>
               <button onClick={handleExportExcel} className="flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-2 rounded shadow-sm">

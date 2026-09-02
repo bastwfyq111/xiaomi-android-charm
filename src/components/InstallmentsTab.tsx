@@ -395,7 +395,7 @@ const StatsGrid = ({ stats, columns = 3 }: { stats: any[]; columns?: number }) =
           className={`${stat.bgClass} relative overflow-hidden min-h-[54px] sm:min-h-[64px] px-1.5 sm:px-3 py-1.5 sm:py-2.5 rounded-xl sm:rounded-2xl border ${stat.borderClass} shadow-sm hover:shadow-md active:scale-[0.99] transition-all`}
         >
           <span
-            className={`absolute inset-y-0 right-0 w-1 sm:w-1.5 ${stat.accentClass || "bg-teal-500"}`}
+            className={`absolute inset-y-0 right-0 w-1 sm:w-1.5 ${stat.accentClass || "bg-sky-500"}`}
           />
           <div className="pr-1.5 sm:pr-2 min-w-0">
             <div className="text-xs leading-tight sm:text-xs font-bold text-slate-500 truncate">
@@ -1868,8 +1868,8 @@ label:
 "إجمالي الرسوم التقديرية",
       value: fmt(totals2025.fees),
       bgClass: "bg-white",
-      borderClass: "border-teal-100",
-      accentClass: "bg-teal-500",
+      borderClass: "border-sky-100",
+      accentClass: "bg-sky-500",
     },
     {
       label: "إجمالي الأقساط المسددة",
@@ -1893,8 +1893,8 @@ label:
       label: "المدور (متبقي 2025)",
       value: fmt(totals2026.prevDue),
       bgClass: "bg-white",
-      borderClass: "border-teal-100",
-      accentClass: "bg-teal-600",
+      borderClass: "border-sky-100",
+      accentClass: "bg-sky-600",
     },
     {
       label: "إجمالي مسدد 2026",
@@ -1987,28 +1987,28 @@ const installments2026WebActions: WebActionItem[] = [
     <div className="w-full space-y-4 sm:space-y-6 p-0" dir="rtl">
       
 {/* ========== واجهة جدول 2025 ========== */}
-      <div className="w-full bg-gradient-to-b from-teal-50/60 to-white shadow-lg border border-teal-100 rounded-2xl overflow-hidden">
-        <div className="bg-gradient-to-l from-teal-800 via-teal-600 to-emerald-600 px-2 sm:px-6 py-2.5 sm:py-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center flex-wrap gap-2">
+      <div className="w-full bg-gradient-to-b from-sky-50/60 to-white shadow-lg border border-sky-100 rounded-2xl overflow-hidden">
+        <div className="bg-gradient-to-l from-sky-800 via-sky-600 to-emerald-600 px-2 sm:px-6 py-2.5 sm:py-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center flex-wrap gap-2">
           <div className="min-w-0">
             <h2 className="text-base sm:text-base sm:text-lg font-bold text-white">
 
  📊 أقساط ومستندات 
  العام 2025
             </h2>
-            <p className="text-xs text-teal-100">يشمل جميع الدفعات لعامي 2024 و 2025</p>
+            <p className="text-xs text-sky-100">يشمل جميع الدفعات لعامي 2024 و 2025</p>
           </div>
           <div className="w-full sm:w-auto grid grid-cols-2 sm:flex gap-1.5 sm:gap-2 items-center">
             <div className="relative w-full sm:w-auto">
-              <Search className="w-4 h-4 absolute right-2.5 top-2.5 text-teal-500" />
+              <Search className="w-4 h-4 absolute right-2.5 top-2.5 text-sky-500" />
               <input
                 type="text"
                 placeholder="بحث (الاسم، الدفعة، المساق)..."
                 value={search2025}
                 onChange={(e) => setSearch2025(e.target.value)}
-                className="pl-3 pr-8 py-2 rounded-lg text-sm border border-teal-300 outline-none focus:ring-2 focus:ring-teal-300 w-full sm:w-48 text-slate-800 shadow-sm"
+                className="pl-3 pr-8 py-2 rounded-lg text-sm border border-sky-300 outline-none focus:ring-2 focus:ring-sky-300 w-full sm:w-48 text-slate-800 shadow-sm"
               />
             </div>
-<label className="apk-only-actions relative w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white text-teal-700 rounded-lg text-xs sm:text-xs font-bold cursor-pointer hover:bg-teal-50 shadow text-center truncate">
+<label className="apk-only-actions relative w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white text-sky-700 rounded-lg text-xs sm:text-xs font-bold cursor-pointer hover:bg-sky-50 shadow text-center truncate">
   📥 استيراد الملف{" "}
   <input
     type="file"
@@ -2029,7 +2029,7 @@ const installments2026WebActions: WebActionItem[] = [
               </button>
               <button
                 onClick={() => setPrintSettingsYear(2025)}
-                className="flex-1 sm:flex-none px-1.5 sm:px-2 py-1 sm:py-1 bg-white/95 text-teal-800 rounded-lg text-xs sm:text-xs font-bold shadow hover:bg-white transition-colors flex items-center justify-center gap-1 truncate"
+                className="flex-1 sm:flex-none px-1.5 sm:px-2 py-1 sm:py-1 bg-white/95 text-sky-800 rounded-lg text-xs sm:text-xs font-bold shadow hover:bg-white transition-colors flex items-center justify-center gap-1 truncate"
               >
                 <Printer className="w-3.5 h-3.5" /> طباعة تفصيلية
               </button>
@@ -2067,7 +2067,7 @@ const installments2026WebActions: WebActionItem[] = [
           <StatsGrid stats={stats2025} columns={3} />
           <div className="overflow-auto max-h-[72vh] rounded-lg border border-slate-200 shadow-sm relative">
             <table className="installments-table min-w-max table-auto text-sm sm:text-base font-semibold">
-              <thead className="bg-gradient-to-b from-teal-700 to-teal-800 font-bold border-b-2 border-emerald-900  [&>tr>th]:!text-white sticky top-0 z-20 shadow-md">
+              <thead className="bg-gradient-to-b from-sky-700 to-sky-800 font-bold border-b-2 border-emerald-900  [&>tr>th]:!text-white sticky top-0 z-20 shadow-md">
                 <tr>
                   <th className="text-center whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">#</th>
                   <th
@@ -2150,7 +2150,7 @@ const installments2026WebActions: WebActionItem[] = [
                           <td className="text-center text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                             {i + 1}
                           </td>
-                          <td className="text-center font-semibold text-black whitespace-nowrap bg-teal-50/70 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
+                          <td className="text-center font-semibold text-black whitespace-nowrap bg-sky-50/70 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
                             {r.name}
                           </td>
                           <td className="text-center text-black whitespace-nowrap bg-cyan-50/70 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base">
@@ -2214,7 +2214,7 @@ const installments2026WebActions: WebActionItem[] = [
                         </tr>
                       );
                     })}
-                    <tr className="border-t-2 border-teal-800 bg-teal-100/80 font-extrabold">
+                    <tr className="border-t-2 border-sky-800 bg-sky-100/80 font-extrabold">
                       <td className="text-center text-black whitespace-nowrap !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base" colSpan={4}>
                         الإجماليات
                       </td>
@@ -2245,8 +2245,8 @@ const installments2026WebActions: WebActionItem[] = [
         </div>
       </div>
 {/* ========== واجهة جدول 2026 ========== */}
-      <div className="w-full bg-gradient-to-b from-teal-50/60 to-white shadow-lg border border-teal-100 rounded-2xl overflow-hidden">
-        <div className="bg-gradient-to-l from-teal-800 via-teal-600 to-emerald-600 px-2 sm:px-6 py-2.5 sm:py-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center flex-wrap gap-2">
+      <div className="w-full bg-gradient-to-b from-sky-50/60 to-white shadow-lg border border-sky-100 rounded-2xl overflow-hidden">
+        <div className="bg-gradient-to-l from-sky-800 via-sky-600 to-emerald-600 px-2 sm:px-6 py-2.5 sm:py-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center flex-wrap gap-2">
           <div className="min-w-0">
             <h2 className="text-base sm:text-lg sm:text-xl font-extrabold text-white">
               📊 سجل أقساط العام الحالي 2026
@@ -2273,7 +2273,7 @@ const installments2026WebActions: WebActionItem[] = [
                 placeholder="بحث (الاسم، الدفعة، المساق)..."
                 value={search2026}
                 onChange={(e) => setSearch2026(e.target.value)}
-                className="pl-3 pr-8 py-2 rounded-lg text-lg font-extrabold border border-teal-300 outline-none focus:ring-2 focus:ring-teal-300 w-full sm:w-48 text-yellow-600 shadow-sm"
+                className="pl-3 pr-8 py-2 rounded-lg text-lg font-extrabold border border-sky-300 outline-none focus:ring-2 focus:ring-sky-300 w-full sm:w-48 text-yellow-600 shadow-sm"
               />
             </div>
       
@@ -2298,7 +2298,7 @@ const installments2026WebActions: WebActionItem[] = [
               ➕ إضافة قسط
             </button>
     
-            <label className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white text-teal-700 rounded-lg text-lg font-bold cursor-pointer shadow hover:bg-teal-50 transition-colors text-center truncate">
+            <label className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white text-sky-700 rounded-lg text-lg font-bold cursor-pointer shadow hover:bg-sky-50 transition-colors text-center truncate">
               📥 استيراد{" "}
               <input
                 type="file"
@@ -2317,7 +2317,7 @@ const installments2026WebActions: WebActionItem[] = [
               </button>
               <button
                 onClick={() => setPrintSettingsYear(2026)}
-                className="flex-1 sm:flex-none px-1.5 sm:px-2 py-1 sm:py-1 bg-white/95 text-teal-800 rounded-lg text-lg font-bold shadow hover:bg-white transition-colors flex items-center justify-center gap-1 truncate"
+                className="flex-1 sm:flex-none px-1.5 sm:px-2 py-1 sm:py-1 bg-white/95 text-sky-800 rounded-lg text-lg font-bold shadow hover:bg-white transition-colors flex items-center justify-center gap-1 truncate"
               >
                 <Printer className="w-4 h-4" /> طباعة تفصيلية
               </button>
@@ -2501,7 +2501,7 @@ const installments2026WebActions: WebActionItem[] = [
                               className="w-full min-w-[180px] bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                             />
                           </td>
-                          <td className="text-center w-auto text-black whitespace-nowrap bg-violet-50/70 !px-2 !py-2 !text-lg border-l border-slate-200">
+                          <td className="text-center w-auto text-black whitespace-nowrap bg-sky-50/70 !px-2 !py-2 !text-lg border-l border-slate-200">
                             <input
                               value={r.batch || ""}
                               onChange={(e) =>
@@ -2511,7 +2511,7 @@ const installments2026WebActions: WebActionItem[] = [
                               placeholder="—"
                             />
                           </td>
-                          <td className="text-center w-auto text-black whitespace-nowrap bg-teal-50/60 !px-2 !py-2 !text-lg border-l border-slate-200">
+                          <td className="text-center w-auto text-black whitespace-nowrap bg-sky-50/60 !px-2 !py-2 !text-lg border-l border-slate-200">
                             <input
                               value={r.specialty || ""}
                               onChange={(e) =>
@@ -2532,7 +2532,7 @@ const installments2026WebActions: WebActionItem[] = [
                               className="w-full min-w-[110px] bg-transparent text-center font-mono text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                             />
                           </td>
-                          <td className="text-center w-auto numeric-cell font-mono text-black font-extrabold whitespace-nowrap bg-indigo-50/50 !px-2 !py-2 !text-lg border-l border-slate-200">
+                          <td className="text-center w-auto numeric-cell font-mono text-black font-extrabold whitespace-nowrap bg-sky-50/50 !px-2 !py-2 !text-lg border-l border-slate-200">
                             <input
                               type="number"
                               step="0.01"
@@ -2717,7 +2717,7 @@ const installments2026WebActions: WebActionItem[] = [
               type="text"
               value={condFormatParams.text}
               onChange={(e) => setCondFormatParams({ ...condFormatParams, text: e.target.value })}
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-teal-300 outline-none"
+              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-sky-300 outline-none"
               placeholder="مثال: معتمد, منسحب, مجاني..."
             />
           </div>
@@ -2732,7 +2732,7 @@ const installments2026WebActions: WebActionItem[] = [
                 { name: "أخضر", class: "bg-green-100 hover:bg-green-100" },
                 { name: "أحمر", class: "bg-red-100 hover:bg-red-100" },
                 { name: "أزرق", class: "bg-blue-100 hover:bg-blue-100" },
-                { name: "بنفسجي", class: "bg-purple-100 hover:bg-purple-100" },
+                { name: "بنفسجي", class: "bg-sky-100 hover:bg-sky-100" },
               ].map((color) => (
                 <button
                   key={color.class}
@@ -2788,7 +2788,7 @@ const installments2026WebActions: WebActionItem[] = [
               </button>
               <button
                 onClick={() => setCondFormatModal(false)}
-                className="px-4 py-2 bg-teal-700 text-white rounded-lg font-bold"
+                className="px-4 py-2 bg-sky-700 text-white rounded-lg font-bold"
               >
                 إغلاق
               </button>
@@ -3158,7 +3158,7 @@ const installments2026WebActions: WebActionItem[] = [
                       setNewStudentName(n);
                       setShowSuggestions(false);
                     }}
-                    className="p-2 text-sm hover:bg-teal-50 cursor-pointer text-slate-800"
+                    className="p-2 text-sm hover:bg-sky-50 cursor-pointer text-slate-800"
                   >
                     {n}
                   </div>
@@ -3208,7 +3208,7 @@ const installments2026WebActions: WebActionItem[] = [
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-teal-700 text-white rounded-lg font-bold"
+              className="px-4 py-2 bg-sky-700 text-white rounded-lg font-bold"
             >
               حفظ
             </button>

@@ -220,7 +220,7 @@ const rowClass = (r: Row) => {
 
   switch (r.lv) {
     case "header":
-      return "bg-teal-700 text-white font-bold";
+      return "bg-sky-700 text-white font-bold";
     case "fasl":
       return "bg-yellow-100 text-amber-900 font-semibold";
     case "band":
@@ -234,7 +234,7 @@ const rowClass = (r: Row) => {
 
 // الدالة المساعدة لملخصات الأبواب لتطبيق نفس الألوان
 const getBabSummaryColor = (bn: number | null) => {
-  if (bn === null) return "bg-teal-700 text-white font-bold";
+  if (bn === null) return "bg-sky-700 text-white font-bold";
   switch (bn) {
     case 1: return "bg-emerald-200 text-emerald-900 font-semibold bab-1";
     case 2: return "bg-blue-200 text-blue-900 font-semibold bab-2";
@@ -353,7 +353,7 @@ export default function ExpensesTab() {
     const totals = computeBabTotals(curVals, prevVals);
     return (
       <div className="mt-3 rounded-xl overflow-hidden border-2 border-black shadow" dir="rtl">
-        <div className="bg-teal-800 text-white text-center py-2 font-bold text-sm tracking-wide">
+        <div className="bg-sky-800 text-white text-center py-2 font-bold text-sm tracking-wide">
           إجمالي الاستخدامات — ملخص حسب الأبواب
         </div>
         <div className="overflow-x-auto">
@@ -408,36 +408,36 @@ export default function ExpensesTab() {
   // ========= الغلاف =========
   const renderCover = () => (
     <div
-      className="mx-4 my-6 w-auto max-w-none rounded-[2rem] border-[3px] border-teal-700 bg-white px-5 py-10 text-center shadow-sm sm:mx-auto sm:max-w-2xl sm:px-12 sm:py-12"
+      className="mx-4 my-6 w-auto max-w-none rounded-[2rem] border-[3px] border-sky-700 bg-white px-5 py-10 text-center shadow-sm sm:mx-auto sm:max-w-2xl sm:px-12 sm:py-12"
       dir="rtl"
     >
       {/* الترويسة العلوية */}
       <div className="space-y-1">
-        <h3 className="text-[2rem] font-extrabold leading-[1.35] tracking-wide text-teal-800 sm:text-3xl">
+        <h3 className="text-[2rem] font-extrabold leading-[1.35] tracking-wide text-sky-800 sm:text-3xl">
           الجمهورية اليمنية
         </h3>
-        <h4 className="text-[1.65rem] font-bold leading-[1.45] text-teal-700 sm:text-2xl">
+        <h4 className="text-[1.65rem] font-bold leading-[1.45] text-sky-700 sm:text-2xl">
           وزارة المالية
         </h4>
       </div>
 
       {/* الخط الفاصل الأول */}
-      <hr className="mx-auto my-8 w-[88%] border-t-[3px] border-teal-700 opacity-90" />
+      <hr className="mx-auto my-8 w-[88%] border-t-[3px] border-sky-700 opacity-90" />
 
       {/* العنوان الرئيسي */}
       <div className="my-9 space-y-3 sm:my-10 sm:space-y-4">
-        <h1 className="text-[3.15rem] font-black leading-[1.18] tracking-tight text-teal-800 sm:text-[4rem]">
+        <h1 className="text-[3.15rem] font-black leading-[1.18] tracking-tight text-sky-800 sm:text-[4rem]">
           كشف الحساب
           <br />
           الشهري
         </h1>
         <p className="mt-5 text-[1.45rem] font-semibold leading-[1.5] text-slate-700 sm:mt-6 sm:text-2xl">
-          عن العام المالي <span className="font-bold text-teal-700">{year}م</span>
+          عن العام المالي <span className="font-bold text-sky-700">{year}م</span>
         </p>
       </div>
 
       {/* الخط الفاصل الثاني */}
-      <hr className="mx-auto my-8 w-[88%] border-t-[3px] border-teal-700 opacity-90" />
+      <hr className="mx-auto my-8 w-[88%] border-t-[3px] border-sky-700 opacity-90" />
 
       {/* بيانات الجهة */}
       <div className="flex flex-col items-center">
@@ -624,7 +624,7 @@ export default function ExpensesTab() {
     return (
       <div className="space-y-4" dir="rtl">
         <div className="rounded-xl border-2 border-black overflow-hidden shadow-sm">
-          <div className="bg-gradient-to-r from-indigo-700 to-purple-700 text-white p-3 text-center">
+          <div className="bg-gradient-to-r from-sky-700 to-sky-700 text-white p-3 text-center">
             <h3 className="text-base sm:text-lg font-bold">كشف حساب السنة</h3>
             <p className="text-xs opacity-90">ملخص جميع الأشهر للعام {year}م</p>
           </div>
@@ -659,7 +659,7 @@ export default function ExpensesTab() {
         </div>
 
         <div className="rounded-xl border-2 border-black overflow-hidden shadow-sm">
-          <div className="bg-teal-800 text-white p-3 text-center">
+          <div className="bg-sky-800 text-white p-3 text-center">
             <h3 className="text-base font-bold">ملخص إجمالي الاستخدامات حسب الأبواب — شهرياً</h3>
             <p className="text-xs opacity-80">المبالغ بالريال — الشهر الجاري فقط</p>
           </div>
@@ -714,12 +714,12 @@ export default function ExpensesTab() {
     g === "intro"
       ? "bg-slate-700"
       : g === "month"
-        ? "bg-teal-700"
+        ? "bg-sky-700"
         : g === "period"
           ? "bg-amber-600"
           : g === "final"
             ? "bg-rose-700"
-            : "bg-indigo-700";
+            : "bg-sky-700";
 
   const triggerExpenseAction = (id: string) => {
     (document.getElementById(id) as HTMLButtonElement | null)?.click();
@@ -787,8 +787,8 @@ export default function ExpensesTab() {
                 #expenses-report .border-black, #expenses-report .border { border-color: #000 !important; }
                 #expenses-report .shadow, #expenses-report .shadow-sm, #expenses-report .shadow-md { box-shadow: none !important; }
                 #expenses-report .bg-gradient-to-r { background: linear-gradient(90deg, #0f766e, #047857) !important; color: #fff !important; padding: 9px !important; text-align: center; }
-                #expenses-report .bg-teal-800 { background: #115e59 !important; color: #fff !important; padding: 8px !important; text-align: center; }
-                #expenses-report .bg-teal-700 { background: #0f766e !important; color: #fff !important; }
+                #expenses-report .bg-sky-800 { background: #115e59 !important; color: #fff !important; padding: 8px !important; text-align: center; }
+                #expenses-report .bg-sky-700 { background: #0f766e !important; color: #fff !important; }
                 #expenses-report .bg-yellow-100 { background: #fef3c7 !important; color: #78350f !important; }
                 #expenses-report .bg-sky-50 { background: #f0f9ff !important; color: #1e293b !important; }
                 #expenses-report .bg-slate-50 { background: #f8fafc !important; color: #000 !important; }
