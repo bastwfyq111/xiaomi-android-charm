@@ -1697,11 +1697,13 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
         max-width: none;
         margin: 0;
       }
+      
+      
       .page-frame {
         width: 100%;
         min-height: auto;
         padding: 7mm;
-        border: 1px solid #0f766e;
+        border: 1px solid #000;
         border-radius: 3mm;
         background: #fff;
         box-shadow: 0 2mm 8mm rgba(15, 118, 110, 0.14);
@@ -1731,12 +1733,28 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
         border-radius: 2mm;
         margin-bottom: 5mm;
       }
-      .header h1 { margin: 0; font-size: 16pt; line-height: 1.25; font-weight: 800; color: #fff; }
-      .header p { margin: 2mm 0 0; font-size: 11pt; line-height: 1.25; font-weight: 700; color: #fff; }
-      .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; margin-bottom: 5mm; }
-      .info-box { border: 0.5pt solid #64748b; background: #f8fafc; padding: 3mm 2mm; min-height: 16mm; border-radius: 1.5mm; text-align: center; }
-      .info-lbl { font-size: 9.5pt; line-height: 1.2; font-weight: 700; color: #475569; text-align: center; }
-      .info-val { font-size: 11pt; line-height: 1.25; font-weight: 800; margin-top: 1mm; overflow-wrap: anywhere; }
+      .header h1 { margin: 0; font-size: 16pt; line-height: 1.25; font-weight: 800; color: #000; }
+      .header p { margin: 2mm 0 0; font-size: 11pt; line-height: 1.25; font-weight: 700; color: #000; }
+ 
+ .statement-title {
+  text-align: center;
+  font-size: 22 px;
+  font-weight: 900;
+  color: #0f766e;
+  margin: 0 0 6px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid # 0 f766e;
+ }
+ .info-grid { 
+display: grid;grid-template-columns: 1 fr 1 fr;gap: 8px;
+margin-bottom: 12px;
+margin-top:10px;
+}
+   
+   
+      .info-box { border: 1px solid black; background: #CDD5AE; padding: 3mm 2mm; min-height: 16mm; border-radius: 1.5mm; text-align: center; }
+      .info-lbl { font-size: 13.5pt; line-height: 1.2; font-weight: 900; color:black; text-align: center; }
+      .info-val { font-size: 13pt; line-height: 1.25; font-weight: 900; margin-top: 1mm; overflow-wrap: anywhere; }
       table {
         table-layout: auto;
         width: 100%;
@@ -1798,6 +1816,7 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
       <div class="container">
         <div class="page-frame">
           <div class="info-grid">
+   <h2 class="statement-title">كشف حساب متدرب — للعام ${year}م</h2>
             ${infoCard("اسم المتدرب", row.name)}
             ${infoCard("الدفعة", row.batch)}
             ${infoCard("المساق", row.specialty)}
