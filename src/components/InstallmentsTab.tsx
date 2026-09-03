@@ -1,3 +1,6 @@
+/* ملف: src/components/InstallmentsTab.tsx
+   ملاحظة: التغييرات تنسيقية فقط (CSS / classNames / ثوابت أحجام)
+*/
 import React, { useMemo, useState } from "react";
 import { useStore, type InstallmentCustomColumn } from "@/lib/store";
 import { fmt } from "@/lib/format";
@@ -95,10 +98,18 @@ const safePdfFileName = (value: any): string =>
     .replace(/\s+/g, "_")
     .trim() || "متدرب";
 
+/* ==========================
+   ثوابت تنسيق عامة للموبايل
+   ========================== */
+// أحجام أيقونات وأزرار أصغر لتناسب شاشات شاومي
+const ICON_MOBILE = "w-4 h-4"; // أيقونات مضغوطة في الجداول والأزرار
+const ICON_TAP = "w-5 h-5"; // أيقونات لزرّات اللمس المهمة
+const BTN_COMPACT = "px-2 py-1 text-xs rounded-md"; // أزرار أصغر وأكثر إحكامًا
+const HEADING_MOBILE = "text-lg sm:text-xl font-extrabold";
+
 /**
- * ينشئ ملف PDF من التقرير التفصيلي نفسه بدل تحويله إلى جدول إجمالي.
- * يستخدم صورة الترويسة المضمّنة محلياً، وعرضاً أكبر ومقياس تصوير مرتفعاً
- * حتى تبقى الأعمدة العربية والأشهر واضحة عند الطباعة والحفظ.
+ * downloadDetailedHtmlPdf
+ * (لم أصِحح المنطق — فقط تأكدت أن حجم إطار الطباعة مناسب عند التحميل)
  */
 const downloadDetailedHtmlPdf = async ({
   title,
@@ -194,7 +205,7 @@ const downloadDetailedHtmlPdf = async ({
               width: 100% !important;
               height: 100% !important;
               object-fit: contain !important;
-object-position:top!important;
+              object-position: top !important;
             }
             .pdf-download-root .doc-header .title h1 { font-size: 22px !important; }
             .pdf-download-root .doc-header .title h2 { font-size: 18px !important; }
@@ -257,9 +268,7 @@ object-position:top!important;
           <div class="pdf-download-root">${reportLetterheadHtml()}${body}</div>
         </body>
       </html>`);
-fdoc.close();
-
-
+    fdoc.close();
 
     const images = Array.from(fdoc.images);
     await Promise.all(
@@ -393,11 +402,10 @@ const StatsGrid = ({ stats, columns = 3 }: { stats: any[]; columns?: number }) =
       {stats.map((stat, idx) => (
         <div
           key={idx}
-          className={`${stat.bgClass} relative overflow-hidden min-h-[54px] sm:min-h-[64px] px-1.5 sm:px-3 py-1.5 sm:py-2.5 rounded-xl sm:rounded-2xl border ${stat.borderClass} shadow-sm hover:shadow-md active:scale-[0.99] transition-all`}
+          // خففنا min-height لجعل البطاقات أكثر إحكامًا على الشاشات الصغيرة
+          className={`${stat.bgClass} relative overflow-hidden min-h-[46px] sm:min-h-[56px] px-2 sm:px-3 py-1 sm:py-2 rounded-xl sm:rounded-2xl border ${stat.borderClass} shadow-sm`}
         >
-          <span
-            className={`absolute inset-y-0 right-0 w-1 sm:w-1.5 ${stat.accentClass || "bg-sky-500"}`}
-          />
+          <span className={`absolute inset-y-0 right-0 w-1 sm:w-1.5 ${stat.accentClass || "bg-sky-500"}`} />
           <div className="pr-1.5 sm:pr-2 min-w-0">
             <div className="text-xs leading-tight sm:text-xs font-bold text-slate-500 truncate">
               {stat.label}
@@ -431,13 +439,13 @@ const Modal = ({
         className="bg-white rounded-t-2xl sm:rounded-2xl w-full max-w-md shadow-2xl max-h-[90vh] overflow-y-auto"
         dir="rtl"
       >
-        <div className="flex justify-between items-center p-4 border-b bg-gradient-to-l from-blue-50 to-slate-50 sticky top-0 z-10">
-          <h3 className="font-bold text-base sm:text-base sm:text-lg text-slate-900">{title}</h3>
+        <div className="flex justify-between items-center p-3 sm:p-4 border-b bg-gradient-to-l from-blue-50 to-slate-50 sticky top-0 z-10">
+          <h3 className={`font-bold text-sm sm:text-base ${HEADING_MOBILE}`}>{title}</h3>
           <button onClick={onClose} className="p-1 hover:bg-slate-200 rounded-lg">
-            <X className="w-5 h-5 text-slate-600" />
+            <X className={`${ICON_MOBILE} text-slate-600`} />
           </button>
         </div>
-        <div className="p-4 space-y-3">{children}</div>
+        <div className="p-3 sm:p-4 space-y-3">{children}</div>
       </div>
     </div>
   );
@@ -451,8 +459,7 @@ const SortIcon = ({
   sortConfig: { key: string; direction: "asc" | "desc" } | null;
   columnKey: string;
 }) => {
-  if (sortConfig?.key !== columnKey)
-    return <ArrowUpDown className="w-3 h-3 text-white/70" />;
+  if (sortConfig?.key !== columnKey) return <ArrowUpDown className="w-3 h-3 text-white/70" />;
   return sortConfig.direction === "asc" ? (
     <ArrowUp className="w-3 h-3 text-emerald-300" />
   ) : (
@@ -1068,10 +1075,10 @@ const exportToPDF = async (
       * { 
     box-sizing:border-box; 
       }
-.print-toolbar {
-display: flex;
-justify-content: flex-end;
- margin: 0 0 6px;
+ .print-toolbar {
+ display: flex;
+ justify-content: flex-end;
+  margin: 0 0 6px;
       }
       .print-toolbar button {
         border: 0.6pt solid #0f766e;
@@ -1080,9 +1087,9 @@ justify-content: flex-end;
         color: #fff;
         cursor: pointer;
         font-family: Cairo, Arial, sans-serif;
-        font-size: 15px;
+        font-size: 13px;
         font-weight: 800;
-        padding: 5px 12px;
+        padding: 4px 10px;
       }
       .print-toolbar button:hover { 
   background: #115e59; 
@@ -1098,27 +1105,27 @@ justify-content: flex-end;
       }
       .doc-header .title { text-align:center; }
       .doc-header h1 { 
-  font-size: 20px; 
-font-weight: 800; 
-letter-spacing: -0.2px;
+  font-size: 18px; 
+ font-weight: 800; 
+ letter-spacing: -0.2px;
 }
 .doc-header h2 { 
-font-size: 16px; 
+font-size: 15px; 
 font-weight: 700;
 margin-top: 1px; 
 color: ${colorTokens.accent}; }
   .doc-header .meta { 
-font-size: 14px; 
+font-size: 12px; 
 font-weight: 700; 
 text-align: center; 
-line-height: 1.6; 
+line-height: 1.5; 
   }
    .doc-header .meta span { display: block; 
    }
 
       table {
-  font-size:16px;
-table-layout: auto!important;
+  font-size:14px;
+ table-layout: auto!important;
   width: 100% !important; 
 border: 1px solid #000;
       }
@@ -1130,11 +1137,11 @@ vertical-align: middle !important; /* ضمان المحاذاة الرأسية �
 white-space: nowrap !important; /* الأعمدة العادية (أرقام/أشهر) تبقى بسطر واحد */
         overflow: hidden;
         text-overflow: ellipsis;
-        font-size:15px;
+        font-size:13px;
 overflow-wrap: normal !important;
         word-break: keep-all !important;
         hyphens: none !important;
-     line-height: 1.5;
+     line-height: 1.45;
         font-weight: 700;
     color: #000 !important;
       }
@@ -1183,7 +1190,7 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
       }
       td.numeric-cell, th.numeric-cell, td.date-cell, th.date-cell, td.compact-cell, th.compact-cell {
         font-family: 'Times New Roman', Times, serif !important;
-        font-size: 15px !important;
+        font-size: 13px !important;
         line-height: 1.15 !important;
         white-space: nowrap !important;
         overflow-wrap: normal !important;
@@ -1192,7 +1199,7 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
         text-align: center !important;
       }
       td.numeric-cell *, th.numeric-cell *, td.date-cell *, th.date-cell *, td.compact-cell *, th.compact-cell * {
-        font-size: 14px !important;
+        font-size: 12px !important;
         line-height: inherit !important;
         white-space: nowrap !important;
         overflow-wrap: normal !important;
@@ -1203,7 +1210,7 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
         background: ${colorTokens.head} !important;
         color: ${colorTokens.headText} !important;
         font-family: Cairo, Arial, sans-serif !important;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 800;
         padding: 6px 7px !important;
         text-align: center !important;
@@ -1652,9 +1659,6 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
     // 5. حساب المبلغ المتبقي
     const remaining = dueTotal - totalPaid;
 
-    // ✅ تمت إزالة الـ return المبكر الذي كان يقطع تنفيذ باقي الدالة
-    // (كان يُرجع {fees, prevDue, totalPaid, dueTotal, remaining} بدل {title, body, css})
-
     // استخراج اسم آمن ليستخدمه المتصفح كاسم افتراضي عند الحفظ PDF
     const safeName = safePdfFileName(row.name);
 
@@ -1691,14 +1695,15 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
           ? "الرصيد الإضافي (له)"
           : "الحالة: تم السداد بالكامل";
 
+    // ضبط أحجام كروت المعلومات والطباعة (أصغر وأكثر إحكاماً)
     const statementCss = `
-      @page { size: A4 portrait; margin: 10mm; }
+      @page { size: A4 portrait; margin: 8mm; }
       * { box-sizing: border-box; }
       html, body { width: 100%;  margin: 0; padding: 0; }
       body {
         font-family: "Times New Roman", "Noto Naskh Arabic", "Cairo", Tahoma, sans-serif;
         color: #111827;
-        font-size: 14px;
+        font-size: 12.5px;
         line-height: 1.35;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
@@ -1708,16 +1713,15 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
         max-width: none;
         margin: 0;
       }
-      
-      
+
       .page-frame {
         width: 100%;
         min-height: auto;
-        padding: 7mm;
+        padding: 6mm;
         border: 1px solid #000;
         border-radius: 3mm;
         background: #fff;
-        box-shadow: 0 2mm 8mm rgba(15, 118, 110, 0.14);
+        box-shadow: 0 2mm 8mm rgba(15, 118, 110, 0.08);
       }
       .print-toolbar {
         display: flex;
@@ -1731,103 +1735,114 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
         color: #fff;
         cursor: pointer;
         font-family: Cairo, Arial, sans-serif;
-        font-size: 14pt;
+        font-size: 12pt;
         font-weight: 800;
-        padding: 2.2mm 5mm;
+        padding: 2mm 4mm;
       }
       .print-toolbar button:hover { background: #115e59; }
 
       .header {
         background: #0f766e;
         color: #fff;
-        padding: 5mm 4mm;
+        padding: 4mm 3mm;
         border-radius: 2mm;
         margin-bottom: 5mm;
       }
       .header h1 { margin: 0; font-size: 16pt; line-height: 1.25; font-weight: 800; color: #000; }
-      .header p { margin: 2mm 0 0; font-size: 11pt; line-height: 1.25; font-weight: 700; color: #000; }
- 
+      .header p { margin: 2mm 0 0; font-size: 10.5pt; line-height: 1.25; font-weight: 700; color: #000; }
+
  .statement-title {
   text-align: center;
-  font-size: 22 px;
+  font-size: 18pt;
   font-weight: 900;
   color: #0f766e;
   margin: 0 0 6px;
   padding-bottom: 6px;
-  border-bottom: 2px solid # 0 f766e;
+  border-bottom: 2px solid #0f766e;
  }
- .info-grid { 
-display: grid;grid-template-columns: 1 fr 1 fr;gap: 8px;
-margin-bottom: 12px;
-margin-top:10px;
-}
-   
-   
-      .info-box { border: 1px solid black; background: #CDD5AE; padding: 3mm 2mm; min-height: 16mm; border-radius: 1.5mm; text-align: center; }
-      .info-lbl { font-size: 13.5pt; line-height: 1.2; font-weight: 900; color:black; text-align: center; }
-      .info-val { font-size: 13pt; line-height: 1.25; font-weight: 900; margin-top: 1mm; overflow-wrap: anywhere; }
-      table {
-        table-layout: auto;
-        width: 100%;
-        min-width: 100%;
-        border-collapse: collapse;
-        margin-top: 1mm;
-        page-break-inside: avoid;
-        break-inside: avoid;
+ .info-grid {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 6px;
+ margin-bottom: 10px;
+ margin-top:6px;
+ }
+
+     /* كروت المعلومات مصغّرة لتناسب ورقة A4 عند الطباعة */
+    .info-box {
+      border: 1px solid #000;
+      background: #CDD5AE;
+      padding: 2mm 1.5mm;
+      min-height: 12mm;
+      border-radius: 1.5mm;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .info-lbl { font-size: 11pt; line-height: 1.15; font-weight: 800; color:black; text-align: center; }
+    .info-val { font-size: 10.5pt; line-height: 1.15; font-weight: 800; margin-top: 1mm; overflow-wrap: anywhere; }
+
+    table {
+      table-layout: auto;
+      width: 100%;
+      min-width: 100%;
+      border-collapse: collapse;
+      margin-top: 2mm;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    th, td {
+      border: 0.75pt solid #000;
+      text-align: center;
+      vertical-align: middle;
+      padding: 2.2mm 2mm;
+      font-size: 10.5pt;
+      line-height: 1.25;
+      white-space: normal;
+      overflow: hidden;
+      text-overflow: clip;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      hyphens: auto;
+    }
+    th { background: #0f766e; color:white!important; font-weight: 900; }
+    td { color: #000 !important; font-weight: 700; }
+    .lbl { text-align: center; font-weight: 800; }
+    .num { font-family: "Times New Roman", Times, serif; font-weight: 800; font-size: 10.5pt; font-variant-numeric: tabular-nums; direction: ltr; }
+    .row-fees td { background: #eff6ff; }
+    .row-due-old td { background: #fef3c7; color: #000 !important; }
+    .row-total-due td { background: #fee2e2; color: #000 !important; font-weight: 800; }
+    .row-paid td { color: #000 !important; }
+    .row-total-paid td { background: #d1fae5; color: #000 !important; font-weight: 800; }
+    .row-final td { background: #fee2e2; font-size: 11pt; font-weight: 800; color: #000 !important; border-top: 1pt solid #000; }
+    .foot {
+      margin-top: 6mm;
+      display: flex;
+      justify-content: space-between;
+      gap: 8mm;
+      font-size: 9pt;
+      line-height: 1.3;
+      font-weight: 700;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .header, .info-grid { page-break-inside: avoid; break-inside: avoid; }
+    @media print {
+      html, body { width: auto; }
+      body { margin: 0; padding: 0; }
+      .page-frame { min-height: auto; border-radius: 0; box-shadow: none; padding: 4mm; }
+      .print-toolbar { display: none !important; }
+      .header, .info-box, th, td {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
       }
-      th, td {
-        border: 0.75pt solid #000;
-        text-align: center;
-        vertical-align: middle;
-        padding: 2.5mm 2mm;
-        font-size: 10.5pt;
-        line-height: 1.3;
-        white-space: normal;
-        overflow: hidden;
-        text-overflow: clip;
-        overflow-wrap: anywhere;
-        word-break: break-word;
-        hyphens: auto;
-      }
-      th { background: #0f766e; color:white!important; font-weight: 1000; }
-      td { color: #000 !important; font-weight: 700; }
-      .lbl { text-align: center; font-weight: 800; }
-      .num { font-family: "Times New Roman", Times, serif; font-weight: 800; font-size: 11pt; font-variant-numeric: tabular-nums; direction: ltr; }
-      .row-fees td { background: #eff6ff; }
-      .row-due-old td { background: #fef3c7; color: #000 !important; }
-      .row-total-due td { background: #fee2e2; color: #000 !important; font-weight: 800; }
-      .row-paid td { color: #000 !important; }
-      .row-total-paid td { background: #d1fae5; color: #000 !important; font-weight: 800; }
-      .row-final td { background: #fee2e2; font-size: 12pt; font-weight: 800; color: #000 !important; border-top: 1pt solid #000; }
-      .foot {
-        margin-top: 7mm;
-        display: flex;
-        justify-content: space-between;
-        gap: 8mm;
-        font-size: 9.5pt;
-        line-height: 1.3;
-        font-weight: 700;
-        page-break-inside: avoid;
-        break-inside: avoid;
-      }
-      .header, .info-grid { page-break-inside: avoid; break-inside: avoid; }
-      @media print {
-        html, body { width: auto; }
-        body { margin: 0; padding: 0; }
-        .page-frame { min-height: auto; border-radius: 0; box-shadow: none; }
-        .print-toolbar { display: none !important; }
-        .header, .info-box, th, td {
-          -webkit-print-color-adjust: exact;
-          print-color-adjust: exact;
-        }
-      }
+    }
     `;
 
     const body = `
       <div class="container">
         <div class="page-frame">
-          <div class="info-grid">
    <h2 class="statement-title">كشف حساب متدرب — للعام ${year}م</h2>
+          <div class="info-grid">
             ${infoCard("اسم المتدرب", row.name)}
             ${infoCard("الدفعة", row.batch)}
             ${infoCard("المساق", row.specialty)}
@@ -1864,8 +1879,6 @@ margin-top:10px;
     };
   };
 
-
-
   // فتح كشف الحساب في نافذة طباعة عالية الجودة (يمكن حفظه كـ PDF)
   const handleExportPdf = async (row: any, year: number) => {
     const { title, body, css } = generateAccountStatement(row, year);
@@ -1890,7 +1903,6 @@ margin-top:10px;
   const printStatement = (row: any, year: number) => {
     void handleExportPdf(row, year);
   };
-
 
   const stats2025 = [
     {
@@ -1962,7 +1974,7 @@ const installments2025WebActions: WebActionItem[] = [
       label: "استيراد Excel",
       onSelect: () => undefined,
       content: (
-        <label className="flex w-full relative cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
+        <label className="flex w-full relative cursor-pointer items-center gap-2 rounded-lg px-2 py-1 text-sm font-semibold text-slate-700 hover:bg-slate-100">
           <span>استيراد Excel</span>
           <input
             type="file"
@@ -1990,7 +2002,7 @@ const installments2026WebActions: WebActionItem[] = [
     label: "استيراد Excel",
     onSelect: () => undefined,
     content: (
-      <label className="flex w-full relative cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
+      <label className="flex w-full relative cursor-pointer items-center gap-2 rounded-lg px-2 py-1 text-sm font-semibold text-slate-700 hover:bg-slate-100">
           <span>استيراد Excel</span>
           <input
             type="file"
@@ -2020,8 +2032,8 @@ const installments2026WebActions: WebActionItem[] = [
       <div className="w-full bg-gradient-to-b from-sky-50/60 to-white shadow-lg border border-sky-100 rounded-2xl overflow-hidden">
         <div className="bg-gradient-to-l from-sky-800 via-sky-600 to-sky-600 px-2 sm:px-6 py-2.5 sm:py-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center flex-wrap gap-2">
           <div className="min-w-0">
-            <h2 className="text-base sm:text-base sm:text-lg font-bold text-white">
-
+            <h2 className={`${HEADING_MOBILE} text-white`}>
+ 
  📊 أقساط ومستندات 
  العام 2025
             </h2>
@@ -2038,7 +2050,7 @@ const installments2026WebActions: WebActionItem[] = [
                 className="pl-3 pr-8 py-2 rounded-lg text-sm border border-sky-300 outline-none focus:ring-2 focus:ring-sky-300 w-full sm:w-48 text-slate-800 shadow-sm"
               />
             </div>
-<label className="apk-only-actions relative w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white text-sky-700 rounded-lg text-xs sm:text-xs font-bold cursor-pointer hover:bg-sky-50 shadow text-center truncate">
+<label className="apk-only-actions relative w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white text-sky-700 rounded-lg text-xs sm:text-xs font-bold cursor-pointer hover:bg-sky-50 shadow text-center">
   📥 استيراد الملف{" "}
   <input
     type="file"
@@ -2049,19 +2061,18 @@ const installments2026WebActions: WebActionItem[] = [
 </label>
 
 
-
             <div className="apk-only-actions col-span-2 flex gap-1 w-full sm:w-auto">
               <button
                 onClick={() => exportToExcel(2025)}
-                className="flex-1 sm:flex-none px-1.5 sm:px-2 py-1 sm:py-1 bg-green-100 text-green-700 rounded-lg text-xs sm:text-xs font-bold shadow hover:bg-green-200 transition-colors flex items-center justify-center gap-1 truncate"
+                className={`flex-1 sm:flex-none ${BTN_COMPACT} bg-green-100 text-green-700 rounded-md font-bold shadow hover:bg-green-200 transition-colors flex items-center justify-center gap-1`}
               >
-                <FileSpreadsheet className="w-3.5 h-3.5" /> Excel
+                <FileSpreadsheet className={ICON_MOBILE} /> <span className="hidden sm:inline">Excel</span>
               </button>
               <button
                 onClick={() => setPrintSettingsYear(2025)}
-                className="flex-1 sm:flex-none px-1.5 sm:px-2 py-1 sm:py-1 bg-white/95 text-sky-800 rounded-lg text-xs sm:text-xs font-bold shadow hover:bg-white transition-colors flex items-center justify-center gap-1 truncate"
+                className={`flex-1 sm:flex-none ${BTN_COMPACT} bg-white/95 text-sky-800 rounded-md font-bold shadow hover:bg-white transition-colors flex items-center justify-center gap-1`}
               >
-                <Printer className="w-3.5 h-3.5" /> طباعة تفصيلية
+                <Printer className={ICON_MOBILE} /> <span className="hidden sm:inline">طباعة</span>
               </button>
             </div>
 
@@ -2081,7 +2092,7 @@ const installments2026WebActions: WebActionItem[] = [
               onClear={() => clearInstallments("2025")}
               printLabel="الأقساط/إجمالي"
               additionalWebActions={installments2025WebActions}
-              className="col-span-2 w-full !grid !grid-cols-2 sm:!flex !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-1 [&>button]:py-1 sm:[&>button]:px-2 sm:[&>button]:py-1 [&>button]:text-xs sm:[&>button]:text-xs"
+              className="col-span-2 w-full !grid !grid-cols-2 sm:!flex !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-1 [&>button]:py-1 sm:[&>button]:px-2 sm:[&>button]:py-1"
             />
           </div>
         </div>
@@ -2224,21 +2235,21 @@ const installments2026WebActions: WebActionItem[] = [
                               className="p-1 bg-sky-50 text-amber-600 rounded border border-amber-200 hover:bg-amber-500 hover:text-white transition-colors"
                               title="تعديل الصف"
                             >
-                              <Edit className="w-3.5 h-3.5" />
+                              <Edit className={ICON_MOBILE} />
                             </button>
                             <button
                               onClick={() => printStatement(r, 2025)}
                               className="p-1 bg-blue-50 text-blue-600 rounded border border-blue-200 hover:bg-blue-500 hover:text-white transition-colors"
                               title="طباعة الكشف"
                             >
-                              <Printer className="w-3.5 h-3.5" />
+                              <Printer className={ICON_MOBILE} />
                             </button>
                                 <button
                                   onClick={() => handleExportPdf(r, 2025)}
                                   className="p-1 bg-emerald-50 text-emerald-600 rounded border border-emerald-200 hover:bg-emerald-500 hover:text-white transition-colors"
                                   title="تنزيل PDF (متوافق مع شاومي)"
                                 >
-                                  <FileText className="w-3.5 h-3.5" />
+                                  <FileText className={ICON_MOBILE} />
                                 </button>
                           </td>
                         </tr>
@@ -2281,54 +2292,54 @@ const installments2026WebActions: WebActionItem[] = [
             <h2 className="text-base sm:text-lg sm:text-xl font-extrabold text-white">
               📊 سجل أقساط العام الحالي 2026
             </h2>
-            <p className="text-base sm:text-lg font-bold text-white">بيانات المسدد والرصيد المدور لعام 2026</p>
+            <p className="text-xs sm:text-sm font-bold text-white">بيانات المسدد والرصيد المدور لعام 2026</p>
           </div>
           <div className="w-full grid grid-cols-2 sm:flex gap-1.5 sm:gap-2 items-center">
             <button
               onClick={() => setCondFormatModal(true)}
-              className={`apk-only-actions w-full px-1.5 sm:px-2 py-1.5 rounded-lg text-lg font-extrabold shadow transition-colors flex items-center justify-center gap-1 ${
+              className={`apk-only-actions w-full px-2 py-1 rounded-md text-sm font-extrabold shadow transition-colors flex items-center justify-center gap-1 ${
                 condFormatRules.length
                   ? "bg-yellow-400 text-yellow-900 animate-pulse"
                   : "bg-white/20 text-white hover:bg-white/30"
               }`}
               title="تلوين الصفوف حسب نص معين"
             >
-              <Palette className="w-4 h-4" />
-              {condFormatRules.length ? `تنسيق نشط (${condFormatRules.length})` : "تنسيق شرطي"}
+              <Palette className={ICON_MOBILE} />
+              <span className="hidden sm:inline">{condFormatRules.length ? `تنسيق نشط (${condFormatRules.length})` : "تنسيق شرطي"}</span>
             </button>
 
-            <div className="relative">
+            <div className="relative w-full sm:w-auto">
               <Search className="w-4 h-4 absolute right-2.5 top-2.5 text-yellow-500" />
               <input type="text"
                 placeholder="بحث (الاسم، الدفعة، المساق)..."
                 value={search2026}
                 onChange={(e) => setSearch2026(e.target.value)}
-                className="pl-3 pr-8 py-2 rounded-lg text-lg font-extrabold border border-sky-300 outline-none focus:ring-2 focus:ring-sky-300 w-full sm:w-48 text-yellow-600 shadow-sm"
+                className="pl-3 pr-8 py-2 rounded-lg text-sm border border-sky-300 outline-none focus:ring-2 focus:ring-sky-300 w-full sm:w-48 text-yellow-600 shadow-sm"
               />
             </div>
       
             <button
               onClick={() => setNewRowModal2026(true)}
-              className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-blue-100 text-blue-800 rounded-lg text-lg font-bold shadow hover:bg-blue-200 transition-colors flex items-center justify-center gap-1 truncate"
+              className="apk-only-actions w-full px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-sm font-bold shadow hover:bg-blue-200 transition-colors flex items-center justify-center gap-1"
             >
-              <Plus className="w-4 h-4" /> طالب جديد
+              <Plus className={ICON_MOBILE} /> <span className="hidden sm:inline">طالب جديد</span>
             </button>
 
             <button
               onClick={() => setNewColModal(true)}
-              className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-amber-100 text-amber-800 rounded-lg text-lg font-bold shadow hover:bg-amber-200 transition-colors flex items-center justify-center gap-1 truncate"
+              className="apk-only-actions w-full px-2 py-1 bg-amber-100 text-amber-800 rounded-md text-sm font-bold shadow hover:bg-amber-200 transition-colors flex items-center justify-center gap-1"
             >
-              <Plus className="w-4 h-4" /> عمود جديد
+              <Plus className={ICON_MOBILE} /> <span className="hidden sm:inline">عمود جديد</span>
             </button>
 
             <button
               onClick={() => setNewPaymentModal(true)}
-              className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white/20 text-white rounded-lg text-lg font-bold shadow hover:bg-white/30 transition-colors truncate"
+              className="apk-only-actions w-full px-2 py-1 bg-white/20 text-white rounded-md text-sm font-bold shadow hover:bg-white/30 transition-colors truncate"
             >
-              ➕ إضافة قسط
+              <span>➕ إضافة قسط</span>
             </button>
     
-            <label className="apk-only-actions w-full px-1.5 sm:px-2 py-1 sm:py-1 bg-white text-sky-700 rounded-lg text-lg font-bold cursor-pointer shadow hover:bg-sky-50 transition-colors text-center truncate">
+            <label className="apk-only-actions w-full px-2 py-1 bg-white text-sky-700 rounded-md text-sm font-bold cursor-pointer shadow hover:bg-sky-50 transition-colors">
               📥 استيراد{" "}
               <input
                 type="file"
@@ -2341,15 +2352,15 @@ const installments2026WebActions: WebActionItem[] = [
             <div className="apk-only-actions col-span-2 flex gap-1 w-full sm:w-auto">
               <button
                 onClick={() => exportToExcel(2026)}
-                className="flex-1 sm:flex-none px-1.5 sm:px-2 py-1 sm:py-1 bg-green-100 text-green-700 rounded-lg text-lg font-bold shadow hover:bg-green-200 transition-colors flex items-center justify-center gap-1 truncate"
+                className={`flex-1 sm:flex-none ${BTN_COMPACT} bg-green-100 text-green-700 rounded-md font-bold shadow hover:bg-green-200 transition-colors flex items-center justify-center gap-1`}
               >
-                <FileSpreadsheet className="w-4 h-4" /> Excel
+                <FileSpreadsheet className={ICON_MOBILE} /> <span className="hidden sm:inline">Excel</span>
               </button>
               <button
                 onClick={() => setPrintSettingsYear(2026)}
-                className="flex-1 sm:flex-none px-1.5 sm:px-2 py-1 sm:py-1 bg-white/95 text-sky-800 rounded-lg text-lg font-bold shadow hover:bg-white transition-colors flex items-center justify-center gap-1 truncate"
+                className={`flex-1 sm:flex-none ${BTN_COMPACT} bg-white/95 text-sky-800 rounded-md font-bold shadow hover:bg-white transition-colors flex items-center justify-center gap-1`}
               >
-                <Printer className="w-4 h-4" /> طباعة تفصيلية
+                <Printer className={ICON_MOBILE} /> <span className="hidden sm:inline">طباعة</span>
               </button>
             </div>
 
@@ -2380,17 +2391,17 @@ const installments2026WebActions: WebActionItem[] = [
                 onClear={() => clearInstallments()}
                 printLabel="الأقساط/إجمالي"
                 additionalWebActions={installments2026WebActions}
-                className="!flex-1 min-w-0 !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-2 [&>button]:py-1 [&>button]:text-lg [&>button:nth-child(2)]:hidden"
+                className="!flex-1 min-w-0 !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-2 [&>button]:py-1 [&>button]:text-sm"
               />
               <button
-                className="apk-only-actions flex items-center gap-1.5 px-3 py-1.5 bg-[#10528e] text-white rounded-lg text-lg font-bold shadow-sm hover:bg-[#0d4272] active:scale-95 transition-all cursor-pointer disabled:opacity-60 disabled:cursor-wait"
+                className="apk-only-actions flex items-center gap-1 px-3 py-1 bg-[#10528e] text-white rounded-md text-sm font-bold shadow-sm hover:bg-[#0d4272] active:scale-95 transition-all"
                 type="button"
                 onClick={handleDetailedPdf2026}
                 disabled={detailedPdfBusy2026}
                 title="تنزيل تقرير الأقساط التفصيلي لعام 2026"
               >
-                <Download className={`w-4 h-4 ${detailedPdfBusy2026 ? "animate-pulse" : ""}`} />
-                {detailedPdfBusy2026 ? "جارٍ التحضير…" : "تنزيل PDF"}
+                <Download className={`${ICON_MOBILE} ${detailedPdfBusy2026 ? "animate-pulse" : ""}`} />
+                <span className="hidden sm:inline">{detailedPdfBusy2026 ? "جارٍ التحضير…" : "تنزيل PDF"}</span>
               </button>
             </div>
           </div>
@@ -2398,7 +2409,7 @@ const installments2026WebActions: WebActionItem[] = [
         <div className="p-1 sm:p-3">
           <StatsGrid stats={stats2026} columns={3} />
           <div className="overflow-auto max-h-auto rounded-lg border border-slate-200 shadow-sm relative">
-            <table className="installments-table min-w-full w-max table-auto text-lg font-extrabold text-black">
+            <table className="installments-table min-w-full w-max table-auto text-sm font-extrabold text-black">
               {/* ترويسة الجدول: لون ذهبي لامع مع خط أسود غامق */}
               <thead className="bg-gradient-to-b from-sky-300 via-sky-400 to-sky-500 font-extrabold border-b-2 border-sky-700 text-black sticky top-0 z-20 shadow-md">
                 <tr>
@@ -2471,7 +2482,7 @@ const installments2026WebActions: WebActionItem[] = [
                           className="p-0.5 bg-black/10 hover:bg-black/20 rounded transition-all"
                           title="تعديل أو حذف العمود"
                         >
-                          <Settings className="w-4 h-4" />
+                          <Settings className={ICON_MOBILE} />
                         </button>
                       </div>
                     </th>
@@ -2531,7 +2542,7 @@ const installments2026WebActions: WebActionItem[] = [
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "name", e.target.value)
                               }
-                              className="w-full min-w-[180px] bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
+                              className="w-full min-w-[140px] bg-transparent text-center text-black font-extrabold text-sm sm:!text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                             />
                           </td>
                           <td className="text-center w-auto text-black whitespace-nowrap bg-sky-50/70 !px-2 !py-2 !text-lg border-l border-slate-200">
@@ -2540,7 +2551,7 @@ const installments2026WebActions: WebActionItem[] = [
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "batch", e.target.value)
                               }
-                              className="w-full min-w-[100px] bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
+                              className="w-full min-w-[90px] bg-transparent text-center text-black font-extrabold text-sm sm:!text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                               placeholder="—"
                             />
                           </td>
@@ -2550,7 +2561,7 @@ const installments2026WebActions: WebActionItem[] = [
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "specialty", e.target.value)
                               }
-                              className="w-full min-w-[120px] bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
+                              className="w-full min-w-[110px] bg-transparent text-center text-black font-extrabold text-sm sm:!text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                               placeholder="—"
                             />
                           </td>
@@ -2562,7 +2573,7 @@ const installments2026WebActions: WebActionItem[] = [
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "prevDue", e.target.value)
                               }
-                              className="w-full min-w-[110px] bg-transparent text-center font-mono text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
+                              className="w-full min-w-[100px] bg-transparent text-center font-mono text-black font-extrabold text-sm sm:!text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                             />
                           </td>
                           <td className="text-center w-auto numeric-cell font-mono text-black font-extrabold whitespace-nowrap bg-sky-50/50 !px-2 !py-2 !text-lg border-l border-slate-200">
@@ -2573,7 +2584,7 @@ const installments2026WebActions: WebActionItem[] = [
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "fees", e.target.value)
                               }
-                              className="w-full min-w-[100px] bg-transparent text-center font-mono text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
+                              className="w-full min-w-[90px] bg-transparent text-center font-mono text-black font-extrabold text-sm sm:!text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                             />
                           </td>
                           {MONTHS_2026.map((m) => {
@@ -2582,7 +2593,7 @@ const installments2026WebActions: WebActionItem[] = [
                             return (
                               <td
                                 key={m}
-                                className="numeric-cell w-auto text-center relative bg-white/40 border-l border-slate-200 hover:bg-yellow-50 cursor-pointer group transition-colors whitespace-nowrap !px-2 !py-2 !text-lg font-mono"
+                                className="numeric-cell w-auto text-center relative bg-white/40 border-l border-slate-200 hover:bg-yellow-50 cursor-pointer group transition-colors whitespace-nowrap !px-2 !py-2"
                                 onMouseEnter={() => setHoveredCell(cellId)}
                                 onMouseLeave={() => setHoveredCell(null)}
                               >
@@ -2593,7 +2604,7 @@ const installments2026WebActions: WebActionItem[] = [
                                   onChange={(e) =>
                                     update2026PaymentValue(originalIndex, m, e.target.value)
                                   }
-                                  className="w-full min-w-[80px] bg-transparent text-center numeric-cell font-mono text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
+                                  className="w-full min-w-[70px] bg-transparent text-center numeric-cell font-mono text-black font-extrabold text-sm sm:!text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                                   placeholder="—"
                                 />
                               </td>
@@ -2604,7 +2615,7 @@ const installments2026WebActions: WebActionItem[] = [
                             <td key={col.name} className="border-l w-auto border-slate-200 !px-2 !py-2 !text-lg whitespace-nowrap">
                               {col.type === "select" ? (
                                 <select
-                                  className="w-full min-w-[100px] text-center text-black font-extrabold bg-transparent outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1 !text-lg"
+                                  className="w-full min-w-[90px] text-center text-black font-extrabold bg-transparent outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1 text-sm"
                                   value={r.customData?.[col.name] || ""}
                                   onChange={(e) =>
                                     updateCustomColValue(originalIndex, col.name, e.target.value)
@@ -2618,13 +2629,13 @@ const installments2026WebActions: WebActionItem[] = [
                                   ))}
                                 </select>
                               ) : col.type === "formula" ? (
-                                <div className="text-center min-w-[80px] numeric-cell font-mono !text-lg font-extrabold text-yellow-700 bg-white/50 py-1.5 rounded">
+                                <div className="text-center min-w-[70px] numeric-cell font-mono text-sm font-extrabold text-yellow-700 bg-white/50 py-1 rounded">
                                   {fmt(Number(evaluateFormula(col.formula || "", r) || 0))}
                                 </div>
                               ) : (
                                 <input
                                   type="text"
-                                  className="w-full min-w-[120px] text-center text-black font-extrabold bg-transparent outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1 !text-lg"
+                                  className="w-full min-w-[100px] text-center text-black font-extrabold bg-transparent outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1 text-sm"
                                   value={r.customData?.[col.name] || ""}
                                   onChange={(e) =>
                                     updateCustomColValue(originalIndex, col.name, e.target.value)
@@ -2635,10 +2646,10 @@ const installments2026WebActions: WebActionItem[] = [
                             </td>
                           ))}
 
-                          <td className="text-center w-auto min-w-[100px] numeric-cell font-mono text-black font-extrabold bg-emerald-50/50 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
+                          <td className="text-center w-auto min-w-[90px] numeric-cell font-mono text-black font-extrabold bg-emerald-50/50 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
                             {fmt(Number(r.totalPaid || 0))}
                           </td>
-                          <td className="text-center w-auto min-w-[100px] numeric-cell font-mono text-black font-extrabold bg-rose-50/40 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
+                          <td className="text-center w-auto min-w-[90px] numeric-cell font-mono text-black font-extrabold bg-rose-50/40 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
                             {fmt(Number(r.remaining || 0))}
                           </td>
                           <td className="text-center w-auto bg-amber-50/40 !px-2 !py-2 !text-lg border-l border-slate-200">
@@ -2648,14 +2659,14 @@ const installments2026WebActions: WebActionItem[] = [
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "notes", e.target.value)
                               }
-                              className="w-full min-w-[160px] bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
+                              className="w-full min-w-[120px] bg-transparent text-center text-black font-extrabold text-sm sm:!text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                               placeholder="—"
                             />
                           </td>
 
                           <td className="text-center w-auto whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
                             <span
-                              className={`px-3 py-1 rounded-full !text-lg font-extrabold ${status.bg} ${status.color}`}
+                              className={`px-3 py-1 rounded-full !text-sm font-extrabold ${status.bg} ${status.color}`}
                             >
                               {status.text}
                             </span>
@@ -2669,28 +2680,28 @@ const installments2026WebActions: WebActionItem[] = [
                               className="p-1.5 bg-sky-50 text-amber-600 rounded border border-amber-200 hover:bg-amber-500 hover:text-white transition-colors"
                               title="تعديل الصف"
                             >
-                              <Edit className="w-5 h-5" />
+                              <Edit className={ICON_TAP} />
                             </button>
                             <button
                               onClick={() => printStatement(r, 2026)}
                               className="p-1.5 bg-blue-50 text-blue-600 rounded border border-blue-200 hover:bg-blue-500 hover:text-white transition-colors"
                               title="طباعة الكشف"
                             >
-                              <Printer className="w-5 h-5" />
+                              <Printer className={ICON_TAP} />
                             </button>
                             <button
                               onClick={() => handleExportPdf(r, 2026)}
                               className="p-1.5 bg-emerald-50 text-emerald-600 rounded border border-emerald-200 hover:bg-emerald-500 hover:text-white transition-colors"
                               title="تنزيل PDF (متوافق مع شاومي)"
                             >
-                              <FileText className="w-5 h-5" />
+                              <FileText className={ICON_TAP} />
                             </button>
                             <button
                               onClick={() => deleteRow2026(originalIndex, r.name)}
                               className="p-1.5 bg-red-50 text-red-600 rounded border border-red-200 hover:bg-red-500 hover:text-white transition-colors"
                               title="حذف الصف"
                             >
-                              <Trash className="w-5 h-5" />
+                              <Trash className={ICON_TAP} />
                             </button>
                           </td>
                         </tr>
@@ -2750,7 +2761,7 @@ const installments2026WebActions: WebActionItem[] = [
         isOpen={condFormatModal}
         onClose={() => setCondFormatModal(false)}
       >
-        <div className="space-y-4">
+        <div className="space-y-3">
           <p className="text-xs text-slate-500">
             سيتم تلوين الصف بالكامل إذا كان يحتوي على النص الذي تدخله أدناه في أي عمود.
           </p>
@@ -2763,7 +2774,7 @@ const installments2026WebActions: WebActionItem[] = [
               type="text"
               value={condFormatParams.text}
               onChange={(e) => setCondFormatParams({ ...condFormatParams, text: e.target.value })}
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-sky-300 outline-none"
+              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-sky-300 outline-none text-sm"
               placeholder="مثال: معتمد, منسحب, مجاني..."
             />
           </div>
@@ -2800,7 +2811,7 @@ const installments2026WebActions: WebActionItem[] = [
               {condFormatRules.map((rule, idx) => (
                 <div
                   key={`${rule.text}-${idx}`}
-                  className="flex items-center justify-between gap-2 bg-slate-50 border rounded-lg p-2"
+                  className="flex items-center justify-between gap-2 bg-slate-50 border rounded-md p-2"
                 >
                   <span className={`px-2 py-1 rounded text-xs ${rule.color}`}>{rule.text}</span>
                   <button
@@ -2821,20 +2832,20 @@ const installments2026WebActions: WebActionItem[] = [
                 setInstallmentConditionalRules2026([]);
                 setCondFormatModal(false);
               }}
-              className="px-4 py-2 bg-red-50 text-red-600 rounded-lg text-xs font-bold hover:bg-red-100"
+              className="px-3 py-1 bg-red-50 text-red-600 rounded-md text-xs font-bold hover:bg-red-100"
             >
               إلغاء التنسيق تماماً
             </button>
             <div className="flex gap-2">
               <button
                 onClick={addConditionalRule}
-                className="px-4 py-2 bg-amber-500 text-white rounded-lg font-bold"
+                className="px-3 py-1 bg-amber-500 text-white rounded-md font-bold text-sm"
               >
                 إضافة قاعدة
               </button>
               <button
                 onClick={() => setCondFormatModal(false)}
-                className="px-4 py-2 bg-sky-700 text-white rounded-lg font-bold"
+                className="px-3 py-1 bg-sky-700 text-white rounded-md font-bold text-sm"
               >
                 إغلاق
               </button>
@@ -2857,7 +2868,7 @@ const installments2026WebActions: WebActionItem[] = [
                 required
                 value={editColModal.name}
                 onChange={(e) => setEditColModal({ ...editColModal, name: e.target.value })}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2 border rounded-md text-sm"
               />
             </div>
 
@@ -2866,7 +2877,7 @@ const installments2026WebActions: WebActionItem[] = [
               <select
                 value={editColModal.type}
                 onChange={(e: any) => setEditColModal({ ...editColModal, type: e.target.value })}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2 border rounded-md text-sm"
               >
                 <option value="text">نص أو رقم حر (إدخال يدوي)</option>
                 <option value="select">قائمة منسدلة (خيارات محددة)</option>
@@ -2884,7 +2895,7 @@ const installments2026WebActions: WebActionItem[] = [
                   required
                   value={editColModal.options}
                   onChange={(e) => setEditColModal({ ...editColModal, options: e.target.value })}
-                  className="w-full p-2 border rounded-lg"
+                  className="w-full p-2 border rounded-md text-sm"
                   placeholder="مثال: معتمد, غير معتمد"
                 />
               </div>
@@ -2900,7 +2911,7 @@ const installments2026WebActions: WebActionItem[] = [
                   required
                   value={editColModal.formula}
                   onChange={(e) => setEditColModal({ ...editColModal, formula: e.target.value })}
-                  className="w-full p-2 border rounded-lg text-left"
+                  className="w-full p-2 border rounded-md text-left text-sm"
                   dir="ltr"
                 />
               </div>
@@ -2910,21 +2921,21 @@ const installments2026WebActions: WebActionItem[] = [
               <button
                 type="button"
                 onClick={() => deleteCustomColumn(editColModal.oldName)}
-                className="px-4 py-2 bg-red-100 text-red-700 rounded-lg flex items-center gap-1 font-bold"
+                className="px-3 py-1 bg-red-100 text-red-700 rounded-md flex items-center gap-1 font-bold text-sm"
               >
-                <Trash className="w-4 h-4" /> حذف العمود
+                <Trash className={ICON_MOBILE} /> حذف العمود
               </button>
               <div className="flex gap-2">
                 <button
                   type="button"
                   onClick={() => setEditColModal(null)}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg"
+                  className="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-sm"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg font-bold"
+                  className="px-3 py-1 bg-blue-600 text-white rounded-md font-bold text-sm"
                 >
                   حفظ التعديل
                 </button>
@@ -2947,7 +2958,7 @@ const installments2026WebActions: WebActionItem[] = [
               required
               value={editRowData?.name || ""}
               onChange={(e) => setEditRowData({ ...editRowData, name: e.target.value })}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-md text-sm"
             />
           </div>
           <div className="grid grid-cols-2 gap-2">
@@ -2957,7 +2968,7 @@ const installments2026WebActions: WebActionItem[] = [
                 type="text"
                 value={editRowData?.batch || ""}
                 onChange={(e) => setEditRowData({ ...editRowData, batch: e.target.value })}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2 border rounded-md text-sm"
               />
             </div>
             <div>
@@ -2966,7 +2977,7 @@ const installments2026WebActions: WebActionItem[] = [
                 type="text"
                 value={editRowData?.specialty || ""}
                 onChange={(e) => setEditRowData({ ...editRowData, specialty: e.target.value })}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2 border rounded-md text-sm"
               />
             </div>
           </div>
@@ -2979,7 +2990,7 @@ const installments2026WebActions: WebActionItem[] = [
                 type="number"
                 value={editRowData?.fees || 0}
                 onChange={(e) => setEditRowData({ ...editRowData, fees: e.target.value })}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2 border rounded-md text-sm"
               />
             </div>
           )}
@@ -2992,7 +3003,7 @@ const installments2026WebActions: WebActionItem[] = [
                 type="number"
                 value={editRowData?.prevDue || 0}
                 onChange={(e) => setEditRowData({ ...editRowData, prevDue: e.target.value })}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2 border rounded-md text-sm"
               />
             </div>
           )}
@@ -3000,13 +3011,13 @@ const installments2026WebActions: WebActionItem[] = [
             <button
               type="button"
               onClick={() => setEditRowModal(null)}
-              className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg"
+              className="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-sm"
             >
               إلغاء
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-amber-600 text-white rounded-lg font-bold"
+              className="px-3 py-1 bg-amber-600 text-white rounded-md font-bold text-sm"
             >
               حفظ التعديلات
             </button>
@@ -3027,7 +3038,7 @@ const installments2026WebActions: WebActionItem[] = [
               required
               value={newColName}
               onChange={(e) => setNewColName(e.target.value)}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-md text-sm"
               autoFocus
               placeholder="مثل: حالة الاعتماد، الخصم..."
             />
@@ -3038,7 +3049,7 @@ const installments2026WebActions: WebActionItem[] = [
             <select
               value={newColType}
               onChange={(e: any) => setNewColType(e.target.value)}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-md text-sm"
             >
               <option value="text">نص أو رقم حر (إدخال يدوي)</option>
               <option value="select">قائمة منسدلة (خيارات محددة)</option>
@@ -3056,7 +3067,7 @@ const installments2026WebActions: WebActionItem[] = [
                 required
                 value={newColOptions}
                 onChange={(e) => setNewColOptions(e.target.value)}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2 border rounded-md text-sm"
                 placeholder="مثال: معتمد, غير معتمد, قيد المراجعة"
               />
             </div>
@@ -3072,7 +3083,7 @@ const installments2026WebActions: WebActionItem[] = [
                 required
                 value={newColFormula}
                 onChange={(e) => setNewColFormula(e.target.value)}
-                className="w-full p-2 border rounded-lg text-left"
+                className="w-full p-2 border rounded-md text-left text-sm"
                 dir="ltr"
                 placeholder="مثال: fees - totalPaid"
               />
@@ -3083,14 +3094,11 @@ const installments2026WebActions: WebActionItem[] = [
             <button
               type="button"
               onClick={() => setNewColModal(false)}
-              className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg"
+              className="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-sm"
             >
               إلغاء
             </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-amber-600 text-white rounded-lg font-bold"
-            >
+            <button type="submit" className="px-3 py-1 bg-amber-600 text-white rounded-md font-bold text-sm">
               إضافة العمود
             </button>
           </div>
@@ -3110,7 +3118,7 @@ const installments2026WebActions: WebActionItem[] = [
               required
               value={newRowData2026.name}
               onChange={(e) => setNewRowData2026({ ...newRowData2026, name: e.target.value })}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-md text-sm"
             />
           </div>
           <div className="grid grid-cols-2 gap-2">
@@ -3120,7 +3128,7 @@ const installments2026WebActions: WebActionItem[] = [
                 type="text"
                 value={newRowData2026.batch}
                 onChange={(e) => setNewRowData2026({ ...newRowData2026, batch: e.target.value })}
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2 border rounded-md text-sm"
               />
             </div>
             <div>
@@ -3131,7 +3139,7 @@ const installments2026WebActions: WebActionItem[] = [
                 onChange={(e) =>
                   setNewRowData2026({ ...newRowData2026, specialty: e.target.value })
                 }
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2 border rounded-md text-sm"
               />
             </div>
           </div>
@@ -3146,7 +3154,7 @@ const installments2026WebActions: WebActionItem[] = [
                 onChange={(e) =>
                   setNewRowData2026({ ...newRowData2026, fees: Number(e.target.value) })
                 }
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2 border rounded-md text-sm"
               />
             </div>
             <div>
@@ -3159,7 +3167,7 @@ const installments2026WebActions: WebActionItem[] = [
                 onChange={(e) =>
                   setNewRowData2026({ ...newRowData2026, prevDue: Number(e.target.value) })
                 }
-                className="w-full p-2 border rounded-lg"
+                className="w-full p-2 border rounded-md text-sm"
               />
             </div>
           </div>
@@ -3167,11 +3175,11 @@ const installments2026WebActions: WebActionItem[] = [
             <button
               type="button"
               onClick={() => setNewRowModal2026(false)}
-              className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg"
+              className="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-sm"
             >
               إلغاء
             </button>
-            <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg font-bold">
+            <button type="submit" className="px-3 py-1 bg-blue-600 text-white rounded-md font-bold text-sm">
               إضافة المتدرب
             </button>
           </div>
@@ -3193,10 +3201,10 @@ const installments2026WebActions: WebActionItem[] = [
               value={newStudentName}
               onChange={(e) => handleNameChange(e.target.value)}
               onFocus={() => newStudentName.length > 0 && setShowSuggestions(true)}
-              className="w-full p-2 border rounded-lg outline-none"
+              className="w-full p-2 border rounded-md text-sm outline-none"
             />
             {showSuggestions && nameSuggestions.length > 0 && (
-              <div className="absolute top-full right-0 left-0 bg-white border rounded-b-lg shadow-xl z-50 max-h-32 overflow-y-auto">
+              <div className="absolute top-full right-0 left-0 bg-white border rounded-b-md shadow-xl z-50 max-h-32 overflow-y-auto text-sm">
                 {nameSuggestions.map((n, idx) => (
                   <div
                     key={idx}
@@ -3204,7 +3212,7 @@ const installments2026WebActions: WebActionItem[] = [
                       setNewStudentName(n);
                       setShowSuggestions(false);
                     }}
-                    className="p-2 text-sm hover:bg-sky-50 cursor-pointer text-slate-800"
+                    className="p-2 hover:bg-sky-50 cursor-pointer text-slate-800"
                   >
                     {n}
                   </div>
@@ -3221,7 +3229,7 @@ const installments2026WebActions: WebActionItem[] = [
               required
               value={newStudentAmount}
               onChange={(e) => setNewStudentAmount(e.target.value)}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-md text-sm"
               min="0"
               step="0.01"
             />
@@ -3234,7 +3242,7 @@ const installments2026WebActions: WebActionItem[] = [
               required
               value={newStudentMonth}
               onChange={(e) => setNewStudentMonth(e.target.value)}
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-md text-sm"
             >
               <option value="">-- اختر الشهر --</option>
               {MONTHS_2026.map((m) => (
@@ -3248,13 +3256,13 @@ const installments2026WebActions: WebActionItem[] = [
             <button
               type="button"
               onClick={() => setNewPaymentModal(false)}
-              className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg"
+              className="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-sm"
             >
               إلغاء
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-sky-700 text-white rounded-lg font-bold"
+              className="px-3 py-1 bg-sky-700 text-white rounded-md font-bold text-sm"
             >
               حفظ
             </button>
@@ -3269,7 +3277,7 @@ const installments2026WebActions: WebActionItem[] = [
       >
         {paymentModal && (
           <>
-            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-slate-800">
+            <div className="bg-emerald-50 border border-emerald-200 rounded-md p-3 text-slate-800 text-sm">
               <p>
                 <b>المتدرب:</b> {paymentModal.row.name}
               </p>
@@ -3287,7 +3295,7 @@ const installments2026WebActions: WebActionItem[] = [
                   required
                   value={payAmount}
                   onChange={(e) => setPayAmount(e.target.value)}
-                  className="w-full p-2 border rounded-lg"
+                  className="w-full p-2 border rounded-md text-sm"
                   autoFocus
                   min="0"
                   step="0.01"
@@ -3297,13 +3305,13 @@ const installments2026WebActions: WebActionItem[] = [
                 <button
                   type="button"
                   onClick={() => setPaymentModal(null)}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg"
+                  className="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-sm"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-emerald-600 text-white rounded-lg font-bold"
+                  className="px-3 py-1 bg-emerald-600 text-white rounded-md font-bold text-sm"
                 >
                   تأكيد التوريد
                 </button>
@@ -3320,7 +3328,7 @@ const installments2026WebActions: WebActionItem[] = [
       >
         {editPaymentModal && (
           <>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-slate-800">
+            <div className="bg-blue-50 border border-blue-200 rounded-md p-3 text-slate-800 text-sm">
               <p className="font-bold">{editPaymentModal.row.name}</p>
               <p>بيان شهر: {editPaymentModal.month}</p>
             </div>
@@ -3334,7 +3342,7 @@ const installments2026WebActions: WebActionItem[] = [
                   required
                   value={editAmount}
                   onChange={(e) => setEditAmount(e.target.value)}
-                  className="w-full p-2 border rounded-lg"
+                  className="w-full p-2 border rounded-md text-sm"
                   min="0"
                   step="0.01"
                 />
@@ -3343,20 +3351,20 @@ const installments2026WebActions: WebActionItem[] = [
                 <button
                   type="button"
                   onClick={() => setEditPaymentModal(null)}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg"
+                  className="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-sm"
                 >
                   إلغاء
                 </button>
                 <button
                   type="button"
                   onClick={() => deletePayment(editPaymentModal.row, editPaymentModal.month)}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg"
+                  className="px-3 py-1 bg-red-600 text-white rounded-md text-sm"
                 >
                   🗑️ حذف القسط
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg font-bold"
+                  className="px-3 py-1 bg-blue-600 text-white rounded-md font-bold text-sm"
                 >
                   حفظ التعديل
                 </button>
