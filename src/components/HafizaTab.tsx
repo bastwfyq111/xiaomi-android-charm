@@ -251,7 +251,7 @@ export default function HafizaTab() {
         </div>
       </div>
 
-      <div className="mb-3 flex items-center gap-2 flex-wrap">
+      <div className="mb-3 flex items-center gap-3 flex-wrap">
         <div style={{ border: "1px solid #000", borderRadius: 12, overflow: "hidden" }}>
           <Card className="p-2 bg-white/90" style={{ border: "none", boxShadow: "none" }}>
             <div className="flex items-center gap-2">
@@ -260,7 +260,8 @@ export default function HafizaTab() {
           </Card>
         </div>
 
-        <div style={{ display: "flex", gap: 8 }}>
+        {/* Spread buttons visibly and individually - include ImportButton standalone so it never disappears */}
+        <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
           <Button
             onClick={handleCopyAmountsToNotify}
             className="px-3 py-1 rounded-full font-bold"
@@ -277,6 +278,23 @@ export default function HafizaTab() {
           >
             <Plus className="w-4 h-4 ml-1" />
             إضافة / إظهار الفورم
+          </Button>
+
+          {/* Standalone ImportButton so it remains visible on all platforms */}
+          <div style={{ border: "1px solid #000", borderRadius: 10, padding: 6, background: "#fff" }}>
+            <ImportButton kind="hafiza" />
+          </div>
+
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleClearHafiza}
+            className="px-3 py-1 rounded-full font-bold"
+            disabled={hafiza.length === 0}
+            style={{ border: "1px solid #000", background: PALETTE[4], color: "#fff" }}
+          >
+            <Trash2 className="w-4 h-4 ml-1" />
+            مسح البيانات
           </Button>
         </div>
       </div>
