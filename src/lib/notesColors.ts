@@ -31,11 +31,11 @@ export function noteRowClass(notes: any): string {
 
 /** أنماط الطباعة/PDF الخاصة بتلوين الصفوف */
 export const noteRowCss = `
-  tr.note-row td { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-  tr.note-red td { background: #fecaca !important; }
-  tr.note-amber td { background: #fef08a !important; }
-  tr.note-green td { background: #bbf7d0 !important; }
-  tr.note-blue td { background: #bfdbfe !important; }
-  tr.note-violet td { background: #e9d5ff !important; }
-  tr.note-gray td { background: #e5e7eb !important; }
+  table tbody tr.note-row td { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  table tbody tr.note-red td { background: #fecaca !important; }
+  table tbody tr.note-amber td { background: #fef08a !important; }
+  table tbody tr.note-green td { background: #bbf7d0 !important; }
+  table tbody tr.note-blue td { background: #bfdbfe !important; }
+  table tbody tr.note-violet td { background: #e9d5ff !important; }
+  table tbody tr.note-gray td { background: #e5e7eb !important; }
 `;
