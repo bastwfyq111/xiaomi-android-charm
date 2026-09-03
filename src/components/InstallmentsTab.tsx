@@ -2619,7 +2619,7 @@ const installments2026WebActions: WebActionItem[] = [
                                 </select>
                               ) : col.type === "formula" ? (
                                 <div className="text-center min-w-[80px] numeric-cell font-mono !text-lg font-extrabold text-yellow-700 bg-white/50 py-1.5 rounded">
-                                  {Number(evaluateFormula(col.formula || "", r) || 0).toFixed(2)}
+                                  {fmt(Number(evaluateFormula(col.formula || "", r) || 0))}
                                 </div>
                               ) : (
                                 <input
