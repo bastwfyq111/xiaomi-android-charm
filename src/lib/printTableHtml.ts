@@ -1,5 +1,6 @@
 import { fmt } from "./format";
 import { formatReportDate } from "@/lib/reportDate";
+import { noteRowClass, noteRowCss } from "@/lib/notesColors";
 import reportLetterheadUrl from "@/assets/report-letterhead.png";
 
 export type TableCol = { key: string; label: string };
