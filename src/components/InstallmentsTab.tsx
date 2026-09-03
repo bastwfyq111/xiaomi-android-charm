@@ -23,6 +23,7 @@ import {
   Download,
 } from "lucide-react";
 import TabActions from "./TabActions";
+import { noteRowClass, noteRowCss } from "@/lib/notesColors";
 import type { WebActionItem } from "./WebActionMenu";
 import PrintSettingsModal, {
   DEFAULT_PRINT_SETTINGS,
@@ -850,7 +851,10 @@ export default function InstallmentsTab() {
       extraCols2026.forEach((c) => opts.push({ key: `col:${c.name}`, label: c.name }));
     opts.push({ key: "totalPaid", label: "إجمالي المسدد" });
     opts.push({ key: "remaining", label: "الرصيد المتبقي" });
-    if (year === 2026) opts.push({ key: "status", label: "الحالة" });
+    if (year === 2026) {
+      opts.push({ key: "status", label: "الحالة" });
+      opts.push({ key: "notes", label: "الملاحظات" });
+    }
     return opts;
   };
 
@@ -965,6 +969,12 @@ const exportToPDF = async (
         label: "الحالة",
         cell: (r) => (cleanNumber(r.remaining) <= 0 ? "له" : "عليه"),
       });
+      allCols.push({
+        key: "notes",
+        label: "الملاحظات",
+        cell: (r) => escapeHtml(r.notes || "—"),
+        wide: true,
+      });
     }
 
     const cols = allCols.filter((c) => !hidden.has(c.key));
@@ -1015,7 +1025,7 @@ const exportToPDF = async (
             return `<td class="${c.wide ? "wrap" : ""}${toneClass}${statusClass}" style="${fitStyle(v)}"><span class="cell-content">${v}</span></td>`;
           })
           .join("");
-        return `<tr>${tds}</tr>`;
+        return `<tr class="${noteRowClass(r.notes)}">${tds}</tr>`;
       })
       .join("");
 
@@ -1221,6 +1231,7 @@ justify-content: center !important; /* التمركز الأفقي للمحتو�
         border-top: 0.75pt solid ${colorTokens.accent};
         padding-top: 3px;
       }
+      ${settings.colored ? noteRowCss : ""}
       @media print {
         .print-toolbar { display: none !important; }
         tr { page-break-inside: avoid; }
@@ -2361,6 +2372,7 @@ const installments2026WebActions: WebActionItem[] = [
                   { key: "fees", label: "الرسوم" },
                   { key: "totalPaid", label: "المسدد" },
                   { key: "remaining", label: "المتبقي" },
+                  { key: "notes", label: "الملاحظات" },
                   ...extraCols2026.map((c) => ({ key: c.name, label: c.name })),
                 ]}
                 fileName="اقساط-2026"
