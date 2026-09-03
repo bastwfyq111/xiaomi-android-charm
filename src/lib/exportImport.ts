@@ -878,6 +878,78 @@ export async function exportMonthlyStatement(journal: Journal[], year: number, r
   await downloadWorkbook(workbook, `كشف_الحساب_الشهري_${year}_${dateValue}.xlsx`);
 }
 
+/**
+ * ======= التعديلات: إضافة دوال تطبيع/مطابقة متقاربة لاستخدامها في تقارير الفترة =======
+ *
+ * نضيف هنا دوال تطبيع ومطابقة تشبه المستخدمة في واجهة MonthlyStatementTab حتى
+ * يتطابق سلوك التجميع في التقارير مع ما تراه في الواجهة.
+ */
+
+// دالة تطبيع أقوى مشابهة لتلك في الـ component (تحذف التشكيل وتوحّد بعض الحروف)
+const normForMatch = (s: string) => {
+  if (!s) return "";
+  return s
+    .replace(/[\u064B-\u0652\u0670\u0640]/g, "")
+    .replace(/[\u0622\u0623\u0625]/g, "\u0627")
+    .replace(/[\u0649\u064A]/g, "\u064A")
+    .replace(/\u0629/g, "\u0647")
+    .replace(/\u062D\s*\/\s*/g, "\u062D\u0633\u0627\u0628 ")
+    .replace(/[()[\]./\\،,]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+};
+
+const STOP_WORDS_FOR_MATCH = new Set(["حساب", "حسابات", "ح", "محلية", "محليه", "عامة", "عامه"]);
+
+const tokensForMatch = (s: string) =>
+  normForMatch(s)
+    .split(" ")
+    .filter((w) => w && !STOP_WORDS_FOR_MATCH.has(w));
+
+// قائمة جميع حسابات البيان (من STATEMENT_GROUPS)
+const ALL_STATEMENT_ACCOUNTS = STATEMENT_GROUPS.flatMap((g) => g.accounts);
+const ALL_STATEMENT_NORM = ALL_STATEMENT_ACCOUNTS.map((a) => ({
+  name: a,
+  norm: normForMatch(a),
+  toks: tokensForMatch(a),
+}));
+
+function matchStatementAccount(raw: string): string | null {
+  if (!raw) return null;
+  const n = normForMatch(raw);
+  if (!n) return null;
+
+  // مطابقة حرفية أولاً
+  const exact = ALL_STATEMENT_NORM.find((a) => a.norm === n);
+  if (exact) return exact.name;
+
+  // مطابقة احتوائية
+  const contains = ALL_STATEMENT_NORM.find((a) => a.norm.includes(n) || n.includes(a.norm));
+  if (contains) return contains.name;
+
+  // مطابقة توكينية تقريبية
+  const rawToks = tokensForMatch(raw);
+  if (!rawToks.length) return null;
+  let best: { name: string; score: number } | null = null;
+  for (const a of ALL_STATEMENT_NORM) {
+    if (!a.toks.length) continue;
+    const common = a.toks.filter((t) => rawToks.includes(t)).length;
+    if (!common) continue;
+    const score = common / Math.max(a.toks.length, rawToks.length);
+    if (!best || score > best.score) best = { name: a.name, score };
+  }
+  return best && best.score >= 0.6 ? best.name : null;
+}
+
+/**
+ * دالة تجميع بيانات كشف الحساب الشهري المستخدمة في تقارير PDF / Excel
+ *
+ * ملاحظة مهمة:
+ * - الخريطة map تبقى تستخدم normName (كما في السابق) كمفتاح حتى تظل متوافقة
+ *   مع أجزاء أخرى من الكود التي تتوقع نفس المفتاح (مثل exportPdf.ts الذي يستدعي map[norm(a)]).
+ * - لكن عند محاولة تسجيل قيود اليومية نقوم أولاً بمحاولة مطابقة اسم الحساب بطريقة ذكية
+ *   (matchStatementAccount). إذا وُجدت نتيجة مطابقة نستخدم اسم الحساب المطابق، ثم نطبّع باسم المفتاح normName.
+ */
 export function buildMonthlyStatementRows(
   journal: Journal[],
   year: number,
@@ -895,8 +967,18 @@ export function buildMonthlyStatementRows(
     const m = d.getMonth() + 1;
     if (m > endMonth) return;
     const isCurrent = m >= startMonth && m <= endMonth;
-    const dKey = normName(j.debitAccount || j.account || "");
-    const cKey = normName(j.creditAccount || "");
+
+    // جرب مطابقة ذكية للأسماء أولاً (تطبيع/توكنز)، ثم استخدم اسم المطابقة إذا وُجد
+    const debitRaw = j.debitAccount || j.account || "";
+    const creditRaw = j.creditAccount || "";
+
+    const dMatchedName = matchStatementAccount(debitRaw);
+    const cMatchedName = matchStatementAccount(creditRaw);
+
+    // إذا وُجدت مطابقة استخدم اسم الحساب المطابق، وإلا استخدم normName على النص الخام
+    const dKey = dMatchedName ? normName(dMatchedName) : normName(debitRaw || "");
+    const cKey = cMatchedName ? normName(cMatchedName) : normName(creditRaw || "");
+
     if (dKey && map[dKey]) {
       if (isCurrent) map[dKey].curD += +j.debit || 0;
       else map[dKey].prevD += +j.debit || 0;
@@ -915,6 +997,7 @@ export function buildMonthlyStatementRows(
   };
 }
 
+/* باقي الملف: buildPeriodicStatementSheet و exportPeriodicStatement و اجزاء الايرادات (لم تتغير) */
 
 function buildPeriodicStatementSheet(
   journal: Journal[],
@@ -1216,4 +1299,4 @@ export async function exportRevenueStatement(revenue: Record<string, number>, ye
     }, imageId);
   }
   await downloadWorkbook(workbook, `كشف_الايرادات_${year}_${dateValue}.xlsx`);
-}
+        }
