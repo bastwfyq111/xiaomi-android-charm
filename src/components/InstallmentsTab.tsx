@@ -2704,7 +2704,9 @@ const installments2026WebActions: WebActionItem[] = [
                       <td className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-sky-300">
                         {fmt(Number(totals2026.remaining || 0))}
                       </td>
+                      <td className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg border-l border-sky-300">—</td>
                       <td className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg border-l border-sky-300"></td>
+
                       <td className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg"></td>
                     </tr>
                   </>
