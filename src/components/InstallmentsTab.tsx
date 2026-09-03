@@ -2480,6 +2480,7 @@ const installments2026WebActions: WebActionItem[] = [
                       الرصيد المتبقي <SortIcon sortConfig={sortConfig2026} columnKey="remaining" />
                     </div>
                   </th>
+                  <th className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black border-l border-sky-700/30">الملاحظات</th>
                   <th className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black border-l border-sky-700/30">حالة</th>
                   <th className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black">إجراءات</th>
                 </tr>
@@ -2488,7 +2489,8 @@ const installments2026WebActions: WebActionItem[] = [
                 {filteredRows2026.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={10 + MONTHS_2026.length + extraCols2026.length}
+                      colSpan={11 + MONTHS_2026.length + extraCols2026.length}
+
                       className="text-center w-auto text-slate-400 !px-3 !py-4 !text-lg whitespace-nowrap"
                     >
                       لا توجد بيانات (يرجى التأكد من استيراد الملف أو تعديل البحث)
