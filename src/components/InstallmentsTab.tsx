@@ -2361,6 +2361,7 @@ const installments2026WebActions: WebActionItem[] = [
                   { key: "fees", label: "الرسوم" },
                   { key: "totalPaid", label: "المسدد" },
                   { key: "remaining", label: "المتبقي" },
+                  { key: "notes", label: "الملاحظات" },
                   ...extraCols2026.map((c) => ({ key: c.name, label: c.name })),
                 ]}
                 fileName="اقساط-2026"
