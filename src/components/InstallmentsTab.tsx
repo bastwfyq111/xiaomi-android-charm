@@ -2556,9 +2556,9 @@ const installments2026WebActions: WebActionItem[] = [
                           </td>
                           <td className="text-center w-auto numeric-cell font-mono text-black font-extrabold bg-sky-50/40 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
                             <input
-                              type="number"
-                              step="0.01"
-                              value={r.prevDue !== undefined && r.prevDue !== "" ? Number(r.prevDue).toFixed(2) : "0.00"}
+                              type="text"
+                              inputMode="decimal"
+                              value={fmt(cleanNumber(r.prevDue))}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "prevDue", e.target.value)
                               }
@@ -2567,9 +2567,9 @@ const installments2026WebActions: WebActionItem[] = [
                           </td>
                           <td className="text-center w-auto numeric-cell font-mono text-black font-extrabold whitespace-nowrap bg-sky-50/50 !px-2 !py-2 !text-lg border-l border-slate-200">
                             <input
-                              type="number"
-                              step="0.01"
-                              value={r.fees !== undefined && r.fees !== "" ? Number(r.fees).toFixed(2) : "0.00"}
+                              type="text"
+                              inputMode="decimal"
+                              value={fmt(cleanNumber(r.fees))}
                               onChange={(e) =>
                                 update2026CellValue(originalIndex, "fees", e.target.value)
                               }
@@ -2587,15 +2587,14 @@ const installments2026WebActions: WebActionItem[] = [
                                 onMouseLeave={() => setHoveredCell(null)}
                               >
                                 <input
-                                  type="number"
-                                  step="0.01"
-                                  value={paid > 0 ? paid.toFixed(2) : ""}
+                                  type="text"
+                                  inputMode="decimal"
+                                  value={paid > 0 ? fmt(paid) : ""}
                                   onChange={(e) =>
                                     update2026PaymentValue(originalIndex, m, e.target.value)
                                   }
                                   className="w-full min-w-[80px] bg-transparent text-center numeric-cell font-mono text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
                                   placeholder="—"
-                                  min="0"
                                 />
                               </td>
                             );
@@ -2620,7 +2619,7 @@ const installments2026WebActions: WebActionItem[] = [
                                 </select>
                               ) : col.type === "formula" ? (
                                 <div className="text-center min-w-[80px] numeric-cell font-mono !text-lg font-extrabold text-yellow-700 bg-white/50 py-1.5 rounded">
-                                  {Number(evaluateFormula(col.formula || "", r) || 0).toFixed(2)}
+                                  {fmt(Number(evaluateFormula(col.formula || "", r) || 0))}
                                 </div>
                               ) : (
                                 <input
