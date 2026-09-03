@@ -320,7 +320,7 @@ export function buildTableHtml(opts: {
   const body = rows
     .map(
       (r, i) =>
-        `<tr><td class="idx numeric-cell"><span class="pdf-cell-text">${i + 1}</span></td>${columns
+        `<tr class="${noteRowClass((r as any).notes)}"><td class="idx numeric-cell"><span class="pdf-cell-text">${i + 1}</span></td>${columns
           .map((c) => {
             const v = r[c.key];
             const isNum = numericKeys.includes(c.key) || typeof v === "number";
