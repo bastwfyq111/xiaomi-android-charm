@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist, type StateStorage } from "zustand/middleware";
 import seedTrainees from "@/data/trainees.json";
 import seedInstallments from "@/data/installments.json";
+import monthlySchema from "@/data/monthlyStatement.json";
 
 // ==========================================
 // 1. تعريف الأنواع (Types)
@@ -232,20 +233,63 @@ const recalcInstallment = (i: Installment): Installment => {
   return { ...i, fees, prevDue, totalPaid, remaining: prevDue - totalPaid };
 };
 
-const recalculateRevenueMap = (accounts: Account[]): RevenueMap => {
-  const newRevenue: RevenueMap = {};
-  accounts.forEach((acc) => {
-    if (acc.revenueKey && acc.income > 0) {
-      const dateStr = acc.notifyDate || acc.date;
-      const d = new Date(dateStr);
-      const year = isNaN(d.getFullYear()) ? 2026 : d.getFullYear();
-      const month = isNaN(d.getMonth()) ? 1 : d.getMonth() + 1;
-      const compositeKey = `${year}-${month}-${acc.revenueKey}`;
-      newRevenue[compositeKey] = (newRevenue[compositeKey] || 0) + acc.income;
-    }
-  });
-  return newRevenue;
+// === إضافة: دوال تطبيع/مطابقة لحسابات كشف الحساب الشهري ===
+const normForMatch = (s: string) => {
+  if (!s) return "";
+  return String(s)
+    .replace(/[\u064B-\u0652\u0670\u0640]/g, "")
+    .replace(/[\u0622\u0623\u0625]/g, "\u0627")
+    .replace(/[\u0649\u064A]/g, "\u064A")
+    .replace(/\u0629/g, "\u0647")
+    .replace(/\u062D\s*\/\s*/g, "\u062D\u0633\u0627\u0628 ")
+    .replace(/[()[\]./\\،,]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 };
+
+const STOP_WORDS_FOR_MATCH = new Set([
+  "حساب",
+  "حسابات",
+  "ح",
+  "محلية",
+  "محليه",
+  "عامة",
+  "عامه",
+]);
+
+const tokensForMatch = (s: string) =>
+  normForMatch(s)
+    .split(" ")
+    .filter((w) => w && !STOP_WORDS_FOR_MATCH.has(w));
+
+const STATEMENT_GROUPS_LOCAL = (monthlySchema as any).groups || [];
+const ALL_STATEMENT_ACCOUNTS = STATEMENT_GROUPS_LOCAL.flatMap((g: any) => g.accounts || []);
+const ALL_STATEMENT_NORM = ALL_STATEMENT_ACCOUNTS.map((a: string) => ({
+  name: a,
+  norm: normForMatch(a),
+  toks: tokensForMatch(a),
+}));
+
+function matchStatementAccount(raw: string): string | null {
+  if (!raw) return null;
+  const n = normForMatch(raw);
+  if (!n) return null;
+  const exact = ALL_STATEMENT_NORM.find((x) => x.norm === n);
+  if (exact) return exact.name;
+  const contains = ALL_STATEMENT_NORM.find((x) => x.norm.includes(n) || n.includes(x.norm));
+  if (contains) return contains.name;
+  const rawToks = tokensForMatch(raw);
+  if (!rawToks.length) return null;
+  let best: { name: string; score: number } | null = null;
+  for (const a of ALL_STATEMENT_NORM) {
+    if (!a.toks.length) continue;
+    const common = a.toks.filter((t: string) => rawToks.includes(t)).length;
+    if (!common) continue;
+    const score = common / Math.max(a.toks.length, rawToks.length);
+    if (!best || score > best.score) best = { name: a.name, score };
+  }
+  return best && best.score >= 0.6 ? best.name : null;
+}
 
 // ==========================================
 // 4. إنشاء المتجر (Store Creation)
@@ -545,13 +589,23 @@ export const useStore = create<State>()(
             journal: d.journal
               ? [
                   ...s.journal,
-                  ...d.journal.map((j: any) => ({
-                    ...j,
-                    id: j.id || uid(),
-                    transactionId: j.transactionId || uid(),
-                    debit: Number(j.debit) || 0,
-                    credit: Number(j.credit) || 0,
-                  })),
+                  ...d.journal.map((j: any) => {
+                    const rawDebit = j.debitAccount || j.account || "";
+                    const rawCredit = j.creditAccount || "";
+                    const matchedDebit = matchStatementAccount(rawDebit);
+                    const matchedCredit = matchStatementAccount(rawCredit);
+
+                    return {
+                      ...j,
+                      id: j.id || uid(),
+                      transactionId: j.transactionId || uid(),
+                      date: j.date || getToday(),
+                      debit: Number(j.debit) || 0,
+                      credit: Number(j.credit) || 0,
+                      debitAccount: matchedDebit || String(j.debitAccount || j.account || "").trim(),
+                      creditAccount: matchedCredit || String(j.creditAccount || "").trim(),
+                    } as Journal;
+                  }),
                 ]
               : s.journal,
             hafiza: importedHafiza,
@@ -628,9 +682,7 @@ export const useStore = create<State>()(
           ),
         })),
       addCustomRow: (id, row) =>
-        set((s) => ({
-          customTabs: s.customTabs.map((t) => (t.id === id ? { ...t, rows: [...t.rows, row] } : t)),
-        })),
+        set((s) => ({ customTabs: s.customTabs.map((t) => (t.id === id ? { ...t, rows: [...t.rows, row] } : t)) })),
       updateCustomRow: (id, index, row) =>
         set((s) => ({
           customTabs: s.customTabs.map((t) =>
