@@ -32,10 +32,26 @@ import WebActionMenu, { type WebActionItem } from "./WebActionMenu";
 import schema from "@/data/revenueTemplate.json";
 
 /* ============================================================
-   الحساب الجاري — خلفية بيج/فضية فاتحة، نص أسود غامق وكبير،
-   كل أيقونة بلون مختلف، وتحسين طباعة لاحتواء الخلايا تلقائياً.
+   الحساب الجاري — لوحة ألوان مخصصة وحجم عناصر مناسب للهواتف
    ============================================================ */
 
+/* لوحة الألوان المرسلة */
+const THEME = {
+  sage: "#CDD5AE",
+  paleSage: "#E9EDCA",
+  cream: "#FEF9E1",
+  warmCream: "#FAEDCD",
+  accent: "#D3A373", // بارز/أزرار أساسية
+  text: "#171412",
+  muted: "#6B655D",
+};
+
+/* أحجام أيقونات وأزرار محسّنة للمحمول */
+const ICON_MOBILE = "w-5 h-5 sm:w-6 sm:h-6";
+const BTN_MOBILE = "px-3 py-2 sm:px-4 sm:py-2.5 text-sm sm:text-sm";
+const HEADING_MOBILE = "text-lg sm:text-2xl font-black";
+
+/* أعمدة الجدول */
 const COLS = [
   { key: "date", label: "التاريخ" },
   { key: "hafizaNo", label: "رقم الحافظة" },
@@ -184,16 +200,18 @@ const Modal = ({
       className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-2 sm:p-4"
       dir="rtl"
     >
-      <div className="bg-[#FAF9F6] rounded-t-2xl sm:rounded-2xl w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto border border-black/10">
-        <div className="flex justify-between items-center px-5 py-4 border-b border-black/10 bg-white sticky top-0 z-10">
-          <h3 className="font-black text-base sm:text-lg text-[#171412] flex items-center gap-2 tracking-tight">
-            {title}
-          </h3>
+      <div
+        className="rounded-t-2xl sm:rounded-2xl w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto border"
+        style={{ background: THEME.cream, borderColor: "rgba(0,0,0,0.08)" }}
+      >
+        <div className="flex justify-between items-center px-5 py-4 border-b sticky top-0 z-10" style={{ borderColor: "rgba(0,0,0,0.08)", background: THEME.warmCream }}>
+          <h3 className={`${HEADING_MOBILE} text-[#171412] flex items-center gap-2 tracking-tight`}>{title}</h3>
           <button
             onClick={onClose}
-            className="p-1.5 hover:bg-black/5 rounded-xl transition-colors text-[#6B655D] hover:text-[#171412]"
+            className="p-2 hover:bg-black/5 rounded-xl transition-colors text-[#6B655D] hover:text-[#171412]"
+            aria-label="إغلاق"
           >
-            <X className="w-5 h-5" />
+            <X className={ICON_MOBILE} />
           </button>
         </div>
         <div className="p-5">{children}</div>
@@ -231,7 +249,7 @@ function Field({
           value={v}
           onChange={(e) => on(e.target.value)}
           placeholder={placeholder}
-          className={`w-full ${icon ? "pr-9" : "px-3"} pl-3 py-2 text-[15px] border border-black/15 rounded-xl outline-none focus:border-[#171412] focus:ring-2 focus:ring-[#171412]/10 bg-white text-[#171412] font-bold shadow-sm transition-colors ${className}`}
+          className={`w-full ${icon ? "pr-9" : "px-3"} pl-3 py-2 text-[15px] border rounded-xl outline-none focus:border-[#171412] focus:ring-2 focus:ring-[#171412]/10 bg-white text-[#171412] ${className}`}
         />
       </div>
     </div>
@@ -250,13 +268,16 @@ function LedgerStat({
   icon: React.ReactNode;
 }) {
   const toneMap = {
-    income: { text: "text-[#1E8E5A]", chip: "bg-[#1E8E5A]/10" },
-    expense: { text: "text-[#D14343]", chip: "bg-[#D14343]/10" },
-    balance: { text: "text-[#2563AC]", chip: "bg-[#2563AC]/10" },
+    income: { text: "text-[#1E8E5A]", chipBg: THEME.paleSage },
+    expense: { text: "text-[#D14343]", chipBg: "#FFEDEE" },
+    balance: { text: "text-[#2563AC]", chipBg: THEME.warmCream },
   } as const;
   const t = toneMap[tone];
   return (
-    <div className="relative bg-white rounded-2xl px-2 py-2 sm:px-4 sm:py-3 border border-black/10 shadow-sm">
+    <div
+      className="relative rounded-2xl px-2 py-2 sm:px-4 sm:py-3 border shadow-sm"
+      style={{ background: THEME.cream, borderColor: "rgba(0,0,0,0.08)" }}
+    >
       <div className="flex items-center justify-between">
         <div>
           <span className="text-xs sm:text-sm font-black text-[#6B655D] tracking-wide">{label}</span>
@@ -264,7 +285,12 @@ function LedgerStat({
             {fmt(value)}
           </div>
         </div>
-        <div className={`p-1.5 sm:p-2.5 rounded-xl sm:rounded-2xl [&>svg]:w-4 [&>svg]:h-4 sm:[&>svg]:w-6 sm:[&>svg]:h-6 ${t.chip} ${t.text}`}>{icon}</div>
+        <div
+          className="p-2 rounded-xl flex items-center justify-center"
+          style={{ background: t.chipBg }}
+        >
+          {React.isValidElement(icon) ? React.cloneElement(icon as any, { className: ICON_MOBILE }) : icon}
+        </div>
       </div>
     </div>
   );
@@ -612,7 +638,7 @@ export default function AccountsTab() {
       onSelect: () => undefined,
       content: (
         <label className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
-          <FileSpreadsheet className="h-4 w-4" />
+          <FileSpreadsheet className={ICON_MOBILE} />
           <span>استيراد Excel</span>
           <input
             type="file"
@@ -627,49 +653,44 @@ export default function AccountsTab() {
 
   return (
     <div
-      className="accounts-print-scope w-full space-y-6 bg-[#F2EFEA] p-1.5 sm:p-4 rounded-2xl"
+      className="accounts-print-scope w-full space-y-6 p-1.5 sm:p-4 rounded-2xl"
       dir="rtl"
+      style={{ background: THEME.cream }}
     >
       <style>{PRINT_STYLES}</style>
 
       {/* ===== شريط العنوان ===== */}
       <div className="accounts-print-hide flex items-center justify-between">
         <div>
-          <h1 className="text-xl sm:text-2xl font-black text-[#171412] tracking-tight">
-            الحساب الجاري
-          </h1>
+          <h1 className={`${HEADING_MOBILE} text-[#171412] tracking-tight`}>الحساب الجاري</h1>
           <p className="text-sm text-[#6B655D] font-bold tracking-wide mt-0.5">
             سجل الحركات المالية المُرحّلة
           </p>
         </div>
-        <div className="hidden sm:flex items-center gap-2 px-3.5 py-2 bg-[#F5EBE1] rounded-xl border border-black shadow-sm">
-          <Landmark className="w-4 h-4 text-[#8B5CF6]" />
+        <div className="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-xl border shadow-sm" style={{ background: THEME.warmCream, borderColor: "rgba(0,0,0,0.08)" }}>
+          <Landmark className={ICON_MOBILE} style={{ color: "#8B5CF6" }} />
           <span className="text-sm text-[#6B655D] font-bold">عدد القيود</span>
           <span className="text-[#171412] font-mono text-base tabular-nums font-black">{accounts.length}</span>
         </div>
       </div>
 
       {/* ===== بطاقات الإجماليات ===== */}
-      <div className="accounts-print-hide grid grid-cols-3 gap-1.5 sm:gap-3">
-        <LedgerStat label="إجمالي الإيرادات" value={totalIncome} tone="income" icon={<ArrowUpRight className="w-6 h-6" />} />
-        <LedgerStat label="إجمالي المصروفات" value={totalExpense} tone="expense" icon={<ArrowDownLeft className="w-6 h-6" />} />
-        <LedgerStat label="الرصيد الحالي المتوفر" value={currentBalance} tone="balance" icon={<Wallet className="w-6 h-6" />} />
+      <div className="accounts-print-hide grid grid-cols-3 gap-2">
+        <LedgerStat label="إجمالي الإيرادات" value={totalIncome} tone="income" icon={<ArrowUpRight />} />
+        <LedgerStat label="إجمالي المصروفات" value={totalExpense} tone="expense" icon={<ArrowDownLeft />} />
+        <LedgerStat label="الرصيد الحالي المتوفر" value={currentBalance} tone="balance" icon={<Wallet />} />
       </div>
 
       {/* ===== التقارير الدورية ===== */}
- <div className="accounts-print-hide w-full bg-[#D3A373] rounded-2xl overflow-hidden border border-black shadow-sm">
-
-<div className="bg-[#BDE0FE] px-5 py-4 flex flex-wrap justify-between items-center gap-4 border-b border-black">
-
-<div>
-  <h2 className="text-xl sm:text-base font-black text-black tracking-wide">
-تقارير الحساب الدورية</h2>
- <p className="text-xm text-[#6B655D] font-bold mt-1">اختر الربع أو النصف أو السنة ثم صدّر التقرير</p>
+      <div className="accounts-print-hide w-full rounded-2xl overflow-hidden border shadow-sm" style={{ background: THEME.paleSage, borderColor: "rgba(0,0,0,0.08)" }}>
+        <div className="px-4 py-3 flex flex-wrap justify-between items-center gap-3 border-b" style={{ background: THEME.warmCream, borderColor: "rgba(0,0,0,0.08)" }}>
+          <div>
+            <h2 className="text-base font-black text-[#171412] tracking-wide">تقارير الحساب الدورية</h2>
+            <p className="text-xs text-[#6B655D] font-bold mt-1">اختر الربع أو النصف أو السنة ثم صدّر التقرير</p>
           </div>
- 
- <div className="flex flex-wrap items-end gap-2">
 
-<label className="text-xm font-black text-black">
+          <div className="flex flex-wrap items-end gap-2">
+            <label className="text-xs font-black text-[#171412]">
               نوع التقرير
               <select
                 value={accountReportMode}
@@ -678,7 +699,7 @@ export default function AccountsTab() {
                   setAccountReportMode(nextMode);
                   setAccountReportPeriod(1);
                 }}
-                className="block mt-1 px-3 py-2 border border-black/15 rounded-xl bg-white text-[#171412] text-xs font-bold outline-none focus:border-[#2563AC]"
+                className="block mt-1 px-3 py-2 border rounded-xl bg-white text-[#171412] text-xs font-bold outline-none focus:border-[#2563AC]"
               >
                 <option value="quarter">ربع سنوي</option>
                 <option value="halfYear">نصف سنوي</option>
@@ -691,7 +712,7 @@ export default function AccountsTab() {
                 <select
                   value={accountReportPeriod}
                   onChange={(e) => setAccountReportPeriod(Number(e.target.value))}
-                  className="block mt-1 px-3 py-2 border border-black/15 rounded-xl bg-white text-[#171412] text-xs font-bold outline-none focus:border-[#2563AC]"
+                  className="block mt-1 px-3 py-2 border rounded-xl bg-white text-[#171412] text-xs font-bold outline-none focus:border-[#2563AC]"
                 >
                   {accountReportMode === "quarter" ? (
                     <>
@@ -715,7 +736,7 @@ export default function AccountsTab() {
                 type="number"
                 value={accountReportYear}
                 onChange={(e) => setAccountReportYear(Number(e.target.value) || accountReportYear)}
-                className="block mt-1 w-24 px-3 py-2 border border-black/15 rounded-xl bg-white text-[#171412] text-xs font-bold font-mono text-center outline-none focus:border-[#2563AC]"
+                className="block mt-1 w-24 px-3 py-2 border rounded-xl bg-white text-[#171412] text-xs font-bold font-mono text-center outline-none focus:border-[#2563AC]"
               />
             </label>
             <div className="text-xs font-black text-[#2563AC] px-2 py-2">{accountReportLabel}</div>
@@ -732,13 +753,11 @@ export default function AccountsTab() {
       </div>
 
       {/* ===== لوحة القيد اليدوي والمطابقة ===== */}
-      <div className="accounts-print-hide w-full bg-[#0077B6] rounded-2xl overflow-hidden border border-black shadow-sm">
-
-<div className="bg-[#90E0EF] px-5 py-4 flex flex-wrap justify-between items-center gap-4 border border-1-black">
+      <div className="accounts-print-hide w-full rounded-2xl overflow-hidden border shadow-sm" style={{ background: THEME.paleSage, borderColor: "rgba(0,0,0,0.08)" }}>
+        <div className="px-4 py-3 flex flex-wrap justify-between items-center gap-3" style={{ background: THEME.warmCream, borderColor: "rgba(0,0,0,0.06)" }}>
           <div className="flex items-center gap-2.5">
-
- <div className="p-1.5 bg-[#2563AC]/10 rounded-lg text-[#2563AC]">
-              <Plus className="w-4 h-4" />
+            <div className="p-2 rounded-lg" style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
+              <Plus className={ICON_MOBILE} />
             </div>
             <h2 className="text-sm sm:text-base font-black text-[#171412] tracking-wide">
               قيد جديد أو ترحيل مطابق من الحوافظ
@@ -750,13 +769,18 @@ export default function AccountsTab() {
           <div className="apk-only-actions flex items-center gap-2.5 flex-wrap">
             <button
               onClick={handleSyncFromHafiza}
-              className="flex items-center justify-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 bg-[#D97706] text-white rounded-full text-xs sm:text-xs font-black hover:bg-[#B8620A] transition-colors active:scale-95 shadow-sm"
+              className={`${BTN_MOBILE} flex items-center justify-center gap-2 rounded-full font-black`}
+              style={{ background: THEME.accent, color: "#fff" }}
             >
-              <Zap className="w-3.5 h-3.5" />
-              <span>مطابقة شاملة ٢٠٢٦</span>
+              <Zap className={ICON_MOBILE} />
+              <span className="text-sm">مطابقة شاملة ٢٠٢٦</span>
             </button>
-            <label className="flex items-center justify-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 border border-black/15 text-[#171412] rounded-full text-xs sm:text-xs font-bold cursor-pointer hover:bg-black/5 transition-colors">
-              <FileSpreadsheet className="w-3.5 h-3.5 text-[#1E8E5A]" /> <span>استيراد إكسل</span>
+            <label
+              className={`flex items-center justify-center gap-2 rounded-full border px-3 py-2 cursor-pointer text-[#171412] font-bold`}
+              style={{ borderColor: "rgba(0,0,0,0.08)", background: "#fff" }}
+            >
+              <FileSpreadsheet className={ICON_MOBILE} style={{ color: "#1E8E5A" }} />
+              <span>استيراد إكسل</span>
               <input
                 type="file"
                 accept=".xlsx, .xls, .csv"
@@ -772,39 +796,39 @@ export default function AccountsTab() {
             <Field
               label="التاريخ"
               type="date"
-              icon={<Calendar className="w-4 h-4 text-[#2563AC]" />}
+              icon={<Calendar className={ICON_MOBILE} style={{ color: "#2563AC" }} />}
               v={form.date}
               on={(v) => setForm({ ...form, date: v })}
             />
             <Field
               label="رقم الحافظة"
-              icon={<Hash className="w-4 h-4 text-[#8B5CF6]" />}
+              icon={<Hash className={ICON_MOBILE} style={{ color: "#8B5CF6" }} />}
               v={form.hafizaNo}
               on={(v) => setForm({ ...form, hafizaNo: v })}
             />
             <Field
               label="رقم الإشعار"
-              icon={<Hash className="w-4 h-4 text-[#D97706]" />}
+              icon={<Hash className={ICON_MOBILE} style={{ color: "#D97706" }} />}
               v={form.notifyNo}
               on={(v) => setForm({ ...form, notifyNo: v })}
             />
             <Field
               label="تاريخ التوريد"
               type="date"
-              icon={<Calendar className="w-4 h-4 text-[#0EA5A5]" />}
+              icon={<Calendar className={ICON_MOBILE} style={{ color: "#0EA5A5" }} />}
               v={form.notifyDate}
               on={(v) => setForm({ ...form, notifyDate: v })}
             />
             <Field
               label="رقم الشيك"
-              icon={<Ticket className="w-4 h-4 text-[#DB2777]" />}
+              icon={<Ticket className={ICON_MOBILE} style={{ color: "#DB2777" }} />}
               v={form.checkNo}
               on={(v) => setForm({ ...form, checkNo: v })}
             />
             <Field
               label="تاريخ الشيك"
               type="date"
-              icon={<Calendar className="w-4 h-4 text-[#65A30D]" />}
+              icon={<Calendar className={ICON_MOBILE} style={{ color: "#65A30D" }} />}
               v={form.checkDate}
               on={(v) => setForm({ ...form, checkDate: v })}
             />
@@ -815,14 +839,14 @@ export default function AccountsTab() {
               </label>
               <div className="relative flex items-center">
                 <span className="absolute right-3 z-10">
-                  <FileText className="w-4 h-4 text-[#DC2626]" />
+                  <FileText className={ICON_MOBILE} style={{ color: "#DC2626" }} />
                 </span>
                 <input
                   list="account-descriptions"
                   value={form.description}
                   onChange={(e) => setForm({ ...form, description: e.target.value })}
                   placeholder="اكتب أو اختر البيان..."
-                  className="w-full pr-9 pl-3 py-2 text-[16px] border border-black/15 rounded-xl outline-none focus:border-[#171412] focus:ring-2 focus:ring-[#171412]/10 bg-white text-[#171412] font-bold"
+                  className="w-full pr-9 pl-3 py-2 text-[16px] border rounded-xl outline-none focus:border-[#171412] focus:ring-2 focus:ring-[#171412]/10 bg-white text-[#171412] font-bold"
                 />
               </div>
               <datalist id="account-descriptions">
@@ -836,13 +860,13 @@ export default function AccountsTab() {
 
             <Field
               label="التخصص الطبي"
-              icon={<Stethoscope className="w-4 h-4 text-[#0891B2]" />}
+              icon={<Stethoscope className={ICON_MOBILE} style={{ color: "#0891B2" }} />}
               v={form.specialty}
               on={(v) => setForm({ ...form, specialty: v })}
             />
             <Field
               label="الاسم الكامل"
-              icon={<User className="w-4 h-4 text-[#7C3AED]" />}
+              icon={<User className={ICON_MOBILE} style={{ color: "#7C3AED" }} />}
               v={form.name}
               on={(v) => setForm({ ...form, name: v })}
               placeholder="اسم المتدرب..."
@@ -876,12 +900,12 @@ export default function AccountsTab() {
 
             <div className="sm:col-span-2">
               <label className="flex items-center gap-1.5 text-[16px] font-black text-[#2563AC] mb-1.5 mr-0.5 tracking-wide">
-                <Link className="w-3.5 h-3.5" /> ربط بدليل هيكل الإيرادات
+                <Link className={ICON_MOBILE} /> ربط بدليل هيكل الإيرادات
               </label>
               <select
                 value={form.revenueKey}
                 onChange={(e) => setForm({ ...form, revenueKey: e.target.value })}
-                className="w-full px-3 py-2 text-[15px] border border-[#2563AC]/25 rounded-xl outline-none bg-[#2563AC]/5 text-[#171412] font-bold focus:border-[#2563AC]"
+                className="w-full px-3 py-2 text-[15px] border rounded-xl outline-none bg-[#2563AC]/5 text-[#171412] font-bold focus:border-[#2563AC]"
               >
                 <option value="">-- بدون ربط --</option>
                 {revenueTypes.map((t) => (
@@ -895,15 +919,17 @@ export default function AccountsTab() {
             <div className="sm:col-span-2 flex gap-2 pt-2">
               <button
                 onClick={submit}
-                className="flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 sm:px-4 sm:py-2.5 bg-[#171412] text-white rounded-xl font-black hover:bg-[#2A2521] text-xs sm:text-xs shadow-sm active:scale-95 transition-transform"
+                className={`${BTN_MOBILE} flex-1 flex items-center justify-center gap-2 rounded-xl font-black text-white`}
+                style={{ background: THEME.text }}
               >
-                <Save className="w-4 h-4 text-[#4ADE80]" /> ترحيل القيد
+                <Save className={ICON_MOBILE} style={{ color: "#4ADE80" }} /> <span>ترحيل القيد</span>
               </button>
               <button
                 onClick={() => setForm(emptyForm)}
-                className="flex items-center justify-center gap-1.5 px-2 py-1.5 sm:px-3 sm:py-2.5 border border-black/15 text-[#171412] bg-white rounded-xl font-bold text-xs sm:text-xs active:scale-95 transition-transform hover:bg-black/5"
+                className={`${BTN_MOBILE} flex items-center justify-center gap-2 rounded-xl border font-bold`}
+                style={{ borderColor: "rgba(0,0,0,0.08)", background: "#fff", color: THEME.text }}
               >
-                <Eraser className="w-4 h-4 text-[#D14343]" /> مسح
+                <Eraser className={ICON_MOBILE} style={{ color: "#D14343" }} /> <span>مسح</span>
               </button>
             </div>
           </div>
@@ -911,8 +937,8 @@ export default function AccountsTab() {
       </div>
 
       {/* ===== جدول القيود ===== */}
-      <div className="accounts-print-area w-full bg-white rounded-2xl overflow-hidden border border-black/10 shadow-sm">
-        <div className="accounts-print-hide bg-[#FAF9F6] px-2 py-2 sm:px-5 sm:py-3.5 flex flex-col sm:flex-row justify-between items-stretch sm:items-center flex-wrap gap-2 border-b border-black/10">
+      <div className="accounts-print-area w-full rounded-2xl overflow-hidden border shadow-sm" style={{ background: "#fff", borderColor: "rgba(0,0,0,0.08)" }}>
+        <div className="accounts-print-hide px-2 py-2 sm:px-5 sm:py-3.5 flex flex-col sm:flex-row justify-between items-stretch sm:items-center flex-wrap gap-2 border-b" style={{ background: THEME.cream, borderColor: "rgba(0,0,0,0.06)" }}>
           <div className="flex items-center gap-2.5">
             <div className="w-2 h-2 rounded-full bg-[#1E8E5A] animate-pulse"></div>
             <h2 className="text-xs sm:text-sm font-black text-[#171412] tracking-wide">
@@ -923,7 +949,7 @@ export default function AccountsTab() {
             {Object.values(filters).some(Boolean) && (
               <button
                 onClick={clearFilters}
-                className="px-1.5 py-1 sm:px-2 sm:py-1 bg-black/5 hover:bg-black/10 text-[#171412] rounded-full text-xs sm:text-xs font-bold transition-colors"
+                className="px-2 py-1 bg-black/5 hover:bg-black/10 text-[#171412] rounded-full text-xs font-bold transition-colors"
               >
                 مسح مرشحات التصفية
               </button>
@@ -936,7 +962,7 @@ export default function AccountsTab() {
               numericKeys={["hafizaAmount", "income", "expense", "balance"]}
               pdfLayout="wide-centered"
               onClear={clearAccounts}
-              className="col-span-2 w-full !grid !grid-cols-2 sm:!flex !gap-1 sm:!gap-2 [&>button]:min-w-0 [&>button]:justify-center [&>button]:px-1 [&>button]:py-1 sm:[&>button]:px-2 sm:[&>button]:py-1 [&>button]:text-xs sm:[&>button]:text-xs"
+              className="col-span-2 w-full"
             />
           </div>
         </div>
@@ -944,15 +970,13 @@ export default function AccountsTab() {
         <div className="p-1.5 sm:p-3">
           <div className="overflow-x-auto overflow-y-auto max-h-[72vh] relative rounded-xl">
             <table className="min-w-max table-auto text-xm xm:text-base text-center font-semibold border-collapse border-2 border-black">
-              <thead className="sticky top-0 z-20 text-[#171412] font-black text-[16px] bg-[#E7E2D8]">
+              <thead className="sticky top-0 z-20 text-[#171412] font-black text-[16px]" style={{ background: THEME.warmCream }}>
                 <tr>
-                  <th className="border border-black text-center w-10 bg-[#E7E2D8] sticky top-0 z-20 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
-                    م
-                  </th>
+                  <th className="border border-black text-center w-10 sticky top-0 z-20 px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">م</th>
                   {COLS.map((c) => (
                     <th
                       key={c.key}
-                      className="border border-black cursor-pointer hover:bg-[#DCD5C6] transition-colors select-none sticky top-0 z-20 bg-[#E7E2D8] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"
+                      className="border border-black cursor-pointer hover:bg-[#DCD5C6] transition-colors select-none sticky top-0 z-20 px-1 py-1.5 sm:px-2 sm:py-2 text-sm"
                       onClick={() => toggleSort(c.key)}
                     >
                       <div className="flex items-center justify-center gap-1.5">
@@ -963,23 +987,21 @@ export default function AccountsTab() {
                       </div>
                     </th>
                   ))}
-                  <th className="border border-black text-center bg-[#E7E2D8] sticky top-0 z-20 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
-                    إجراءات
-                  </th>
+                  <th className="border border-black text-center sticky top-0 z-20 px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">إجراءات</th>
                 </tr>
-                <tr className="accounts-print-hide bg-[#F2EFEA]">
-                  <th className="border border-black bg-[#F2EFEA] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></th>
+                <tr className="accounts-print-hide" style={{ background: THEME.cream }}>
+                  <th className="border border-black px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap"></th>
                   {COLS.map((c) => (
-                    <th key={c.key} className="border border-black bg-[#F2EFEA] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                    <th key={c.key} className="border border-black px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                       <input
                         value={filters[c.key] || ""}
                         onChange={(e) => setFilter(c.key, e.target.value)}
                         placeholder="تصفية..."
-                        className="w-16 min-w-0 max-w-[50px] px-1 py-1 text-xs border border-black/15 rounded bg-white text-[#171412] outline-none focus:border-[#171412] font-bold transition-colors"
+                        className="w-16 min-w-0 max-w-[50px] px-1 py-1 text-xs border rounded bg-white text-[#171412] outline-none focus:border-[#171412] font-bold transition-colors"
                       />
                     </th>
                   ))}
-                  <th className="border border-black bg-[#F2EFEA] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></th>
+                  <th className="border border-black px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap"></th>
                 </tr>
               </thead>
 
@@ -988,55 +1010,55 @@ export default function AccountsTab() {
                   <tr>
                     <td
                       colSpan={COLS.length + 2}
-                      className="text-center font-black border border-black bg-white !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"
+                      className="text-center font-black border border-black bg-white px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap"
                     >
                       لا توجد بيانات تطابق مرشحات البحث.
                     </td>
                   </tr>
                 ) : (
                   filteredWithBalance.map((acc, index) => (
-                    <tr key={acc.id} className="odd:bg-white even:bg-[#FAF9F6] hover:bg-[#F0EBDE] transition-colors group">
-                      <td className="border border-black text-center font-mono tabular-nums numeric-cell !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-xm sm:!text-base whitespace-nowrap">
+                    <tr key={acc.id} className="odd:bg-white even:bg-[#FEF9E1] hover:bg-[#F0EBDE] transition-colors group">
+                      <td className="border border-black text-center font-mono tabular-nums numeric-cell px-1 py-1.5 sm:px-2 sm:py-2 text-xm sm:text-base whitespace-nowrap">
                         {index + 1}
                       </td>
-                      <td className="border border-black font-mono tabular-nums numeric-cell text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums numeric-cell text-center px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                         {acc.date}
                       </td>
-                      <td className="border border-black font-mono tabular-nums numeric-cell font-black text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums numeric-cell font-black text-center px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                         {acc.hafizaNo || "—"}
                       </td>
-                      <td className="border border-black font-mono tabular-nums numeric-cell text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums numeric-cell text-center px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                         {acc.notifyNo || "—"}
                       </td>
-                      <td className="border border-black font-mono tabular-nums numeric-cell text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums numeric-cell text-center px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                         {acc.notifyDate || "—"}
                       </td>
-                      <td className="border border-black font-mono tabular-nums numeric-cell text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums numeric-cell text-center px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                         {acc.checkNo || "—"}
                       </td>
-                      <td className="border border-black font-mono tabular-nums numeric-cell text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums numeric-cell text-center px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                         {acc.checkDate || "—"}
                       </td>
-                      <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                      <td className="border border-black px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                         {acc.description || "—"}
                       </td>
-                      <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                      <td className="border border-black px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                         {acc.specialty || "—"}
                       </td>
-                      <td className="border border-black font-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                      <td className="border border-black font-black px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                         {acc.name || "—"}
                       </td>
-                      <td className="border border-black font-mono tabular-nums numeric-cell text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums numeric-cell text-center px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                         {Number(acc.hafizaAmount) > 0 ? fmt(Number(acc.hafizaAmount)) : "—"}
                       </td>
-                      <td className="border border-black font-mono tabular-nums numeric-cell font-black text-center bg-[#1E8E5A]/[0.06] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums numeric-cell font-black text-center bg-[#1E8E5A]/[0.06] px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                         {Number(acc.income) > 0 ? fmt(Number(acc.income)) : "—"}
                       </td>
-                      <td className="border border-black font-mono tabular-nums numeric-cell font-black text-center bg-[#D14343]/[0.06] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums numeric-cell font-black text-center bg-[#D14343]/[0.06] px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                         {Number(acc.expense) > 0 ? fmt(Number(acc.expense)) : "—"}
                       </td>
 
-                      <td className="accounts-print-hide border border-black text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                      <td className="accounts-print-hide border border-black text-center px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                         <select
                           value={acc.revenueKey || ""}
                           onChange={(e) => {
@@ -1044,7 +1066,7 @@ export default function AccountsTab() {
                             updateAccount(acc.id, { ...acc, revenueKey: newKey || undefined });
                             toast.success("تم ربط رمز الإيراد بنجاح");
                           }}
-                          className="w-full p-1 text-[13px] font-black text-[#7C3AED] bg-[#7C3AED]/5 border border-[#7C3AED]/25 rounded outline-none focus:border-[#7C3AED] cursor-pointer"
+                          className="w-full p-1 text-[13px] font-black text-[#7C3AED] bg-[#7C3AED]/5 border rounded outline-none focus:border-[#7C3AED] cursor-pointer"
                         >
                           <option value="">— ربط الرمز —</option>
                           {revenueTypes.map((t) => (
@@ -1055,24 +1077,26 @@ export default function AccountsTab() {
                         </select>
                       </td>
 
-                      <td className="border border-black font-mono tabular-nums numeric-cell font-black text-center bg-[#2563AC]/[0.06] !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums numeric-cell font-black text-center bg-[#2563AC]/[0.06] px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                         {fmt(acc.balance)}
                       </td>
-                      <td className="accounts-print-hide border border-black text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                      <td className="accounts-print-hide border border-black text-center px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                         <div className="flex justify-center gap-1.5">
                           <button
                             onClick={() => setEditingRow(acc)}
-                            className="p-1 text-[#1E8E5A] hover:bg-[#1E8E5A]/10 rounded transition-colors"
+                            className="p-2 text-[#1E8E5A] hover:bg-[#1E8E5A]/10 rounded transition-colors"
+                            aria-label="تعديل"
                           >
-                            <Edit className="w-4 h-4" />
+                            <Edit className={ICON_MOBILE} />
                           </button>
                           <button
                             onClick={() => {
                               if (confirm("هل أنت متأكد من الحذف؟")) deleteAccount(acc.id);
                             }}
-                            className="p-1 text-[#D14343] hover:bg-[#D14343]/10 rounded transition-colors"
+                            className="p-2 text-[#D14343] hover:bg-[#D14343]/10 rounded transition-colors"
+                            aria-label="حذف"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className={ICON_MOBILE} />
                           </button>
                         </div>
                       </td>
@@ -1083,20 +1107,20 @@ export default function AccountsTab() {
               {filteredWithBalance.length > 0 && (
                 <tfoot>
                   <tr className="bg-[#E7E2D8]">
-                    <td colSpan={10} className="border border-black text-left font-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                    <td colSpan={10} className="border border-black text-left font-black px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                       رصيد الإقفال
                     </td>
-                    <td className="border border-black font-mono tabular-nums numeric-cell font-black text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                    <td className="border border-black font-mono tabular-nums numeric-cell font-black text-center px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                       {fmt(totalIncome)}
                     </td>
-                    <td className="border border-black font-mono tabular-nums numeric-cell font-black text-center !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                    <td className="border border-black font-mono tabular-nums numeric-cell font-black text-center px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                       {fmt(totalExpense)}
                     </td>
-                    <td className="border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
-                    <td className="border border-black font-mono tabular-nums numeric-cell font-black text-center bg-[#2563AC]/10 !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap">
+                    <td className="border border-black px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap"></td>
+                    <td className="border border-black font-mono tabular-nums numeric-cell font-black text-center bg-[#2563AC]/10 px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                       {fmt(currentBalance)}
                     </td>
-                    <td className="accounts-print-hide border border-black !px-1 !py-1.5 sm:!px-2 sm:!py-2 !text-sm sm:!text-base whitespace-nowrap"></td>
+                    <td className="accounts-print-hide border border-black px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap"></td>
                   </tr>
                 </tfoot>
               )}
@@ -1120,7 +1144,7 @@ export default function AccountsTab() {
                   type="date"
                   value={editingRow.date}
                   onChange={(e) => setEditingRow({ ...editingRow, date: e.target.value })}
-                  className="w-full p-2 text-[15px] border border-black/15 rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
+                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
                   required
                 />
               </div>
@@ -1129,7 +1153,7 @@ export default function AccountsTab() {
                 <input
                   value={editingRow.hafizaNo}
                   onChange={(e) => setEditingRow({ ...editingRow, hafizaNo: e.target.value })}
-                  className="w-full p-2 text-[15px] border border-black/15 rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
+                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
                 />
               </div>
               <div>
@@ -1137,7 +1161,7 @@ export default function AccountsTab() {
                 <input
                   value={editingRow.notifyNo}
                   onChange={(e) => setEditingRow({ ...editingRow, notifyNo: e.target.value })}
-                  className="w-full p-2 text-[15px] border border-black/15 rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
+                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
                 />
               </div>
               <div>
@@ -1146,7 +1170,7 @@ export default function AccountsTab() {
                   type="date"
                   value={editingRow.notifyDate}
                   onChange={(e) => setEditingRow({ ...editingRow, notifyDate: e.target.value })}
-                  className="w-full p-2 text-[15px] border border-black/15 rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
+                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
                 />
               </div>
               <div className="sm:col-span-2">
@@ -1154,7 +1178,7 @@ export default function AccountsTab() {
                 <input
                   value={editingRow.description}
                   onChange={(e) => setEditingRow({ ...editingRow, description: e.target.value })}
-                  className="w-full p-2 text-[15px] border border-black/15 rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
+                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
                 />
               </div>
               <div>
@@ -1162,7 +1186,7 @@ export default function AccountsTab() {
                 <input
                   value={editingRow.name}
                   onChange={(e) => setEditingRow({ ...editingRow, name: e.target.value })}
-                  className="w-full p-2 text-[15px] border border-black/15 rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
+                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
                 />
               </div>
               <div>
@@ -1171,7 +1195,7 @@ export default function AccountsTab() {
                   type="number"
                   value={editingRow.hafizaAmount}
                   onChange={(e) => setEditingRow({ ...editingRow, hafizaAmount: e.target.value })}
-                  className="w-full p-2 text-[15px] border border-black/15 rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412] font-mono tabular-nums numeric-cell"
+                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412] font-mono tabular-nums numeric-cell"
                 />
               </div>
               <div>
@@ -1180,7 +1204,7 @@ export default function AccountsTab() {
                   type="number"
                   value={editingRow.income}
                   onChange={(e) => setEditingRow({ ...editingRow, income: e.target.value })}
-                  className="w-full p-2 text-[15px] border border-[#1E8E5A]/30 rounded-xl bg-[#1E8E5A]/5 text-[#1E8E5A] font-black outline-none focus:border-[#1E8E5A] font-mono tabular-nums numeric-cell"
+                  className="w-full p-2 text-[15px] border rounded-xl bg-[#1E8E5A]/5 text-[#1E8E5A] font-black outline-none focus:border-[#1E8E5A] font-mono tabular-nums numeric-cell"
                 />
               </div>
               <div>
@@ -1189,21 +1213,21 @@ export default function AccountsTab() {
                   type="number"
                   value={editingRow.expense}
                   onChange={(e) => setEditingRow({ ...editingRow, expense: e.target.value })}
-                  className="w-full p-2 text-[15px] border border-[#D14343]/30 rounded-xl bg-[#D14343]/5 text-[#D14343] font-black outline-none focus:border-[#D14343] font-mono tabular-nums numeric-cell"
+                  className="w-full p-2 text-[15px] border rounded-xl bg-[#D14343]/5 text-[#D14343] font-black outline-none focus:border-[#D14343] font-mono tabular-nums numeric-cell"
                 />
               </div>
             </div>
-            <div className="flex justify-end gap-3 pt-4 border-t border-black/10">
+            <div className="flex justify-end gap-3 pt-4 border-t" style={{ borderColor: "rgba(0,0,0,0.06)" }}>
               <button
                 type="button"
                 onClick={() => setEditingRow(null)}
-                className="px-4 py-2 bg-black/5 text-[#171412] rounded-xl font-bold text-xs sm:text-sm hover:bg-black/10"
+                className="px-4 py-2 bg-black/5 text-[#171412] rounded-xl font-bold text-sm hover:bg-black/10"
               >
                 إلغاء
               </button>
               <button
                 type="submit"
-                className="px-5 py-2 bg-[#171412] text-white rounded-xl font-black text-xs sm:text-sm hover:bg-[#2A2521]"
+                className="px-5 py-2 bg-[#171412] text-white rounded-xl font-black text-sm hover:bg-[#2A2521]"
               >
                 حفظ التعديلات
               </button>
