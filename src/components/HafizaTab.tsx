@@ -229,6 +229,7 @@ export default function HafizaTab() {
     >
       <div className="mb-3 flex flex-col md:flex-row items-start md:items-center justify-between gap-3" />
 
+      {/* الهيدر الرئيسي */}
       <div
         className="rounded-xl p-3 mb-3"
         style={{
@@ -251,36 +252,53 @@ export default function HafizaTab() {
         </div>
       </div>
 
-      <div className="mb-3 flex items-center gap-2 flex-wrap">
-        <div style={{ border: "1px solid #000", borderRadius: 12, overflow: "hidden" }}>
-          <Card className="p-2 bg-white/90" style={{ border: "none", boxShadow: "none" }}>
-            <div className="flex items-center gap-2">
-              <WebActionMenu label="إجراءات الحوافظ" actions={hafizaWebActions} />
-            </div>
-          </Card>
+      {/* شريط الإجراءات والأزرار المفككة */}
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2.5 bg-white/90 p-2.5 rounded-xl border border-black shadow-sm">
+        
+        {/* القائمة المنسدلة والاستيراد */}
+        <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto">
+          <WebActionMenu label="إجراءات الحوافظ" actions={hafizaWebActions} />
+          
+          <div className="flex items-center rounded-lg overflow-hidden border border-black bg-white hover:bg-slate-50 transition-colors">
+            <ImportButton kind="hafiza" />
+          </div>
         </div>
 
-        <div style={{ display: "flex", gap: 8 }}>
+        {/* الأزرار المباشرة السريعة */}
+        <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto">
           <Button
             onClick={handleCopyAmountsToNotify}
-            className="px-3 py-1 rounded-full font-bold"
-            style={{ background: PALETTE[3], color: "#000", border: "1px solid #000" }}
+            className="flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg font-bold text-black border border-black shadow-sm hover:brightness-95 transition-all"
+            style={{ background: PALETTE[3] }}
           >
-<CheckSquare className="w-4 h-4 ml-1" />
-   نسخ المبالغ لعمود الايراد
-  </Button>
+            <CheckSquare className="w-4 h-4 ml-1.5 inline-block" />
+            نسخ مبالغ للحوالة
+          </Button>
 
           <Button
             onClick={() => setShowForm((s) => !s)}
-            className="px-3 py-1 rounded-full font-bold"
-            style={{ background: PALETTE[2], color: "#fff", border: "1px solid #000" }}
+            className="flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg font-bold text-white border border-black shadow-sm hover:brightness-95 transition-all"
+            style={{ background: PALETTE[2] }}
           >
-<Plus className="w-4 h-4 ml-1" />
-  إضافة / إظهار القائمة
- </Button>
+            <Plus className="w-4 h-4 ml-1.5 inline-block" />
+            {showForm ? "إخفاء النموذج" : "إضافة / إظهار النموذج"}
+          </Button>
+
+          <Button
+            variant="destructive"
+            onClick={handleClearHafiza}
+            disabled={hafiza.length === 0}
+            className="flex-1 sm:flex-none px-3.5 py-1.5 rounded-lg font-bold border border-black shadow-sm disabled:opacity-50"
+            style={{ background: PALETTE[4] }}
+          >
+            <Trash2 className="w-4 h-4 ml-1.5 inline-block" />
+            مسح الكل
+          </Button>
         </div>
+
       </div>
 
+      {/* نموذج إضافة حافظة */}
       <div className={`transition-all duration-300 ${showForm ? "max-h-[1400px]" : "max-h-0 overflow-hidden"}`}>
         <Card
           className="mb-3"
@@ -401,6 +419,7 @@ export default function HafizaTab() {
         </Card>
       </div>
 
+      {/* جدول كشف القيود */}
       <Card style={{ border: "1px solid #000", borderRadius: 14, background: "rgba(255,255,255,0.94)", boxShadow: "0 8px 20px rgba(0,0,0,0.12)" }}>
         <CardHeader style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
           <div className="flex items-center gap-3">
