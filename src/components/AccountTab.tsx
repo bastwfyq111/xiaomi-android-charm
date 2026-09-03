@@ -112,7 +112,7 @@ const parseAmount = (val: any): number => {
 /* أنماط الطباعة: احتواء تلقائي لنص الخلايا بدل القطع، مع حدود سوداء واضحة */
 const PRINT_STYLES = `
 @media print {
-  .accounts-print-scope { background: #fff !important; }
+  .accounts-print-scope { background:#B4CEB6!important; }
   .accounts-print-area, .accounts-print-area * { visibility: visible !important; }
   .accounts-print-hide { display: none !important; }
   .accounts-print-area table {
@@ -655,7 +655,7 @@ export default function AccountsTab() {
     <div
       className="accounts-print-scope w-full space-y-6 p-1.5 sm:p-4 rounded-2xl"
       dir="rtl"
-      style={{ background: THEME.cream }}
+      style={{ background: THEME.Lavender }}
     >
       <style>{PRINT_STYLES}</style>
  {/*شريط العنوان */}
@@ -667,8 +667,7 @@ export default function AccountsTab() {
  </p>
      </div>
  
- <div className="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-xl border border-1-black" 
- style={{ background: THEME.Burgundy, borderColor: "#000" }}>
+ <div className="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-xl bg-#3F6978">
 
 <Landmark className={ICON_MOBILE} 
 style={{ color: "#8B5CF6"}} />
