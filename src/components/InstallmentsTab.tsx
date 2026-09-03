@@ -2628,6 +2628,18 @@ const installments2026WebActions: WebActionItem[] = [
                           <td className="text-center w-auto min-w-[100px] numeric-cell font-mono text-black font-extrabold bg-rose-50/40 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
                             {fmt(Number(r.remaining || 0))}
                           </td>
+                          <td className="text-center w-auto bg-amber-50/40 !px-2 !py-2 !text-lg border-l border-slate-200">
+                            <input
+                              type="text"
+                              value={r.notes || ""}
+                              onChange={(e) =>
+                                update2026CellValue(originalIndex, "notes", e.target.value)
+                              }
+                              className="w-full min-w-[160px] bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
+                              placeholder="—"
+                            />
+                          </td>
+
                           <td className="text-center w-auto whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
                             <span
                               className={`px-3 py-1 rounded-full !text-lg font-extrabold ${status.bg} ${status.color}`}
