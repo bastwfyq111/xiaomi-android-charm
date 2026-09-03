@@ -254,6 +254,8 @@ align-items: center !important;     /* توسيط عمودي للعنصر الد
   thead { display: table-header-group; }
   tfoot { display: table-footer-group; }
   tr { page-break-inside: avoid; }
+
+  ${noteRowCss}
 `;
 
 /** يبني ترويسة + جدول التبويب (نفس المستخدم في الطباعة وتنزيل PDF) */
