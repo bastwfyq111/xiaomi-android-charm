@@ -112,9 +112,13 @@ const parseAmount = (val: any): number => {
 /* أنماط الطباعة: احتواء تلقائي لنص الخلايا بدل القطع، مع حدود سوداء واضحة */
 const PRINT_STYLES = `
 @media print {
-  .accounts-print-scope { background:#B4CEB6!important; }
+  .accounts-print-scope { background:#B4CEB6 !important; }
   .accounts-print-area, .accounts-print-area * { visibility: visible !important; }
-  .accounts-print-hide { display: none !important; }
+  .accounts-print-hide { display: none !important;
+background:"#5C1D24", 
+bolder:1px solid black; 
+   
+  }
   .accounts-print-area table {
     border-collapse: collapse !important;
     width: 100٪ !important;
@@ -122,8 +126,8 @@ const PRINT_STYLES = `
     table-layout:auto!important;
   }
   .accounts-print-area thead th {
-    color: #171412 !important;
-    font-weight: 900 !important;
+    color: white !important;
+    font-weight: 1000 !important;
   }
   .accounts-print-area tbody td,
   .accounts-print-area tfoot td {
@@ -141,11 +145,10 @@ const PRINT_STYLES = `
     line-height: 1.1 !important;
     padding: 0 !important;
     line-height: 1.1 !important;
-    font-size: clamp(7px, 1.2vw, 12px) !important;
+    font-size: 16px !important;
     height: auto !important;
     max-width: none !important;
     color: #000 !important;
-    background: #fff !important;
   }
   .accounts-print-area td.numeric-cell,
   .accounts-print-area th.numeric-cell,
@@ -154,7 +157,7 @@ const PRINT_STYLES = `
   .accounts-print-area td.font-mono,
   .accounts-print-area th.font-mono {
     font-family: 'Times New Roman', Times, serif !important;
-    font-size: clamp(10px, 0.95vw, 13px) !important;
+    font-size: 16px !important;
     line-height: 1.05 !important;
     white-space: nowrap !important;
     overflow-wrap: normal !important;
@@ -197,18 +200,18 @@ const Modal = ({
   if (!isOpen) return null;
   return (
     <div
-      className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-2 sm:p-4"
+      className="fixed inset-0  backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-2 sm:p-4"
       dir="rtl"
     >
       <div
-        className="rounded-t-2xl sm:rounded-2xl w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto border"
-        style={{ background: THEME.cream, borderColor: "#000" }}
+        className="rounded-t-2xl sm:rounded-2xl w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto border border-1-black"
+  
       >
-        <div className="flex justify-between items-center px-5 py-4 border-b sticky top-0 z-10" style={{ borderColor: "#000", background: THEME.warmCream }}>
+        <div className="flex justify-between items-center px-5 py-4 border-b black top-0 z-10" style={{ borderColor: "#000", background: THEME.LightBrown }}>
           <h3 className={`${HEADING_MOBILE} text-[#171412] flex items-center gap-2 tracking-tight`}>{title}</h3>
 <button
  onClick={onClose}
- className="p-2 hover:bg-black/5 rounded-xl transition-colors text-[#6B655D] hover:text-[#171412]"
+ className="p-2 hover:bg-blue rounded-xl transition-colors text-[#6B655D] hover:text-[#171412]"
 aria-label="إغلاق"
           >
             <X className={ICON_MOBILE} />
