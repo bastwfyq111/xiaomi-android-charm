@@ -266,18 +266,18 @@ export default function HafizaTab() {
             className="px-3 py-1 rounded-full font-bold"
             style={{ background: PALETTE[3], color: "#000", border: "1px solid #000" }}
           >
-            <CheckSquare className="w-4 h-4 ml-1" />
-            نسخ مبالغ للحوالة
-          </Button>
+<CheckSquare className="w-4 h-4 ml-1" />
+   نسخ المبالغ لعمود الايراد
+  </Button>
 
           <Button
             onClick={() => setShowForm((s) => !s)}
             className="px-3 py-1 rounded-full font-bold"
             style={{ background: PALETTE[2], color: "#fff", border: "1px solid #000" }}
           >
-            <Plus className="w-4 h-4 ml-1" />
-            إضافة / إظهار الفورم
-          </Button>
+<Plus className="w-4 h-4 ml-1" />
+  إضافة / إظهار القائمة
+ </Button>
         </div>
       </div>
 
@@ -569,4 +569,4 @@ function FieldDark({
       </div>
     </div>
   );
-    }
+}
