@@ -117,9 +117,9 @@ const PRINT_STYLES = `
   .accounts-print-hide { display: none !important; }
   .accounts-print-area table {
     border-collapse: collapse !important;
-    width: auto !important;
-    min-width: 100% !important;
-    table-layout: auto!important;
+    width: 100٪ !important;
+    min-width:auto !important;
+    table-layout:auto!important;
   }
   .accounts-print-area thead th {
     color: #171412 !important;
@@ -202,14 +202,14 @@ const Modal = ({
     >
       <div
         className="rounded-t-2xl sm:rounded-2xl w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto border"
-        style={{ background: THEME.cream, borderColor: "rgba(0,0,0,0.08)" }}
+        style={{ background: THEME.cream, borderColor: "#000" }}
       >
-        <div className="flex justify-between items-center px-5 py-4 border-b sticky top-0 z-10" style={{ borderColor: "rgba(0,0,0,0.08)", background: THEME.warmCream }}>
+        <div className="flex justify-between items-center px-5 py-4 border-b sticky top-0 z-10" style={{ borderColor: "#000", background: THEME.warmCream }}>
           <h3 className={`${HEADING_MOBILE} text-[#171412] flex items-center gap-2 tracking-tight`}>{title}</h3>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-black/5 rounded-xl transition-colors text-[#6B655D] hover:text-[#171412]"
-            aria-label="إغلاق"
+<button
+ onClick={onClose}
+ className="p-2 hover:bg-black/5 rounded-xl transition-colors text-[#6B655D] hover:text-[#171412]"
+aria-label="إغلاق"
           >
             <X className={ICON_MOBILE} />
           </button>
@@ -637,7 +637,7 @@ export default function AccountsTab() {
       icon: FileSpreadsheet,
       onSelect: () => undefined,
       content: (
-        <label className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100">
+        <label className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-xl font-bold text-black hover:bg-sky border border-1-black">
           <FileSpreadsheet className={ICON_MOBILE} />
           <span>استيراد Excel</span>
           <input
@@ -658,27 +658,39 @@ export default function AccountsTab() {
       style={{ background: THEME.cream }}
     >
       <style>{PRINT_STYLES}</style>
-
-      {/* ===== شريط العنوان ===== */}
+ {/*شريط العنوان */}
       <div className="accounts-print-hide flex items-center justify-between">
         <div>
-          <h1 className={`${HEADING_MOBILE} text-[#171412] tracking-tight`}>الحساب الجاري</h1>
-          <p className="text-sm text-[#6B655D] font-bold tracking-wide mt-0.5">
-            سجل الحركات المالية المُرحّلة
-          </p>
-        </div>
-        <div className="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-xl border shadow-sm" style={{ background: THEME.warmCream, borderColor: "rgba(0,0,0,0.08)" }}>
-          <Landmark className={ICON_MOBILE} style={{ color: "#8B5CF6" }} />
-          <span className="text-sm text-[#6B655D] font-bold">عدد القيود</span>
-          <span className="text-[#171412] font-mono text-base tabular-nums font-black">{accounts.length}</span>
+<h1 className={`${HEADING_MOBILE} text-white tracking-tight`}>الحساب الجاري</h1>
+<p className="text-xm text-[#6B655D font-bold tracking-wide mt-0.5"> سجل الحركات المالية
+المُرحّلة
+ </p>
+     </div>
+ 
+ <div className="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-xl border border-1-black" 
+ style={{ background: THEME.Burgundy, borderColor: "#000" }}>
+
+<Landmark className={ICON_MOBILE} 
+style={{ color: "#8B5CF6"}} />
+  <span className="text-sm text-[#6B655D] font-bold">عدد القيود</span>
+  <span className="text-[#171412] font-mono text-base tabular-nums font-black">{accounts.length}</span>
         </div>
       </div>
 
       {/* ===== بطاقات الإجماليات ===== */}
-      <div className="accounts-print-hide grid grid-cols-3 gap-2">
-        <LedgerStat label="إجمالي الإيرادات" value={totalIncome} tone="income" icon={<ArrowUpRight />} />
-        <LedgerStat label="إجمالي المصروفات" value={totalExpense} tone="expense" icon={<ArrowDownLeft />} />
-        <LedgerStat label="الرصيد الحالي المتوفر" value={currentBalance} tone="balance" icon={<Wallet />} />
+<div className="accounts-print-hide grid grid-cols-3 gap-2">
+
+<LedgerStat label="إجمالي الإيرادات" 
+style={{ background:THEME.Camel, borderColor: "#000"}} 
+value={totalIncome} tone="income" icon={<ArrowUpRight />} />
+        
+<LedgerStat label="إجمالي المصروفات" 
+style={{ background:THEME.LightBrown, borderColor: "#000"}} 
+value={totalExpense} tone="expense" icon={<ArrowDownLeft />} />
+
+  <LedgerStat label="الرصيد الحالي المتوفر"
+ style={{ background:THEME.Lavender, borderColor: "#000"}} 
+value={currentBalance} tone="balance" icon={<Wallet />} />
       </div>
 
       {/* ===== التقارير الدورية ===== */}
