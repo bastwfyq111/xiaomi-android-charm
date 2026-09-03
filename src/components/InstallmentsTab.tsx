@@ -2480,6 +2480,7 @@ const installments2026WebActions: WebActionItem[] = [
                       الرصيد المتبقي <SortIcon sortConfig={sortConfig2026} columnKey="remaining" />
                     </div>
                   </th>
+                  <th className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black border-l border-sky-700/30">الملاحظات</th>
                   <th className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black border-l border-sky-700/30">حالة</th>
                   <th className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg text-black">إجراءات</th>
                 </tr>
@@ -2488,7 +2489,8 @@ const installments2026WebActions: WebActionItem[] = [
                 {filteredRows2026.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={10 + MONTHS_2026.length + extraCols2026.length}
+                      colSpan={11 + MONTHS_2026.length + extraCols2026.length}
+
                       className="text-center w-auto text-slate-400 !px-3 !py-4 !text-lg whitespace-nowrap"
                     >
                       لا توجد بيانات (يرجى التأكد من استيراد الملف أو تعديل البحث)
@@ -2628,6 +2630,18 @@ const installments2026WebActions: WebActionItem[] = [
                           <td className="text-center w-auto min-w-[100px] numeric-cell font-mono text-black font-extrabold bg-rose-50/40 whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
                             {fmt(Number(r.remaining || 0))}
                           </td>
+                          <td className="text-center w-auto bg-amber-50/40 !px-2 !py-2 !text-lg border-l border-slate-200">
+                            <input
+                              type="text"
+                              value={r.notes || ""}
+                              onChange={(e) =>
+                                update2026CellValue(originalIndex, "notes", e.target.value)
+                              }
+                              className="w-full min-w-[160px] bg-transparent text-center text-black font-extrabold !text-lg outline-none focus:bg-white focus:ring-2 ring-yellow-400 rounded px-1 py-1"
+                              placeholder="—"
+                            />
+                          </td>
+
                           <td className="text-center w-auto whitespace-nowrap !px-2 !py-2 !text-lg border-l border-slate-200">
                             <span
                               className={`px-3 py-1 rounded-full !text-lg font-extrabold ${status.bg} ${status.color}`}
@@ -2704,7 +2718,9 @@ const installments2026WebActions: WebActionItem[] = [
                       <td className="text-center w-auto numeric-cell font-mono text-black whitespace-nowrap !px-3 !py-3 !text-lg border-l border-sky-300">
                         {fmt(Number(totals2026.remaining || 0))}
                       </td>
+                      <td className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg border-l border-sky-300">—</td>
                       <td className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg border-l border-sky-300"></td>
+
                       <td className="text-center w-auto whitespace-nowrap !px-3 !py-3 !text-lg"></td>
                     </tr>
                   </>
