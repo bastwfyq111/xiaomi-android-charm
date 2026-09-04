@@ -775,10 +775,7 @@ export default function ExpensesTab() {
                 .print-page { min-height: auto; width: 100%; margin: 0; padding: 0; border: 0; background: #fff; }
                 .report-letterhead-block { display: flex; width: 100%; max-width: none; height: 30mm; min-height: 30mm; max-height: 30mm; align-items: stretch; justify-content: center; margin: 0 0 3mm; page-break-before: avoid; page-break-after: avoid; }
                 .report-letterhead-image { display: block; width: 100%; max-width: none; height: 100%; max-height: 100%; object-fit: fill; object-position: center; margin: 0; }
-                .report-heading { margin: 0 0 4mm; padding: 3mm 4mm; border: 2px solid #000; border-radius: 9px; background: linear-gradient(90deg, #0f766e, #047857); color: #fff; text-align: center; }
-                .report-heading h1 { margin: 0; font-size: 17px; font-weight: 800; }
-                .report-heading p { margin: 1mm 0 0; font-size: 10px; font-weight: 700; }
-                .report-heading .date { margin-top: 1mm; font-size: 9px; opacity: .95; }
+                ${runningLetterheadCss}
                 #expenses-report { width: 100%; }
                 #expenses-report > * { margin-bottom: 4mm; }
                 #expenses-report .overflow-x-auto, #expenses-report .overflow-auto { overflow: visible !important; }
