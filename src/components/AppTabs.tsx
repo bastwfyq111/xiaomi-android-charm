@@ -5,7 +5,7 @@ import {
 import * as XLSX from "xlsx";
 import { useReportDate } from "@/lib/reportDate";
 import { toast } from "sonner";
-import { reportLetterheadHtml } from "@/lib/printTableHtml";
+import { reportLetterheadHtml, runningLetterheadCss } from "@/lib/printTableHtml";
 import { printReportHtml } from "@/lib/nativePrinter";
 import { importUsageInWorker } from "@/lib/excelImportWorkerClient";
 import { saveBlobToInternalStorage } from "@/lib/nativeFileStorage";
@@ -563,7 +563,8 @@ const AppTabs: React.FC = () => {
       tr.t-prev td { background:#e2e8f0; color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       tr.t-cum td  { background:#0b3d6d; color:#000 !important; font-weight:700 !important; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }  
       tr.t-cur td:first-child, tr.t-prev td:first-child, tr.t-cum td:first-child { text-align:center; padding-right:4px; }
-      @media print { @page { size:A4 landscape; margin:3mm; } body { padding:0; } }
+      @media print { @page { size:A4 landscape; margin:3mm; } }
+      ${runningLetterheadCss}
     </style></head><body>  
     ${reportLetterheadHtml()}
     <h2>سجل مفردات الاستخدامات والنفقات العامة</h2>
@@ -585,12 +586,12 @@ const AppTabs: React.FC = () => {
   };  
   
   return (  
-    <div className="space-y-4 font-tajawal text-slate-800 p-2" dir="rtl">  
+    <div className="sheet-tabs-ui space-y-4 font-tajawal text-slate-800 p-2" dir="rtl">  
       <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 shadow-sm space-y-4">  
         <div className="flex flex-wrap items-center justify-between gap-3">  
           <div className="flex items-center gap-2">  
             <FileSpreadsheet className="w-5 h-5 text-blue-800" />  
-            <h2 className="text-base font-bold text-blue-900">سجل مفردات الاستخدامات والنفقات العامة</h2>  
+            <h2 className="text-base font-bold text-[#123b52]">سجل مفردات الاستخدامات والنفقات العامة</h2>  
             <span className="rounded-full border border-amber-300 bg-amber-100 px-2 py-1 text-[10px] font-bold text-amber-900 whitespace-nowrap">اختبار الربط: main</span>
           </div>  
           <div className="flex flex-wrap items-center gap-2">  

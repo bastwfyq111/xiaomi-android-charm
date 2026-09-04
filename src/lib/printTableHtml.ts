@@ -278,6 +278,7 @@ align-items: center !important;     /* توسيط عمودي للعنصر الد
   tr { page-break-inside: avoid; }
 
   ${noteRowCss}
+  ${runningLetterheadCss}
 `;
 
 /** يبني ترويسة + جدول التبويب (نفس المستخدم في الطباعة وتنزيل PDF) */
