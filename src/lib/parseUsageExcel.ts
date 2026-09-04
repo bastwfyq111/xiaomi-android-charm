@@ -293,9 +293,13 @@ allCols.forEach((column) => headerTargets.set(headerKey(column), column));
 [
   ["formno", "رقم الاستمارة"],
   ["formnumber", "رقم الاستمارة"],
+  ["رقم الاستماره", "رقم الاستمارة"],
+  ["الاستمارة", "رقم الاستمارة"],
   ["settlement", "كشف التسوية"],
+  ["التسوية", "كشف التسوية"],
   ["description", "البيان"],
   ["statement", "البيان"],
+  ["الوصف", "البيان"],
   ["date", "التاريخ"],
   ["monthid", "monthId"],
   ["monthname", "monthId"],
@@ -305,15 +309,69 @@ allCols.forEach((column) => headerTargets.set(headerKey(column), column));
   ["اسم الشهر", "monthId"],
   ["رقم الشهر", "monthId"],
   ["الفترة", "monthId"],
+  ["الرواتب", "المرتبات الاساسية"],
+  ["المرتبات", "المرتبات الاساسية"],
+  ["الاجور التعاقدية", "اجور تعاقدية"],
+  ["العمل الاضافي", "اجور عمل اضافي"],
+  ["المكافات", "مكافات"],
+  ["الماء", "مياه"],
+  ["الكهرباء", "انارة"],
+  ["الانارة", "انارة"],
+  ["القرطاسية", "ادوات كتابية"],
+  ["الاتصالات", "اتصالات"],
+  ["النظافة", "نفقات النظافة"],
+  ["الايجار", "ايجار مباني"],
+  ["الادوية", "ادوية ومستلزمات طبية"],
+  ["الاغذية", "اغذية وملبوسات"],
+  ["الوقود", "وقود وزيوت"],
+  ["الامانات", "الامانات"],
 ].forEach(([alias, target]) => headerTargets.set(headerKey(alias), target));
 
-const rowLookup = (record: Record<string, unknown>) => {
-  const lookup: Record<string, unknown> = {};
-  Object.entries(record).forEach(([key, value]) => {
-    const target = headerTargets.get(headerKey(key));
-    lookup[headerKey(target || key)] = value;
+/**
+ * Column names differ between the many spreadsheets the office produces.
+ * A hint is enough: exact key, containment, or a high bigram similarity all
+ * resolve to the canonical column used by the table.
+ */
+const bigrams = (value: string) => {
+  const set = new Set<string>();
+  for (let index = 0; index < value.length - 1; index += 1) set.add(value.slice(index, index + 2));
+  return set;
+};
+
+const similarity = (a: string, b: string) => {
+  if (!a || !b) return 0;
+  if (a === b) return 1;
+  const first = bigrams(a);
+  const second = bigrams(b);
+  if (!first.size || !second.size) return 0;
+  let shared = 0;
+  first.forEach((gram) => {
+    if (second.has(gram)) shared += 1;
   });
-  return lookup;
+  return (2 * shared) / (first.size + second.size);
+};
+
+const targetKeys = Array.from(headerTargets.entries());
+
+const resolveHeader = (rawHeader: unknown): string | null => {
+  const key = headerKey(rawHeader);
+  if (!key) return null;
+  const exact = headerTargets.get(key);
+  if (exact) return exact;
+
+  let best: { target: string; score: number } | null = null;
+  for (const [candidateKey, target] of targetKeys) {
+    let score = 0;
+    if (candidateKey.length >= 3 && key.includes(candidateKey)) {
+      score = 0.9 + candidateKey.length / (key.length * 100);
+    } else if (key.length >= 3 && candidateKey.includes(key)) {
+      score = 0.85 + key.length / (candidateKey.length * 100);
+    } else {
+      score = similarity(key, candidateKey);
+    }
+    if (score >= 0.62 && (!best || score > best.score)) best = { target, score };
+  }
+  return best ? best.target : null;
 };
 
 const importedValue = (column: string, value: unknown) => {
@@ -321,6 +379,24 @@ const importedValue = (column: string, value: unknown) => {
   if (column === "التاريخ") return dateToInputValue(value);
   if (numericColumns.has(column)) return parseNumber(value) ?? norm(value);
   return typeof value === "string" ? norm(value) : value;
+};
+
+const headerMapFromRows = (rows: unknown[][], index: number) => {
+  const map = new Map<number, string>();
+  const used = new Set<string>();
+  const width = Math.max(...[index - 1, index, index + 1].map((i) => rows[i]?.length ?? 0), 0);
+  for (let column = 0; column < width; column += 1) {
+    const candidates = [rows[index]?.[column], rows[index + 1]?.[column], rows[index - 1]?.[column]];
+    for (const candidate of candidates) {
+      const target = resolveHeader(candidate);
+      if (target && !used.has(target)) {
+        used.add(target);
+        map.set(column, target);
+        break;
+      }
+    }
+  }
+  return map;
 };
 
 export function parseUsageExcel(buffer: ArrayBuffer, importMonthId: number) {
@@ -334,56 +410,68 @@ export function parseUsageExcel(buffer: ArrayBuffer, importMonthId: number) {
     defval: "",
     blankrows: false,
   });
-  const headerRowIndex = matrix.findIndex((cells) => {
-    const knownHeaders = cells.filter((cell) => headerTargets.has(headerKey(cell)));
-    return knownHeaders.length >= 2;
-  });
-  const json = XLSX.utils.sheet_to_json<Record<string, unknown>>(worksheet, {
-    defval: "",
-    blankrows: false,
-    ...(headerRowIndex >= 0 ? { range: headerRowIndex } : {}),
-  });
+
+  let headerRowIndex = -1;
+  let headerMap = new Map<number, string>();
+  for (let index = 0; index < Math.min(matrix.length, 30); index += 1) {
+    const map = headerMapFromRows(matrix, index);
+    if (map.size > headerMap.size) {
+      headerMap = map;
+      headerRowIndex = index;
+    }
+  }
+  if (headerRowIndex < 0 || headerMap.size < 2) return [];
+
   let activeMonthId =
     Number.isInteger(importMonthId) && importMonthId >= 1 && importMonthId <= 12
       ? importMonthId
       : 1;
   const imported: Record<string, unknown>[] = [];
 
-  json.forEach((record) => {
-    const lookup = rowLookup(record);
-    const values = Object.values(lookup).filter((value) => !emptyCell(value));
-    const firstText = norm(values[0]).toLowerCase();
-    const namedMonthValues = values.filter(hasNamedMonth);
-    const sectionMonthId =
-      values.length <= 2 && namedMonthValues.length > 0 && namedMonthValues.length === values.length
-        ? parseMonthId(namedMonthValues[0])
-        : null;
-    if (sectionMonthId) {
-      activeMonthId = sectionMonthId;
-      return;
+  for (let index = headerRowIndex + 1; index < matrix.length; index += 1) {
+    const cells = matrix[index] ?? [];
+    const lookup: Record<string, unknown> = {};
+    headerMap.forEach((target, column) => {
+      lookup[headerKey(target)] = cells[column];
+    });
+
+    const filled = cells.filter((cell) => !emptyCell(cell));
+    if (!filled.length) continue;
+
+    // A lone month name ("نوفمبر 2025") introduces the block of rows below it.
+    const namedMonths = filled.filter(hasNamedMonth);
+    if (filled.length <= 2 && namedMonths.length === filled.length) {
+      const sectionMonthId = parseMonthId(namedMonths[0]);
+      if (sectionMonthId) {
+        activeMonthId = sectionMonthId;
+        continue;
+      }
     }
 
-    const normalizedFirstText = headerKey(firstText);
-    const isSummaryRow =
-      normalizedFirstText.startsWith("اجمالي") ||
-      normalizedFirstText.startsWith("الاجمالي") ||
-      normalizedFirstText.startsWith("total");
-    const headerMatches = values.filter((value) => headerTargets.has(headerKey(value))).length;
-    if (isSummaryRow || headerMatches >= 2) return;
+    const firstText = headerKey(filled[0]);
+    if (
+      firstText.startsWith("اجمالي") ||
+      firstText.startsWith("الاجمالي") ||
+      firstText.startsWith("total")
+    ) {
+      continue;
+    }
+    // Repeated header rows inside the sheet.
+    if (filled.filter((cell) => resolveHeader(cell)).length >= 3) continue;
 
     const hasData = allCols.some((column) => !emptyCell(lookup[headerKey(column)]));
-    if (!hasData) return;
+    if (!hasData) continue;
 
     const rowMonthId = monthIdFromLookup(lookup) ?? activeMonthId;
     const row: Record<string, unknown> = {
-      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      id: `${Date.now()}-${index}-${Math.random().toString(36).slice(2, 8)}`,
       monthId: rowMonthId,
     };
     allCols.forEach((column) => {
       row[column] = importedValue(column, lookup[headerKey(column)]);
     });
     imported.push(recomputeRow(row));
-  });
+  }
 
   return imported;
 }
