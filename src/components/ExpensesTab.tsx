@@ -11,7 +11,7 @@ import {
 import { toast } from "sonner";
 import schemaJson from "@/lib/expensesSchema.json";
 import { useReportDate } from "@/lib/reportDate";
-import { escapeHtml, reportLetterheadHtml } from "@/lib/printTableHtml";
+import { escapeHtml, reportLetterheadHtml, runningLetterheadCss } from "@/lib/printTableHtml";
 import { printReportHtml } from "@/lib/nativePrinter";
 import WebActionMenu, { type WebActionItem } from "./WebActionMenu";
 
@@ -624,7 +624,7 @@ export default function ExpensesTab() {
     return (
       <div className="space-y-4" dir="rtl">
         <div className="rounded-xl border-2 border-black overflow-hidden shadow-sm">
-          <div className="bg-gradient-to-r from-sky-700 to-sky-700 text-white p-3 text-center">
+          <div className="bg-gradient-to-r from-[#123b52] via-[#1f5f7a] to-[#2e6b8a] text-white p-3 text-center">
             <h3 className="text-base sm:text-lg font-bold">كشف حساب السنة</h3>
             <p className="text-xs opacity-90">ملخص جميع الأشهر للعام {year}م</p>
           </div>
@@ -736,7 +736,7 @@ export default function ExpensesTab() {
   ];
 
   return (
-    <div className="space-y-3" dir="rtl">
+    <div className="sheet-tabs-ui space-y-3" dir="rtl">
       {/* شريط التبويبات + أزرار */}
       <div className="flex flex-wrap items-center gap-2">
         <div className="bg-slate-100 p-1.5 rounded-xl border border-slate-200 overflow-x-auto flex-1 min-w-0">
@@ -775,10 +775,7 @@ export default function ExpensesTab() {
                 .print-page { min-height: auto; width: 100%; margin: 0; padding: 0; border: 0; background: #fff; }
                 .report-letterhead-block { display: flex; width: 100%; max-width: none; height: 30mm; min-height: 30mm; max-height: 30mm; align-items: stretch; justify-content: center; margin: 0 0 3mm; page-break-before: avoid; page-break-after: avoid; }
                 .report-letterhead-image { display: block; width: 100%; max-width: none; height: 100%; max-height: 100%; object-fit: fill; object-position: center; margin: 0; }
-                .report-heading { margin: 0 0 4mm; padding: 3mm 4mm; border: 2px solid #000; border-radius: 9px; background: linear-gradient(90deg, #0f766e, #047857); color: #fff; text-align: center; }
-                .report-heading h1 { margin: 0; font-size: 17px; font-weight: 800; }
-                .report-heading p { margin: 1mm 0 0; font-size: 10px; font-weight: 700; }
-                .report-heading .date { margin-top: 1mm; font-size: 9px; opacity: .95; }
+                ${runningLetterheadCss}
                 #expenses-report { width: 100%; }
                 #expenses-report > * { margin-bottom: 4mm; }
                 #expenses-report .overflow-x-auto, #expenses-report .overflow-auto { overflow: visible !important; }
@@ -823,7 +820,7 @@ export default function ExpensesTab() {
                   #expenses-report th, #expenses-report td { white-space: normal !important; }
                   #expenses-report .numeric-cell, #expenses-report .date-cell, #expenses-report .font-mono { white-space: nowrap !important; }
                 }
-                </style></head><body><div class="print-page">${reportLetterheadHtml()}<div class="report-heading"><h1>جدول المصروفات - ${escapeHtml(view)} - ${year}م</h1><p>المجلس اليمني للاختصاصات الطبية فرع - صعدة</p><p class="date">تاريخ التقرير: ${escapeHtml(reportDateLabel)}</p></div><div id="expenses-report">${el.innerHTML}</div></div>
+                </style></head><body><div class="print-page">${reportLetterheadHtml()}<div id="expenses-report">${el.innerHTML}</div></div>
                 <script>window.onload=()=>setTimeout(()=>window.print(),300)</script></body></html>`;
               const opened = printReportHtml(html, `المصروفات - ${view} - ${reportDateLabel}`);
               if (!opened) toast.error("تم منع فتح نافذة الطباعة، يرجى السماح بالنوافذ المنبثقة");

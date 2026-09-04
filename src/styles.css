@@ -545,3 +545,57 @@ table td > * {
   }
 }
 
+/* ===== تبويبات الكشوف (الإيرادات، الحساب الشهري، المصروفات، سجل الاستخدامات) ===== */
+/* هوية عصرية: أزرق بترولي عميق + لمسة نحاسية، واحتواء تلقائي للأعمدة بدون التفاف النصوص */
+.sheet-tabs-ui {
+  --sheet-ink: #0f2f44;
+  --sheet-brand: #1f5f7a;
+  --sheet-accent: #c98a3c;
+  color: var(--sheet-ink);
+  letter-spacing: 0.1px;
+}
+
+.sheet-tabs-ui :where(h1, h2, h3, h4) {
+  letter-spacing: 0.2px;
+  font-weight: 800;
+}
+
+/* الجداول: عرض الأعمدة يتكيّف مع أطول نص دون كسر الكلمات */
+.sheet-tabs-ui table {
+  table-layout: auto !important;
+  width: max-content !important;
+  min-width: 100% !important;
+}
+
+.sheet-tabs-ui :where(table th, table td) {
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+  hyphens: none !important;
+  padding: 6px 9px !important;
+  font-size: clamp(13px, 3.3vw, 14.5px) !important;
+  line-height: 1.35 !important;
+}
+
+.sheet-tabs-ui :where(table th, table td) * {
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+}
+
+.sheet-tabs-ui thead th {
+  font-weight: 900 !important;
+  letter-spacing: 0.2px;
+}
+
+/* الأزرار: أحجام مريحة للمس على شاشات شاومي */
+.sheet-tabs-ui :where(button, [role="button"], label.cursor-pointer) {
+  border-radius: 0.75rem !important;
+  font-weight: 800 !important;
+  min-height: 40px;
+}
+
+.sheet-tabs-ui :where(input, select) {
+  border-radius: 0.65rem !important;
+  font-weight: 700;
+}

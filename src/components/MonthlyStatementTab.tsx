@@ -273,7 +273,7 @@ export default function MonthlyStatementTab() {
   ];
 
   return (
-    <div className="space-y-3 p-1.5 sm:space-y-5 sm:p-3" dir="rtl">
+    <div className="sheet-tabs-ui space-y-3 p-1.5 sm:space-y-5 sm:p-3" dir="rtl">
       {/* لوحة التحكم العلوية */}
       <div className="grid grid-cols-2 items-end gap-1.5 rounded-xl border border-slate-200 bg-white p-1.5 shadow-sm sm:flex sm:flex-wrap sm:gap-3 sm:p-4">
         <div className="apk-only-actions col-span-2 grid w-full grid-cols-2 gap-1.5 sm:order-last sm:ml-auto sm:flex sm:w-auto sm:gap-2">
@@ -385,7 +385,7 @@ export default function MonthlyStatementTab() {
 
       {/* جدول البيانات المالي */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-        <div className="bg-gradient-to-r from-slate-800 to-slate-950 text-white p-2.5 text-center sm:p-5">
+        <div className="bg-gradient-to-r from-[#0f2f44] via-[#1f5f7a] to-[#2e6b8a] text-white p-2.5 text-center sm:p-5">
           <h2 className="font-bold text-lg tracking-wide sm:text-xl">
             {schema.title || "المجلس اليمني للاختصاصات الطبية"}
           </h2>
@@ -605,7 +605,7 @@ export default function MonthlyStatementTab() {
 
       {/* جدول تجميع إيرادات الحساب */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-        <div className="flex flex-col items-stretch justify-between gap-2 bg-gradient-to-r from-sky-700 to-sky-900 p-2.5 text-white sm:flex-row sm:items-center sm:p-4">
+        <div className="flex flex-col items-stretch justify-between gap-2 bg-gradient-to-r from-[#1f5f7a] to-[#0f2f44] p-2.5 text-white sm:flex-row sm:items-center sm:p-4">
           <div>
             <h3 className="font-bold text-base">📊 تجميع إيرادات الحساب حسب رمز الإيراد</h3>
             <p className="text-xs opacity-80 mt-0.5">

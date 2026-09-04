@@ -21,6 +21,28 @@ export const reportLetterheadRowHtml = (columnCount: number) => `
   </tr>
 `;
 
+/**
+ * تكرار ترويسة التقرير في أعلى كل صفحة مطبوعة (بدون كرت عنوان)
+ * تُستخدم مع reportLetterheadHtml() الموضوعة في بداية المستند.
+ */
+export const runningLetterheadCss = `
+  @media print {
+    .report-letterhead-block {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      margin: 0 !important;
+      z-index: 9;
+      background: #fff;
+    }
+    body { padding-top: 37mm !important; }
+    thead { display: table-header-group; }
+    tfoot { display: table-row-group; }
+  }
+`;
+
 export const escapeHtml = (s: any) =>
   String(s ?? "")
     .replace(/&/g, "&amp;")
@@ -256,6 +278,7 @@ align-items: center !important;     /* توسيط عمودي للعنصر الد
   tr { page-break-inside: avoid; }
 
   ${noteRowCss}
+  ${runningLetterheadCss}
 `;
 
 /** يبني ترويسة + جدول التبويب (نفس المستخدم في الطباعة وتنزيل PDF) */
