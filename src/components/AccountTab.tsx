@@ -44,6 +44,9 @@ const THEME = {
   accent: "#D3A373", // بارز/أزرار أساسية
   text: "#171412",
   muted: "#6B655D",
+  Camel: "#D3A373",
+  LightBrown: "#C89B6E",
+  Lavender: "#E9EDCA",
 };
 
 /* أحجام أيقونات وأزرار محسّنة للمحمول */
@@ -264,11 +267,13 @@ function LedgerStat({
   value,
   tone,
   icon,
+  style,
 }: {
   label: string;
   value: number;
   tone: "income" | "expense" | "balance";
   icon: React.ReactNode;
+  style?: React.CSSProperties;
 }) {
   const toneMap = {
     income: { text: "text-[#1E8E5A]", chipBg: THEME.paleSage },
@@ -279,8 +284,9 @@ function LedgerStat({
   return (
     <div
       className="relative rounded-2xl px-2 py-2 sm:px-4 sm:py-3 border shadow-sm"
-      style={{ background: THEME.cream, borderColor: "rgba(0,0,0,0.08)" }}
+      style={{ background: THEME.cream, borderColor: "rgba(0,0,0,0.08)", ...style }}
     >
+
       <div className="flex items-center justify-between">
         <div>
           <span className="text-xs sm:text-sm font-black text-[#6B655D] tracking-wide">{label}</span>
