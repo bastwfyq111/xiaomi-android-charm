@@ -556,7 +556,7 @@ export async function importFromExcel(
     return out;
   };
 
-  for (const name of wb.SheetNames) {
+ for (const name of wb.SheetNames) {
     if ((!only || only === "monthly" || only === "journal") && monthIndexFromName(name)) {
       const mRows = parseMonthlySheet(wb.Sheets[name], name);
       if (mRows.length) {
@@ -619,14 +619,23 @@ export async function importFromExcel(
         ) {
           hafizaNo = "";
         }
+        const accDate = toDate(get(r, "التاريخ"));
+        // ترحيل تلقائي للإيرادات عند الاستيراد: يُطبَّق فقط عندما يحتوي عمود
+        // "الإيرادات" على مبلغ فعلي أكبر من صفر، ويُحدَّد البند حسب وجود
+        // كلمة "امتحان" في البيان أم لا — لعام 2026 فقط.
+        let revenueKey: string | undefined;
+        if (income > 0 && accDate.slice(0, 4) === "2026") {
+          revenueKey = description.includes("امتحان") ? "3-2-3-8" : "3-2-3-7";
+        }
         result.accounts.push({
-          id: uid(), date: toDate(get(r, "التاريخ")), hafizaNo,
+          id: uid(), date: accDate, hafizaNo,
           notifyNo: cellStr(get(r, "رقم الاشعار")),
           notifyDate: toDate(get(r, "تاريخ التوريد")),
           checkNo: cellStr(get(r, "رقم الشيك")),
           checkDate: toDate(get(r, "تاريخه", "تاريخ الشيك")),
           description, specialty: cellStr(get(r, "التخصص")),
           name, hafizaAmount, income, expense,
+          revenueKey,
         });
       });
     } else if (kind === "journal") {
