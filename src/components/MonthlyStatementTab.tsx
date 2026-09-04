@@ -273,7 +273,7 @@ export default function MonthlyStatementTab() {
   ];
 
   return (
-    <div className="space-y-3 p-1.5 sm:space-y-5 sm:p-3" dir="rtl">
+    <div className="sheet-tabs-ui space-y-3 p-1.5 sm:space-y-5 sm:p-3" dir="rtl">
       {/* لوحة التحكم العلوية */}
       <div className="grid grid-cols-2 items-end gap-1.5 rounded-xl border border-slate-200 bg-white p-1.5 shadow-sm sm:flex sm:flex-wrap sm:gap-3 sm:p-4">
         <div className="apk-only-actions col-span-2 grid w-full grid-cols-2 gap-1.5 sm:order-last sm:ml-auto sm:flex sm:w-auto sm:gap-2">
