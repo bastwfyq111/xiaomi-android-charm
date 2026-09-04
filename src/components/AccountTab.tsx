@@ -44,6 +44,9 @@ const THEME = {
   accent: "#D3A373", // بارز/أزرار أساسية
   text: "#171412",
   muted: "#6B655D",
+  Camel: "#D3A373",
+  LightBrown: "#C89B6E",
+  Lavender: "#E9EDCA",
 };
 
 /* أحجام أيقونات وأزرار محسّنة للمحمول */
