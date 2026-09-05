@@ -321,7 +321,7 @@ export function buildTableHtml(opts: {
     <div class="sub">${escapeHtml(sub)}</div>
   </td></tr>`;
 
-  const head = `${reportLetterheadRowHtml(columns.length + 1)}${titleRow}<tr><th class="idx numeric-cell">م</th>${columns
+  const head = `${titleRow}<tr><th class="idx numeric-cell">م</th>${columns
     .map((c) => `<th class="${getCellClass(c)}"><span class="pdf-cell-text">${escapeHtml(c.label)}</span></th>`)
     .join("")}</tr>`;
 
