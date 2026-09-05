@@ -667,44 +667,49 @@ export default function AccountsTab() {
     >
       <style>{PRINT_STYLES}</style>
  {/*شريط العنوان */}
-      <div className="accounts-print-hide flex items-center justify-between border board-1-black">
-        <div>
-<h1 className={`${HEADING_MOBILE} text-black text-14px tracking-tight`}>
- الحساب الجاري</h1>
-<p className="text-xm color-red font-bold tracking-wide mt-0.5"> سجل الحركات المالية
-المُرحّلة
- </p>
-     </div>
- 
- <div className="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-xl bg-#3F6978">
+<div className="accounts-print-hide flex items-center justify-between border border-black p-3 rounded-xl bg-gradient-to-r from-[#f5f5dc] to-[#e6d7c3]">
+  <div>
+    <h1 className={`${HEADING_MOBILE} text-[#2c3e50] text-sm font-bold tracking-tight`}>
+      الحساب الجاري
+    </h1>
+    <p className="text-xs text-[#722f37] font-bold tracking-wide mt-0.5">
+      سجل الحركات المالية المُرحّلة
+    </p>
+  </div>
 
-<Landmark className={ICON_MOBILE} 
-style={{ color: "#8B5CF6"}} />
-  <span className="text-sm text-[#5b7d90] font-bold">عدد القيود</span>
-  <span className="text-[#0f2f44] font-mono text-base tabular-nums font-black">{accounts.length}</span>
-        </div>
-      </div>
+  <div className="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#2c3e50] border border-black shadow-sm">
+    <Landmark className={`${ICON_MOBILE} text-[#d2b48c]`} />
+    <span className="text-sm text-[#e6d7c3] font-bold">عدد القيود</span>
+    <span className="text-[#f5f5dc] font-mono text-base tabular-nums font-black">{accounts.length}</span>
+  </div>
+</div>
 
       {/* ===== بطاقات الإجماليات ===== */}
 <div className="accounts-print-hide grid grid-cols-2 gap-2">
+  <LedgerStat
+    label="إجمالي الإيرادات"
+    style={{ background: "#c5a059", borderColor: "#000" }}
+    value={totalIncome}
+    tone="income"
+    icon={<ArrowUpRight className="text-black" />}
+  />
 
-<LedgerStat label=
-"إجمالي الإيرادات" 
-style={{ background:THEME.Camel, borderColor: "#000"}} 
-value={totalIncome} tone="income" icon={<ArrowUpRight />} />
-        
-<LedgerStat label=
-"إجمالي المصروفات" 
-style={{ background:THEME.LightBrown, borderColor: "#000"}} 
-value={totalExpense
- 
-} tone="expense" icon={<ArrowDownLeft />} />
+  <LedgerStat
+    label="إجمالي المصروفات"
+    style={{ background: "#722f37", borderColor: "#000" }}
+    value={totalExpense}
+    tone="expense"
+    icon={<ArrowDownLeft className="text-white" />}
+  />
 
-  <LedgerStat label=
-  "الرصيد الحالي"
- style={{ background: THEME.paleSage, borderColor: "#000" }} 
-value={currentBalance} tone="balance" icon={<Wallet />} />
-      </div>
+  <LedgerStat
+    label="الرصيد الحالي"
+    style={{ background: "#8a9a86", borderColor: "#000" }}
+    value={currentBalance}
+    tone="balance"
+    icon={<Wallet className="text-black" />}
+  />
+</div>
 
       {/* ===== التقارير الدورية ===== */}
       <div className="accounts-print-hide w-full rounded-2xl overflow-hidden border board-1-black shadow-sm" style={{ background: THEME.paleSage, borderColor: "#000" }}>
