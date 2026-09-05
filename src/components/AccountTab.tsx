@@ -664,15 +664,14 @@ export default function AccountsTab() {
     <div
       className="accounts-print-scope w-full space-y-6 p-1.5 sm:p-4 rounded-2xl"
       dir="rtl"
-      style={{ background: THEME.Lavender }}
     >
       <style>{PRINT_STYLES}</style>
  {/*شريط العنوان */}
-      <div className="accounts-print-hide flex items-center justify-between">
+      <div className="accounts-print-hide flex items-center justify-between border board-1-black">
         <div>
-<h1 className={`${HEADING_MOBILE} text-black text -14px tracking-tight`}>
+<h1 className={`${HEADING_MOBILE} text-black text-14px tracking-tight`}>
  الحساب الجاري</h1>
-<p className="text-xm text-red font-bold tracking-wide mt-0.5"> سجل الحركات المالية
+<p className="text-xm color-red font-bold tracking-wide mt-0.5"> سجل الحركات المالية
 المُرحّلة
  </p>
      </div>
@@ -687,7 +686,7 @@ style={{ color: "#8B5CF6"}} />
       </div>
 
       {/* ===== بطاقات الإجماليات ===== */}
-<div className="accounts-print-hide grid grid-cols-3 gap-2">
+<div className="accounts-print-hide grid grid-cols-2 gap-2">
 
 <LedgerStat label=
 "إجمالي الإيرادات" 
@@ -702,33 +701,35 @@ value={totalExpense
 } tone="expense" icon={<ArrowDownLeft />} />
 
   <LedgerStat label=
-  "الرصيد الحالي المتوفر"
- style={{ background:THEME.Lavender, borderColor:"#000"}} 
+  "الرصيد الحالي"
+ style={{ background:THEME.sky, borderColor:"#000"}} 
 value={currentBalance} tone="balance" icon={<Wallet />} />
       </div>
 
       {/* ===== التقارير الدورية ===== */}
-      <div className="accounts-print-hide w-full rounded-2xl overflow-hidden border shadow-sm" style={{ background: THEME.paleSage, borderColor: "#000" }}>
+      <div className="accounts-print-hide w-full rounded-2xl overflow-hidden border board-1-black shadow-sm" style={{ background: THEME.paleSage, borderColor: "#000" }}>
         <div className="px-4 py-3 flex flex-wrap justify-between items-center gap-3 border-black " 
         style={{ background: THEME.warmCream, borderColor:"#000" }}>
           <div>
-            <h2 className="text-base font-black text-[#171412] tracking-wide">تقارير الحساب الدورية</h2>
-            <p className="text-xs text-[#6B655D] font-bold mt-1">اختر الربع أو النصف أو السنة ثم صدّر التقرير</p>
+<h2 className="text-base font-black text-[#171412] tracking-wide">
+ تقارير الحساب الدورية</h2>
+<p className="text-xs text-[#6B655D] font-bold mt-1">اختر الربع أو
+النصف أو السنة ثم صدّر التقرير</p>
           </div>
 
-          <div className="flex flex-wrap items-end gap-2">
-            <label className="text-xs font-black text-[#171412]">
-              نوع التقرير
-              <select
+<div className="flex flex-wrap items-end gap-2 text-center">
+
+<label className="text-xm font-black text-[#171412]">
+  نوع التقرير
+ <select
                 value={accountReportMode}
                 onChange={(e) => {
                   const nextMode = e.target.value as "quarter" | "halfYear" | "year";
                   setAccountReportMode(nextMode);
-                  setAccountReportPeriod(1);
-                }}
-                className="block mt-1 px-3 py-2 border rounded-xl bg-white text-[#171412] text-xs font-bold outline-none focus:border-[#2563AC]"
+setAccountReportPeriod(1); }}
+ className="block mt-1 px-2 py-2  border board-1-black bg-white text-[#171412] text-xs font-bold outline-none focus:border-[#2563AC]"
               >
-                <option value="quarter">ربع سنوي</option>
+<option value="quarter">ربع سنوي</option>
                 <option value="halfYear">نصف سنوي</option>
                 <option value="year">سنوي</option>
               </select>
@@ -739,11 +740,12 @@ value={currentBalance} tone="balance" icon={<Wallet />} />
                 <select
                   value={accountReportPeriod}
                   onChange={(e) => setAccountReportPeriod(Number(e.target.value))}
-                  className="block mt-1 px-3 py-2 border rounded-xl bg-white text-[#171412] text-xs font-bold outline-none focus:border-[#2563AC]"
+className="block mt-1 px-3 py-2  border board-1-black bg-white text-[#171412] text-xs font-bold outline-none focus:border-[#2563AC]"
                 >
                   {accountReportMode === "quarter" ? (
                     <>
-                      <option value={1}>الربع الأول</option>
+<option value={1}>
+ الربع الأول</option>
                       <option value={2}>الربع الثاني</option>
                       <option value={3}>الربع الثالث</option>
                       <option value={4}>الربع الرابع</option>
@@ -763,7 +765,7 @@ value={currentBalance} tone="balance" icon={<Wallet />} />
                 type="number"
                 value={accountReportYear}
                 onChange={(e) => setAccountReportYear(Number(e.target.value) || accountReportYear)}
-                className="block mt-1 w-24 px-3 py-2 border rounded-xl bg-white text-[#171412] text-xs font-bold font-mono text-center outline-none focus:border-[#2563AC]"
+ className="block mt-1 w-24 px-2 py-2  border board-1-black bg-white text-[#171412] text-xs font-bold font-mono text-center outline-none focus:border-[#2563AC]"
               />
             </label>
             <div className="text-xs font-black text-[#2563AC] px-2 py-2">{accountReportLabel}</div>
@@ -780,17 +782,24 @@ value={currentBalance} tone="balance" icon={<Wallet />} />
       </div>
 
       {/* ===== لوحة القيد اليدوي والمطابقة ===== */}
-      <div className="accounts-print-hide w-full rounded-2xl overflow-hidden border shadow-sm" style={{ background: THEME.paleSage, borderColor: "rgba(0,0,0,0.08)" }}>
-        <div className="px-4 py-3 flex flex-wrap justify-between items-center gap-3" style={{ background: THEME.warmCream, borderColor: "rgba(0,0,0,0.06)" }}>
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg" style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
-              <Plus className={ICON_MOBILE} />
+      
+<div className="accounts-print-hide w-full rounded-2xl overflow-hidden border shadow-sm" style={{ background: THEME.paleSage, borderColor:"#000" }}>
+
+<div className="px-4 py-3 flex flex-wrap justify-between items-center gap-3" style={{ background: THEME.warmCream, borderColor: "#000" }}>
+
+<div className="flex items-center gap-2.5">
+
+<div className="p-2 rounded-lg" 
+style={{ background: `${THEME.accent}20`, color: THEME qr.accent }}>
+
+<Plus className={ICON_MOBILE} />
             </div>
-            <h2 className="text-sm sm:text-base font-black text-[#171412] tracking-wide">
-              قيد جديد أو ترحيل مطابق من الحوافظ
-            </h2>
+<h2 className="text-sm sm:text-base font-black text-[#171412] tracking-wide">
+قيد جديد أو ترحيل
+مطابقة من الحوافظ
+    </h2>
           </div>
-          <div className="web-only-actions">
+<div className="web-only-actions">
             <WebActionMenu label="إجراءات الإدخال والمطابقة" actions={accountEntryWebActions} />
           </div>
           <div className="apk-only-actions flex items-center gap-2.5 flex-wrap">
