@@ -211,10 +211,10 @@ const Modal = ({
   
       >
         <div className="flex justify-between items-center px-5 py-4 border-b black top-0 z-10" style={{ borderColor: "#000", background: THEME.LightBrown }}>
-          <h3 className={`${HEADING_MOBILE} text-[#171412] flex items-center gap-2 tracking-tight`}>{title}</h3>
+          <h3 className={`${HEADING_MOBILE} text-[#0f2f44] flex items-center gap-2 tracking-tight`}>{title}</h3>
 <button
  onClick={onClose}
- className="p-2 hover:bg-blue rounded-xl transition-colors text-[#6B655D] hover:text-[#171412]"
+ className="p-2 hover:bg-blue rounded-xl transition-colors text-[#5b7d90] hover:text-[#0f2f44]"
 aria-label="إغلاق"
           >
             <X className={ICON_MOBILE} />
@@ -245,7 +245,7 @@ function Field({
 }) {
   return (
     <div className="w-full">
-      <label className="block text-sm font-black text-[#171412]/70 mb-1.5 mr-0.5 tracking-wide">
+      <label className="block text-sm font-black text-[#0f2f44]/70 mb-1.5 mr-0.5 tracking-wide">
         {label}
       </label>
       <div className="relative flex items-center">
@@ -255,7 +255,7 @@ function Field({
           value={v}
           onChange={(e) => on(e.target.value)}
           placeholder={placeholder}
-          className={`w-full ${icon ? "pr-9" : "px-3"} pl-3 py-2 text-[15px] border rounded-xl outline-none focus:border-[#171412] focus:ring-2 focus:ring-[#171412]/10 bg-white text-[#171412] ${className}`}
+          className={`w-full ${icon ? "pr-9" : "px-3"} pl-3 py-2 text-[15px] border rounded-xl outline-none focus:border-[#0f2f44] focus:ring-2 focus:ring-[#0f2f44]/10 bg-white text-[#0f2f44] ${className}`}
         />
       </div>
     </div>
@@ -278,7 +278,7 @@ function LedgerStat({
   const toneMap = {
     income: { text: "text-[#1E8E5A]", chipBg: THEME.paleSage },
     expense: { text: "text-[#D14343]", chipBg: "#FFEDEE" },
-    balance: { text: "text-[#2563AC]", chipBg: THEME.warmCream },
+    balance: { text: "text-[#1f5f7a]", chipBg: THEME.warmCream },
   } as const;
   const t = toneMap[tone];
   return (
@@ -289,7 +289,7 @@ function LedgerStat({
 
       <div className="flex items-center justify-between">
         <div>
-          <span className="text-xs sm:text-sm font-black text-[#6B655D] tracking-wide">{label}</span>
+          <span className="text-xs sm:text-sm font-black text-[#5b7d90] tracking-wide">{label}</span>
           <div className={`text-base sm:text-2xl font-black font-mono tabular-nums numeric-cell mt-0.5 sm:mt-1.5 ${t.text}`}>
             {fmt(value)}
           </div>
@@ -662,7 +662,7 @@ export default function AccountsTab() {
 
   return (
     <div
-      className="accounts-print-scope w-full space-y-6 p-1.5 sm:p-4 rounded-2xl"
+      className="accounts-print-scope sheet-tabs-ui apk-tabs-ui w-full space-y-4 p-1.5 sm:p-4 rounded-2xl"
       dir="rtl"
     >
       <style>{PRINT_STYLES}</style>
@@ -680,8 +680,8 @@ export default function AccountsTab() {
 
 <Landmark className={ICON_MOBILE} 
 style={{ color: "#8B5CF6"}} />
-  <span className="text-sm text-[#6B655D] font-bold">عدد القيود</span>
-  <span className="text-[#171412] font-mono text-base tabular-nums font-black">{accounts.length}</span>
+  <span className="text-sm text-[#5b7d90] font-bold">عدد القيود</span>
+  <span className="text-[#0f2f44] font-mono text-base tabular-nums font-black">{accounts.length}</span>
         </div>
       </div>
 
@@ -711,15 +711,15 @@ value={currentBalance} tone="balance" icon={<Wallet />} />
         <div className="px-4 py-3 flex flex-wrap justify-between items-center gap-3 border-black " 
         style={{ background: THEME.warmCream, borderColor:"#000" }}>
           <div>
-<h2 className="text-base font-black text-[#171412] tracking-wide">
+<h2 className="text-base font-black text-[#0f2f44] tracking-wide">
  تقارير الحساب الدورية</h2>
-<p className="text-xs text-[#6B655D] font-bold mt-1">اختر الربع أو
+<p className="text-xs text-[#5b7d90] font-bold mt-1">اختر الربع أو
 النصف أو السنة ثم صدّر التقرير</p>
           </div>
 
 <div className="flex flex-wrap items-end gap-2 text-center">
 
-<label className="text-xm font-black text-[#171412]">
+<label className="text-xm font-black text-[#0f2f44]">
   نوع التقرير
  <select
                 value={accountReportMode}
@@ -727,7 +727,7 @@ value={currentBalance} tone="balance" icon={<Wallet />} />
                   const nextMode = e.target.value as "quarter" | "halfYear" | "year";
                   setAccountReportMode(nextMode);
 setAccountReportPeriod(1); }}
- className="block mt-1 px-2 py-2  border board-1-black bg-white text-[#171412] text-xs font-bold outline-none focus:border-[#2563AC]"
+ className="block mt-1 px-2 py-2  border board-1-black bg-white text-[#0f2f44] text-xs font-bold outline-none focus:border-[#1f5f7a]"
               >
 <option value="quarter">ربع سنوي</option>
                 <option value="halfYear">نصف سنوي</option>
@@ -735,12 +735,12 @@ setAccountReportPeriod(1); }}
               </select>
             </label>
             {accountReportMode !== "year" && (
-              <label className="text-xs font-black text-[#6B655D]">
+              <label className="text-xs font-black text-[#5b7d90]">
                 الفترة
                 <select
                   value={accountReportPeriod}
                   onChange={(e) => setAccountReportPeriod(Number(e.target.value))}
-className="block mt-1 px-3 py-2  border board-1-black bg-white text-[#171412] text-xs font-bold outline-none focus:border-[#2563AC]"
+className="block mt-1 px-3 py-2  border board-1-black bg-white text-[#0f2f44] text-xs font-bold outline-none focus:border-[#1f5f7a]"
                 >
                   {accountReportMode === "quarter" ? (
                     <>
@@ -759,16 +759,16 @@ className="block mt-1 px-3 py-2  border board-1-black bg-white text-[#171412] te
                 </select>
               </label>
             )}
-            <label className="text-xs font-black text-[#6B655D]">
+            <label className="text-xs font-black text-[#5b7d90]">
               السنة
               <input
                 type="number"
                 value={accountReportYear}
                 onChange={(e) => setAccountReportYear(Number(e.target.value) || accountReportYear)}
- className="block mt-1 w-24 px-2 py-2  border board-1-black bg-white text-[#171412] text-xs font-bold font-mono text-center outline-none focus:border-[#2563AC]"
+ className="block mt-1 w-24 px-2 py-2  border board-1-black bg-white text-[#0f2f44] text-xs font-bold font-mono text-center outline-none focus:border-[#1f5f7a]"
               />
             </label>
-            <div className="text-xs font-black text-[#2563AC] px-2 py-2">{accountReportLabel}</div>
+            <div className="text-xs font-black text-[#1f5f7a] px-2 py-2">{accountReportLabel}</div>
             <TabActions
               title={`تقرير الحساب الجاري - ${accountReportLabel}`}
               rows={accountReportRows}
@@ -794,7 +794,7 @@ style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
 
 <Plus className={ICON_MOBILE} />
             </div>
-<h2 className="text-sm sm:text-base font-black text-[#171412] tracking-wide">
+<h2 className="text-sm sm:text-base font-black text-[#0f2f44] tracking-wide">
 قيد جديد أو ترحيل
 مطابقة من الحوافظ
     </h2>
@@ -812,7 +812,7 @@ style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
               <span className="text-sm">مطابقة شاملة ٢٠٢٦</span>
             </button>
             <label
-              className={`flex items-center justify-center gap-2 rounded-full border px-3 py-2 cursor-pointer text-[#171412] font-bold`}
+              className={`flex items-center justify-center gap-2 rounded-full border px-3 py-2 cursor-pointer text-[#0f2f44] font-bold`}
               style={{ borderColor: "rgba(0,0,0,0.08)", background: "#fff" }}
             >
               <FileSpreadsheet className={ICON_MOBILE} style={{ color: "#1E8E5A" }} />
@@ -832,7 +832,7 @@ style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
             <Field
               label="التاريخ"
               type="date"
-              icon={<Calendar className={ICON_MOBILE} style={{ color: "#2563AC" }} />}
+              icon={<Calendar className={ICON_MOBILE} style={{ color: "#1f5f7a" }} />}
               v={form.date}
               on={(v) => setForm({ ...form, date: v })}
             />
@@ -870,7 +870,7 @@ style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
             />
 
             <div className="relative">
-              <label className="block text-[16px] font-black text-[#171412]/70 mb-1.5 mr-0.5 tracking-wide">
+              <label className="block text-[16px] font-black text-[#0f2f44]/70 mb-1.5 mr-0.5 tracking-wide">
                 البيان والشرح
               </label>
               <div className="relative flex items-center">
@@ -882,7 +882,7 @@ style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
                   value={form.description}
                   onChange={(e) => setForm({ ...form, description: e.target.value })}
                   placeholder="اكتب أو اختر البيان..."
-                  className="w-full pr-9 pl-3 py-2 text-[16px] border rounded-xl outline-none focus:border-[#171412] focus:ring-2 focus:ring-[#171412]/10 bg-white text-[#171412] font-bold"
+                  className="w-full pr-9 pl-3 py-2 text-[16px] border rounded-xl outline-none focus:border-[#0f2f44] focus:ring-2 focus:ring-[#0f2f44]/10 bg-white text-[#0f2f44] font-bold"
                 />
               </div>
               <datalist id="account-descriptions">
@@ -935,13 +935,13 @@ style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
             />
 
             <div className="sm:col-span-2">
-              <label className="flex items-center gap-1.5 text-[16px] font-black text-[#2563AC] mb-1.5 mr-0.5 tracking-wide">
+              <label className="flex items-center gap-1.5 text-[16px] font-black text-[#1f5f7a] mb-1.5 mr-0.5 tracking-wide">
                 <Link className={ICON_MOBILE} /> ربط بدليل هيكل الإيرادات
               </label>
               <select
                 value={form.revenueKey}
                 onChange={(e) => setForm({ ...form, revenueKey: e.target.value })}
-                className="w-full px-3 py-2 text-[15px] border rounded-xl outline-none bg-[#2563AC]/5 text-[#171412] font-bold focus:border-[#2563AC]"
+                className="w-full px-3 py-2 text-[15px] border rounded-xl outline-none bg-[#1f5f7a]/5 text-[#0f2f44] font-bold focus:border-[#1f5f7a]"
               >
                 <option value="">-- بدون ربط --</option>
                 {revenueTypes.map((t) => (
@@ -977,7 +977,7 @@ style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
         <div className="accounts-print-hide px-2 py-2 sm:px-5 sm:py-3.5 flex flex-col sm:flex-row justify-between items-stretch sm:items-center flex-wrap gap-2 border-b" style={{ background: THEME.cream, borderColor: "rgba(0,0,0,0.06)" }}>
           <div className="flex items-center gap-2.5">
             <div className="w-2 h-2 rounded-full bg-[#1E8E5A] animate-pulse"></div>
-            <h2 className="text-xs sm:text-sm font-black text-[#171412] tracking-wide">
+            <h2 className="text-xs sm:text-sm font-black text-[#0f2f44] tracking-wide">
               سجل حركات الحساب الجاري ({accounts.length})
             </h2>
           </div>
@@ -985,7 +985,7 @@ style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
             {Object.values(filters).some(Boolean) && (
               <button
                 onClick={clearFilters}
-                className="px-2 py-1 bg-black/5 hover:bg-black/10 text-[#171412] rounded-full text-xs font-bold transition-colors"
+                className="px-2 py-1 bg-black/5 hover:bg-black/10 text-[#0f2f44] rounded-full text-xs font-bold transition-colors"
               >
                 مسح مرشحات التصفية
               </button>
@@ -1006,18 +1006,18 @@ style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
         <div className="p-1.5 sm:p-3">
           <div className="overflow-x-auto overflow-y-auto max-h-[72vh] relative rounded-xl">
             <table className="min-w-max table-auto text-xm xm:text-base text-center font-semibold border-collapse border-2 border-black">
-              <thead className="sticky top-0 z-20 text-[#171412] font-black text-[16px]" style={{ background: THEME.warmCream }}>
+              <thead className="sticky top-0 z-20 text-[#0f2f44] font-black text-[16px]" style={{ background: THEME.warmCream }}>
                 <tr>
                   <th className="border border-black text-center w-10 sticky top-0 z-20 px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">م</th>
                   {COLS.map((c) => (
                     <th
                       key={c.key}
-                      className="border border-black cursor-pointer hover:bg-[#DCD5C6] transition-colors select-none sticky top-0 z-20 px-1 py-1.5 sm:px-2 sm:py-2 text-sm"
+                      className="border border-black cursor-pointer hover:bg-[#cfe4ef] transition-colors select-none sticky top-0 z-20 px-1 py-1.5 sm:px-2 sm:py-2 text-sm"
                       onClick={() => toggleSort(c.key)}
                     >
                       <div className="flex items-center justify-center gap-1.5">
                         <span>{c.label}</span>
-                        <span className="text-[14px] text-[#2563AC] font-mono">
+                        <span className="text-[14px] text-[#1f5f7a] font-mono">
                           {sortIndicator(sortKey === c.key, sortDir)}
                         </span>
                       </div>
@@ -1033,7 +1033,7 @@ style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
                         value={filters[c.key] || ""}
                         onChange={(e) => setFilter(c.key, e.target.value)}
                         placeholder="تصفية..."
-                        className="w-16 min-w-0 max-w-[50px] px-1 py-1 text-xs border rounded bg-white text-[#171412] outline-none focus:border-[#171412] font-bold transition-colors"
+                        className="w-16 min-w-0 max-w-[50px] px-1 py-1 text-xs border rounded bg-white text-[#0f2f44] outline-none focus:border-[#0f2f44] font-bold transition-colors"
                       />
                     </th>
                   ))}
@@ -1041,7 +1041,7 @@ style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
                 </tr>
               </thead>
 
-              <tbody className="text-[#171412] font-bolder">
+              <tbody className="text-[#0f2f44] font-bolder">
                 {filteredWithBalance.length === 0 ? (
                   <tr>
                     <td
@@ -1053,7 +1053,7 @@ style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
                   </tr>
                 ) : (
                   filteredWithBalance.map((acc, index) => (
-                    <tr key={acc.id} className="odd:bg-white even:bg-[#FEF9E1] hover:bg-[#F0EBDE] transition-colors group">
+                    <tr key={acc.id} className="odd:bg-white even:bg-[#f4fafd] hover:bg-[#e3f0f7] transition-colors group">
                       <td className="border border-black text-center font-mono tabular-nums numeric-cell px-1 py-1.5 sm:px-2 sm:py-2 text-xm sm:text-base whitespace-nowrap">
                         {index + 1}
                       </td>
@@ -1113,7 +1113,7 @@ style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
                         </select>
                       </td>
 
-                      <td className="border border-black font-mono tabular-nums numeric-cell font-black text-center bg-[#2563AC]/[0.06] px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
+                      <td className="border border-black font-mono tabular-nums numeric-cell font-black text-center bg-[#1f5f7a]/[0.06] px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                         {fmt(acc.balance)}
                       </td>
                       <td className="accounts-print-hide border border-black text-center px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
@@ -1153,7 +1153,7 @@ style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
                       {fmt(totalExpense)}
                     </td>
                     <td className="border border-black px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap"></td>
-                    <td className="border border-black font-mono tabular-nums numeric-cell font-black text-center bg-[#2563AC]/10 px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
+                    <td className="border border-black font-mono tabular-nums numeric-cell font-black text-center bg-[#1f5f7a]/10 px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap">
                       {fmt(currentBalance)}
                     </td>
                     <td className="accounts-print-hide border border-black px-1 py-1.5 sm:px-2 sm:py-2 text-sm whitespace-nowrap"></td>
@@ -1175,63 +1175,63 @@ style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
           <form onSubmit={handleEditSave} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-black text-[#171412]/70 mb-1 tracking-wide">التاريخ</label>
+                <label className="block text-sm font-black text-[#0f2f44]/70 mb-1 tracking-wide">التاريخ</label>
                 <input
                   type="date"
                   value={editingRow.date}
                   onChange={(e) => setEditingRow({ ...editingRow, date: e.target.value })}
-                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
+                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#0f2f44] font-bold focus:border-[#0f2f44]"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-black text-[#171412]/70 mb-1 tracking-wide">رقم الحافظة</label>
+                <label className="block text-sm font-black text-[#0f2f44]/70 mb-1 tracking-wide">رقم الحافظة</label>
                 <input
                   value={editingRow.hafizaNo}
                   onChange={(e) => setEditingRow({ ...editingRow, hafizaNo: e.target.value })}
-                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
+                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#0f2f44] font-bold focus:border-[#0f2f44]"
                 />
               </div>
               <div>
-                <label className="block text-sm font-black text-[#171412]/70 mb-1 tracking-wide">رقم الإشعار</label>
+                <label className="block text-sm font-black text-[#0f2f44]/70 mb-1 tracking-wide">رقم الإشعار</label>
                 <input
                   value={editingRow.notifyNo}
                   onChange={(e) => setEditingRow({ ...editingRow, notifyNo: e.target.value })}
-                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
+                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#0f2f44] font-bold focus:border-[#0f2f44]"
                 />
               </div>
               <div>
-                <label className="block text-sm font-black text-[#171412]/70 mb-1 tracking-wide">تاريخ التوريد</label>
+                <label className="block text-sm font-black text-[#0f2f44]/70 mb-1 tracking-wide">تاريخ التوريد</label>
                 <input
                   type="date"
                   value={editingRow.notifyDate}
                   onChange={(e) => setEditingRow({ ...editingRow, notifyDate: e.target.value })}
-                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
+                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#0f2f44] font-bold focus:border-[#0f2f44]"
                 />
               </div>
               <div className="sm:col-span-2">
-                <label className="block text-sm font-black text-[#171412]/70 mb-1 tracking-wide">البيان والشرح</label>
+                <label className="block text-sm font-black text-[#0f2f44]/70 mb-1 tracking-wide">البيان والشرح</label>
                 <input
                   value={editingRow.description}
                   onChange={(e) => setEditingRow({ ...editingRow, description: e.target.value })}
-                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
+                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#0f2f44] font-bold focus:border-[#0f2f44]"
                 />
               </div>
               <div>
-                <label className="block text-sm font-black text-[#171412]/70 mb-1 tracking-wide">الاسم</label>
+                <label className="block text-sm font-black text-[#0f2f44]/70 mb-1 tracking-wide">الاسم</label>
                 <input
                   value={editingRow.name}
                   onChange={(e) => setEditingRow({ ...editingRow, name: e.target.value })}
-                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412]"
+                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#0f2f44] font-bold focus:border-[#0f2f44]"
                 />
               </div>
               <div>
-                <label className="block text-sm font-black text-[#171412]/70 mb-1 tracking-wide">مبلغ الحافظة</label>
+                <label className="block text-sm font-black text-[#0f2f44]/70 mb-1 tracking-wide">مبلغ الحافظة</label>
                 <input
                   type="number"
                   value={editingRow.hafizaAmount}
                   onChange={(e) => setEditingRow({ ...editingRow, hafizaAmount: e.target.value })}
-                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#171412] font-bold focus:border-[#171412] font-mono tabular-nums numeric-cell"
+                  className="w-full p-2 text-[15px] border rounded-xl outline-none bg-white text-[#0f2f44] font-bold focus:border-[#0f2f44] font-mono tabular-nums numeric-cell"
                 />
               </div>
               <div>
@@ -1257,13 +1257,13 @@ style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
               <button
                 type="button"
                 onClick={() => setEditingRow(null)}
-                className="px-4 py-2 bg-black/5 text-[#171412] rounded-xl font-bold text-sm hover:bg-black/10"
+                className="px-4 py-2 bg-black/5 text-[#0f2f44] rounded-xl font-bold text-sm hover:bg-black/10"
               >
                 إلغاء
               </button>
               <button
                 type="submit"
-                className="px-5 py-2 bg-[#171412] text-white rounded-xl font-black text-sm hover:bg-[#2A2521]"
+                className="px-5 py-2 bg-[#0f2f44] text-white rounded-xl font-black text-sm hover:bg-[#2A2521]"
               >
                 حفظ التعديلات
               </button>
