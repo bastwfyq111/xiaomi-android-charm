@@ -37,16 +37,16 @@ import schema from "@/data/revenueTemplate.json";
 
 /* لوحة الألوان المرسلة */
 const THEME = {
-  sage: "#CDD5AE",
-  paleSage: "#E9EDCA",
-  cream: "#FEF9E1",
-  warmCream: "#FAEDCD",
-  accent: "#D3A373", // بارز/أزرار أساسية
-  text: "#171412",
-  muted: "#6B655D",
-  Camel: "#D3A373",
-  LightBrown: "#C89B6E",
-  Lavender: "#E9EDCA",
+  sage: "#d7e7f0",
+  paleSage: "#eef6fb",
+  cream: "#f7fbfd",
+  warmCream: "#dcecf5",
+  accent: "#1f5f7a", // بارز/أزرار أساسية
+  text: "#0f2f44",
+  muted: "#5b7d90",
+  Camel: "#2e6b8a",
+  LightBrown: "#c98a3c",
+  Lavender: "#eef6fb",
 };
 
 /* أحجام أيقونات وأزرار محسّنة للمحمول */
@@ -702,7 +702,7 @@ value={totalExpense
 
   <LedgerStat label=
   "الرصيد الحالي"
- style={{ background:THEME.sky, borderColor:"#000"}} 
+ style={{ background: THEME.paleSage, borderColor: "#000" }} 
 value={currentBalance} tone="balance" icon={<Wallet />} />
       </div>
 
@@ -790,7 +790,7 @@ className="block mt-1 px-3 py-2  border board-1-black bg-white text-[#171412] te
 <div className="flex items-center gap-2.5">
 
 <div className="p-2 rounded-lg" 
-style={{ background: `${THEME.accent}20`, color: THEME qr.accent }}>
+style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
 
 <Plus className={ICON_MOBILE} />
             </div>
