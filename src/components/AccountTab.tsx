@@ -117,14 +117,10 @@ const PRINT_STYLES = `
 @media print {
   .accounts-print-scope { background:#B4CEB6 !important; }
   .accounts-print-area, .accounts-print-area * { visibility: visible !important; }
-  .accounts-print-hide { display: none !important;
-background:"#5C1D24", 
-bolder:1px solid black; 
-   
-  }
+  .accounts-print-hide { display: none !important; }
   .accounts-print-area table {
     border-collapse: collapse !important;
-    width: 100٪ !important;
+    width: 100% !important;
     min-width:auto !important;
     table-layout:auto!important;
   }
@@ -207,14 +203,14 @@ const Modal = ({
       dir="rtl"
     >
       <div
-        className="rounded-t-2xl sm:rounded-2xl w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto border border-1-black"
+        className="rounded-t-2xl sm:rounded-2xl w-full max-w-2xl shadow-2xl max-h-[90vh] overflow-y-auto border border-black"
   
       >
         <div className="flex justify-between items-center px-5 py-4 border-b black top-0 z-10" style={{ borderColor: "#000", background: THEME.LightBrown }}>
           <h3 className={`${HEADING_MOBILE} text-[#0f2f44] flex items-center gap-2 tracking-tight`}>{title}</h3>
 <button
  onClick={onClose}
- className="p-2 hover:bg-blue rounded-xl transition-colors text-[#5b7d90] hover:text-[#0f2f44]"
+ className="p-2 hover:bg-blue-100 rounded-xl transition-colors text-[#5b7d90] hover:text-[#0f2f44]"
 aria-label="إغلاق"
           >
             <X className={ICON_MOBILE} />
@@ -648,14 +644,14 @@ export default function AccountsTab() {
     icon: FileSpreadsheet,
     onSelect: () => undefined,
     content: (
-      <label className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-[#f5f0e6] bg-gradient-to-r from-[#9e3a2a] via-[#7a2a1a] to-[#5c2a1a] border border-black shadow-sm hover:from-[#7a2a1a] hover:to-[#4a1a0a] transition-all duration-200">
+      <label className="flex w-full relative cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-[#f5f0e6] bg-gradient-to-r from-[#9e3a2a] via-[#7a2a1a] to-[#5c2a1a] border border-black shadow-sm hover:from-[#7a2a1a] hover:to-[#4a1a0a] transition-all duration-200">
         <FileSpreadsheet className={`${ICON_MOBILE} text-[#f5f0e6]`} />
         <span>استيراد Excel</span>
         <input
           type="file"
           accept=".xlsx, .xls, .csv"
           onChange={handleImportExcel}
-          className="hidden"
+          className="absolute h-0 w-0 opacity-0 overflow-hidden"
         />
       </label>
     ),
@@ -854,7 +850,7 @@ export default function AccountsTab() {
       </button>
 
       <label
-        className={`${BTN_MOBILE} flex items-center justify-center gap-2 rounded-full border border-black px-3 py-2 cursor-pointer font-bold shadow-sm bg-gradient-to-r from-[#d2b48c] to-[#e6d7c3] text-[#1a2a3a]`}
+        className={`${BTN_MOBILE} relative flex items-center justify-center gap-2 rounded-full border border-black px-3 py-2 cursor-pointer font-bold shadow-sm bg-gradient-to-r from-[#d2b48c] to-[#e6d7c3] text-[#1a2a3a]`}
       >
         <FileSpreadsheet className={`${ICON_MOBILE} text-[#1a2a3a]`} />
         <span>استيراد إكسل</span>
@@ -862,7 +858,7 @@ export default function AccountsTab() {
           type="file"
           accept=".xlsx, .xls, .csv"
           onChange={handleImportExcel}
-          className="hidden"
+          className="absolute h-0 w-0 opacity-0 overflow-hidden"
         />
       </label>
     </div>
