@@ -636,29 +636,29 @@ export default function AccountsTab() {
   };
 
   const accountEntryWebActions: WebActionItem[] = [
-    {
-      label: "مطابقة شاملة ٢٠٢٦",
-      icon: Zap,
-      onSelect: handleSyncFromHafiza,
-    },
-    {
-      label: "استيراد Excel",
-      icon: FileSpreadsheet,
-      onSelect: () => undefined,
-      content: (
-        <label className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-xl font-bold text-black hover:bg-sky border border-1-black">
-          <FileSpreadsheet className={ICON_MOBILE} />
-          <span>استيراد Excel</span>
-          <input
-            type="file"
-            accept=".xlsx, .xls, .csv"
-            onChange={handleImportExcel}
-            className="hidden"
-          />
-        </label>
-      ),
-    },
-  ];
+  {
+    label: "مطابقة شاملة ٢٠٢٦",
+    icon: Zap,
+    onSelect: handleSyncFromHafiza,
+  },
+  {
+    label: "استيراد Excel",
+    icon: FileSpreadsheet,
+    onSelect: () => undefined,
+    content: (
+      <label className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-[#2c3e50] bg-gradient-to-r from-[#d2b48c] via-[#e6d7c3] to-[#f5f5dc] border border-black shadow-sm hover:from-[#c5a059] hover:to-[#d2b48c] transition-all duration-200">
+        <FileSpreadsheet className={`${ICON_MOBILE} text-[#2c3e50]`} />
+        <span>استيراد Excel</span>
+        <input
+          type="file"
+          accept=".xlsx, .xls, .csv"
+          onChange={handleImportExcel}
+          className="hidden"
+        />
+      </label>
+    ),
+  },
+];
 
   return (
     <div
