@@ -817,25 +817,22 @@ export default function AccountsTab() {
 <div
   className="accounts-print-hide w-full rounded-2xl overflow-hidden border border-black shadow-sm"
   style={{
-    background: "linear-gradient(135deg, #5c6b4a, #1a2a3a)", // زيتي ← كحلي
+    background: "linear-gradient(135deg, #5c6b4a, #1a2a3a)",
     borderColor: "#000",
   }}
 >
   <div
     className="px-4 py-3 flex flex-wrap justify-between items-center gap-3 border-b border-black"
-    style={{ background: "#f5f5dc" }} // عاجي
+    style={{ background: "#f5f5dc" }}
   >
     <div className="flex items-center gap-2.5">
       <div
         className="p-2 rounded-lg border border-black"
-        style={{ background: "#1a2a3a", color: "#f5f5dc" }} // كحلي مع عاجي
+        style={{ background: "#1a2a3a", color: "#ffffff" }}
       >
         <Plus className={ICON_MOBILE} />
       </div>
-      <h2
-        className="text-sm sm:text-base font-black tracking-wide"
-        style={{ color: "#1a2a3a" }} // كحلي
-      >
+      <h2 className="text-sm sm:text-base font-black tracking-wide text-[#1a2a3a]">
         قيد جديد أو ترحيل مطابقة من الحوافظ
       </h2>
     </div>
@@ -850,24 +847,16 @@ export default function AccountsTab() {
     <div className="apk-only-actions flex items-center gap-2.5 flex-wrap">
       <button
         onClick={handleSyncFromHafiza}
-        className={`${BTN_MOBILE} flex items-center justify-center gap-2 rounded-full font-black border border-black shadow-sm transition-all`}
-        style={{
-          background: "linear-gradient(135deg, #1a2a3a, #2a6b6a)", // كحلي ← أزرق بترولي
-          color: "#f5f5dc",
-        }}
+        className={`${BTN_MOBILE} flex items-center justify-center gap-2 rounded-full font-black border border-black shadow-sm transition-all bg-gradient-to-r from-[#1a2a3a] to-[#2a6b6a] text-white`}
       >
-        <Zap className={`${ICON_MOBILE}`} style={{ color: "#d2b48c" }} />
+        <Zap className={`${ICON_MOBILE} text-white`} />
         <span className="text-sm">مطابقة شاملة ٢٠٢٦</span>
       </button>
 
       <label
-        className="flex items-center justify-center gap-2 rounded-full border border-black px-3 py-2 cursor-pointer font-bold shadow-sm"
-        style={{
-          background: "linear-gradient(135deg, #d2b48c, #e6d7c3)", // بيج رملي ← كريمي
-          color: "#1a2a3a",
-        }}
+        className={`${BTN_MOBILE} flex items-center justify-center gap-2 rounded-full border border-black px-3 py-2 cursor-pointer font-bold shadow-sm bg-gradient-to-r from-[#d2b48c] to-[#e6d7c3] text-[#1a2a3a]`}
       >
-        <FileSpreadsheet className={`${ICON_MOBILE}`} style={{ color: "#1a2a3a" }} />
+        <FileSpreadsheet className={`${ICON_MOBILE} text-[#1a2a3a]`} />
         <span>استيراد إكسل</span>
         <input
           type="file"
@@ -880,25 +869,29 @@ export default function AccountsTab() {
   </div>
 
   <div className="p-2 sm:p-5">
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-2 sm:gap-3 items-end">
+    {/* شبكة الحقول - حقلين في كل سطر */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 items-end">
+      {/* السطر الأول */}
       <Field
         label="التاريخ"
         type="date"
-        icon={<Calendar className={`${ICON_MOBILE}`} style={{ color: "#1a2a3a" }} />}
+        icon={<Calendar className={`${ICON_MOBILE} text-[#1a2a3a]`} />}
         v={form.date}
         on={(v) => setForm({ ...form, date: v })}
         className="bg-[#f5f5dc] text-[#1a2a3a] font-bold border-black focus:border-[#c5a059]"
       />
       <Field
         label="رقم الحافظة"
-        icon={<Hash className={`${ICON_MOBILE}`} style={{ color: "#722f37" }} />}
+        icon={<Hash className={`${ICON_MOBILE} text-[#722f37]`} />}
         v={form.hafizaNo}
         on={(v) => setForm({ ...form, hafizaNo: v })}
         className="bg-[#e6d7c3] text-[#1a2a3a] font-bold border-black focus:border-[#c5a059]"
       />
+
+      {/* السطر الثاني */}
       <Field
         label="رقم الإشعار"
-        icon={<Hash className={`${ICON_MOBILE}`} style={{ color: "#c5a059" }} />}
+        icon={<Hash className={`${ICON_MOBILE} text-[#c5a059]`} />}
         v={form.notifyNo}
         on={(v) => setForm({ ...form, notifyNo: v })}
         className="bg-[#f5f5dc] text-[#1a2a3a] font-bold border-black focus:border-[#c5a059]"
@@ -906,14 +899,16 @@ export default function AccountsTab() {
       <Field
         label="تاريخ التوريد"
         type="date"
-        icon={<Calendar className={`${ICON_MOBILE}`} style={{ color: "#1a2a3a" }} />}
+        icon={<Calendar className={`${ICON_MOBILE} text-[#1a2a3a]`} />}
         v={form.notifyDate}
         on={(v) => setForm({ ...form, notifyDate: v })}
         className="bg-[#e6d7c3] text-[#1a2a3a] font-bold border-black focus:border-[#c5a059]"
       />
+
+      {/* السطر الثالث */}
       <Field
         label="رقم الشيك"
-        icon={<Ticket className={`${ICON_MOBILE}`} style={{ color: "#722f37" }} />}
+        icon={<Ticket className={`${ICON_MOBILE} text-[#722f37]`} />}
         v={form.checkNo}
         on={(v) => setForm({ ...form, checkNo: v })}
         className="bg-[#f5f5dc] text-[#1a2a3a] font-bold border-black focus:border-[#c5a059]"
@@ -921,149 +916,120 @@ export default function AccountsTab() {
       <Field
         label="تاريخ الشيك"
         type="date"
-        icon={<Calendar className={`${ICON_MOBILE}`} style={{ color: "#c5a059" }} />}
+        icon={<Calendar className={`${ICON_MOBILE} text-[#c5a059]`} />}
         v={form.checkDate}
         on={(v) => setForm({ ...form, checkDate: v })}
         className="bg-[#e6d7c3] text-[#1a2a3a] font-bold border-black focus:border-[#c5a059]"
       />
+
+      {/* السطر الرابع: البيان والشرح (يأخذ عمودين) */}
+      <div className="sm:col-span-2">
+        <label className="block text-[16px] font-black mb-1.5 mr-0.5 tracking-wide text-[#1a2a3a]">
+          البيان والشرح
+        </label>
+        <div className="relative flex items-center">
+          <span className="absolute right-3 z-10">
+            <FileText className={`${ICON_MOBILE} text-[#722f37]`} />
+          </span>
+          <input
+            list="account-descriptions"
+            value={form.description}
+            onChange={(e) => setForm({ ...form, description: e.target.value })}
+            placeholder="اكتب أو اختر البيان..."
+            className="w-full pr-9 pl-3 py-2 text-[16px] border border-black rounded-xl outline-none shadow-sm bg-[#f5f5dc] text-[#1a2a3a] font-bold focus:border-[#c5a059]"
+          />
+        </div>
+        <datalist id="account-descriptions">
+          {Array.from(
+            new Set([...DESCRIPTIONS, ...accounts.map((a) => a.description).filter(Boolean)]),
+          ).map((d) => (
+            <option key={d} value={d} />
+          ))}
+        </datalist>
+      </div>
+
+      {/* السطر الخامس */}
+      <Field
+        label="التخصص الطبي"
+        icon={<Stethoscope className={`${ICON_MOBILE} text-[#1a2a3a]`} />}
+        v={form.specialty}
+        on={(v) => setForm({ ...form, specialty: v })}
+        className="bg-[#e6d7c3] text-[#1a2a3a] font-bold border-black focus:border-[#c5a059]"
+      />
+      <Field
+        label="الاسم الكامل"
+        icon={<User className={`${ICON_MOBILE} text-[#1a2a3a]`} />}
+        v={form.name}
+        on={(v) => setForm({ ...form, name: v })}
+        placeholder="اسم المتدرب..."
+        className="bg-[#f5f5dc] text-[#1a2a3a] font-bold border-black focus:border-[#c5a059]"
+      />
+
+      {/* السطر السادس */}
+      <Field
+        label="مبلغ الحافظة"
+        type="number"
+        icon={<span className="text-xs text-[#1a2a3a] font-black">ر.ي</span>}
+        v={form.hafizaAmount}
+        on={(v) => setForm({ ...form, hafizaAmount: v })}
+        className="font-mono tabular-nums numeric-cell bg-[#e6d7c3] text-[#1a2a3a] font-black border-black focus:border-[#2a6b6a]"
+      />
+      <Field
+        label="الإيرادات"
+        type="number"
+        icon={<span className="text-xs text-[#c5a059] font-black">ر.ي</span>}
+        v={form.income}
+        on={(v) => setForm({ ...form, income: v })}
+        placeholder="0.00"
+        className="text-[#c5a059] font-black font-mono tabular-nums numeric-cell bg-[#f5f5dc] border-black focus:border-[#c5a059]"
+      />
+
+      {/* السطر السابع */}
+      <Field
+        label="المصروفات"
+        type="number"
+        icon={<span className="text-xs text-[#722f37] font-black">ر.ي</span>}
+        v={form.expense}
+        on={(v) => setForm({ ...form, expense: v })}
+        placeholder="0.00"
+        className="text-[#722f37] font-black font-mono tabular-nums numeric-cell bg-[#e6d7c3] border-black focus:border-[#722f37]"
+      />
+      {/* حقل ربط الدليل (يأخذ عمودين لأنه طويل) */}
+      <div className="sm:col-span-2">
+        <label className="flex items-center gap-1.5 text-[16px] font-black mb-1.5 mr-0.5 tracking-wide text-[#1a2a3a]">
+          <Link className={`${ICON_MOBILE} text-[#c5a059]`} /> ربط بدليل هيكل الإيرادات
+        </label>
+        <select
+          value={form.revenueKey}
+          onChange={(e) => setForm({ ...form, revenueKey: e.target.value })}
+          className="w-full px-3 py-2 text-[15px] border border-black rounded-xl outline-none shadow-sm bg-[#f5f5dc] text-[#1a2a3a] font-bold focus:border-[#c5a059]"
+        >
+          <option value="">-- بدون ربط --</option>
+          {revenueTypes.map((t) => (
+            <option key={t.key} value={t.key}>
+              {t.key} | {t.label}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
+
+    {/* أزرار الإجراءات في سطر منفصل */}
+    <div className="flex gap-2 pt-4 mt-2 border-t border-black">
+      <button
+        onClick={submit}
+        className={`${BTN_MOBILE} flex-1 flex items-center justify-center gap-2 rounded-xl font-black border border-black shadow-sm transition-all bg-gradient-to-r from-[#1a2a3a] to-[#2a6b6a] text-white`}
+      >
+        <Save className={`${ICON_MOBILE} text-white`} /> <span>ترحيل القيد</span>
+      </button>
+      <button
+        onClick={() => setForm(emptyForm)}
+        className={`${BTN_MOBILE} flex items-center justify-center gap-2 rounded-xl border border-black font-bold shadow-sm transition-all bg-[#f5f5dc] text-[#722f37]`}
+      >
+        <Eraser className={`${ICON_MOBILE} text-[#722f37]`} /> <span>مسح</span>
+      </button>
     </div>
   </div>
-</div>
-
-{/* حقل البيان والشرح */}
-<div className="relative">
-  <label
-    className="block text-[16px] font-black mb-1.5 mr-0.5 tracking-wide"
-    style={{ color: "#1a2a3a" }}
-  >
-    البيان والشرح
-  </label>
-  <div className="relative flex items-center">
-    <span className="absolute right-3 z-10">
-      <FileText className={`${ICON_MOBILE}`} style={{ color: "#722f37" }} />
-    </span>
-    <input
-      list="account-descriptions"
-      value={form.description}
-      onChange={(e) => setForm({ ...form, description: e.target.value })}
-      placeholder="اكتب أو اختر البيان..."
-      className="w-full pr-9 pl-3 py-2 text-[16px] border border-black rounded-xl outline-none shadow-sm"
-      style={{
-        background: "#f5f5dc",
-        color: "#1a2a3a",
-        fontWeight: "bold",
-        borderColor: "#000",
-        focusBorderColor: "#c5a059",
-      }}
-    />
-  </div>
-  <datalist id="account-descriptions">
-    {Array.from(
-      new Set([...DESCRIPTIONS, ...accounts.map((a) => a.description).filter(Boolean)]),
-    ).map((d) => (
-      <option key={d} value={d} />
-    ))}
-  </datalist>
-</div>
-
-{/* الحقول الأخرى */}
-<Field
-  label="التخصص الطبي"
-  icon={<Stethoscope className={`${ICON_MOBILE}`} style={{ color: "#1a2a3a" }} />}
-  v={form.specialty}
-  on={(v) => setForm({ ...form, specialty: v })}
-  className="bg-[#e6d7c3] text-[#1a2a3a] font-bold border-black focus:border-[#c5a059]"
-/>
-
-<Field
-  label="الاسم الكامل"
-  icon={<User className={`${ICON_MOBILE}`} style={{ color: "#1a2a3a" }} />}
-  v={form.name}
-  on={(v) => setForm({ ...form, name: v })}
-  placeholder="اسم المتدرب..."
-  className="bg-[#f5f5dc] text-[#1a2a3a] font-bold border-black focus:border-[#c5a059]"
-/>
-
-<Field
-  label="مبلغ الحافظة"
-  type="number"
-  icon={<span className="text-xs font-black" style={{ color: "#1a2a3a" }}>ر.ي</span>}
-  v={form.hafizaAmount}
-  on={(v) => setForm({ ...form, hafizaAmount: v })}
-  className="font-mono tabular-nums numeric-cell bg-[#e6d7c3] text-[#1a2a3a] font-black border-black focus:border-[#2a6b6a]"
-/>
-
-<Field
-  label="الإيرادات"
-  type="number"
-  icon={<span className="text-xs font-black" style={{ color: "#c5a059" }}>ر.ي</span>}
-  v={form.income}
-  on={(v) => setForm({ ...form, income: v })}
-  placeholder="0.00"
-  className="text-[#c5a059] font-black font-mono tabular-nums numeric-cell bg-[#f5f5dc] border-black focus:border-[#c5a059]"
-/>
-
-<Field
-  label="المصروفات"
-  type="number"
-  icon={<span className="text-xs font-black" style={{ color: "#722f37" }}>ر.ي</span>}
-  v={form.expense}
-  on={(v) => setForm({ ...form, expense: v })}
-  placeholder="0.00"
-  className="text-[#722f37] font-black font-mono tabular-nums numeric-cell bg-[#e6d7c3] border-black focus:border-[#722f37]"
-/>
-
-{/* ربط بدليل هيكل الإيرادات */}
-<div className="sm:col-span-2">
-  <label
-    className="flex items-center gap-1.5 text-[16px] font-black mb-1.5 mr-0.5 tracking-wide"
-    style={{ color: "#1a2a3a" }}
-  >
-    <Link className={`${ICON_MOBILE}`} style={{ color: "#c5a059" }} /> ربط بدليل هيكل الإيرادات
-  </label>
-  <select
-    value={form.revenueKey}
-    onChange={(e) => setForm({ ...form, revenueKey: e.target.value })}
-    className="w-full px-3 py-2 text-[15px] border border-black rounded-xl outline-none shadow-sm"
-    style={{
-      background: "#f5f5dc",
-      color: "#1a2a3a",
-      fontWeight: "bold",
-      borderColor: "#000",
-      focusBorderColor: "#c5a059",
-    }}
-  >
-    <option value="">-- بدون ربط --</option>
-    {revenueTypes.map((t) => (
-      <option key={t.key} value={t.key}>
-        {t.key} | {t.label}
-      </option>
-    ))}
-  </select>
-</div>
-
-{/* أزرار الإجراءات */}
-<div className="sm:col-span-2 flex gap-2 pt-2">
-  <button
-    onClick={submit}
-    className={`${BTN_MOBILE} flex-1 flex items-center justify-center gap-2 rounded-xl font-black border border-black shadow-sm transition-all`}
-    style={{
-      background: "linear-gradient(135deg, #1a2a3a, #2a6b6a)", // كحلي ← أزرق بترولي
-      color: "#f5f5dc",
-    }}
-  >
-    <Save className={`${ICON_MOBILE}`} style={{ color: "#d2b48c" }} /> <span>ترحيل القيد</span>
-  </button>
-  <button
-    onClick={() => setForm(emptyForm)}
-    className={`${BTN_MOBILE} flex items-center justify-center gap-2 rounded-xl border border-black font-bold shadow-sm transition-all`}
-    style={{
-      background: "#f5f5dc", // عاجي
-      color: "#722f37", // طوبي
-    }}
-  >
-    <Eraser className={`${ICON_MOBILE}`} style={{ color: "#722f37" }} /> <span>مسح</span>
-  </button>
 </div>
       {/* ===== جدول القيود ===== */}
       <div className="accounts-print-area w-full rounded-2xl overflow-hidden border shadow-sm" style={{ background: "#fff", borderColor: "rgba(0,0,0,0.08)" }}>
