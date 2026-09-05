@@ -712,270 +712,276 @@ export default function AccountsTab() {
 </div>
 
       {/* ===== التقارير الدورية ===== */}
-      <div className="accounts-print-hide w-full rounded-2xl overflow-hidden border board-1-black shadow-sm" style={{ background: THEME.paleSage, borderColor: "#000" }}>
-        <div className="px-4 py-3 flex flex-wrap justify-between items-center gap-3 border-black " 
-        style={{ background: THEME.warmCream, borderColor:"#000" }}>
-          <div>
-<h2 className="text-base font-black text-[#0f2f44] tracking-wide">
- تقارير الحساب الدورية</h2>
-<p className="text-xs text-[#5b7d90] font-bold mt-1">اختر الربع أو
-النصف أو السنة ثم صدّر التقرير</p>
-          </div>
+<div className="accounts-print-hide w-full rounded-2xl overflow-hidden border border-black shadow-sm" style={{ background: "#8a9a86", borderColor: "#000" }}>
+  <div 
+    className="px-4 py-3 flex flex-wrap justify-between items-center gap-3 border-b border-black" 
+    style={{ background: "#f5f5dc" }}
+  >
+    <div>
+      <h2 className="text-base font-black text-[#2c3e50] tracking-wide">
+        تقارير الحساب الدورية
+      </h2>
+      <p className="text-xs text-[#722f37] font-bold mt-1">
+        اختر الربع أو النصف أو السنة ثم صدّر التقرير
+      </p>
+    </div>
 
-<div className="flex flex-wrap items-end gap-2 text-center">
+    <div className="flex flex-wrap items-end gap-2 text-center">
+      <label className="text-xs font-black text-[#2c3e50]">
+        نوع التقرير
+        <select
+          value={accountReportMode}
+          onChange={(e) => {
+            const nextMode = e.target.value as "quarter" | "halfYear" | "year";
+            setAccountReportMode(nextMode);
+            setAccountReportPeriod(1);
+          }}
+          className="block mt-1 px-2 py-2 border border-black bg-[#2c3e50] text-[#f5f5dc] text-xs font-bold rounded-lg outline-none focus:border-[#d2b48c]"
+        >
+          <option value="quarter">ربع سنوي</option>
+          <option value="halfYear">نصف سنوي</option>
+          <option value="year">سنوي</option>
+        </select>
+      </label>
 
-<label className="text-xm font-black text-[#0f2f44]">
-  نوع التقرير
- <select
-                value={accountReportMode}
-                onChange={(e) => {
-                  const nextMode = e.target.value as "quarter" | "halfYear" | "year";
-                  setAccountReportMode(nextMode);
-setAccountReportPeriod(1); }}
- className="block mt-1 px-2 py-2  border board-1-black bg-white text-[#0f2f44] text-xs font-bold outline-none focus:border-[#1f5f7a]"
-              >
-<option value="quarter">ربع سنوي</option>
-                <option value="halfYear">نصف سنوي</option>
-                <option value="year">سنوي</option>
-              </select>
-            </label>
-            {accountReportMode !== "year" && (
-              <label className="text-xs font-black text-[#5b7d90]">
-                الفترة
-                <select
-                  value={accountReportPeriod}
-                  onChange={(e) => setAccountReportPeriod(Number(e.target.value))}
-className="block mt-1 px-3 py-2  border board-1-black bg-white text-[#0f2f44] text-xs font-bold outline-none focus:border-[#1f5f7a]"
-                >
-                  {accountReportMode === "quarter" ? (
-                    <>
-<option value={1}>
- الربع الأول</option>
-                      <option value={2}>الربع الثاني</option>
-                      <option value={3}>الربع الثالث</option>
-                      <option value={4}>الربع الرابع</option>
-                    </>
-                  ) : (
-                    <>
-                      <option value={1}>النصف الأول</option>
-                      <option value={2}>النصف الثاني</option>
-                    </>
-                  )}
-                </select>
-              </label>
+      {accountReportMode !== "year" && (
+        <label className="text-xs font-black text-[#2c3e50]">
+          الفترة
+          <select
+            value={accountReportPeriod}
+            onChange={(e) => setAccountReportPeriod(Number(e.target.value))}
+            className="block mt-1 px-3 py-2 border border-black bg-[#2c3e50] text-[#f5f5dc] text-xs font-bold rounded-lg outline-none focus:border-[#d2b48c]"
+          >
+            {accountReportMode === "quarter" ? (
+              <>
+                <option value={1}>الربع الأول</option>
+                <option value={2}>الربع الثاني</option>
+                <option value={3}>الربع الثالث</option>
+                <option value={4}>الربع الرابع</option>
+              </>
+            ) : (
+              <>
+                <option value={1}>النصف الأول</option>
+                <option value={2}>النصف الثاني</option>
+              </>
             )}
-            <label className="text-xs font-black text-[#5b7d90]">
-              السنة
-              <input
-                type="number"
-                value={accountReportYear}
-                onChange={(e) => setAccountReportYear(Number(e.target.value) || accountReportYear)}
- className="block mt-1 w-24 px-2 py-2  border board-1-black bg-white text-[#0f2f44] text-xs font-bold font-mono text-center outline-none focus:border-[#1f5f7a]"
-              />
-            </label>
-            <div className="text-xs font-black text-[#1f5f7a] px-2 py-2">{accountReportLabel}</div>
-            <TabActions
-              title={`تقرير الحساب الجاري - ${accountReportLabel}`}
-              rows={accountReportRows}
-              columns={COLS.filter((c) => c.key !== "revenueKey")}
-              fileName={`الحساب-الجاري-${accountReportYear}`}
-              numericKeys={["hafizaAmount", "income", "expense", "balance"]}
-              pdfLayout="wide-centered"
-            />
-          </div>
-        </div>
+          </select>
+        </label>
+      )}
+
+      <label className="text-xs font-black text-[#2c3e50]">
+        السنة
+        <input
+          type="number"
+          value={accountReportYear}
+          onChange={(e) => setAccountReportYear(Number(e.target.value) || accountReportYear)}
+          className="block mt-1 w-24 px-2 py-2 border border-black bg-[#2c3e50] text-[#f5f5dc] text-xs font-bold font-mono text-center rounded-lg outline-none focus:border-[#d2b48c]"
+        />
+      </label>
+
+      <div className="text-xs font-black text-[#722f37] px-2 py-2 bg-[#e6d7c3] rounded-lg border border-black">
+        {accountReportLabel}
       </div>
+
+      <TabActions
+        title={`تقرير الحساب الجاري - ${accountReportLabel}`}
+        rows={accountReportRows}
+        columns={COLS.filter((c) => c.key !== "revenueKey")}
+        fileName={`الحساب-الجاري-${accountReportYear}`}
+        numericKeys={["hafizaAmount", "income", "expense", "balance"]}
+        pdfLayout="wide-centered"
+      />
+    </div>
+  </div>
+</div>
 
       {/* ===== لوحة القيد اليدوي والمطابقة ===== */}
       
-<div className="accounts-print-hide w-full rounded-2xl overflow-hidden border shadow-sm" style={{ background: THEME.paleSage, borderColor:"#000" }}>
-
-<div className="px-4 py-3 flex flex-wrap justify-between items-center gap-3" style={{ background: THEME.warmCream, borderColor: "#000" }}>
-
-<div className="flex items-center gap-2.5">
-
-<div className="p-2 rounded-lg" 
-style={{ background: `${THEME.accent}20`, color: THEME.accent }}>
-
-<Plus className={ICON_MOBILE} />
-            </div>
-<h2 className="text-sm sm:text-base font-black text-[#0f2f44] tracking-wide">
-قيد جديد أو ترحيل
-مطابقة من الحوافظ
-    </h2>
-          </div>
-<div className="web-only-actions">
-            <WebActionMenu label="إجراءات الإدخال والمطابقة" actions={accountEntryWebActions} />
-          </div>
-          <div className="apk-only-actions flex items-center gap-2.5 flex-wrap">
-            <button
-              onClick={handleSyncFromHafiza}
-              className={`${BTN_MOBILE} flex items-center justify-center gap-2 rounded-full font-black`}
-              style={{ background: THEME.accent, color: "#fff" }}
-            >
-              <Zap className={ICON_MOBILE} />
-              <span className="text-sm">مطابقة شاملة ٢٠٢٦</span>
-            </button>
-            <label
-              className={`flex items-center justify-center gap-2 rounded-full border px-3 py-2 cursor-pointer text-[#0f2f44] font-bold`}
-              style={{ borderColor: "rgba(0,0,0,0.08)", background: "#fff" }}
-            >
-              <FileSpreadsheet className={ICON_MOBILE} style={{ color: "#1E8E5A" }} />
-              <span>استيراد إكسل</span>
-              <input
-                type="file"
-                accept=".xlsx, .xls, .csv"
-                onChange={handleImportExcel}
-                className="hidden"
-              />
-            </label>
-          </div>
-        </div>
-
-        <div className="p-2 sm:p-5">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-2 sm:gap-3 items-end">
-            <Field
-              label="التاريخ"
-              type="date"
-              icon={<Calendar className={ICON_MOBILE} style={{ color: "#1f5f7a" }} />}
-              v={form.date}
-              on={(v) => setForm({ ...form, date: v })}
-            />
-            <Field
-              label="رقم الحافظة"
-              icon={<Hash className={ICON_MOBILE} style={{ color: "#8B5CF6" }} />}
-              v={form.hafizaNo}
-              on={(v) => setForm({ ...form, hafizaNo: v })}
-            />
-            <Field
-              label="رقم الإشعار"
-              icon={<Hash className={ICON_MOBILE} style={{ color: "#D97706" }} />}
-              v={form.notifyNo}
-              on={(v) => setForm({ ...form, notifyNo: v })}
-            />
-            <Field
-              label="تاريخ التوريد"
-              type="date"
-              icon={<Calendar className={ICON_MOBILE} style={{ color: "#0EA5A5" }} />}
-              v={form.notifyDate}
-              on={(v) => setForm({ ...form, notifyDate: v })}
-            />
-            <Field
-              label="رقم الشيك"
-              icon={<Ticket className={ICON_MOBILE} style={{ color: "#DB2777" }} />}
-              v={form.checkNo}
-              on={(v) => setForm({ ...form, checkNo: v })}
-            />
-            <Field
-              label="تاريخ الشيك"
-              type="date"
-              icon={<Calendar className={ICON_MOBILE} style={{ color: "#65A30D" }} />}
-              v={form.checkDate}
-              on={(v) => setForm({ ...form, checkDate: v })}
-            />
-
-            <div className="relative">
-              <label className="block text-[16px] font-black text-[#0f2f44]/70 mb-1.5 mr-0.5 tracking-wide">
-                البيان والشرح
-              </label>
-              <div className="relative flex items-center">
-                <span className="absolute right-3 z-10">
-                  <FileText className={ICON_MOBILE} style={{ color: "#DC2626" }} />
-                </span>
-                <input
-                  list="account-descriptions"
-                  value={form.description}
-                  onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  placeholder="اكتب أو اختر البيان..."
-                  className="w-full pr-9 pl-3 py-2 text-[16px] border rounded-xl outline-none focus:border-[#0f2f44] focus:ring-2 focus:ring-[#0f2f44]/10 bg-white text-[#0f2f44] font-bold"
-                />
-              </div>
-              <datalist id="account-descriptions">
-                {Array.from(
-                  new Set([...DESCRIPTIONS, ...accounts.map((a) => a.description).filter(Boolean)]),
-                ).map((d) => (
-                  <option key={d} value={d} />
-                ))}
-              </datalist>
-            </div>
-
-            <Field
-              label="التخصص الطبي"
-              icon={<Stethoscope className={ICON_MOBILE} style={{ color: "#0891B2" }} />}
-              v={form.specialty}
-              on={(v) => setForm({ ...form, specialty: v })}
-            />
-            <Field
-              label="الاسم الكامل"
-              icon={<User className={ICON_MOBILE} style={{ color: "#7C3AED" }} />}
-              v={form.name}
-              on={(v) => setForm({ ...form, name: v })}
-              placeholder="اسم المتدرب..."
-            />
-            <Field
-              label="مبلغ الحافظة"
-              type="number"
-              icon={<span className="text-xs text-[#475569] font-black">ر.ي</span>}
-              v={form.hafizaAmount}
-              on={(v) => setForm({ ...form, hafizaAmount: v })}
-              className="font-mono tabular-nums numeric-cell"
-            />
-            <Field
-              label="الإيرادات"
-              type="number"
-              icon={<span className="text-xs text-[#1E8E5A] font-black">ر.ي</span>}
-              v={form.income}
-              on={(v) => setForm({ ...form, income: v })}
-              placeholder="0.00"
-              className="text-[#1E8E5A] font-black font-mono tabular-nums numeric-cell focus:border-[#1E8E5A]"
-            />
-            <Field
-              label="المصروفات"
-              type="number"
-              icon={<span className="text-xs text-[#D14343] font-black">ر.ي</span>}
-              v={form.expense}
-              on={(v) => setForm({ ...form, expense: v })}
-              placeholder="0.00"
-              className="text-[#D14343] font-black font-mono tabular-nums numeric-cell focus:border-[#D14343]"
-            />
-
-            <div className="sm:col-span-2">
-              <label className="flex items-center gap-1.5 text-[16px] font-black text-[#1f5f7a] mb-1.5 mr-0.5 tracking-wide">
-                <Link className={ICON_MOBILE} /> ربط بدليل هيكل الإيرادات
-              </label>
-              <select
-                value={form.revenueKey}
-                onChange={(e) => setForm({ ...form, revenueKey: e.target.value })}
-                className="w-full px-3 py-2 text-[15px] border rounded-xl outline-none bg-[#1f5f7a]/5 text-[#0f2f44] font-bold focus:border-[#1f5f7a]"
-              >
-                <option value="">-- بدون ربط --</option>
-                {revenueTypes.map((t) => (
-                  <option key={t.key} value={t.key}>
-                    {t.key} | {t.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="sm:col-span-2 flex gap-2 pt-2">
-              <button
-                onClick={submit}
-                className={`${BTN_MOBILE} flex-1 flex items-center justify-center gap-2 rounded-xl font-black text-white`}
-                style={{ background: THEME.text }}
-              >
-                <Save className={ICON_MOBILE} style={{ color: "#4ADE80" }} /> <span>ترحيل القيد</span>
-              </button>
-              <button
-                onClick={() => setForm(emptyForm)}
-                className={`${BTN_MOBILE} flex items-center justify-center gap-2 rounded-xl border font-bold`}
-                style={{ borderColor: "rgba(0,0,0,0.08)", background: "#fff", color: THEME.text }}
-              >
-                <Eraser className={ICON_MOBILE} style={{ color: "#D14343" }} /> <span>مسح</span>
-              </button>
-            </div>
-          </div>
-        </div>
+<div className="accounts-print-hide w-full rounded-2xl overflow-hidden border border-black shadow-sm" style={{ background: "#8a9a86" }}>
+  <div className="px-4 py-3 flex flex-wrap justify-between items-center gap-3 border-b border-black" style={{ background: "#f5f5dc" }}>
+    <div className="flex items-center gap-2.5">
+      <div className="p-2 rounded-lg border border-black" style={{ background: "#2c3e50", color: "#f5f5dc" }}>
+        <Plus className={ICON_MOBILE} />
       </div>
+      <h2 className="text-sm sm:text-base font-black text-[#2c3e50] tracking-wide">
+        قيد جديد أو ترحيل مطابقة من الحوافظ
+      </h2>
+    </div>
+    
+    <div className="web-only-actions">
+      <WebActionMenu label="إجراءات الإدخال والمطابقة" actions={accountEntryWebActions} />
+    </div>
+
+    <div className="apk-only-actions flex items-center gap-2.5 flex-wrap">
+      <button
+        onClick={handleSyncFromHafiza}
+        className={`${BTN_MOBILE} flex items-center justify-center gap-2 rounded-full font-black border border-black shadow-sm transition-all`}
+        style={{ background: "#2c3e50", color: "#f5f5dc" }}
+      >
+        <Zap className={`${ICON_MOBILE} text-[#d2b48c]`} />
+        <span className="text-sm">مطابقة شاملة ٢٠٢٦</span>
+      </button>
+
+      <label
+        className="flex items-center justify-center gap-2 rounded-full border border-black px-3 py-2 cursor-pointer text-[#2c3e50] font-bold shadow-sm"
+        style={{ background: "#e6d7c3" }}
+      >
+        <FileSpreadsheet className={`${ICON_MOBILE} text-[#2c3e50]`} />
+        <span>استيراد إكسل</span>
+        <input
+          type="file"
+          accept=".xlsx, .xls, .csv"
+          onChange={handleImportExcel}
+          className="hidden"
+        />
+      </label>
+    </div>
+  </div>
+
+  <div className="p-2 sm:p-5">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-2 sm:gap-3 items-end">
+      <Field
+        label="التاريخ"
+        type="date"
+        icon={<Calendar className={`${ICON_MOBILE} text-[#2c3e50]`} />}
+        v={form.date}
+        on={(v) => setForm({ ...form, date: v })}
+      />
+      <Field
+        label="رقم الحافظة"
+        icon={<Hash className={`${ICON_MOBILE} text-[#722f37]`} />}
+        v={form.hafizaNo}
+        on={(v) => setForm({ ...form, hafizaNo: v })}
+      />
+      <Field
+        label="رقم الإشعار"
+        icon={<Hash className={`${ICON_MOBILE} text-[#c5a059]`} />}
+        v={form.notifyNo}
+        on={(v) => setForm({ ...form, notifyNo: v })}
+      />
+      <Field
+        label="تاريخ التوريد"
+        type="date"
+        icon={<Calendar className={`${ICON_MOBILE} text-[#2c3e50]`} />}
+        v={form.notifyDate}
+        on={(v) => setForm({ ...form, notifyDate: v })}
+      />
+      <Field
+        label="رقم الشيك"
+        icon={<Ticket className={`${ICON_MOBILE} text-[#722f37]`} />}
+        v={form.checkNo}
+        on={(v) => setForm({ ...form, checkNo: v })}
+      />
+      <Field
+        label="تاريخ الشيك"
+        type="date"
+        icon={<Calendar className={`${ICON_MOBILE} text-[#c5a059]`} />}
+        v={form.checkDate}
+        on={(v) => setForm({ ...form, checkDate: v })}
+      />
+    </div>
+  </div>
+</div>
+<div className="relative">
+  <label className="block text-[16px] font-black text-[#2c3e50] mb-1.5 mr-0.5 tracking-wide">
+    البيان والشرح
+  </label>
+  <div className="relative flex items-center">
+    <span className="absolute right-3 z-10">
+      <FileText className={`${ICON_MOBILE} text-[#722f37]`} />
+    </span>
+    <input
+      list="account-descriptions"
+      value={form.description}
+      onChange={(e) => setForm({ ...form, description: e.target.value })}
+      placeholder="اكتب أو اختر البيان..."
+      className="w-full pr-9 pl-3 py-2 text-[16px] border border-black rounded-xl outline-none focus:border-[#c5a059] bg-[#f5f5dc] text-[#2c3e50] font-bold shadow-sm"
+    />
+  </div>
+  <datalist id="account-descriptions">
+    {Array.from(
+      new Set([...DESCRIPTIONS, ...accounts.map((a) => a.description).filter(Boolean)]),
+    ).map((d) => (
+      <option key={d} value={d} />
+    ))}
+  </datalist>
+</div>
+
+<Field
+  label="التخصص الطبي"
+  icon={<Stethoscope className={`${ICON_MOBILE} text-[#2c3e50]`} />}
+  v={form.specialty}
+  on={(v) => setForm({ ...form, specialty: v })}
+/>
+<Field
+  label="الاسم الكامل"
+  icon={<User className={`${ICON_MOBILE} text-[#2c3e50]`} />}
+  v={form.name}
+  on={(v) => setForm({ ...form, name: v })}
+  placeholder="اسم المتدرب..."
+/>
+<Field
+  label="مبلغ الحافظة"
+  type="number"
+  icon={<span className="text-xs text-[#2c3e50] font-black">ر.ي</span>}
+  v={form.hafizaAmount}
+  on={(v) => setForm({ ...form, hafizaAmount: v })}
+  className="font-mono tabular-nums numeric-cell text-[#2c3e50]"
+/>
+<Field
+  label="الإيرادات"
+  type="number"
+  icon={<span className="text-xs text-[#c5a059] font-black">ر.ي</span>}
+  v={form.income}
+  on={(v) => setForm({ ...form, income: v })}
+  placeholder="0.00"
+  className="text-[#c5a059] font-black font-mono tabular-nums numeric-cell focus:border-[#c5a059]"
+/>
+<Field
+  label="المصروفات"
+  type="number"
+  icon={<span className="text-xs text-[#722f37] font-black">ر.ي</span>}
+  v={form.expense}
+  on={(v) => setForm({ ...form, expense: v })}
+  placeholder="0.00"
+  className="text-[#722f37] font-black font-mono tabular-nums numeric-cell focus:border-[#722f37]"
+/>
+
+<div className="sm:col-span-2">
+  <label className="flex items-center gap-1.5 text-[16px] font-black text-[#2c3e50] mb-1.5 mr-0.5 tracking-wide">
+    <Link className={`${ICON_MOBILE} text-[#c5a059]`} /> ربط بدليل هيكل الإيرادات
+  </label>
+  <select
+    value={form.revenueKey}
+    onChange={(e) => setForm({ ...form, revenueKey: e.target.value })}
+    className="w-full px-3 py-2 text-[15px] border border-black rounded-xl outline-none bg-[#f5f5dc] text-[#2c3e50] font-bold focus:border-[#c5a059] shadow-sm"
+  >
+    <option value="">-- بدون ربط --</option>
+    {revenueTypes.map((t) => (
+      <option key={t.key} value={t.key}>
+        {t.key} | {t.label}
+      </option>
+    ))}
+  </select>
+</div>
+
+<div className="sm:col-span-2 flex gap-2 pt-2">
+  <button
+    onClick={submit}
+    className={`${BTN_MOBILE} flex-1 flex items-center justify-center gap-2 rounded-xl font-black text-[#f5f5dc] border border-black shadow-sm transition-all`}
+    style={{ background: "#2c3e50" }}
+  >
+    <Save className={`${ICON_MOBILE} text-[#d2b48c]`} /> <span>ترحيل القيد</span>
+  </button>
+  <button
+    onClick={() => setForm(emptyForm)}
+    className={`${BTN_MOBILE} flex items-center justify-center gap-2 rounded-xl border border-black font-bold text-[#722f37] shadow-sm hover:bg-[#e6d7c3] transition-all`}
+    style={{ background: "#f5f5dc" }}
+  >
+    <Eraser className={`${ICON_MOBILE} text-[#722f37]`} /> <span>مسح</span>
+  </button>
+</div>
+
 
       {/* ===== جدول القيود ===== */}
       <div className="accounts-print-area w-full rounded-2xl overflow-hidden border shadow-sm" style={{ background: "#fff", borderColor: "rgba(0,0,0,0.08)" }}>
