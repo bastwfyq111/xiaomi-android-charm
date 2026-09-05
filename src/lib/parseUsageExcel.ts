@@ -399,21 +399,11 @@ const headerMapFromRows = (rows: unknown[][], index: number) => {
   return map;
 };
 
-export function parseUsageExcel(buffer: ArrayBuffer, importMonthId: number) {
-  const workbook = XLSX.read(new Uint8Array(buffer), { type: "array", cellDates: true });
-  const sheetName = workbook.SheetNames.includes("بيانات") ? "بيانات" : workbook.SheetNames[0];
-  const worksheet = workbook.Sheets[sheetName];
-  if (!worksheet) return [];
-
-  const matrix = XLSX.utils.sheet_to_json<unknown[]>(worksheet, {
-    header: 1,
-    defval: "",
-    blankrows: false,
-  });
-
+/** يستخرج صفوف ورقة واحدة (يُستخدم لكل أوراق الملف ثم نختار الأفضل) */
+function parseUsageSheet(matrix: unknown[][], importMonthId: number, sheetIndex: number) {
   let headerRowIndex = -1;
   let headerMap = new Map<number, string>();
-  for (let index = 0; index < Math.min(matrix.length, 30); index += 1) {
+  for (let index = 0; index < Math.min(matrix.length, 40); index += 1) {
     const map = headerMapFromRows(matrix, index);
     if (map.size > headerMap.size) {
       headerMap = map;
@@ -456,15 +446,18 @@ export function parseUsageExcel(buffer: ArrayBuffer, importMonthId: number) {
     ) {
       continue;
     }
-    // Repeated header rows inside the sheet.
-    if (filled.filter((cell) => resolveHeader(cell)).length >= 3) continue;
+    // Repeated header rows inside the sheet: only exact header names count, so a
+    // description that merely resembles a column name is never dropped.
+    const exactHeaderCells = filled.filter((cell) => headerTargets.has(headerKey(cell)));
+    const numericCells = filled.filter((cell) => parseNumber(cell) !== null);
+    if (exactHeaderCells.length >= 3 && numericCells.length === 0) continue;
 
     const hasData = allCols.some((column) => !emptyCell(lookup[headerKey(column)]));
     if (!hasData) continue;
 
     const rowMonthId = monthIdFromLookup(lookup) ?? activeMonthId;
     const row: Record<string, unknown> = {
-      id: `${Date.now()}-${index}-${Math.random().toString(36).slice(2, 8)}`,
+      id: `${Date.now()}-${sheetIndex}-${index}-${Math.random().toString(36).slice(2, 8)}`,
       monthId: rowMonthId,
     };
     allCols.forEach((column) => {
@@ -474,4 +467,25 @@ export function parseUsageExcel(buffer: ArrayBuffer, importMonthId: number) {
   }
 
   return imported;
+}
+
+export function parseUsageExcel(buffer: ArrayBuffer, importMonthId: number) {
+  const workbook = XLSX.read(new Uint8Array(buffer), { type: "array", cellDates: true });
+
+  // نفحص كل أوراق الملف ونأخذ الورقة التي تحتوي أكبر عدد من الصفوف الصالحة،
+  // فلا يهم اسم الورقة ولا ترتيبها ولا تشابه أسماء الأعمدة.
+  let best: Record<string, unknown>[] = [];
+  workbook.SheetNames.forEach((sheetName, sheetIndex) => {
+    const worksheet = workbook.Sheets[sheetName];
+    if (!worksheet) return;
+    const matrix = XLSX.utils.sheet_to_json<unknown[]>(worksheet, {
+      header: 1,
+      defval: "",
+      blankrows: false,
+    });
+    const rows = parseUsageSheet(matrix, importMonthId, sheetIndex);
+    if (rows.length > best.length) best = rows;
+  });
+
+  return best;
 }
