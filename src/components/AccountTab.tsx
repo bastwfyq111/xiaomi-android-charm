@@ -670,8 +670,9 @@ export default function AccountsTab() {
  {/*شريط العنوان */}
       <div className="accounts-print-hide flex items-center justify-between">
         <div>
-<h1 className={`${HEADING_MOBILE} text-white tracking-tight`}>الحساب الجاري</h1>
-<p className="text-xm text-[#6B655D font-bold tracking-wide mt-0.5"> سجل الحركات المالية
+<h1 className={`${HEADING_MOBILE} text-black text -14px tracking-tight`}>
+ الحساب الجاري</h1>
+<p className="text-xm text-red font-bold tracking-wide mt-0.5"> سجل الحركات المالية
 المُرحّلة
  </p>
      </div>
@@ -688,22 +689,28 @@ style={{ color: "#8B5CF6"}} />
       {/* ===== بطاقات الإجماليات ===== */}
 <div className="accounts-print-hide grid grid-cols-3 gap-2">
 
-<LedgerStat label="إجمالي الإيرادات" 
+<LedgerStat label=
+"إجمالي الإيرادات" 
 style={{ background:THEME.Camel, borderColor: "#000"}} 
 value={totalIncome} tone="income" icon={<ArrowUpRight />} />
         
-<LedgerStat label="إجمالي المصروفات" 
+<LedgerStat label=
+"إجمالي المصروفات" 
 style={{ background:THEME.LightBrown, borderColor: "#000"}} 
-value={totalExpense} tone="expense" icon={<ArrowDownLeft />} />
+value={totalExpense
+ 
+} tone="expense" icon={<ArrowDownLeft />} />
 
-  <LedgerStat label="الرصيد الحالي المتوفر"
- style={{ background:THEME.Lavender, borderColor: "#000"}} 
+  <LedgerStat label=
+  "الرصيد الحالي المتوفر"
+ style={{ background:THEME.Lavender, borderColor:"#000"}} 
 value={currentBalance} tone="balance" icon={<Wallet />} />
       </div>
 
       {/* ===== التقارير الدورية ===== */}
-      <div className="accounts-print-hide w-full rounded-2xl overflow-hidden border shadow-sm" style={{ background: THEME.paleSage, borderColor: "rgba(0,0,0,0.08)" }}>
-        <div className="px-4 py-3 flex flex-wrap justify-between items-center gap-3 border-b" style={{ background: THEME.warmCream, borderColor: "rgba(0,0,0,0.08)" }}>
+      <div className="accounts-print-hide w-full rounded-2xl overflow-hidden border shadow-sm" style={{ background: THEME.paleSage, borderColor: "#000" }}>
+        <div className="px-4 py-3 flex flex-wrap justify-between items-center gap-3 border-black " 
+        style={{ background: THEME.warmCream, borderColor:"#000" }}>
           <div>
             <h2 className="text-base font-black text-[#171412] tracking-wide">تقارير الحساب الدورية</h2>
             <p className="text-xs text-[#6B655D] font-bold mt-1">اختر الربع أو النصف أو السنة ثم صدّر التقرير</p>
