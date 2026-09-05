@@ -12,7 +12,7 @@ import { Printer, FileSpreadsheet, Trash2, Download, Loader2 } from "lucide-reac
 import { toast } from "sonner";
 import { useReportDate } from "@/lib/reportDate";
 import { exportTablePdf } from "@/lib/pdfExporter";
-import { buildTableHtml, escapeHtml, tablePrintStyles } from "@/lib/printTableHtml";
+import { buildTableHtml, escapeHtml, reportLetterheadHtml, tablePrintStyles } from "@/lib/printTableHtml";
 import { printReportHtml } from "@/lib/nativePrinter";
 import WebActionMenu, { type WebActionItem } from "@/components/WebActionMenu";
 
@@ -79,6 +79,7 @@ export default function TabActions({
     `;
 
     const html = `<!doctype html><html lang="ar" dir="rtl"><head>${head}</head><body>
+      ${reportLetterheadHtml()}
       ${tableHtml()}
       <script>
         window.onload = () => {

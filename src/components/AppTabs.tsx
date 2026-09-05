@@ -586,20 +586,24 @@ const AppTabs: React.FC = () => {
   };  
   
   return (  
-    <div className="sheet-tabs-ui space-y-4 font-tajawal text-slate-800 p-2" dir="rtl">  
-      <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 shadow-sm space-y-4">  
-        <div className="flex flex-wrap items-center justify-between gap-3">  
-          <div className="flex items-center gap-2">  
-            <FileSpreadsheet className="w-5 h-5 text-blue-800" />  
-            <h2 className="text-base font-bold text-[#123b52]">سجل مفردات الاستخدامات والنفقات العامة</h2>  
-            <span className="rounded-full border border-amber-300 bg-amber-100 px-2 py-1 text-[10px] font-bold text-amber-900 whitespace-nowrap">اختبار الربط: main</span>
+    <div className="sheet-tabs-ui apk-tabs-ui space-y-3 font-tajawal p-2" dir="rtl">  
+      <div className="rounded-2xl border border-[#bcd6e4] bg-white/90 p-3 shadow-sm space-y-3">  
+        <div className="flex flex-wrap items-center justify-between gap-2">  
+          <div className="flex min-w-0 items-center gap-2">  
+            <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#123b52] via-[#1f5f7a] to-[#2e6b8a] text-white shadow-sm">
+              <FileSpreadsheet className="w-4 h-4" />
+            </span>
+            <div className="min-w-0">
+              <h2 className="truncate text-[15px] font-extrabold text-[#0f2f44]">سجل مفردات الاستخدامات</h2>
+              <p className="truncate text-[12px] font-bold text-[#5b7d90]">النفقات العامة شهراً بشهر</p>
+            </div>
           </div>  
           <div className="flex flex-wrap items-center gap-2">  
             <select  
               value={importMonthId}  
               onChange={(e) => setImportMonthId(Number(e.target.value))}  
-              className="text-xs border border-slate-300 rounded px-2 py-1.5"  
-              title="الشهر الافتراضي للاستيراد (إن لم يحتوِ الملف عمود monthId)"  
+              className="rounded-xl border border-[#bcd6e4] bg-[#f2f8fc] px-2.5 py-2 text-[13px] font-bold text-[#0f2f44]"  
+              title="الشهر الافتراضي للاستيراد (إن لم يحتوِ الملف عمود الشهر)"  
             >  
               {MONTHS.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}  
             </select>  
@@ -616,19 +620,19 @@ const AppTabs: React.FC = () => {
               />
             </div>
             <div className="apk-only-actions flex flex-wrap items-center gap-2">
-              <button onClick={handleImportClick} className="flex items-center gap-1 bg-sky-600 hover:bg-sky-700 text-white text-xs px-3 py-2 rounded shadow-sm">
+              <button onClick={handleImportClick} className="flex items-center gap-1.5 rounded-xl bg-[#1f5f7a] px-3 py-2 text-[13px] font-extrabold text-white shadow-sm active:scale-[0.98]">
                 <Upload className="w-4 h-4" /> استيراد Excel
               </button>
-              <button onClick={handleExportExcel} className="flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-2 rounded shadow-sm">
+              <button onClick={handleExportExcel} className="flex items-center gap-1.5 rounded-xl bg-[#2e6b8a] px-3 py-2 text-[13px] font-extrabold text-white shadow-sm active:scale-[0.98]">
                 <Download className="w-4 h-4" /> تصدير Excel
               </button>
-              <button onClick={handlePdf} className="flex items-center gap-1 bg-rose-600 hover:bg-rose-700 text-white text-xs px-3 py-2 rounded shadow-sm">
+              <button onClick={handlePdf} className="flex items-center gap-1.5 rounded-xl bg-[#c98a3c] px-3 py-2 text-[13px] font-extrabold text-white shadow-sm active:scale-[0.98]">
                 <FileText className="w-4 h-4" /> تحويل PDF
               </button>
-              <button onClick={handlePrint} className="flex items-center gap-1 bg-slate-700 hover:bg-slate-800 text-white text-xs px-3 py-2 rounded shadow-sm">
+              <button onClick={handlePrint} className="flex items-center gap-1.5 rounded-xl bg-[#123b52] px-3 py-2 text-[13px] font-extrabold text-white shadow-sm active:scale-[0.98]">
                 <Printer className="w-4 h-4" /> طباعة
               </button>
-              <button onClick={handleClearAll} className="flex items-center gap-1 bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-2 rounded shadow-sm">
+              <button onClick={handleClearAll} className="flex items-center gap-1.5 rounded-xl bg-[#a4432f] px-3 py-2 text-[13px] font-extrabold text-white shadow-sm active:scale-[0.98]">
                 <Eraser className="w-4 h-4" /> مسح الكل
               </button>
             </div>
@@ -637,8 +641,8 @@ const AppTabs: React.FC = () => {
         </div>  
       </div>  
   
-      <div className="w-full overflow-x-auto border border-slate-300 shadow-sm bg-white rounded-b-lg" style={{ maxHeight: "70vh" }}>  
-        <table className="w-max w-max table-auto text-center border-collapse !text-sm sm:!text-base !whitespace-nowrap">
+      <div className="w-full overflow-x-auto rounded-2xl border border-[#bcd6e4] bg-white shadow-sm" style={{ maxHeight: "70vh" }}>  
+        <table className="w-max table-auto text-center border-collapse">
           <thead className="sticky top-0 z-10 bg-white" dangerouslySetInnerHTML={{ __html: THEAD_HTML }}>  
           </thead>  
           
@@ -652,7 +656,7 @@ const AppTabs: React.FC = () => {
                 <React.Fragment key={m.id}>
                   {/* شريط الشهر */}
                   <tr className="bg-blue-900 text-sky-200 font-bold">
-                    <td colSpan={TOTAL_COLS} className="text-right border border-slate-300 !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap">
+                    <td colSpan={TOTAL_COLS} className="text-right border border-slate-300">
                       شهر {m.name}
                       <button 
                         onClick={() => handleAddRow(m.id)} 
@@ -667,7 +671,7 @@ const AppTabs: React.FC = () => {
                   {rows.map((row) => (
                     <tr key={row.id} className="hover:bg-slate-50 transition-colors">
                       {mainHeaders.map((col) => (
-                        <td key={col} className="border border-slate-300 bg-white !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap">
+                        <td key={col} className="border border-slate-300 bg-white">
                           <EditableCell rowId={row.id} field={col} value={row[col]} onCommit={updateCell} />
                         </td>
                       ))}
@@ -684,7 +688,7 @@ const AppTabs: React.FC = () => {
                         );
                       })}
                       {/* زر الحذف */}
-                      <td className="border border-slate-300 bg-white !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap">
+                      <td className="border border-slate-300 bg-white">
                         <button onClick={() => handleDeleteRow(row.id)} className="text-red-500 hover:text-red-700">
                           <Trash2 className="w-4 h-4 mx-auto" />
                         </button>
@@ -694,35 +698,35 @@ const AppTabs: React.FC = () => {
 
                   {/* صف الإجمالي للشهر الحالي */}
                   <tr className="bg-blue-100 text-blue-900 font-bold">
-                    <td colSpan={4} className="border border-slate-300 text-right !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap">إجمالي شهر {m.name}</td>
+                    <td colSpan={4} className="border border-slate-300 text-right">إجمالي شهر {m.name}</td>
                     {dataColumnsOrder.map((c) => (
-                      <td key={c} className="border border-slate-300 !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap">
+                      <td key={c} className="border border-slate-300">
                         <FormulaCell value={t.current(c)} />
                       </td>
                     ))}
-                    <td className="border border-slate-300 bg-white !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
+                    <td className="border border-slate-300 bg-white"></td>
                   </tr>
 
                   {/* صف إجمالي الأشهر السابقة */}
                   <tr className="bg-slate-200 text-slate-700 font-bold">
-                    <td colSpan={4} className="border border-slate-300 text-right !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap">إجمالي الأشهر السابقة (قبل {m.name})</td>
+                    <td colSpan={4} className="border border-slate-300 text-right">إجمالي الأشهر السابقة (قبل {m.name})</td>
                     {dataColumnsOrder.map((c) => (
-                      <td key={c} className="border border-slate-300 !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap">
+                      <td key={c} className="border border-slate-300">
                         <FormulaCell value={t.before(c)} />
                       </td>
                     ))}
-                    <td className="border border-slate-300 bg-white !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
+                    <td className="border border-slate-300 bg-white"></td>
                   </tr>
 
                   {/* صف الإجمالي العام التراكمي */}
                   <tr className="bg-blue-900 text-sky-200 font-bold">
-                    <td colSpan={4} className="border border-slate-300 text-right !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap">الإجمالي العام (حتى {m.name})</td>
+                    <td colSpan={4} className="border border-slate-300 text-right">الإجمالي العام (حتى {m.name})</td>
                     {dataColumnsOrder.map((c) => (
-                      <td key={c} className="border border-slate-300 !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap">
+                      <td key={c} className="border border-slate-300">
                         {formatNumberEn(t.cumulative(c)) || "-"}
                       </td>
                     ))}
-                    <td className="border border-slate-300 bg-white !px-0.5 !py-1 sm:!px-1 sm:!py-1 !text-[10px] sm:!text-xs whitespace-nowrap"></td>
+                    <td className="border border-slate-300 bg-white"></td>
                   </tr>
                 </React.Fragment>
               );
